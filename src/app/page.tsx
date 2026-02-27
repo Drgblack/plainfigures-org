@@ -2,8 +2,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Plain Figures — Financial Calculators',
-  description: 'Clear, accurate financial and insurance calculators. No advice. No noise. Just the maths.',
+  title: 'Plain Figures — Financial & Insurance Calculators',
+  description: 'Accurate financial and insurance calculators for personal decisions and professional use. No advice. No noise. Just the maths.',
 };
 
 const PERSONAL_CALCULATORS = [
@@ -16,6 +16,13 @@ const PERSONAL_CALCULATORS = [
   { href: '/offset', code: '07', title: 'Offset Mortgage', description: 'How savings reduce mortgage interest and shorten your term.', tags: ['Offset', 'Interest Saving', 'Term Reduction'] },
   { href: '/overpayment', code: '08', title: 'Mortgage Overpayment', description: 'Interest saved and years removed by paying extra each month.', tags: ['Overpayment', 'Interest Saved', 'Early Payoff'] },
   { href: '/save-goal', code: '09', title: 'Save for a Goal', description: 'How long to reach a target, or what monthly saving hits a deadline.', tags: ['Target', 'Deadline', 'Monthly Required'] },
+  { href: '/take-home', code: '10', title: 'Salary Take-Home', description: 'Net pay after tax — UK, Germany, USA, France, Netherlands, Australia.', tags: ['Tax', 'Net Salary', '6 Countries'] },
+  { href: '/affordability', code: '11', title: 'Mortgage Affordability', description: 'The maximum you can borrow based on income, deposit, and stress test.', tags: ['Borrowing Power', 'LTV', 'Stress Test'] },
+  { href: '/tdee', code: '12', title: 'TDEE & Calorie Calculator', description: 'Total daily energy expenditure, BMR, BMI, and macro targets.', tags: ['Calories', 'BMI', 'Fitness'] },
+  { href: '/subscriptions', code: '13', title: 'Subscription Drain', description: 'True 10-year cost of subscriptions and investment opportunity cost.', tags: ['Subscriptions', '10-Year Cost', 'Opportunity Cost'] },
+  { href: '/freelance', code: '14', title: 'Freelance Rate Calculator', description: 'Work backwards from desired salary to minimum hourly and day rate.', tags: ['Day Rate', 'Freelance', 'Contractor'] },
+  { href: '/lifestyle-inflation', code: '15', title: 'Lifestyle Inflation Tracker', description: 'Compare current vs entry-level spending and the 10-year opportunity cost.', tags: ['Lifestyle Creep', 'Spending', 'Opportunity Cost'] },
+  { href: '/crisis', code: '16', title: 'Financial Crisis Simulator', description: 'How long your savings last if you lose your job or costs double.', tags: ['Emergency Fund', 'Job Loss', 'Survival Runway'] },
 ];
 
 const PROFESSIONAL_CALCULATORS = [
@@ -25,30 +32,21 @@ const PROFESSIONAL_CALCULATORS = [
 ];
 
 function CalcList({ items, professional }: { items: typeof PERSONAL_CALCULATORS; professional?: boolean }) {
-  const accent = professional ? '#d4a843' : 'var(--accent)';
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--border)', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${professional ? 'rgba(212,168,67,0.2)' : 'var(--border)'}` }}>
       {items.map(({ href, code, title, description, tags }) => (
         <Link key={href} href={href} className="calc-link" style={{ borderLeft: professional ? '2px solid rgba(212,168,67,0.4)' : 'none' }}>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: professional ? '#d4a843' : 'var(--text-muted)', letterSpacing: '0.06em' }}>
-            {code}
-          </div>
-          <div>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', color: 'var(--text-primary)', fontWeight: 500, marginBottom: '0.3rem', letterSpacing: '-0.01em' }}>
-              {title}
-            </div>
-            <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.5, fontWeight: 300, marginBottom: '0.6rem' }}>
-              {description}
-            </div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: professional ? '#d4a843' : 'var(--text-muted)', letterSpacing: '0.06em', flexShrink: 0 }}>{code}</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', color: 'var(--text-primary)', fontWeight: 500, marginBottom: '0.3rem', letterSpacing: '-0.01em' }}>{title}</div>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.5, fontWeight: 300, marginBottom: '0.6rem' }}>{description}</div>
             <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
               {tags.map(tag => (
-                <span key={tag} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'var(--text-muted)', border: `1px solid ${professional ? 'rgba(212,168,67,0.2)' : 'var(--border)'}`, borderRadius: '3px', padding: '0.12rem 0.45rem', letterSpacing: '0.04em' }}>
-                  {tag}
-                </span>
+                <span key={tag} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'var(--text-muted)', border: `1px solid ${professional ? 'rgba(212,168,67,0.2)' : 'var(--border)'}`, borderRadius: '3px', padding: '0.12rem 0.45rem', letterSpacing: '0.04em' }}>{tag}</span>
               ))}
             </div>
           </div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.1rem', color: 'var(--text-muted)' }}>→</div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.1rem', color: 'var(--text-muted)', flexShrink: 0 }}>→</div>
         </Link>
       ))}
     </div>
@@ -58,51 +56,36 @@ function CalcList({ items, professional }: { items: typeof PERSONAL_CALCULATORS;
 export default function HomePage() {
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '4rem 2rem' }}>
-      {/* Header */}
       <div style={{ marginBottom: '4rem' }}>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
-          Financial Calculator Hub
-        </div>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Financial Calculator Hub</div>
         <h1 style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(2rem, 5vw, 3.25rem)', fontWeight: 300, color: 'var(--text-primary)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '1.5rem' }}>
-          Check the maths.<br />
-          <span style={{ color: 'var(--text-muted)' }}>Without the noise.</span>
+          Check the maths.<br /><span style={{ color: 'var(--text-muted)' }}>Without the noise.</span>
         </h1>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '520px', fontWeight: 300 }}>
-          Accurate financial and insurance calculators for personal decisions and professional use.
-          No advice, no opinions, no products. Just numbers you can trust.
+          19 calculators for personal decisions and professional use. No advice, no opinions, no products. Just numbers you can trust.
         </p>
       </div>
 
-      {/* Personal Finance Section */}
       <div style={{ marginBottom: '3rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-            Personal Finance
-          </div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>Personal Finance & Lifestyle</div>
           <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>{PERSONAL_CALCULATORS.length} calculators</div>
         </div>
         <CalcList items={PERSONAL_CALCULATORS} />
       </div>
 
-      {/* Professional Tools Section */}
       <div style={{ marginBottom: '3rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#d4a843', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-            Professional Tools
-          </div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#d4a843', letterSpacing: '0.14em', textTransform: 'uppercase' }}>Professional Tools</div>
           <div style={{ flex: 1, height: '1px', background: 'rgba(212,168,67,0.2)' }} />
-          <div style={{ padding: '0.15rem 0.5rem', background: 'rgba(212,168,67,0.1)', border: '1px solid rgba(212,168,67,0.25)', borderRadius: '3px', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#d4a843', letterSpacing: '0.1em' }}>
-            FOR BROKERS & RISK MANAGERS
-          </div>
+          <div style={{ padding: '0.15rem 0.5rem', background: 'rgba(212,168,67,0.1)', border: '1px solid rgba(212,168,67,0.25)', borderRadius: '3px', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#d4a843', letterSpacing: '0.1em' }}>FOR BROKERS & RISK MANAGERS</div>
         </div>
         <CalcList items={PROFESSIONAL_CALCULATORS} professional />
       </div>
 
-      {/* Disclaimer */}
       <div style={{ padding: '1.25rem 1.5rem', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', lineHeight: 1.6, letterSpacing: '0.02em' }}>
-        Plain Figures does not provide financial or insurance advice. All calculations are indicative only.
-        Always consult a qualified financial adviser, broker, or risk manager before making financial or coverage decisions.
+        Plain Figures does not provide financial, medical, or insurance advice. All calculations are indicative only. Always consult a qualified adviser before making decisions.
       </div>
     </div>
   );
