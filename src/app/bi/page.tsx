@@ -14,6 +14,8 @@ export default function BIPage() {
       title="Business Interruption Sum Insured Calculator"
       description="Calculate the correct BI sum insured using gross profit, indemnity period, trend uplift, and increased cost of working (ICOW). Designed for commercial brokers and risk managers."
       professional
+      toolHref="/bi"
+      methodologyNote="Gross Profit basis"
     >
       <BICalc />
     </CalcPageWrapper>

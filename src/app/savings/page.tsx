@@ -13,6 +13,8 @@ export default function SavingsPage() {
       code="02 / SAVINGS"
       title="Savings Growth Calculator"
       description="See how compound interest works over time. Add an initial deposit, set a monthly contribution, and watch your balance grow."
+      toolHref="/savings"
+      rateContext="Best easy-access savings rates: ~5% (Feb 2026). Review when rates change."
     >
       <SavingsCalc />
     </CalcPageWrapper>

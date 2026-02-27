@@ -13,6 +13,7 @@ export default function SaveGoalPage() {
       code="09 / SAVE FOR A GOAL"
       title="Save for a Goal"
       description="Set a target amount and see how long it will take to get there — or what you need to save monthly to hit a deadline."
+      toolHref="/save-goal"
     >
       <SaveGoalCalc />
     </CalcPageWrapper>

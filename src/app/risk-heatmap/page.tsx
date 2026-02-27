@@ -12,6 +12,8 @@ export default function Page() {
       title="Risk Score & Heat Map Generator"
       description="Score risks by likelihood and impact, plot them on a 5x5 heat map, and compare pre- vs post-mitigation positions. Editable risk register with Critical / High / Medium / Low classification."
       professional
+      toolHref="/risk-heatmap"
+      methodologyNote="ISO 31000 framework"
     >
       <RiskHeatMapCalc />
     </CalcPageWrapper>

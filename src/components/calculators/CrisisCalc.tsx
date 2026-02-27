@@ -44,7 +44,7 @@ export default function CrisisCalc() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
         {/* Inputs */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <Section title="Your Current Situation">
             <InputField label="Liquid Savings (accessible)" value={savings} onChange={setSavings} min={0} max={500000} step={500} prefix={currency.symbol}
               hint="Cash, easy-access accounts only" />

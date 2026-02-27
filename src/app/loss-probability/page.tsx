@@ -14,6 +14,7 @@ export default function Page() {
       title="Loss Event Probability Modeler"
       description="Model expected annual loss from 1–10 risk events using triangular distributions. View exceedance probabilities, aggregate PML, and the impact of mitigation controls."
       professional
+      toolHref="/loss-probability"
     >
       <LossProbabilityCalc />
     </CalcPageWrapper>

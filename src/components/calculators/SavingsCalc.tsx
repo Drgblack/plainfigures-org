@@ -5,6 +5,7 @@ import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateSavings } from '@/lib/calculations';
 import { formatCurrency, formatPercent } from '@/lib/formatting';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
 
 export default function SavingsCalc() {
   const { currency } = useCurrency();
@@ -24,7 +25,7 @@ export default function SavingsCalc() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
       {/* Inputs */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Savings Details">
           <InputField
             label="Initial Deposit"
@@ -68,6 +69,17 @@ export default function SavingsCalc() {
 
       {/* Results */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <SaveCalcButton
+            toolHref="/savings"
+            toolTitle="Savings Growth"
+            summary={`${fmt(initialDeposit)} initial + ${fmt(monthly)}/mo`}
+            keyResults={[
+              { label: 'Final Balance', value: fmt(result.finalBalance) },
+              { label: 'Interest Earned', value: fmt(result.totalInterest) },
+            ]}
+          />
+        </div>
         <Section title="Results">
           <ResultCard
             label="Final Balance"

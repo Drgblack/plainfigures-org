@@ -5,6 +5,7 @@ import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateTCOR, TCORScenario } from '@/lib/insurance-calculations';
 import { formatCurrency, formatNumber } from '@/lib/formatting';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
 
 const SCENARIO_COLORS = ['#3b82c4', '#e05252', '#2ec88a', '#d4a843'];
 const SCENARIO_BORDER = ['rgba(59,130,196,0.4)', 'rgba(224,82,82,0.4)', 'rgba(46,200,138,0.4)', 'rgba(212,168,67,0.4)'];
@@ -68,7 +69,7 @@ export default function TCORCalc() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
         {/* Inputs */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <Section title="Risk Cost Inputs">
             <InputField label="Annual Insurance Premiums" value={premiums} onChange={setPremiums} min={0} max={10000000} step={5000} prefix={currency.symbol} />
             <InputField label="Retained Losses (self-insured)" value={retainedLosses} onChange={setRetainedLosses} min={0} max={5000000} step={5000} prefix={currency.symbol}
@@ -86,6 +87,17 @@ export default function TCORCalc() {
 
         {/* Base results */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <SaveCalcButton
+              toolHref="/tcor"
+              toolTitle="Total Cost of Risk"
+              summary={`TCOR analysis`}
+              keyResults={[
+                { label: 'Base TCOR', value: fmt(base.tcor) },
+                { label: 'TCOR Rate', value: `${formatNumber(base.tcorRate, 2)} per £1k revenue` },
+              ]}
+            />
+          </div>
           <Section title="Base Case">
             <ResultCard label="Total Cost of Risk (TCOR)" value={fmt(result.base.tcor)} size="large" color="warning" />
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>

@@ -8,7 +8,8 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <CalcPageWrapper code="14 / FREELANCE RATE" title="Freelance & Contractor Rate Calculator"
-      description="Work backwards from your desired take-home salary. Enter your expenses, tax rate, and working pattern — get the minimum hourly and day rate you must charge.">
+      description="Work backwards from your desired take-home salary. Enter your expenses, tax rate, and working pattern — get the minimum hourly and day rate you must charge."
+      toolHref="/freelance">
       <FreelanceCalc />
     </CalcPageWrapper>
   );

@@ -24,7 +24,7 @@ export default function FreelanceCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="What You Need to Earn">
           <InputField label="Desired Annual Take-Home" value={desiredSalary} onChange={setDesiredSalary} min={10000} max={500000} step={1000} prefix={currency.symbol} />
           <InputField label="Annual Business Expenses" value={expenses} onChange={setExpenses} min={0} max={100000} step={500} prefix={currency.symbol}

@@ -27,7 +27,7 @@ export default function AffordabilityCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Your Income">
           <InputField label="Your Annual Gross Income" value={income} onChange={setIncome} min={10000} max={500000} step={1000} prefix={currency.symbol} />
           <InputField label="Partner's Annual Income (optional)" value={partnerIncome} onChange={setPartnerIncome} min={0} max={500000} step={1000} prefix={currency.symbol}

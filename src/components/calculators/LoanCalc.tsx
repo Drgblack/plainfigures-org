@@ -33,7 +33,7 @@ export default function LoanCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Loan Details">
           <InputField label="Loan Amount" value={amount} onChange={setAmount} min={500} max={500000} step={500} prefix={currency.symbol} />
           <InputField label="Annual Interest Rate" value={rate} onChange={setRate} min={0.1} max={50} step={0.1} suffix="%" hint="APR" />

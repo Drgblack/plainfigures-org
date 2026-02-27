@@ -52,7 +52,7 @@ export default function CyberCalc() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
         {/* Inputs */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <Section title="Business Profile">
             <InputField label="Annual Revenue" value={revenue} onChange={setRevenue} min={100000} max={500000000} step={100000} prefix="$" />
             <InputField label="Number of Employees" value={employees} onChange={setEmployees} min={1} max={50000} step={1} suffix="staff" />

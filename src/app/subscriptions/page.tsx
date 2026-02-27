@@ -8,7 +8,8 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <CalcPageWrapper code="13 / SUBSCRIPTIONS" title="Subscription Drain Calculator"
-      description="Toggle your active subscriptions and see the true 10-year cost — and what that money would be worth if invested instead.">
+      description="Toggle your active subscriptions and see the true 10-year cost — and what that money would be worth if invested instead."
+      toolHref="/subscriptions">
       <SubscriptionCalc />
     </CalcPageWrapper>
   );

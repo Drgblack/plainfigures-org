@@ -13,6 +13,7 @@ export default function RentVsBuyPage() {
       code="03 / RENT VS BUY"
       title="Rent vs Buy Calculator"
       description="Compare the true financial outcome of renting versus buying over time, accounting for equity, investment returns, and opportunity cost."
+      toolHref="/rent-vs-buy"
       learnHref="/learn/rent-vs-buy"
       learnLabel="Rent vs Buy: the key numbers"
     >

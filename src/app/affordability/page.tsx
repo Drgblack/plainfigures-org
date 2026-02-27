@@ -8,7 +8,8 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <CalcPageWrapper code="11 / AFFORDABILITY" title="Mortgage Affordability Calculator" learnHref="/learn/mortgage-affordability" learnLabel="How affordability is assessed"
-      description="Find out what you can actually borrow — based on income multiples, monthly commitments, and a stress test at +3%. Includes LTV breakdown.">
+      description="Find out what you can actually borrow — based on income multiples, monthly commitments, and a stress test at +3%. Includes LTV breakdown."
+      toolHref="/affordability">
       <AffordabilityCalc />
     </CalcPageWrapper>
   );

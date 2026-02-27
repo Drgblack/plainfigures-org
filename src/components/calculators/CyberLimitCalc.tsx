@@ -128,7 +128,7 @@ export default function CyberLimitCalc() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
         {/* Inputs */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <Section title="Business Profile">
             <InputField label="Annual Revenue" value={annualRevenue} onChange={setAnnualRevenue} min={100000} max={1000000000} step={100000} prefix={currency.symbol} />
             <InputField label="PII / Sensitive Records Held" value={recordCount} onChange={setRecordCount} min={0} max={100000000} step={1000}

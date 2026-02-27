@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 import { useCurrency, CURRENCIES } from '@/lib/CurrencyContext';
+import { recordVisit, getTheme, setTheme } from '@/lib/localStorage';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 const CALC_LINKS = [
   { href: '/mortgage', label: 'Mortgage' },
@@ -24,16 +27,16 @@ const CALC_LINKS = [
 ];
 
 const PRO_LINKS = [
-  { href: '/bi', label: 'BI', pro: true },
-  { href: '/hlv', label: 'Life Insurance', pro: true },
-  { href: '/cyber', label: 'Cyber Risk', pro: true },
-  { href: '/tcor', label: 'TCOR', pro: true },
-  { href: '/risk-heatmap', label: 'Risk Heat Map', pro: true },
-  { href: '/scr', label: 'SCR', pro: true },
-  { href: '/coverage-gap', label: 'Coverage Gap', pro: true },
-  { href: '/ltv-cac', label: 'LTV·CAC', pro: true },
-  { href: '/loss-probability', label: 'Loss Model', pro: true },
-  { href: '/cyber-limit', label: 'Cyber Limit', pro: true },
+  { href: '/bi', label: 'BI' },
+  { href: '/hlv', label: 'Life Insurance' },
+  { href: '/cyber', label: 'Cyber Risk' },
+  { href: '/tcor', label: 'TCOR' },
+  { href: '/risk-heatmap', label: 'Risk Heat Map' },
+  { href: '/scr', label: 'SCR' },
+  { href: '/coverage-gap', label: 'Coverage Gap' },
+  { href: '/ltv-cac', label: 'LTV·CAC' },
+  { href: '/loss-probability', label: 'Loss Model' },
+  { href: '/cyber-limit', label: 'Cyber Limit' },
 ];
 
 export default function Navbar() {
@@ -41,14 +44,29 @@ export default function Navbar() {
   const { currency, setCurrency } = useCurrency();
   const isLearn = pathname?.startsWith('/learn');
 
+  // Record visit for "recently used"
+  useEffect(() => {
+    if (pathname && pathname !== '/' && !pathname.startsWith('/learn')) {
+      recordVisit(pathname);
+    }
+    // Apply persisted theme on every route change
+    const t = getTheme();
+    document.documentElement.setAttribute('data-theme', t);
+  }, [pathname]);
+
   return (
-    <nav style={{ position: 'sticky', top: 0, zIndex: 100, height: '56px', background: 'rgba(10,14,20,0.97)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', padding: '0 1.5rem', gap: '1rem' }}>
+    <nav style={{
+      position: 'sticky', top: 0, zIndex: 100, height: '56px',
+      background: 'var(--nav-bg-solid, rgba(10,14,20,0.97))',
+      backdropFilter: 'blur(12px)',
+      borderBottom: '1px solid var(--border)',
+      display: 'flex', alignItems: 'center', padding: '0 1.5rem', gap: '1rem',
+    }}>
       <Link href="/" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 500, color: 'var(--text-primary)', textDecoration: 'none', letterSpacing: '0.12em', textTransform: 'uppercase', flexShrink: 0 }}>
         Plain Figures
       </Link>
       <div style={{ width: '1px', height: '18px', background: 'var(--border)', flexShrink: 0 }} />
 
-      {/* Learn — prominent, green accent */}
       <Link href="/learn" style={{ padding: '0.25rem 0.65rem', borderRadius: '3px', fontSize: '0.72rem', fontFamily: 'var(--font-mono)', textDecoration: 'none', letterSpacing: '0.04em', color: isLearn ? '#2ec88a' : 'var(--text-muted)', background: isLearn ? 'rgba(46,200,138,0.08)' : 'transparent', border: isLearn ? '1px solid rgba(46,200,138,0.25)' : '1px solid var(--border)', whiteSpace: 'nowrap', flexShrink: 0, transition: 'all 0.15s ease' }}>
         Learn
       </Link>
@@ -75,9 +93,18 @@ export default function Navbar() {
         })}
       </div>
 
+      {/* Currency picker */}
       <select value={currency.code} onChange={e => { const found = CURRENCIES.find(c => c.code === e.target.value); if (found) setCurrency(found); }} style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-light)', color: 'var(--text-primary)', padding: '0.25rem 0.5rem', borderRadius: '3px', fontSize: '0.72rem', fontFamily: 'var(--font-mono)', cursor: 'pointer', outline: 'none', flexShrink: 0 }}>
         {CURRENCIES.map(c => <option key={c.code} value={c.code}>{c.flag} {c.code}</option>)}
       </select>
+
+      {/* Saved calcs link */}
+      <Link href="/saved" title="Saved calculations" style={{ display: 'flex', alignItems: 'center', padding: '0.3rem 0.5rem', background: 'none', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', textDecoration: 'none', lineHeight: 1, transition: 'all 0.15s ease', flexShrink: 0 }}>
+        ⊞
+      </Link>
+
+      {/* Light/dark toggle */}
+      <ThemeToggle />
     </nav>
   );
 }

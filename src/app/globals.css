@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
 
+/* ── Dark mode (default) ─────────────────────────────────────────────────────── */
 :root {
   --bg: #0a0e14;
   --bg-surface: #111720;
@@ -17,6 +18,44 @@
   --warning: #d4a843;
   --font-sans: 'DM Sans', sans-serif;
   --font-mono: 'DM Mono', monospace;
+}
+
+/* ── Light mode ──────────────────────────────────────────────────────────────── */
+[data-theme='light'] {
+  --bg: #f7f8fa;
+  --bg-surface: #ffffff;
+  --bg-elevated: #f0f2f5;
+  --border: #dde2ea;
+  --border-light: #c8d0db;
+  --text-primary: #111720;
+  --text-secondary: #3d4f63;
+  --text-muted: #7a8fa8;
+  --accent: #2568a8;
+  --accent-dim: rgba(37, 104, 168, 0.12);
+  --accent-glow: rgba(37, 104, 168, 0.06);
+  --positive: #1a9e68;
+  --negative: #c0392b;
+  --warning: #b8882e;
+}
+
+[data-theme='light'] {
+  --nav-bg-solid: rgba(247,248,250,0.97);
+}
+
+[data-theme='light'] body {
+  background-image: radial-gradient(ellipse 80% 40% at 50% -10%, rgba(37, 104, 168, 0.05) 0%, transparent 60%);
+}
+
+[data-theme='light'] input[type='range'] {
+  background: var(--border);
+}
+
+[data-theme='light'] .calc-link {
+  background: var(--bg-surface);
+}
+
+[data-theme='light'] .calc-link:hover {
+  background: var(--bg-elevated);
 }
 
 * {
@@ -44,6 +83,37 @@ body {
 ::selection {
   background: var(--accent-dim);
   color: var(--text-primary);
+}
+
+/* ── Focus visible ── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ── Graph paper input panel ── */
+.input-panel {
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: 10px 10px;
+}
+
+/* ── Sticky input column ── */
+@media (min-width: 640px) {
+  .sticky-inputs {
+    position: sticky;
+    top: 76px;
+    align-self: start;
+  }
+}
+
+/* ── Print styles ── */
+@media print {
+  nav, footer, button, .no-print { display: none !important; }
+  body { background: white !important; color: black !important; }
+  [data-theme] { --bg: white; --bg-surface: #f5f5f5; --bg-elevated: #eeeeee; --border: #cccccc; --text-primary: #111; --text-secondary: #333; --text-muted: #777; }
+  .print-section { break-inside: avoid; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 4px; padding: 0.75rem; }
 }
 
 input[type='number']::-webkit-inner-spin-button,

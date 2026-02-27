@@ -13,6 +13,7 @@ export default function LoanPage() {
       code="05 / LOAN"
       title="Loan Repayment Calculator"
       description="Calculate monthly repayments and the full cost of any personal loan, car finance, or credit agreement. See the true APR and year-by-year breakdown."
+      toolHref="/loan"
     >
       <LoanCalc />
     </CalcPageWrapper>

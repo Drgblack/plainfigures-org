@@ -8,7 +8,8 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <CalcPageWrapper code="15 / LIFESTYLE INFLATION" title="Lifestyle Inflation Tracker"
-      description="Compare what you spend now to what you spent when you started out. See the real 10-year cost of lifestyle creep — and the opportunity cost if that money had been invested.">
+      description="Compare what you spend now to what you spent when you started out. See the real 10-year cost of lifestyle creep — and the opportunity cost if that money had been invested."
+      toolHref="/lifestyle-inflation">
       <LifestyleInflationCalc />
     </CalcPageWrapper>
   );

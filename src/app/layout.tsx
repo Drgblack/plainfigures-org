@@ -1,22 +1,35 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import { CurrencyProvider } from '@/lib/CurrencyContext';
 import Navbar from '@/components/layout/Navbar';
 
 export const metadata: Metadata = {
-  title: 'Plain Figures — Financial Calculators',
-  description: 'Clear, accurate financial calculators for everyday high-stakes decisions. No advice, no opinions. Just the maths.',
+  title: 'Plain Figures — Financial Calculators & Learning Centre',
+  description: 'Accurate financial and insurance calculators plus formula-first guides. Mortgage, compound interest, salary, retirement, and more. No advice. No noise. Just the maths.',
   metadataBase: new URL('https://plainfigures.org'),
   openGraph: {
-    title: 'Plain Figures — Financial Calculators',
-    description: 'Neutral numbers you can trust.',
+    title: 'Plain Figures — Financial Calculators & Learning Centre',
+    description: 'Neutral numbers you can trust. 26 calculators and 8 formula-first guides.',
     type: 'website',
   },
 };
 
+// Inline script prevents theme flash before React hydrates
+const themeScript = `
+  try {
+    var t = localStorage.getItem('pf_theme_v1') || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch(e) {}
+`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <CurrencyProvider>
           <Navbar />
@@ -25,14 +38,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
           <footer style={{
             borderTop: '1px solid var(--border)',
-            padding: '2rem',
-            textAlign: 'center',
-            color: 'var(--text-muted)',
-            fontSize: '0.8rem',
-            fontFamily: 'var(--font-mono)',
-            letterSpacing: '0.03em',
+            padding: '1.5rem 2rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '0.75rem',
           }}>
-            PLAIN FIGURES — Numbers without noise. Not financial advice.
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.03em' }}>
+              PLAIN FIGURES — Numbers without noise. Not financial advice.
+            </span>
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}>
+              Updated Feb 2026 — 2025/26 UK tax bands
+            </span>
           </footer>
         </CurrencyProvider>
       </body>

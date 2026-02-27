@@ -8,7 +8,8 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <CalcPageWrapper code="12 / TDEE" title="TDEE & Calorie Calculator"
-      description="Calculate your Total Daily Energy Expenditure using the Mifflin-St Jeor equation. Includes BMI, BMR, weight loss/gain targets, and macro estimates.">
+      description="Calculate your Total Daily Energy Expenditure using the Mifflin-St Jeor equation. Includes BMI, BMR, weight loss/gain targets, and macro estimates."
+      toolHref="/tdee">
       <TDEECalc />
     </CalcPageWrapper>
   );

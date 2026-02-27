@@ -14,6 +14,7 @@ export default function CyberPage() {
       title="Cyber Risk Exposure Calculator"
       description="Estimate your business's financial exposure to a cyber incident — including ransomware, data breach, regulatory fines, and business interruption. Toggle your security controls to see their impact."
       professional
+      toolHref="/cyber"
     >
       <CyberCalc />
     </CalcPageWrapper>

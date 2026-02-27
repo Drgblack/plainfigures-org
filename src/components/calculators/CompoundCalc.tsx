@@ -25,7 +25,7 @@ export default function CompoundCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Parameters">
           <InputField label="Principal" value={principal} onChange={setPrincipal} min={100} max={1000000} step={500} prefix={currency.symbol} />
           <InputField label="Annual Interest Rate" value={rate} onChange={setRate} min={0.1} max={30} step={0.1} suffix="%" />

@@ -13,6 +13,7 @@ export default function OverpaymentPage() {
       code="08 / OVERPAYMENT"
       title="Mortgage Overpayment Calculator"
       description="See the exact impact of paying a little extra each month — how much interest you save, and how many years come off your mortgage term."
+      toolHref="/overpayment"
     >
       <OverpaymentCalc />
     </CalcPageWrapper>

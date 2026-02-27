@@ -13,6 +13,8 @@ export default function RetirementPage() {
       code="06 / RETIREMENT"
       title="Retirement Savings Calculator"
       description="Project your pension pot at retirement age. Includes employer contributions, inflation adjustment, and a safe withdrawal rate estimate for monthly income."
+      toolHref="/retirement"
+      rateContext="Annual allowance 2025/26: £60,000 gross. State pension full entitlement: £11,502/year."
       learnHref="/learn/retirement-savings"
       learnLabel="How retirement projections work"
     >

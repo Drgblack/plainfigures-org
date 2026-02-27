@@ -26,7 +26,7 @@ export default function SaveGoalCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Your Goal">
           <InputField label="Target Amount" value={target} onChange={setTarget} min={1000} max={5000000} step={1000} prefix={currency.symbol} />
           <InputField label="Current Savings" value={currentSavings} onChange={setCurrentSavings} min={0} max={target} step={500} prefix={currency.symbol} />

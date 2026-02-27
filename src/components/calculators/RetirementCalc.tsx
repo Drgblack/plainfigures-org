@@ -5,6 +5,7 @@ import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateRetirement } from '@/lib/calculations';
 import { formatCurrency, formatNumber } from '@/lib/formatting';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
 
 export default function RetirementCalc() {
   const { currency } = useCurrency();
@@ -26,7 +27,7 @@ export default function RetirementCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Personal Details">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             <InputField label="Current Age" value={currentAge} onChange={setCurrentAge} min={18} max={80} step={1} suffix="yrs" />
@@ -46,6 +47,17 @@ export default function RetirementCalc() {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <SaveCalcButton
+            toolHref="/retirement"
+            toolTitle="Retirement Savings"
+            summary={`Projection to age ${retirementAge}`}
+            keyResults={[
+              { label: 'Final Pot', value: fmt(result.projectedPot) },
+              { label: 'Monthly Income', value: fmt(result.monthlyIncomeFrom) },
+            ]}
+          />
+        </div>
         <Section title={`Projection at age ${retirementAge} (${years} years)`}>
           <ResultCard label="Projected Pension Pot" value={fmt(result.projectedPot)} size="large" color="positive"
             sub="in today's money (inflation-adjusted)" />

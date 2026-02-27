@@ -105,7 +105,7 @@ export default function SCRCalc() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
         {/* Inputs */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <Section title="Balance Sheet">
             <InputField label="Total Assets" value={totalAssets} onChange={setTotalAssets} min={1000000} max={1000000000} step={500000} prefix={currency.symbol} />
             <InputField label="Technical Provisions (Claims Liabilities)" value={technicalProvisions} onChange={setTechnicalProvisions} min={0} max={500000000} step={500000} prefix={currency.symbol} />

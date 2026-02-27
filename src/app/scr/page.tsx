@@ -12,6 +12,8 @@ export default function Page() {
       title="Solvency Capital Requirement (SCR) Estimator"
       description="Estimate minimum regulatory capital under Solvency II standard formula principles. Stress test across market crash, catastrophe year, and combined scenarios. Solvency ratio gauge with adequacy rating."
       professional
+      toolHref="/scr"
+      methodologyNote="Solvency II standard formula"
     >
       <SCRCalc />
     </CalcPageWrapper>

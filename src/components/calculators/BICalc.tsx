@@ -29,7 +29,7 @@ export default function BICalc() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
         {/* Inputs */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <Section title="Business Financials">
             <InputField label="Annual Revenue / Turnover" value={revenue} onChange={setRevenue} min={10000} max={100000000} step={10000} prefix={currency.symbol} />
             <InputField label="Variable Costs" value={variableCosts} onChange={setVariableCosts} min={0} max={95} step={1} suffix="%"

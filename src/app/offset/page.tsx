@@ -13,6 +13,7 @@ export default function OffsetPage() {
       code="07 / OFFSET MORTGAGE"
       title="Offset Mortgage Calculator"
       description="See how holding savings in an offset account reduces the interest you pay — and how much sooner you could be mortgage-free."
+      toolHref="/offset"
       learnHref="/learn/offset-mortgage"
       learnLabel="How offset mortgages work"
     >

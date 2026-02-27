@@ -12,6 +12,7 @@ export default function Page() {
       title="Total Cost of Risk (TCOR) Calculator"
       description="Aggregate your true cost of risk across premiums, retained losses, administration, and risk control expenditure. Compare four scenarios including a high loss year and improved risk management."
       professional
+      toolHref="/tcor"
     >
       <TCORCalc />
     </CalcPageWrapper>

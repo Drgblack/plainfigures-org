@@ -14,6 +14,7 @@ export default function Page() {
       title="LTV & CAC Calculator"
       description="Calculate Customer Lifetime Value, CAC ratio, and payback period. Model scenarios including churn reduction, ARPU growth, and high-growth acquisition to stress-test unit economics."
       professional
+      toolHref="/ltv-cac"
     >
       <LTVCACCalc />
     </CalcPageWrapper>

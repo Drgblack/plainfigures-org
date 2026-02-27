@@ -23,7 +23,7 @@ export default function OverpaymentCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Mortgage Details">
           <InputField label="Outstanding Balance" value={balance} onChange={setBalance} min={10000} max={2000000} step={5000} prefix={currency.symbol} />
           <InputField label="Annual Interest Rate" value={rate} onChange={setRate} min={0.5} max={15} step={0.05} suffix="%" />

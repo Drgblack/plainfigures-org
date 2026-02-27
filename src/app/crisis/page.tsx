@@ -8,7 +8,8 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <CalcPageWrapper code="16 / CRISIS SIMULATOR" title="Financial Crisis Survival Simulator" learnHref="/learn/financial-crisis" learnLabel="How to calculate your runway"
-      description="Simulate job loss, inflation shock, or a financial emergency. See exactly how long your savings would last — and how much longer with emergency expense cuts.">
+      description="Simulate job loss, inflation shock, or a financial emergency. See exactly how long your savings would last — and how much longer with emergency expense cuts."
+      toolHref="/crisis">
       <CrisisCalc />
     </CalcPageWrapper>
   );

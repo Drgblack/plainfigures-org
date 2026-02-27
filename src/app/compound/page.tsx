@@ -13,6 +13,7 @@ export default function CompoundPage() {
       code="04 / COMPOUND INTEREST"
       title="Compound Interest Calculator"
       description="See how interest compounds over time. Choose your compounding frequency and compare the effective annual rate against the nominal rate."
+      toolHref="/compound"
       learnHref="/learn/compound-interest"
       learnLabel="How compound interest works"
     >

@@ -111,7 +111,7 @@ export default function CoverageGapCalc() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
         {/* Inputs */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <Section title="Exposure Values">
             <InputField label="Property Value" value={propertyValue} onChange={setPropertyValue} min={0} max={100000000} step={50000} prefix={currency.symbol} />
             <InputField label="Contents Value" value={contentValue} onChange={setContentValue} min={0} max={20000000} step={10000} prefix={currency.symbol} />

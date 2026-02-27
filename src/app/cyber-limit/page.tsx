@@ -14,6 +14,7 @@ export default function Page() {
       title="Cyber Insurance Limit Recommender"
       description="Estimate cyber insurance limit adequacy from revenue, record count, industry, and security controls. Risk gauge, exposure breakdown, and four threat-level scenarios."
       professional
+      toolHref="/cyber-limit"
     >
       <CyberLimitCalc />
     </CalcPageWrapper>

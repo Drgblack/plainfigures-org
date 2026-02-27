@@ -13,6 +13,7 @@ export default function HLVPage() {
       code="P02 / HUMAN LIFE VALUE"
       title="Life Insurance Needs Calculator"
       description="Calculate Human Life Value — the present value of future earnings, debts, and obligations — to identify your true life insurance requirement and coverage gap."
+      toolHref="/hlv"
       professional
     >
       <HLVCalc />

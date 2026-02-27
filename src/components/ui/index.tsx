@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useCountUp } from '@/lib/useCountUp';
 
 // ── InputField ────────────────────────────────────────────────────────────────
 
@@ -135,12 +136,17 @@ export function ResultCard({ label, value, size = 'normal', color = 'default', s
   };
 
   return (
-    <div style={{
-      background: 'var(--bg-elevated)',
-      border: '1px solid var(--border)',
-      borderRadius: '6px',
-      padding: size === 'large' ? '1.25rem 1.5rem' : '0.9rem 1.1rem',
-    }}>
+    <div
+      role="status"
+      aria-label={`${label}: ${value}`}
+      style={{
+        background: 'var(--bg-elevated)',
+        border: '1px solid var(--border)',
+        borderRadius: '6px',
+        padding: size === 'large' ? '1.25rem 1.5rem' : '0.9rem 1.1rem',
+        transition: 'border-color 0.2s ease',
+      }}
+    >
       <div style={{
         fontSize: '0.7rem',
         fontFamily: 'var(--font-mono)',
@@ -151,13 +157,16 @@ export function ResultCard({ label, value, size = 'normal', color = 'default', s
       }}>
         {label}
       </div>
-      <div style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: size === 'large' ? '1.8rem' : '1.2rem',
-        fontWeight: 500,
-        color: colorMap[color],
-        letterSpacing: '-0.02em',
-      }}>
+      <div
+        className="count-up"
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: size === 'large' ? '1.8rem' : '1.2rem',
+          fontWeight: 500,
+          color: colorMap[color],
+          letterSpacing: '-0.02em',
+        }}
+      >
         {value}
       </div>
       {sub && (

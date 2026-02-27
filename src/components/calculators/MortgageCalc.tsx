@@ -5,6 +5,7 @@ import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateMortgage } from '@/lib/calculations';
 import { formatCurrency, formatPercent } from '@/lib/formatting';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
 
 export default function MortgageCalc() {
   const { currency } = useCurrency();
@@ -22,7 +23,7 @@ export default function MortgageCalc() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
       {/* Inputs */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Loan Details">
           <InputField
             label="Property Value / Loan Amount"
@@ -59,6 +60,24 @@ export default function MortgageCalc() {
 
       {/* Results */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginBottom: '0.5rem' }}>
+          <a
+            href={`mailto:?subject=Mortgage calculation — Plain Figures&body=Mortgage Repayment%0A%0APrincipal: ${fmt(principal)}%0ARate: ${rate}%%0ATerm: ${term} years%0A%0AMonthly payment: ${fmt(result.monthlyPayment)}%0ATotal interest: ${fmt(result.totalInterest)}%0ATotal cost: ${fmt(result.totalPayment)}%0A%0ACalculated at plainfigures.org/mortgage`}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.3rem 0.65rem', background: 'none', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', textDecoration: 'none', transition: 'all 0.15s ease' }}
+          >
+            ✉ Email
+          </a>
+          <SaveCalcButton
+            toolHref="/mortgage"
+            toolTitle="Mortgage Repayment"
+            summary={`${fmt(principal)} at ${rate}% over ${term} years`}
+            keyResults={[
+              { label: 'Monthly', value: fmt(result.monthlyPayment) },
+              { label: 'Total Interest', value: fmt(result.totalInterest) },
+              { label: 'Total Cost', value: fmt(result.totalPayment) },
+            ]}
+          />
+        </div>
         <Section title="Results">
           <ResultCard
             label="Monthly Payment"

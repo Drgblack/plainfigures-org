@@ -14,6 +14,7 @@ export default function Page() {
       title="Coverage Gap Analysis"
       description="Map your policy limits against exposure values across property, liability, BI, and cyber lines. Identify uninsured gaps and model the impact of business growth on coverage adequacy."
       professional
+      toolHref="/coverage-gap"
     >
       <CoverageGapCalc />
     </CalcPageWrapper>
