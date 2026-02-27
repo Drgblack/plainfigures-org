@@ -3,149 +3,106 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Plain Figures — Financial Calculators',
-  description: 'Clear, accurate financial calculators. No advice. No noise. Just the maths.',
+  description: 'Clear, accurate financial and insurance calculators. No advice. No noise. Just the maths.',
 };
 
-const CALCULATORS = [
-  {
-    href: '/mortgage',
-    code: '01',
-    title: 'Mortgage Repayment',
-    description: 'Calculate your monthly payment, total interest, and the full cost of a mortgage over any term.',
-    tags: ['Repayments', 'Interest', 'Amortisation'],
-  },
-  {
-    href: '/savings',
-    code: '02',
-    title: 'Savings Growth',
-    description: 'See how compound interest grows your savings over time with regular contributions.',
-    tags: ['Compound Interest', 'Growth', 'Projections'],
-  },
-  {
-    href: '/rent-vs-buy',
-    code: '03',
-    title: 'Rent vs Buy',
-    description: 'Compare the long-term financial outcome of renting against buying a property.',
-    tags: ['Net Worth', 'Break-even', 'Opportunity Cost'],
-  },
+const PERSONAL_CALCULATORS = [
+  { href: '/mortgage', code: '01', title: 'Mortgage Repayment', description: 'Monthly payment, total interest, and full cost over any term.', tags: ['Repayments', 'Interest', 'Amortisation'] },
+  { href: '/savings', code: '02', title: 'Savings Growth', description: 'How compound interest grows your savings with regular contributions.', tags: ['Compound Interest', 'Growth', 'Projections'] },
+  { href: '/rent-vs-buy', code: '03', title: 'Rent vs Buy', description: 'Long-term financial outcome of renting against buying.', tags: ['Net Worth', 'Break-even', 'Opportunity Cost'] },
+  { href: '/compound', code: '04', title: 'Compound Interest', description: 'How compounding frequency affects your effective annual rate.', tags: ['EAR', 'Daily / Monthly / Annual'] },
+  { href: '/loan', code: '05', title: 'Loan Repayment', description: 'Monthly repayments and true APR on any loan or credit agreement.', tags: ['APR', 'Personal Loan', 'Car Finance'] },
+  { href: '/retirement', code: '06', title: 'Retirement Savings', description: 'Project your pension pot, including employer contributions and inflation.', tags: ['Pension', 'Inflation-adjusted', '4% Rule'] },
+  { href: '/offset', code: '07', title: 'Offset Mortgage', description: 'How savings reduce mortgage interest and shorten your term.', tags: ['Offset', 'Interest Saving', 'Term Reduction'] },
+  { href: '/overpayment', code: '08', title: 'Mortgage Overpayment', description: 'Interest saved and years removed by paying extra each month.', tags: ['Overpayment', 'Interest Saved', 'Early Payoff'] },
+  { href: '/save-goal', code: '09', title: 'Save for a Goal', description: 'How long to reach a target, or what monthly saving hits a deadline.', tags: ['Target', 'Deadline', 'Monthly Required'] },
 ];
+
+const PROFESSIONAL_CALCULATORS = [
+  { href: '/bi', code: 'P01', title: 'Business Interruption Sum Insured', description: 'Calculate BI sum insured using gross profit, trend uplift, indemnity period, and ICOW.', tags: ['Gross Profit', 'ICOW', 'Indemnity Period'] },
+  { href: '/hlv', code: 'P02', title: 'Human Life Value / Life Insurance Needs', description: 'Present value of future earnings, debts, and obligations to find the true insurance gap.', tags: ['HLV', 'Coverage Gap', 'Protection'] },
+  { href: '/cyber', code: 'P03', title: 'Cyber Risk Exposure', description: 'Estimate breach costs, risk score, and recommended cover limit based on security controls.', tags: ['Ransomware', 'Data Breach', 'Risk Score'] },
+];
+
+function CalcList({ items, professional }: { items: typeof PERSONAL_CALCULATORS; professional?: boolean }) {
+  const accent = professional ? '#d4a843' : 'var(--accent)';
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--border)', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${professional ? 'rgba(212,168,67,0.2)' : 'var(--border)'}` }}>
+      {items.map(({ href, code, title, description, tags }) => (
+        <Link key={href} href={href} className="calc-link" style={{ borderLeft: professional ? '2px solid rgba(212,168,67,0.4)' : 'none' }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: professional ? '#d4a843' : 'var(--text-muted)', letterSpacing: '0.06em' }}>
+            {code}
+          </div>
+          <div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', color: 'var(--text-primary)', fontWeight: 500, marginBottom: '0.3rem', letterSpacing: '-0.01em' }}>
+              {title}
+            </div>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.5, fontWeight: 300, marginBottom: '0.6rem' }}>
+              {description}
+            </div>
+            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+              {tags.map(tag => (
+                <span key={tag} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'var(--text-muted)', border: `1px solid ${professional ? 'rgba(212,168,67,0.2)' : 'var(--border)'}`, borderRadius: '3px', padding: '0.12rem 0.45rem', letterSpacing: '0.04em' }}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.1rem', color: 'var(--text-muted)' }}>→</div>
+        </Link>
+      ))}
+    </div>
+  );
+}
 
 export default function HomePage() {
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '4rem 2rem' }}>
       {/* Header */}
       <div style={{ marginBottom: '4rem' }}>
-        <div style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.72rem',
-          color: 'var(--text-muted)',
-          letterSpacing: '0.16em',
-          textTransform: 'uppercase',
-          marginBottom: '1.25rem',
-        }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
           Financial Calculator Hub
         </div>
-        <h1 style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: 'clamp(2rem, 5vw, 3.25rem)',
-          fontWeight: 300,
-          color: 'var(--text-primary)',
-          letterSpacing: '-0.03em',
-          lineHeight: 1.1,
-          marginBottom: '1.5rem',
-        }}>
+        <h1 style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(2rem, 5vw, 3.25rem)', fontWeight: 300, color: 'var(--text-primary)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '1.5rem' }}>
           Check the maths.<br />
           <span style={{ color: 'var(--text-muted)' }}>Without the noise.</span>
         </h1>
-        <p style={{
-          fontFamily: 'var(--font-sans)',
-          fontSize: '1rem',
-          color: 'var(--text-secondary)',
-          lineHeight: 1.7,
-          maxWidth: '520px',
-          fontWeight: 300,
-        }}>
-          Plain Figures provides accurate financial calculators for everyday high-stakes decisions.
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '520px', fontWeight: 300 }}>
+          Accurate financial and insurance calculators for personal decisions and professional use.
           No advice, no opinions, no products. Just numbers you can trust.
         </p>
       </div>
 
-      {/* Calculator grid */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--border)', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border)' }}>
-        {CALCULATORS.map(({ href, code, title, description, tags }) => (
-          <Link key={href} href={href} className="calc-link"
-          >
-            <div style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.75rem',
-              color: 'var(--text-muted)',
-              letterSpacing: '0.08em',
-            }}>
-              {code}
-            </div>
-            <div>
-              <div style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '1rem',
-                color: 'var(--text-primary)',
-                fontWeight: 500,
-                marginBottom: '0.4rem',
-                letterSpacing: '-0.01em',
-              }}>
-                {title}
-              </div>
-              <div style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '0.85rem',
-                color: 'var(--text-secondary)',
-                lineHeight: 1.5,
-                fontWeight: 300,
-                marginBottom: '0.75rem',
-              }}>
-                {description}
-              </div>
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                {tags.map(tag => (
-                  <span key={tag} style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.65rem',
-                    color: 'var(--text-muted)',
-                    border: '1px solid var(--border)',
-                    borderRadius: '3px',
-                    padding: '0.15rem 0.5rem',
-                    letterSpacing: '0.05em',
-                  }}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '1.2rem',
-              color: 'var(--text-muted)',
-            }}>
-              →
-            </div>
-          </Link>
-        ))}
+      {/* Personal Finance Section */}
+      <div style={{ marginBottom: '3rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+            Personal Finance
+          </div>
+          <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>{PERSONAL_CALCULATORS.length} calculators</div>
+        </div>
+        <CalcList items={PERSONAL_CALCULATORS} />
       </div>
 
-      {/* Footer note */}
-      <div style={{
-        marginTop: '3rem',
-        padding: '1.25rem 1.5rem',
-        background: 'var(--bg-surface)',
-        border: '1px solid var(--border)',
-        borderRadius: '6px',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.72rem',
-        color: 'var(--text-muted)',
-        lineHeight: 1.6,
-        letterSpacing: '0.02em',
-      }}>
-        Plain Figures does not provide financial advice. All calculations are indicative only.
-        Always consult a qualified financial adviser before making major financial decisions.
+      {/* Professional Tools Section */}
+      <div style={{ marginBottom: '3rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#d4a843', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+            Professional Tools
+          </div>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(212,168,67,0.2)' }} />
+          <div style={{ padding: '0.15rem 0.5rem', background: 'rgba(212,168,67,0.1)', border: '1px solid rgba(212,168,67,0.25)', borderRadius: '3px', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#d4a843', letterSpacing: '0.1em' }}>
+            FOR BROKERS & RISK MANAGERS
+          </div>
+        </div>
+        <CalcList items={PROFESSIONAL_CALCULATORS} professional />
+      </div>
+
+      {/* Disclaimer */}
+      <div style={{ padding: '1.25rem 1.5rem', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', lineHeight: 1.6, letterSpacing: '0.02em' }}>
+        Plain Figures does not provide financial or insurance advice. All calculations are indicative only.
+        Always consult a qualified financial adviser, broker, or risk manager before making financial or coverage decisions.
       </div>
     </div>
   );

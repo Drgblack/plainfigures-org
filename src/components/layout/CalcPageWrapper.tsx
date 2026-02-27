@@ -6,60 +6,33 @@ interface CalcPageWrapperProps {
   title: string;
   description: string;
   children: ReactNode;
+  professional?: boolean;
 }
 
-export default function CalcPageWrapper({ code, title, description, children }: CalcPageWrapperProps) {
+export default function CalcPageWrapper({ code, title, description, children, professional }: CalcPageWrapperProps) {
+  const accentColor = professional ? '#d4a843' : 'var(--accent)';
+
   return (
     <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '3rem 2rem' }}>
-      {/* Breadcrumb */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.72rem',
-        color: 'var(--text-muted)',
-        letterSpacing: '0.08em',
-        marginBottom: '2rem',
-      }}>
-        <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
-          PLAIN FIGURES
-        </Link>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', letterSpacing: '0.08em', marginBottom: '2rem' }}>
+        <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>PLAIN FIGURES</Link>
         <span>/</span>
-        <span style={{ color: 'var(--text-secondary)' }}>{code}</span>
+        <span style={{ color: accentColor }}>{code}</span>
+        {professional && (
+          <span style={{ marginLeft: '0.5rem', padding: '0.15rem 0.5rem', background: 'rgba(212,168,67,0.12)', border: '1px solid rgba(212,168,67,0.3)', borderRadius: '3px', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#d4a843', letterSpacing: '0.1em' }}>
+            PROFESSIONAL TOOL
+          </span>
+        )}
       </div>
-
-      {/* Page header */}
       <div style={{ marginBottom: '2.5rem' }}>
-        <h1 style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
-          fontWeight: 400,
-          color: 'var(--text-primary)',
-          letterSpacing: '-0.02em',
-          marginBottom: '0.6rem',
-        }}>
+        <h1 style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: '0.6rem' }}>
           {title}
         </h1>
-        <p style={{
-          fontFamily: 'var(--font-sans)',
-          fontSize: '0.9rem',
-          color: 'var(--text-secondary)',
-          fontWeight: 300,
-          lineHeight: 1.6,
-          maxWidth: '560px',
-        }}>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 300, lineHeight: 1.6, maxWidth: '560px' }}>
           {description}
         </p>
       </div>
-
-      {/* Calculator */}
-      <div style={{
-        background: 'var(--bg-surface)',
-        border: '1px solid var(--border)',
-        borderRadius: '8px',
-        padding: '2rem',
-      }}>
+      <div style={{ background: 'var(--bg-surface)', border: `1px solid ${professional ? 'rgba(212,168,67,0.2)' : 'var(--border)'}`, borderRadius: '8px', padding: '2rem' }}>
         {children}
       </div>
     </div>
