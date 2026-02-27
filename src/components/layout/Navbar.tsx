@@ -27,6 +27,13 @@ const PRO_LINKS = [
   { href: '/bi', label: 'BI', pro: true },
   { href: '/hlv', label: 'Life Insurance', pro: true },
   { href: '/cyber', label: 'Cyber Risk', pro: true },
+  { href: '/tcor', label: 'TCOR', pro: true },
+  { href: '/risk-heatmap', label: 'Risk Heat Map', pro: true },
+  { href: '/scr', label: 'SCR', pro: true },
+  { href: '/coverage-gap', label: 'Coverage Gap', pro: true },
+  { href: '/ltv-cac', label: 'LTV·CAC', pro: true },
+  { href: '/loss-probability', label: 'Loss Model', pro: true },
+  { href: '/cyber-limit', label: 'Cyber Limit', pro: true },
 ];
 
 export default function Navbar() {

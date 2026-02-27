@@ -29,6 +29,13 @@ const PROFESSIONAL_CALCULATORS = [
   { href: '/bi', code: 'P01', title: 'Business Interruption Sum Insured', description: 'Calculate BI sum insured using gross profit, trend uplift, indemnity period, and ICOW.', tags: ['Gross Profit', 'ICOW', 'Indemnity Period'] },
   { href: '/hlv', code: 'P02', title: 'Human Life Value / Life Insurance Needs', description: 'Present value of future earnings, debts, and obligations to find the true insurance gap.', tags: ['HLV', 'Coverage Gap', 'Protection'] },
   { href: '/cyber', code: 'P03', title: 'Cyber Risk Exposure', description: 'Estimate breach costs, risk score, and recommended cover limit based on security controls.', tags: ['Ransomware', 'Data Breach', 'Risk Score'] },
+  { href: '/tcor', code: 'P04', title: 'Total Cost of Risk (TCOR)', description: 'Aggregate premiums, retained losses, admin, and risk control costs. Four scenario comparison including high loss year and improved risk management.', tags: ['TCOR Rate', 'Retained Losses', 'Scenarios'] },
+  { href: '/risk-heatmap', code: 'P05', title: 'Risk Score & Heat Map', description: 'Score risks by likelihood and impact. 5×5 heat map, editable register, pre vs post-mitigation comparison.', tags: ['Heat Map', 'Risk Register', 'Mitigation'] },
+  { href: '/scr', code: 'P06', title: 'SCR Estimator (Solvency II)', description: 'Estimate Solvency Capital Requirement using standard formula principles. Solvency ratio gauge with stress test scenarios.', tags: ['SCR', 'Solvency II', 'Capital'] },
+  { href: '/coverage-gap', code: 'P07', title: 'Coverage Gap Analysis', description: 'Map policy limits against exposures across property, liability, BI, and cyber lines. Identify uninsured gaps and growth scenarios.', tags: ['Under-Insurance', 'Limits', 'Coinsurance'] },
+  { href: '/ltv-cac', code: 'P08', title: 'LTV & CAC Calculator', description: 'Customer Lifetime Value, CAC ratio, and payback period. DCF-based LTV with scenario modelling for churn, ARPU, and growth.', tags: ['LTV:CAC', 'Payback', 'Churn'] },
+  { href: '/loss-probability', code: 'P09', title: 'Loss Event Probability Modeler', description: 'Expected annual loss from risk events using triangular distributions. Exceedance probabilities, PML, and mitigation impact.', tags: ['PML', 'Triangular', 'Exceedance'] },
+  { href: '/cyber-limit', code: 'P10', title: 'Cyber Insurance Limit Recommender', description: 'Estimate cyber limit adequacy from revenue, records, industry, and security controls. Risk score gauge, exposure breakdown, threat scenarios.', tags: ['Cyber', 'Limit Adequacy', 'GDPR'] },
 ];
 
 const FEATURED_GUIDES = [
@@ -75,7 +82,7 @@ export default function HomePage() {
           Check the maths.<br /><span style={{ color: 'var(--text-muted)' }}>Without the noise.</span>
         </h1>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '520px', fontWeight: 300 }}>
-          19 calculators and 8 formula-first guides for personal decisions and professional use. No advice, no opinions, no products. Just numbers you can trust.
+          26 calculators and 8 formula-first guides for personal decisions and professional use. No advice, no opinions, no products. Just numbers you can trust.
         </p>
       </div>
 
