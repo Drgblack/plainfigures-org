@@ -13,6 +13,8 @@ export default function RetirementPage() {
       code="06 / RETIREMENT"
       title="Retirement Savings Calculator"
       description="Project your pension pot at retirement age. Includes employer contributions, inflation adjustment, and a safe withdrawal rate estimate for monthly income."
+      learnHref="/learn/retirement-savings"
+      learnLabel="How retirement projections work"
     >
       <RetirementCalc />
     </CalcPageWrapper>

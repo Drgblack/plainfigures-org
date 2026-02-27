@@ -13,6 +13,8 @@ export default function MortgagePage() {
       code="01 / MORTGAGE"
       title="Mortgage Repayment Calculator"
       description="Enter your loan amount, interest rate, and term to see your monthly payment and the full cost of your mortgage."
+      learnHref="/learn/mortgage-repayment"
+      learnLabel="How mortgage calculations work"
     >
       <MortgageCalc />
     </CalcPageWrapper>
