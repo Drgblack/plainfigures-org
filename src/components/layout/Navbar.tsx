@@ -62,8 +62,12 @@ export default function Navbar() {
       borderBottom: '1px solid var(--border)',
       display: 'flex', alignItems: 'center', padding: '0 1.5rem', gap: '1rem',
     }}>
-      <Link href="/" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 500, color: 'var(--text-primary)', textDecoration: 'none', letterSpacing: '0.12em', textTransform: 'uppercase', flexShrink: 0 }}>
-        Plain Figures
+      <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', textDecoration: 'none', flexShrink: 0 }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/favicon-32.png" alt="" width="22" height="22" style={{ borderRadius: '4px', flexShrink: 0 }} />
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', fontWeight: 500, color: 'var(--text-primary)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+          Plain Figures
+        </span>
       </Link>
       <div style={{ width: '1px', height: '18px', background: 'var(--border)', flexShrink: 0 }} />
 

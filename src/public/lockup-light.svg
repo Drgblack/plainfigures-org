@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 40">
+  <!-- Icon mark (scaled up 1.25× = 40px) -->
+  <!-- Background tile -->
+  <rect x="0" y="4" width="32" height="32" rx="5" fill="#f7f8fa"/>
+
+  <!-- Row 0 -->
+  <rect x="1.5"  y="5.5"  width="7" height="7" rx="1.5" fill="#3b82c4" opacity="1"/>
+  <rect x="12.5" y="5.5"  width="7" height="7" rx="1.5" fill="#3b82c4" opacity="0.45"/>
+  <rect x="23.5" y="5.5"  width="7" height="7" rx="1.5" fill="#d4a843"/>
+
+  <!-- Row 1 -->
+  <rect x="1.5"  y="16.5" width="7" height="7" rx="1.5" fill="#3b82c4" opacity="1"/>
+  <rect x="12.5" y="16.5" width="7" height="7" rx="1.5" fill="#dde2ea"/>
+  <rect x="23.5" y="16.5" width="7" height="7" rx="1.5" fill="#3b82c4" opacity="0.35"/>
+
+  <!-- Row 2 -->
+  <rect x="1.5"  y="27.5" width="7" height="7" rx="1.5" fill="#3b82c4" opacity="1"/>
+  <rect x="12.5" y="27.5" width="7" height="7" rx="1.5" fill="#3b82c4" opacity="0.2"/>
+  <rect x="23.5" y="27.5" width="7" height="7" rx="1.5" fill="#dde2ea" opacity="0.6"/>
+
+  <!-- Separator -->
+  <rect x="48" y="8" width="1" height="24" fill="#dde2ea"/>
+
+  <!-- Wordmark: PLAIN (white, 500 weight) -->
+  <text
+    x="60" y="21"
+    font-family="'DM Mono', 'Courier New', monospace"
+    font-size="12.5"
+    font-weight="500"
+    fill="#111720"
+    letter-spacing="0.16em">PLAIN</text>
+
+  <!-- Amber underline under PLAIN -->
+  <rect x="60" y="24" width="51" height="1.5" rx="0.75" fill="#d4a843" opacity="0.85"/>
+
+  <!-- Wordmark: FIGURES (muted) -->
+  <text
+    x="60" y="36"
+    font-family="'DM Mono', 'Courier New', monospace"
+    font-size="12.5"
+    font-weight="400"
+    fill="#7a8fa8"
+    letter-spacing="0.16em">FIGURES</text>
+</svg>

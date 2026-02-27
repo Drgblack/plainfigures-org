@@ -12,7 +12,22 @@ export const metadata: Metadata = {
     title: 'Plain Figures — Financial Calculators & Learning Centre',
     description: 'Neutral numbers you can trust. 26 calculators and 8 formula-first guides.',
     type: 'website',
+    images: [{ url: '/lockup-dark@2x.png', width: 528, height: 80 }],
   },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180' },
+    ],
+    other: [
+      { rel: 'mask-icon', url: '/favicon.svg', color: '#3b82c4' },
+    ],
+  },
+  manifest: '/site.webmanifest',
 };
 
 // Inline script prevents theme flash before React hydrates
