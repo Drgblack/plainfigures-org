@@ -191,7 +191,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </footer>
           </LangProvider>
         </CurrencyProvider>
-      </body>
+            {/* Google AdSense — loads only when consent given via Cookiebot/CookieYes */}
+      {process.env.NEXT_PUBLIC_ADS_ENABLED === 'true' && (
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6207224775263883"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      )}
+    </body>
     </html>
   );
 }
