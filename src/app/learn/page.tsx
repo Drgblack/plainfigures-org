@@ -1,9 +1,9 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Learning Centre — How Financial Calculations Work — Plain Figures',
-  description: '16 formula-first guides explaining how financial calculations work — mortgage, compound interest, salary, retirement, APR, TDEE, and more. No advice. Just the maths.',
+  title: 'Learning Centre â€” How Financial Calculations Work â€” Plain Figures',
+  description: '16 formula-first guides explaining how financial calculations work â€” mortgage, compound interest, salary, retirement, APR, TDEE, and more. No advice. Just the maths.',
 };
 
 const GUIDES = [
@@ -11,7 +11,7 @@ const GUIDES = [
     href: '/learn/mortgage-repayment',
     code: 'G01',
     title: 'How Mortgage Repayment Calculations Work',
-    description: 'The amortisation formula explained — why your early payments are mostly interest, and how banks calculate what you owe each month.',
+    description: 'The amortisation formula explained â€” why your early payments are mostly interest, and how banks calculate what you owe each month.',
     readTime: '5 min',
     calcHref: '/mortgage',
     calcLabel: 'Mortgage Calculator',
@@ -21,7 +21,7 @@ const GUIDES = [
     href: '/learn/compound-interest',
     code: 'G02',
     title: 'Understanding Compound Interest',
-    description: 'How compounding frequency changes your effective return — and why daily compounding beats annual even at the same nominal rate.',
+    description: 'How compounding frequency changes your effective return â€” and why daily compounding beats annual even at the same nominal rate.',
     readTime: '4 min',
     calcHref: '/compound',
     calcLabel: 'Compound Interest Calculator',
@@ -31,7 +31,7 @@ const GUIDES = [
     href: '/learn/rent-vs-buy',
     code: 'G03',
     title: 'Rent vs Buy: The Key Numbers to Compare',
-    description: 'What a fair financial comparison between renting and buying actually involves — including opportunity cost, equity, and the costs people forget.',
+    description: 'What a fair financial comparison between renting and buying actually involves â€” including opportunity cost, equity, and the costs people forget.',
     readTime: '6 min',
     calcHref: '/rent-vs-buy',
     calcLabel: 'Rent vs Buy Calculator',
@@ -51,7 +51,7 @@ const GUIDES = [
     href: '/learn/mortgage-affordability',
     code: 'G05',
     title: 'How Mortgage Affordability Is Assessed',
-    description: 'How lenders decide what you can borrow — income multiples, debt-to-income ratios, stress tests, and LTV thresholds explained.',
+    description: 'How lenders decide what you can borrow â€” income multiples, debt-to-income ratios, stress tests, and LTV thresholds explained.',
     readTime: '5 min',
     calcHref: '/affordability',
     calcLabel: 'Affordability Calculator',
@@ -61,7 +61,7 @@ const GUIDES = [
     href: '/learn/offset-mortgage',
     code: 'G06',
     title: 'How Offset Mortgages Actually Work',
-    description: 'Why linking savings to a mortgage reduces interest — and the exact maths behind term reduction and interest saved.',
+    description: 'Why linking savings to a mortgage reduces interest â€” and the exact maths behind term reduction and interest saved.',
     readTime: '4 min',
     calcHref: '/offset',
     calcLabel: 'Offset Mortgage Calculator',
@@ -81,7 +81,7 @@ const GUIDES = [
     href: '/learn/financial-crisis',
     code: 'G08',
     title: 'How to Calculate Your Financial Runway',
-    description: 'The maths behind emergency fund sufficiency — monthly burn rate, runway calculation, and what financial advisers mean by "3–6 months expenses".',
+    description: 'The maths behind emergency fund sufficiency â€” monthly burn rate, runway calculation, and what financial advisers mean by "3â€“6 months expenses".',
     readTime: '4 min',
     calcHref: '/crisis',
     calcLabel: 'Crisis Simulator',
@@ -91,7 +91,7 @@ const GUIDES = [
     href: '/learn/mortgage-overpayment',
     code: 'G09',
     title: 'Mortgage Overpayment: How Much Does It Save?',
-    description: 'How extra payments reduce total interest and shorten the term — and why overpaying in year 1 saves significantly more than the same amount in year 20.',
+    description: 'How extra payments reduce total interest and shorten the term â€” and why overpaying in year 1 saves significantly more than the same amount in year 20.',
     readTime: '5 min',
     calcHref: '/overpayment',
     calcLabel: 'Overpayment Calculator',
@@ -111,7 +111,7 @@ const GUIDES = [
     href: '/learn/subscription-drain',
     code: 'G11',
     title: 'Subscription Drain: The True Long-Term Cost',
-    description: 'How recurring monthly subscriptions accumulate into significant multi-year sums — and what the same money produces if invested instead.',
+    description: 'How recurring monthly subscriptions accumulate into significant multi-year sums â€” and what the same money produces if invested instead.',
     readTime: '4 min',
     calcHref: '/subscriptions',
     calcLabel: 'Subscription Calculator',
@@ -121,7 +121,7 @@ const GUIDES = [
     href: '/learn/freelance-rate',
     code: 'G12',
     title: 'Freelance Rate: Working Backwards from Desired Salary',
-    description: 'How to calculate the day rate needed to match a target take-home — accounting for billable days, tax, NI, pension, and overheads.',
+    description: 'How to calculate the day rate needed to match a target take-home â€” accounting for billable days, tax, NI, pension, and overheads.',
     readTime: '5 min',
     calcHref: '/freelance',
     calcLabel: 'Freelance Rate Calculator',
@@ -131,7 +131,7 @@ const GUIDES = [
     href: '/learn/lifestyle-inflation',
     code: 'G13',
     title: 'Lifestyle Inflation: Real Cost Over Time',
-    description: 'How spending that rises with income compounds into a large long-run wealth gap — and the maths behind two identical salaries, two different outcomes.',
+    description: 'How spending that rises with income compounds into a large long-run wealth gap â€” and the maths behind two identical salaries, two different outcomes.',
     readTime: '5 min',
     calcHref: '/lifestyle-inflation',
     calcLabel: 'Lifestyle Inflation Calculator',
@@ -141,7 +141,7 @@ const GUIDES = [
     href: '/learn/business-interruption',
     code: 'G14',
     title: 'Business Interruption Sum Insured: How It Works',
-    description: 'How BI insurance sums insured are calculated on a gross profit basis — indemnity period selection, the average clause, and under-insurance risk.',
+    description: 'How BI insurance sums insured are calculated on a gross profit basis â€” indemnity period selection, the average clause, and under-insurance risk.',
     readTime: '5 min',
     calcHref: '/bi',
     calcLabel: 'BI Calculator',
@@ -151,7 +151,7 @@ const GUIDES = [
     href: '/learn/tdee',
     code: 'G15',
     title: 'TDEE & Calorie Needs: How the Calculation Works',
-    description: 'How Total Daily Energy Expenditure is calculated — the Mifflin-St Jeor BMR formula, activity multipliers, and what the resulting numbers mean for calorie targets.',
+    description: 'How Total Daily Energy Expenditure is calculated â€” the Mifflin-St Jeor BMR formula, activity multipliers, and what the resulting numbers mean for calorie targets.',
     readTime: '5 min',
     calcHref: '/tdee',
     calcLabel: 'TDEE Calculator',
@@ -167,6 +167,145 @@ const GUIDES = [
     calcLabel: 'Loan Repayment Calculator',
     tags: ['APR', 'Amortisation', 'Flat vs Reducing'],
   },
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ADD THESE 12 ENTRIES TO THE GUIDES ARRAY IN src/app/learn/page.tsx
+// Insert after the last existing entry (G16 â€” Loan Repayment / APR).
+// Each entry follows the exact same shape as existing guides.
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+  {
+    code: 'G17',
+    href: '/learn/agentic-advisor',
+    title: 'The Agentic Advisor: AI-Driven Digital Co-Workers',
+    description:
+      'How agentic AI executes multi-step advisory workflows autonomously â€” delegation ROI formula, task taxonomy, and audit trail requirements.',
+    readTime: '6 min read',
+    calcHref: '/ltv-cac',
+    calcLabel: 'ROI / LTV Calculator',
+    tags: ['AI', 'Automation', 'Workflows'],
+  },
+  {
+    code: 'G18',
+    href: '/learn/predictive-analytics-portfolio',
+    title: 'Beyond Chatbots: Predictive Analytics for Portfolio Reviews',
+    description:
+      'Churn scoring with logistic regression, drift detection maths, and model evaluation metrics â€” when predictive models mislead.',
+    readTime: '6 min read',
+    calcHref: '/loss-probability',
+    calcLabel: 'Loss Probability Model',
+    tags: ['AI', 'Analytics', 'Portfolio'],
+  },
+  {
+    code: 'G19',
+    href: '/learn/automation-audit-2026',
+    title: 'Automation Audit: Tasks to Delegate to AI in 2026',
+    description:
+      'A scoring matrix and payback formula to identify which advisory tasks deliver the highest ROI when automated â€” worked example for a 4-advisor practice.',
+    readTime: '5 min read',
+    calcHref: '/ltv-cac',
+    calcLabel: 'ROI / LTV Calculator',
+    tags: ['AI', 'Automation', 'Efficiency'],
+  },
+  {
+    code: 'G20',
+    href: '/learn/multigenerational-asset-retention',
+    title: 'Multi-Generational Bridge: Retaining Assets Across Generations',
+    description:
+      'AUM attrition formula, three-horizon engagement framework, and retention value equation â€” quantifying the â‚¬70 trillion generational transfer challenge.',
+    readTime: '6 min read',
+    calcHref: '/compound',
+    calcLabel: 'Compound Growth Calculator',
+    tags: ['Wealth Transfer', 'Retention', 'Succession'],
+  },
+  {
+    code: 'G21',
+    href: '/learn/inheritance-pivot-heirs',
+    title: 'Inheritance Pivot: Onboarding Heirs as Clients',
+    description:
+      'Heir LTV calculation, conversion ROI modelling, regulatory onboarding requirements under MiFID II, and heir profiling differences from the parent.',
+    readTime: '6 min read',
+    calcHref: '/compound',
+    calcLabel: 'Compound Growth Calculator',
+    tags: ['Inheritance', 'Onboarding', 'LTV'],
+  },
+  {
+    code: 'G22',
+    href: '/learn/tax-loss-harvesting',
+    title: 'Tax-Loss Harvesting Strategies for Volatile Markets',
+    description:
+      'After-tax alpha formula, German Abgeltungsteuer mechanics, minimum harvest thresholds, and replacement security selection rules.',
+    readTime: '5 min read',
+    calcHref: '/take-home',
+    calcLabel: 'Take-Home Pay Calculator',
+    tags: ['Tax', 'Portfolio', 'Germany'],
+  },
+  {
+    code: 'G23',
+    href: '/learn/private-credit-playbook',
+    title: 'Private Credit Playbook: Diversifying Beyond Equities',
+    description:
+      'Yield construction components, illiquidity premium calculation, allocation sizing with a liquidity adequacy test, and default scenario modelling.',
+    readTime: '6 min read',
+    calcHref: '/compound',
+    calcLabel: 'Compound Growth Calculator',
+    tags: ['Alternatives', 'Private Credit', 'Yield'],
+  },
+  {
+    code: 'G24',
+    href: '/learn/parametric-insurance-weather',
+    title: 'Parametric Insurance: Instant-Payout Weather Triggers',
+    description:
+      'Trigger design, premium calculation, basis risk quantification â€” and when parametric cover is more appropriate than traditional indemnity insurance.',
+    readTime: '5 min read',
+    calcHref: '/tcor',
+    calcLabel: 'Total Cost of Risk Calculator',
+    tags: ['Insurance', 'Climate', 'Parametric'],
+  },
+  {
+    code: 'G25',
+    href: '/learn/cyber-resilient-agency',
+    title: 'Cyber-Resilient Agency: Protecting Client Data',
+    description:
+      'FAIR risk model, ALE calculation, GDPR fine exposure formula, and control investment ROI â€” priority security stack for advisory firms.',
+    readTime: '6 min read',
+    calcHref: '/cyber',
+    calcLabel: 'Cyber Risk Calculator',
+    tags: ['Cyber', 'GDPR', 'Risk'],
+  },
+  {
+    code: 'G26',
+    href: '/learn/regtech-compliance-automation',
+    title: 'RegTech Essentials: Automating Compliance',
+    description:
+      'Compliance cost baseline for a 100-client firm, automation efficiency ratios by task type, and MiFID II fine exposure calculation.',
+    readTime: '6 min read',
+    calcHref: '/ltv-cac',
+    calcLabel: 'ROI / LTV Calculator',
+    tags: ['RegTech', 'MiFID II', 'KYC'],
+  },
+  {
+    code: 'G27',
+    href: '/learn/market-forecasts-rate-cuts',
+    title: 'Market Forecasts: Impact of Rate Cuts & Geopolitics',
+    description:
+      'Duration maths, Gordon Growth Model equity sensitivity, and a geopolitical scenario analysis framework with probability-weighted portfolio returns.',
+    readTime: '6 min read',
+    calcHref: '/compound',
+    calcLabel: 'Compound Growth Calculator',
+    tags: ['Markets', 'Rates', 'Geopolitics'],
+  },
+  {
+    code: 'G28',
+    href: '/learn/digital-client-experience-phygital',
+    title: 'Digital Client Experience: Phygital Engagement Platforms',
+    description:
+      'NPS financial value calculation, phygital CX ROI model, digital touchpoint time savings, and adoption failure modes.',
+    readTime: '5 min read',
+    calcHref: '/ltv-cac',
+    calcLabel: 'LTV / CAC Calculator',
+    tags: ['Digital CX', 'NPS', 'Engagement'],
+  },
+
 ];
 
 export default function LearnIndexPage() {
@@ -183,7 +322,7 @@ export default function LearnIndexPage() {
           How the maths works.
         </h1>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '560px', fontWeight: 300, marginBottom: '1rem' }}>
-          Formula-first guides explaining the calculations behind each tool. No opinions, no advice — just the numbers and the logic behind them.
+          Formula-first guides explaining the calculations behind each tool. No opinions, no advice â€” just the numbers and the logic behind them.
         </p>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>
           Each guide links directly to the relevant calculator. Read the formula, then run your own numbers.
@@ -200,21 +339,22 @@ export default function LearnIndexPage() {
               <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.5, fontWeight: 300, marginBottom: '0.6rem' }}>{description}</div>
               <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', alignItems: 'center' }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>{readTime} read</span>
-                <span style={{ color: 'var(--border)', fontSize: '0.7rem' }}>·</span>
+                <span style={{ color: 'var(--border)', fontSize: '0.7rem' }}>Â·</span>
                 {tags.map(tag => (
                   <span key={tag} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'var(--text-muted)', border: '1px solid var(--border)', borderRadius: '3px', padding: '0.12rem 0.45rem', letterSpacing: '0.04em' }}>{tag}</span>
                 ))}
               </div>
             </div>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.1rem', color: 'var(--text-muted)', flexShrink: 0 }}>→</div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.1rem', color: 'var(--text-muted)', flexShrink: 0 }}>â†’</div>
           </Link>
         ))}
       </div>
 
       {/* SEO footer note */}
       <div style={{ padding: '1.25rem 1.5rem', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', lineHeight: 1.7 }}>
-        These guides explain how calculations work — they are not financial advice. Plain Figures does not recommend any financial product, investment, or course of action. Always consult a qualified financial adviser before making decisions.
+        These guides explain how calculations work â€” they are not financial advice. Plain Figures does not recommend any financial product, investment, or course of action. Always consult a qualified financial adviser before making decisions.
       </div>
     </div>
   );
 }
+
