@@ -73,6 +73,9 @@ export const metadata: Metadata = {
     other: [{ rel: 'mask-icon', url: '/favicon.svg', color: '#3b82c4' }],
   },
   manifest: '/site.webmanifest',
+  verification: {
+    google: '505ebce365c49313',
+  },
 };
 
 // JSON-LD structured data — WebSite + Organization
