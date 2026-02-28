@@ -107,6 +107,11 @@ export default function CompoundCalc() {
           </div>
         </Section>
       </div>
+
+      {/* Ad slot — renders only when NEXT_PUBLIC_ADS_ENABLED=true */}
+
+      <AdSlot slot="below-results" />
+
     </div>
   );
 }

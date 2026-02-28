@@ -6,6 +6,7 @@ import { calculateMortgage } from '@/lib/calculations';
 import { formatCurrency, formatPercent } from '@/lib/formatting';
 import { InputField, ResultCard, Section } from '@/components/ui';
 import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import AdSlot from '@/components/ui/AdSlot';
 
 export default function MortgageCalc() {
   const { currency } = useCurrency();
@@ -140,6 +141,11 @@ export default function MortgageCalc() {
           </div>
         </Section>
       </div>
+
+      {/* Ad slot — renders only when NEXT_PUBLIC_ADS_ENABLED=true */}
+
+      <AdSlot slot="below-results" />
+
     </div>
   );
 }

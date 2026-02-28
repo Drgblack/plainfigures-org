@@ -8,6 +8,7 @@ import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateLoan } from '@/lib/calculations';
 import { formatCurrency, formatPercent, formatNumber } from '@/lib/formatting';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import AdSlot from '@/components/ui/AdSlot';
 
 export default function LoanCalc() {
   const { currency } = useCurrency();
@@ -98,6 +99,11 @@ export default function LoanCalc() {
           </div>
         </Section>
       </div>
+
+      {/* Ad slot — renders only when NEXT_PUBLIC_ADS_ENABLED=true */}
+
+      <AdSlot slot="below-results" />
+
     </div>
   );
 }

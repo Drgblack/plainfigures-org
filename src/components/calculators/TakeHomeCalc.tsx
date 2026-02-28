@@ -157,6 +157,11 @@ export default function TakeHomeCalc() {
           </Section>
         </div>
       </div>
+
+      {/* Ad slot — renders only when NEXT_PUBLIC_ADS_ENABLED=true */}
+
+      <AdSlot slot="below-results" />
+
     </div>
   );
 }

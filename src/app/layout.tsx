@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import AdSlot from '@/components/ui/AdSlot';
 import Script from 'next/script';
 import './globals.css';
 import { CurrencyProvider } from '@/lib/CurrencyContext';
@@ -146,6 +147,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           >
             {children}
           </main>
+          {/* Footer leaderboard — renders only when NEXT_PUBLIC_ADS_ENABLED=true */}
+
+          <AdSlot slot="footer-leaderboard" />
+
           <footer
             role="contentinfo"
             aria-label="Site footer"
