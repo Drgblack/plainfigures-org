@@ -3,6 +3,7 @@ import AdSlot from '@/components/ui/AdSlot';
 import Script from 'next/script';
 import './globals.css';
 import { CurrencyProvider } from '@/lib/CurrencyContext';
+import CookieConsent from '@/components/ui/CookieConsent';
 import Navbar from '@/components/layout/Navbar';
 import LangSwitcher, { LangProvider } from '@/components/ui/LangSwitcher';
 
@@ -120,13 +121,8 @@ const themeScript = `
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GB">
-            <head>
-        {/* CookieYes CMP — GDPR consent banner. Must be first in <head>. */}
-        <script
-          id="cookieyes"
-          type="text/javascript"
-          src="https://cdn-cookieyes.com/client_data/a94ee732bd655739457a79c94415999f/script.js"
-        />
+            <head>/client_data/a94ee732bd655739457a79c94415999f/script.js"
+
         {/* Prevent theme flash before React hydrates */}
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
@@ -196,9 +192,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
             </nav>
           </footer>
+                    <CookieConsent />
           </LangProvider>
         </CurrencyProvider>
-            {/* Google AdSense — loads only when consent given via Cookiebot/CookieYes */}
       {process.env.NEXT_PUBLIC_ADS_ENABLED === 'true' && (
         <Script
           async
