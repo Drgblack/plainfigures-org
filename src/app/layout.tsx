@@ -121,6 +121,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en-GB">
       <head>
+        {/* Cookiebot CMP — GDPR consent banner. Must be first script in <head>. */}
+        <script
+          id="Cookiebot"
+          src="https://consent.cookiebot.com/uc.js"
+          data-cbid="649cb5c1-62ac-4296-b4e4-446cca128ece"
+          data-blockingmode="auto"
+          type="text/javascript"
+        />
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script
