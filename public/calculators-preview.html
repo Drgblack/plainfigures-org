@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plain Figures — Variance · Retirement Age · Inflation Impact</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ─────────────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS — matching plainfigures.org exactly
+───────────────────────────────────────────────────────────────────────────── */
+:root {
+  --bg:         #0a0e14;
+  --surface:    #111720;
+  --elevated:   #18202e;
+  --border:     #1e2a3a;
+  --border-hi:  #243347;
+  --text:       #e8edf5;
+  --secondary:  #7a8fa8;
+  --muted:      #4a5d72;
+  --accent:     #3b82c4;
+  --accent-d:   rgba(59,130,196,.13);
+  --green:      #2ecc8a;
+  --red:        #e05252;
+  --amber:      #d4a843;
+  --mono:       'DM Mono', 'Courier New', monospace;
+  --sans:       'DM Sans', system-ui, sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+::selection{background:var(--accent-d);color:var(--text)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:3px}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   LAYOUT
+───────────────────────────────────────────────────────────────────────────── */
+.navbar{
+  position:sticky;top:0;z-index:100;
+  height:56px;padding:0 2rem;
+  background:rgba(10,14,20,.96);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:.9rem;
+}
+.nav-brand{font-family:var(--mono);font-size:.76rem;font-weight:500;color:var(--text);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:.55rem}
+.nav-brand-dot{width:8px;height:8px;background:var(--amber);border-radius:1.5px;transform:rotate(5deg);flex-shrink:0}
+.nav-sep{width:1px;height:18px;background:var(--border)}
+.nav-label{font-family:var(--mono);font-size:.64rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.nav-pills{display:flex;gap:.3rem;margin-left:auto;overflow:hidden}
+.nav-pill{font-family:var(--mono);font-size:.64rem;color:var(--muted);padding:.22rem .6rem;border:1px solid transparent;border-radius:3px;text-decoration:none;letter-spacing:.04em;white-space:nowrap;transition:all .15s}
+.nav-pill:hover,.nav-pill.active{color:var(--text);background:var(--elevated);border-color:var(--border-hi)}
+.nav-pill.active{color:var(--accent);background:var(--accent-d);border-color:var(--accent)}
+
+.wrap{max-width:1060px;margin:0 auto;padding:3.5rem 2rem 7rem}
+
+.hero{margin-bottom:3.5rem}
+.hero-eyebrow{font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.75rem}
+.hero-h1{font-family:var(--mono);font-size:clamp(2rem,5vw,3.2rem);font-weight:300;color:var(--text);letter-spacing:-.03em;line-height:1.08;margin-bottom:1.1rem}
+.hero-h1 em{color:var(--muted);font-style:normal}
+.hero-p{font-size:.95rem;color:var(--secondary);line-height:1.75;max-width:540px;font-weight:300}
+
+.tool-index{display:flex;gap:.4rem;flex-wrap:wrap;padding-bottom:2.5rem;border-bottom:1px solid var(--border);margin-bottom:3rem}
+.tool-chip{display:inline-flex;align-items:center;gap:.45rem;padding:.28rem .75rem;border:1px solid var(--border);border-radius:4px;font-family:var(--mono);font-size:.66rem;color:var(--secondary);text-decoration:none;letter-spacing:.04em;transition:all .15s}
+.tool-chip:hover{background:var(--elevated);color:var(--text);border-color:var(--border-hi)}
+.tool-chip .chip-code{color:var(--muted)}
+.tool-chip.built{color:var(--accent);border-color:rgba(59,130,196,.35);background:var(--accent-d)}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CALCULATOR CARD
+───────────────────────────────────────────────────────────────────────────── */
+.calc{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:1.5rem;overflow:hidden;transition:border-color .2s}
+.calc:focus-within{border-color:var(--border-hi)}
+
+.calc-hd{padding:1.5rem 2rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:1.25rem;cursor:pointer;user-select:none}
+.calc-hd:hover .toggle-icon{color:var(--text)}
+.hd-left{flex:1}
+.calc-code{font-family:var(--mono);font-size:.6rem;color:var(--accent);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem}
+.calc-title{font-family:var(--mono);font-size:1.12rem;font-weight:400;color:var(--text);letter-spacing:-.01em;margin-bottom:.35rem;line-height:1.25}
+.calc-desc{font-size:.83rem;color:var(--secondary);font-weight:300;line-height:1.55;max-width:560px;margin-bottom:.65rem}
+.calc-tags{display:flex;gap:.32rem;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:.58rem;color:var(--muted);border:1px solid var(--border);border-radius:3px;padding:.1rem .42rem;letter-spacing:.04em}
+.toggle-icon{font-family:var(--mono);font-size:1.35rem;color:var(--muted);line-height:1;flex-shrink:0;margin-top:.1rem;transition:transform .28s cubic-bezier(.4,0,.2,1),color .15s}
+.calc.open .toggle-icon{transform:rotate(45deg)}
+
+.calc-bd{display:none;padding:2rem}
+.calc.open .calc-bd{display:block}
+
+/* Two-column layout */
+.calc-cols{display:grid;grid-template-columns:300px 1fr;gap:2.25rem;align-items:start}
+.inputs{position:sticky;top:66px;align-self:start;display:flex;flex-direction:column;gap:1.15rem}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   FORM ELEMENTS
+───────────────────────────────────────────────────────────────────────────── */
+.sec-label{font-family:var(--mono);font-size:.58rem;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;padding-bottom:.55rem;border-bottom:1px solid var(--border);margin-bottom:.1rem}
+
+.field{display:flex;flex-direction:column;gap:.38rem}
+.fl-head{display:flex;justify-content:space-between;align-items:baseline}
+.fl-head label{font-family:var(--mono);font-size:.68rem;color:var(--secondary);letter-spacing:.05em;text-transform:uppercase}
+.fl-val{font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:500}
+
+.ibox{display:flex;align-items:stretch;background:var(--bg);border:1px solid var(--border);border-radius:5px;overflow:hidden;transition:border-color .15s;height:36px}
+.ibox:focus-within{border-color:var(--accent)}
+.ipfx,.isfx{padding:0 .65rem;font-family:var(--mono);font-size:.8rem;color:var(--muted);background:var(--elevated);display:flex;align-items:center;flex-shrink:0;white-space:nowrap}
+.ipfx{border-right:1px solid var(--border)}
+.isfx{border-left:1px solid var(--border)}
+.ibox input[type=number],.ibox input[type=text]{flex:1;min-width:0;background:transparent;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:.88rem;padding:0 .7rem}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+
+textarea.itextarea{background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:var(--mono);font-size:.8rem;padding:.6rem .8rem;resize:vertical;min-height:74px;width:100%;line-height:1.65;transition:border-color .15s}
+textarea.itextarea:focus{outline:none;border-color:var(--accent)}
+
+input[type=range]{-webkit-appearance:none;appearance:none;background:var(--border);height:2px;border-radius:1px;outline:none;width:100%;margin-top:.25rem;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);border:2px solid var(--bg);box-shadow:0 0 0 1px var(--accent)}
+input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+
+select{background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:var(--mono);font-size:.8rem;padding:0 .7rem;height:36px;width:100%;outline:none;cursor:pointer;transition:border-color .15s}
+select:focus{border-color:var(--accent)}
+option{background:var(--surface)}
+
+.tog-row{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.tog-lbl{font-family:var(--mono);font-size:.68rem;color:var(--secondary);letter-spacing:.03em}
+.tog{position:relative;width:34px;height:19px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.tog-sl{position:absolute;inset:0;background:var(--border);border-radius:10px;cursor:pointer;transition:background .2s}
+.tog-sl::before{content:'';position:absolute;width:13px;height:13px;left:3px;top:3px;background:var(--muted);border-radius:50%;transition:transform .2s,background .2s}
+.tog input:checked+.tog-sl{background:var(--accent-d)}
+.tog input:checked+.tog-sl::before{transform:translateX(15px);background:var(--accent)}
+
+.scene-set{display:flex;flex-direction:column;gap:.4rem}
+.scene-btn{padding:.32rem .7rem;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--secondary);font-family:var(--mono);font-size:.66rem;cursor:pointer;letter-spacing:.04em;text-align:left;transition:all .15s}
+.scene-btn:hover{background:var(--elevated);color:var(--text)}
+.scene-btn.on{background:var(--accent-d);color:var(--accent);border-color:var(--accent)}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   RESULTS
+───────────────────────────────────────────────────────────────────────────── */
+.results{display:flex;flex-direction:column;gap:1.4rem}
+
+.rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:.6rem}
+.rc{background:var(--elevated);border:1px solid var(--border);border-radius:5px;padding:.85rem 1rem}
+.rc.bl{border-left:3px solid var(--accent)}
+.rc.gr{border-left:3px solid var(--green)}
+.rc.am{border-left:3px solid var(--amber)}
+.rc.rd{border-left:3px solid var(--red)}
+.rc-lbl{font-family:var(--mono);font-size:.6rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem}
+.rc-val{font-family:var(--mono);font-size:1.18rem;font-weight:500;color:var(--text);letter-spacing:-.02em;line-height:1}
+.rc-val.lg{font-size:1.65rem}
+.rc-sub{font-family:var(--mono);font-size:.62rem;color:var(--muted);margin-top:.3rem;line-height:1.4}
+
+.chart-box{background:var(--elevated);border:1px solid var(--border);border-radius:5px;padding:1.1rem 1.25rem}
+.chart-lbl{font-family:var(--mono);font-size:.58rem;color:var(--muted);letter-spacing:.13em;text-transform:uppercase;margin-bottom:.9rem}
+.chart-h{position:relative;height:210px}
+
+.insight{padding:.82rem 1rem;background:var(--elevated);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:5px;font-family:var(--mono);font-size:.7rem;color:var(--secondary);line-height:1.72}
+.insight em{color:var(--accent);font-style:normal}
+.insight.am{border-left-color:var(--amber)}
+.insight.am em{color:var(--amber)}
+.insight.gr{border-left-color:var(--green)}
+.insight.gr em{color:var(--green)}
+
+.tbl-wrap{overflow-x:auto;border-radius:5px;border:1px solid var(--border)}
+table.tbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.72rem}
+table.tbl th{background:var(--elevated);padding:.5rem .85rem;text-align:right;color:var(--muted);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;font-weight:400;border-bottom:1px solid var(--border);white-space:nowrap}
+table.tbl th:first-child{text-align:left}
+table.tbl td{padding:.52rem .85rem;text-align:right;color:var(--secondary);border-bottom:1px solid var(--border);white-space:nowrap}
+table.tbl td:first-child{text-align:left;color:var(--text)}
+table.tbl tbody tr:last-child td{border-bottom:none}
+table.tbl tbody tr:hover td{background:rgba(255,255,255,.02)}
+table.tbl .ca{color:var(--accent)}
+table.tbl .cg{color:var(--green)}
+table.tbl .cm{color:var(--amber)}
+table.tbl .cr{color:var(--red)}
+
+.rlbl{font-family:var(--mono);font-size:.58rem;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+
+.disc{padding:.85rem 1rem;background:var(--bg);border:1px solid var(--border);border-radius:5px;font-family:var(--mono);font-size:.66rem;color:var(--muted);line-height:1.68;letter-spacing:.01em}
+.disc strong{color:var(--secondary);font-weight:400}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────────────────────────────────────────── */
+@media(max-width:760px){
+  .calc-cols{grid-template-columns:1fr}
+  .inputs{position:static}
+  .wrap{padding:2rem 1.25rem 5rem}
+  .calc-hd{padding:1.25rem 1.5rem}
+  .calc-bd{padding:1.5rem}
+  .rg{grid-template-columns:1fr 1fr}
+  .navbar{padding:0 1.25rem}
+  .nav-pills{display:none}
+  .hero-h1{font-size:2rem}
+}
+@media(max-width:420px){
+  .rg{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────────────────────────────── -->
+<nav class="navbar" aria-label="Site navigation">
+  <a href="#" class="nav-brand">
+    <span class="nav-brand-dot" aria-hidden="true"></span>
+    Plain Figures
+  </a>
+  <div class="nav-sep" aria-hidden="true"></div>
+  <span class="nav-label">New Calculators</span>
+  <div class="nav-pills">
+    <a class="nav-pill active" href="#c01">C01 Variance</a>
+    <a class="nav-pill" href="#c02">C02 Retirement Age</a>
+    <a class="nav-pill" href="#c03">C03 Inflation</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <div class="hero-eyebrow">New · February 2026</div>
+    <h1 class="hero-h1">Eight new tools.<br><em>Same philosophy.</em></h1>
+    <p class="hero-p">Scenario-first calculators for the gaps: statistics, retirement timing, inflation erosion, loan schedules, budgets, break-even, probability of loss, and averages. No opinions. No products. Just the numbers.</p>
+  </div>
+
+  <!-- ── Tool index ── -->
+  <nav class="tool-index" aria-label="Calculator index">
+    <a class="tool-chip built" href="#c01"><span class="chip-code">C01</span> Variance</a>
+    <a class="tool-chip built" href="#c02"><span class="chip-code">C02</span> Retirement Age</a>
+    <a class="tool-chip built" href="#c03"><span class="chip-code">C03</span> Inflation Impact</a>
+    <a class="tool-chip" href="#"><span class="chip-code">C04</span> Loan Schedule</a>
+    <a class="tool-chip" href="#"><span class="chip-code">C05</span> Budget %</a>
+    <a class="tool-chip" href="#"><span class="chip-code">C06</span> Break-Even</a>
+    <a class="tool-chip" href="#"><span class="chip-code">C07</span> Loss Probability</a>
+    <a class="tool-chip" href="#"><span class="chip-code">C08</span> Mean/Med/Mode</a>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       C01 · VARIANCE & STANDARD DEVIATION
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <section id="c01">
+  <article class="calc open" data-calc="variance">
+    <div class="calc-hd" onclick="toggle(this)">
+      <div class="hd-left">
+        <div class="calc-code">C01 · STATISTICS</div>
+        <div class="calc-title">Variance &amp; Standard Deviation</div>
+        <div class="calc-desc">Measure how spread out a dataset is. Useful for analysing investment return consistency, test score distributions, or any numeric series.</div>
+        <div class="calc-tags">
+          <span class="tag">Population / Sample</span>
+          <span class="tag">Std Dev</span>
+          <span class="tag">Coefficient of Variation</span>
+          <span class="tag">Frequency Chart</span>
+          <span class="tag">Skewness</span>
+        </div>
+      </div>
+      <span class="toggle-icon" aria-hidden="true">+</span>
+    </div>
+    <div class="calc-bd">
+      <div class="calc-cols">
+
+        <!-- Inputs -->
+        <div class="inputs">
+          <div class="sec-label">Data Series</div>
+          <div class="field">
+            <div class="fl-head"><label for="vd">Values (comma or space separated)</label></div>
+            <textarea id="vd" class="itextarea" rows="4" placeholder="e.g. 12, 15, 9, 18, 11">12, 15, 9, 18, 11, 14, 20, 8, 16, 13</textarea>
+          </div>
+
+          <div class="sec-label">Options</div>
+          <div class="field">
+            <div class="fl-head"><label for="vtype">Dataset Type</label></div>
+            <select id="vtype" onchange="calcV()">
+              <option value="sample">Sample (n−1 denominator)</option>
+              <option value="population">Population (n denominator)</option>
+            </select>
+          </div>
+          <div class="field">
+            <div class="tog-row">
+              <span class="tog-lbl">Show frequency distribution chart</span>
+              <label class="tog"><input type="checkbox" id="vshowchart" checked onchange="calcV()"><span class="tog-sl"></span></label>
+            </div>
+          </div>
+
+          <div class="sec-label">Scenario Presets</div>
+          <div class="scene-set">
+            <button class="scene-btn on" onclick="vScene('base',this)">Base — Mixed values</button>
+            <button class="scene-btn" onclick="vScene('volatile',this)">High Volatility dataset</button>
+            <button class="scene-btn" onclick="vScene('stable',this)">Low Volatility dataset</button>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="results" id="vout" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </article>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       C02 · RETIREMENT AGE CALCULATOR
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <section id="c02">
+  <article class="calc open" data-calc="retirement">
+    <div class="calc-hd" onclick="toggle(this)">
+      <div class="hd-left">
+        <div class="calc-code">C02 · RETIREMENT PLANNING</div>
+        <div class="calc-title">Retirement Age Calculator</div>
+        <div class="calc-desc">Find the age at which your savings could sustain your desired retirement income — modelled across three savings strategies.</div>
+        <div class="calc-tags">
+          <span class="tag">Savings Trajectory</span>
+          <span class="tag">4% Rule</span>
+          <span class="tag">Withdrawal Rate</span>
+          <span class="tag">Inflation-Adjusted</span>
+          <span class="tag">Scenario Comparison</span>
+        </div>
+      </div>
+      <span class="toggle-icon" aria-hidden="true">+</span>
+    </div>
+    <div class="calc-bd">
+      <div class="calc-cols">
+
+        <!-- Inputs -->
+        <div class="inputs">
+          <div class="sec-label">Your Situation</div>
+
+          <div class="field">
+            <div class="fl-head"><label for="rage">Current Age</label><span class="fl-val" id="rage-v">35</span></div>
+            <div class="ibox"><input type="number" id="rage" value="35" min="18" max="75" step="1" oninput="sv('rage-v',this.value,'');calcR()"></div>
+            <input type="range" min="18" max="70" value="35" oninput="sync('rage',this.value);sv('rage-v',this.value,'');calcR()">
+          </div>
+
+          <div class="field">
+            <div class="fl-head"><label for="rsaved">Current Savings</label></div>
+            <div class="ibox"><span class="ipfx">£</span><input type="number" id="rsaved" value="45000" min="0" step="500" oninput="calcR()"></div>
+          </div>
+
+          <div class="field">
+            <div class="fl-head"><label for="rmonth">Monthly Contribution</label></div>
+            <div class="ibox"><span class="ipfx">£</span><input type="number" id="rmonth" value="800" min="0" step="50" oninput="calcR()"></div>
+          </div>
+
+          <div class="field">
+            <div class="fl-head"><label for="rret">Expected Annual Return</label><span class="fl-val" id="rret-v">6.0%</span></div>
+            <div class="ibox"><input type="number" id="rret" value="6" min="0" max="20" step="0.5" oninput="sv('rret-v',this.value,'%');calcR()"><span class="isfx">%</span></div>
+            <input type="range" min="1" max="15" step="0.5" value="6" oninput="sync('rret',this.value);sv('rret-v',this.value,'%');calcR()">
+          </div>
+
+          <div class="field">
+            <div class="fl-head"><label for="rincome">Desired Annual Income</label></div>
+            <div class="ibox"><span class="ipfx">£</span><input type="number" id="rincome" value="30000" min="1000" step="500" oninput="calcR()"></div>
+          </div>
+
+          <div class="field">
+            <div class="fl-head"><label for="rwd">Safe Withdrawal Rate</label><span class="fl-val" id="rwd-v">4.0%</span></div>
+            <div class="ibox"><input type="number" id="rwd" value="4" min="1" max="10" step="0.5" oninput="sv('rwd-v',this.value,'%');calcR()"><span class="isfx">%</span></div>
+            <input type="range" min="2" max="8" step="0.5" value="4" oninput="sync('rwd',this.value);sv('rwd-v',this.value,'%');calcR()">
+          </div>
+
+          <div class="field">
+            <div class="fl-head"><label for="rinfl">Inflation Rate</label><span class="fl-val" id="rinfl-v">2.5%</span></div>
+            <div class="ibox"><input type="number" id="rinfl" value="2.5" min="0" max="10" step="0.5" oninput="sv('rinfl-v',this.value,'%');calcR()"><span class="isfx">%</span></div>
+            <input type="range" min="0" max="8" step="0.5" value="2.5" oninput="sync('rinfl',this.value);sv('rinfl-v',this.value,'%');calcR()">
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="results" id="rout" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </article>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       C03 · INFLATION IMPACT CALCULATOR
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <section id="c03">
+  <article class="calc open" data-calc="inflation">
+    <div class="calc-hd" onclick="toggle(this)">
+      <div class="hd-left">
+        <div class="calc-code">C03 · PURCHASING POWER</div>
+        <div class="calc-title">Inflation Impact Calculator</div>
+        <div class="calc-desc">See how inflation silently erodes the real value of money over time — modelled across low, base, and high rate scenarios with year-by-year decay.</div>
+        <div class="calc-tags">
+          <span class="tag">Purchasing Power</span>
+          <span class="tag">Real vs Nominal</span>
+          <span class="tag">Three Scenarios</span>
+          <span class="tag">Year-by-Year Table</span>
+          <span class="tag">Rule of 70</span>
+        </div>
+      </div>
+      <span class="toggle-icon" aria-hidden="true">+</span>
+    </div>
+    <div class="calc-bd">
+      <div class="calc-cols">
+
+        <!-- Inputs -->
+        <div class="inputs">
+          <div class="sec-label">Amount &amp; Horizon</div>
+
+          <div class="field">
+            <div class="fl-head"><label for="iamt">Starting Amount</label></div>
+            <div class="ibox"><span class="ipfx">£</span><input type="number" id="iamt" value="10000" min="1" step="100" oninput="calcI()"></div>
+          </div>
+
+          <div class="field">
+            <div class="fl-head"><label for="iyrs">Time Horizon</label><span class="fl-val" id="iyrs-v">20 yrs</span></div>
+            <div class="ibox"><input type="number" id="iyrs" value="20" min="1" max="50" step="1" oninput="sv('iyrs-v',this.value,' yrs');calcI()"><span class="isfx">years</span></div>
+            <input type="range" min="1" max="50" value="20" oninput="sync('iyrs',this.value);sv('iyrs-v',this.value,' yrs');calcI()">
+          </div>
+
+          <div class="sec-label">Inflation Rates</div>
+
+          <div class="field">
+            <div class="fl-head"><label for="ilow">Low Scenario</label><span class="fl-val" id="ilow-v">1.5%</span></div>
+            <div class="ibox"><input type="number" id="ilow" value="1.5" min="0" max="15" step="0.25" oninput="sv('ilow-v',this.value,'%');calcI()"><span class="isfx">%</span></div>
+            <input type="range" min="0" max="10" step="0.25" value="1.5" oninput="sync('ilow',this.value);sv('ilow-v',this.value,'%');calcI()">
+          </div>
+
+          <div class="field">
+            <div class="fl-head"><label for="ibase">Base Scenario</label><span class="fl-val" id="ibase-v">2.5%</span></div>
+            <div class="ibox"><input type="number" id="ibase" value="2.5" min="0" max="20" step="0.25" oninput="sv('ibase-v',this.value,'%');calcI()"><span class="isfx">%</span></div>
+            <input type="range" min="0" max="15" step="0.25" value="2.5" oninput="sync('ibase',this.value);sv('ibase-v',this.value,'%');calcI()">
+          </div>
+
+          <div class="field">
+            <div class="fl-head"><label for="ihigh">High Scenario</label><span class="fl-val" id="ihigh-v">5.0%</span></div>
+            <div class="ibox"><input type="number" id="ihigh" value="5" min="0" max="25" step="0.5" oninput="sv('ihigh-v',this.value,'%');calcI()"><span class="isfx">%</span></div>
+            <input type="range" min="0" max="20" step="0.5" value="5" oninput="sync('ihigh',this.value);sv('ihigh-v',this.value,'%');calcI()">
+          </div>
+
+          <div class="sec-label">Display</div>
+          <div class="field">
+            <div class="tog-row">
+              <span class="tog-lbl">Show year-by-year breakdown table</span>
+              <label class="tog"><input type="checkbox" id="ishowtbl" onchange="calcI()"><span class="tog-sl"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="results" id="iout" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </article>
+  </section>
+
+  <!-- ── Coming soon ── -->
+  <div style="margin-top:2.5rem;padding:1.5rem 2rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:2rem;flex-wrap:wrap">
+    <div>
+      <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.35rem">In Development · C04–C08</div>
+      <div style="font-family:var(--mono);font-size:.88rem;color:var(--text);line-height:1.5">Loan Amortisation Schedule &nbsp;·&nbsp; Budget Percentage &nbsp;·&nbsp; Break-Even Analysis &nbsp;·&nbsp; Loss Probability Estimator &nbsp;·&nbsp; Mean/Median/Mode</div>
+      <div style="font-size:.8rem;color:var(--secondary);font-weight:300;margin-top:.35rem">Same scenario-first, chart-equipped, neutral design. No advice — just numbers you can trust.</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ─────────────────────────────────────────────────────────────────────────
+   JAVASCRIPT
+──────────────────────────────────────────────────────────────────────────── -->
+<script>
+'use strict';
+
+// ── Chart defaults ─────────────────────────────────────────────────────────
+Chart.defaults.color = '#4a5d72';
+Chart.defaults.borderColor = '#1e2a3a';
+Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.font.size = 11;
+
+const CHARTS = {};
+function drawChart(id, canvas, type, data, opts) {
+  if (CHARTS[id]) CHARTS[id].destroy();
+  CHARTS[id] = new Chart(canvas.getContext('2d'), { type, data, options: opts });
+}
+
+// ── Utility helpers ────────────────────────────────────────────────────────
+const gc  = id => document.getElementById(id);
+const gv  = id => +gc(id).value;
+const fmt = (n, d=0) => n.toLocaleString('en-GB', { minimumFractionDigits:d, maximumFractionDigits:d });
+const fc  = (n, d=0) => '£' + fmt(n, d);
+const fp  = (n, d=1) => parseFloat(n).toFixed(d) + '%';
+
+function sv(id, v, sfx='') {
+  const el = gc(id);
+  if (el) el.textContent = v + sfx;
+}
+function sync(id, v) {
+  const el = gc(id);
+  if (el) el.value = v;
+}
+
+function toggle(hd) {
+  hd.closest('.calc').classList.toggle('open');
+}
+
+const TT = {
+  backgroundColor:'#18202e',
+  borderColor:'#1e2a3a',
+  borderWidth:1,
+  padding:10,
+  titleColor:'#7a8fa8',
+  bodyColor:'#e8edf5',
+};
+
+// ════════════════════════════════════════════════════════════════════════════
+// C01 — VARIANCE & STANDARD DEVIATION
+// ════════════════════════════════════════════════════════════════════════════
+const V_SCENES = {
+  base:     '12, 15, 9, 18, 11, 14, 20, 8, 16, 13',
+  volatile: '32, -8, 45, -15, 28, 52, -20, 38, -5, 41',
+  stable:   '8.2, 8.8, 9.1, 8.5, 9.3, 8.7, 9.0, 8.4, 9.2, 8.6',
+};
+
+function vScene(key, btn) {
+  document.querySelectorAll('[data-calc="variance"] .scene-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  gc('vd').value = V_SCENES[key];
+  calcV();
+}
+
+function parseNums(s) {
+  return s.split(/[\s,;]+/).map(Number).filter(n => isFinite(n));
+}
+
+function statsOf(arr, type) {
+  const n = arr.length;
+  if (n < 2) return null;
+  const mean = arr.reduce((a,b) => a+b, 0) / n;
+  const denom = type === 'population' ? n : n - 1;
+  const variance = arr.reduce((s,x) => s + (x-mean)**2, 0) / denom;
+  const sd = Math.sqrt(variance);
+  const sorted = [...arr].sort((a,b)=>a-b);
+  const median = n%2===0 ? (sorted[n/2-1]+sorted[n/2])/2 : sorted[Math.floor(n/2)];
+  const min = sorted[0], max = sorted[n-1], range = max-min;
+  const cv = mean !== 0 ? (sd/Math.abs(mean))*100 : 0;
+  const skew = sd > 0 ? arr.reduce((s,x)=>s+((x-mean)/sd)**3,0)/n : 0;
+  return { n, mean, variance, sd, median, min, max, range, cv, skew };
+}
+
+function calcV() {
+  const data = parseNums(gc('vd').value);
+  const type = gc('vtype').value;
+  const showChart = gc('vshowchart').checked;
+  const out = gc('vout');
+
+  if (data.length < 2) {
+    out.innerHTML = `<div class="insight am"><em>Enter at least 2 values</em> to calculate variance and standard deviation.</div>`;
+    return;
+  }
+
+  const s = statsOf(data, type);
+  const varLabel = type === 'population' ? 'σ²' : 's²';
+  const sdLabel  = type === 'population' ? 'σ'  : 's';
+  const cvClass  = s.cv < 15 ? 'gr' : s.cv < 30 ? '' : 'am';
+  const cvText   = s.cv < 15 ? 'Low dispersion' : s.cv < 30 ? 'Moderate' : 'High dispersion';
+  const skewText = s.skew > 0.5 ? 'Right-skewed' : s.skew < -0.5 ? 'Left-skewed' : 'Near-symmetric';
+
+  // All 3 scenarios for comparison
+  const sceneData = {
+    'Base': parseNums(V_SCENES.base),
+    'High Volatility': parseNums(V_SCENES.volatile),
+    'Low Volatility': parseNums(V_SCENES.stable),
+  };
+  const sceneRows = Object.entries(sceneData).map(([lbl, arr]) => {
+    const r = statsOf(arr, type);
+    if (!r) return '';
+    const cls = r.cv < 15 ? 'cg' : r.cv < 30 ? 'ca' : 'cm';
+    return `<tr><td>${lbl}</td><td>${r.n}</td><td class="ca">${fmt(r.mean,2)}</td><td>${fmt(r.variance,2)}</td><td>${fmt(r.sd,2)}</td><td class="${cls}">${fp(r.cv)}</td></tr>`;
+  }).join('');
+
+  // Frequency bins
+  const BINS = 8;
+  const bw = s.range / BINS || 1;
+  const binLbls = [], binCts = [];
+  for (let i=0;i<BINS;i++) {
+    const lo = s.min + i*bw, hi = lo+bw;
+    binLbls.push(fmt(lo+(bw/2),1));
+    binCts.push(data.filter(x => x>=lo && (i===BINS-1 ? x<=hi : x<hi)).length);
+  }
+
+  out.innerHTML = `
+    <div class="rlbl">Key Statistics · ${type==='population'?'Population':'Sample'} (n = ${s.n})</div>
+
+    <div class="rg">
+      <div class="rc bl">
+        <div class="rc-lbl">Variance (${varLabel})</div>
+        <div class="rc-val lg">${fmt(s.variance,2)}</div>
+      </div>
+      <div class="rc bl">
+        <div class="rc-lbl">Std Dev (${sdLabel})</div>
+        <div class="rc-val lg">${fmt(s.sd,2)}</div>
+      </div>
+      <div class="rc ${cvClass}">
+        <div class="rc-lbl">Coeff. of Variation</div>
+        <div class="rc-val">${fp(s.cv)}</div>
+        <div class="rc-sub">${cvText}</div>
+      </div>
+      <div class="rc">
+        <div class="rc-lbl">Mean</div>
+        <div class="rc-val">${fmt(s.mean,3)}</div>
+      </div>
+      <div class="rc">
+        <div class="rc-lbl">Median</div>
+        <div class="rc-val">${fmt(s.median,3)}</div>
+      </div>
+      <div class="rc">
+        <div class="rc-lbl">Range</div>
+        <div class="rc-val">${fmt(s.range,2)}</div>
+        <div class="rc-sub">${fmt(s.min,2)} – ${fmt(s.max,2)}</div>
+      </div>
+      <div class="rc">
+        <div class="rc-lbl">Skewness</div>
+        <div class="rc-val">${fmt(s.skew,3)}</div>
+        <div class="rc-sub">${skewText}</div>
+      </div>
+    </div>
+
+    <div class="insight">
+      In a normally distributed dataset, 68% of values would fall within
+      <em>±${fmt(s.sd,2)}</em> of the mean
+      (between <em>${fmt(s.mean-s.sd,2)}</em> and <em>${fmt(s.mean+s.sd,2)}</em>).
+      95% would fall within <em>±${fmt(2*s.sd,2)}</em>
+      (between <em>${fmt(s.mean-2*s.sd,2)}</em> and <em>${fmt(s.mean+2*s.sd,2)}</em>).
+    </div>
+
+    ${showChart ? `<div class="chart-box"><div class="chart-lbl">Frequency Distribution · ${s.n} values</div><div class="chart-h"><canvas id="vchart"></canvas></div></div>` : ''}
+
+    <div class="rlbl" style="margin-bottom:.75rem">Scenario Comparison</div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Scenario</th><th>n</th><th>Mean</th><th>Variance</th><th>Std Dev</th><th>CV</th></tr></thead>
+        <tbody>${sceneRows}</tbody>
+      </table>
+    </div>
+
+    <div class="disc"><strong>Indicative only.</strong> Statistical measures assume the values entered represent the full ${type==='population'?'population':'sample'}. Real-world distributions are rarely perfectly normal. Results are mathematical outputs — consult a statistician for analytical decisions.</div>
+  `;
+
+  if (showChart) {
+    const c = gc('vchart');
+    if (c) drawChart('v', c, 'bar', {
+      labels: binLbls,
+      datasets: [{ label:'Frequency', data:binCts, backgroundColor:'rgba(59,130,196,.55)', borderColor:'#3b82c4', borderWidth:1, borderRadius:3 }]
+    }, {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{...TT,callbacks:{label:ctx=>` ${ctx.raw} value${ctx.raw!==1?'s':''}`}} },
+      scales:{
+        x:{ grid:{color:'#1e2a3a'}, ticks:{maxTicksLimit:8} },
+        y:{ grid:{color:'#1e2a3a'}, ticks:{stepSize:1}, title:{display:true,text:'Count',color:'#4a5d72'} }
+      }
+    });
+  }
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// C02 — RETIREMENT AGE CALCULATOR
+// ════════════════════════════════════════════════════════════════════════════
+function projectRetirement(age, saved, monthly, retPct, income, wdPct, inflPct) {
+  const target = income / wdPct;
+  const mr = retPct / 12;
+  let pot = saved;
+  for (let yr=0; yr<=65; yr++) {
+    if (pot >= target) return { retireAge: age+yr, pot, target };
+    for (let m=0;m<12;m++) pot = pot*(1+mr)+monthly;
+  }
+  return { retireAge: null, pot, target };
+}
+
+function calcR() {
+  const age    = gv('rage');
+  const saved  = gv('rsaved');
+  const monthly= gv('rmonth');
+  const ret    = gv('rret')   / 100;
+  const income = gv('rincome');
+  const wd     = gv('rwd')    / 100;
+  const infl   = gv('rinfl')  / 100;
+  const out    = gc('rout');
+
+  const base  = projectRetirement(age, saved, monthly,      ret,       income, wd, infl);
+  const boost = projectRetirement(age, saved, monthly*1.5,  ret,       income, wd, infl);
+  const highr = projectRetirement(age, saved, monthly,      ret+.02,   income, wd, infl);
+
+  const retireColor = !base.retireAge ? 'rd' : base.retireAge-age > 35 ? 'am' : 'gr';
+
+  // Real income at retirement
+  const realIncome = base.retireAge
+    ? income / Math.pow(1+infl, base.retireAge-age)
+    : null;
+
+  // Chart data
+  const maxYrs = Math.min(65, (base.retireAge ? base.retireAge-age : 40)+8);
+  const chartLbls=[], chartBase=[], chartBoost=[], chartHighr=[], chartTarget=[];
+  let pBase=saved, pBoost=saved, pHighr=saved;
+  const mr=ret/12, mr2=(ret+.02)/12;
+  for (let yr=0; yr<=maxYrs; yr++) {
+    chartLbls.push(age+yr);
+    chartBase.push(Math.round(pBase));
+    chartBoost.push(Math.round(pBoost));
+    chartHighr.push(Math.round(pHighr));
+    chartTarget.push(Math.round(base.target));
+    for (let m=0;m<12;m++){
+      pBase  = pBase*(1+mr)+monthly;
+      pBoost = pBoost*(1+mr)+monthly*1.5;
+      pHighr = pHighr*(1+mr2)+monthly;
+    }
+  }
+
+  const scenarios = [
+    { lbl:'Base Case',       sub:`${fp(ret*100)} return · £${fmt(monthly)}/mo`,         ...base },
+    { lbl:'Boost +50%',      sub:`${fp(ret*100)} return · £${fmt(monthly*1.5)}/mo`,     ...boost },
+    { lbl:'Higher Return',   sub:`${fp((ret+.02)*100)} return · £${fmt(monthly)}/mo`,   ...highr },
+  ];
+
+  const tRows = scenarios.map(s => {
+    const yrs = s.retireAge ? s.retireAge-age : null;
+    const cls = !s.retireAge?'cr':yrs>35?'cm':'cg';
+    return `<tr><td>${s.lbl}</td><td style="color:var(--muted);font-size:.65rem">${s.sub}</td>
+      <td class="${cls}">${s.retireAge?'Age '+s.retireAge:'60+'}</td>
+      <td class="${cls}">${yrs||'—'}</td>
+      <td class="ca">${s.pot?fc(s.pot):'—'}</td></tr>`;
+  }).join('');
+
+  out.innerHTML = `
+    <div class="rlbl">Retirement Projection</div>
+
+    <div class="rg">
+      <div class="rc ${retireColor}" style="grid-column:span 2">
+        <div class="rc-lbl">Estimated Retirement Age</div>
+        <div class="rc-val lg">${base.retireAge ? 'Age '+base.retireAge : '60+ yrs'}</div>
+        <div class="rc-sub">${base.retireAge ? (base.retireAge-age)+' years from now' : 'Target not reached — increase contributions or return'}</div>
+      </div>
+      <div class="rc bl">
+        <div class="rc-lbl">Target Nest Egg</div>
+        <div class="rc-val">${fc(base.target)}</div>
+        <div class="rc-sub">At ${fp(wd*100)} withdrawal rate</div>
+      </div>
+      <div class="rc bl">
+        <div class="rc-lbl">Projected Pot</div>
+        <div class="rc-val">${base.retireAge?fc(base.pot):'—'}</div>
+      </div>
+      ${realIncome?`<div class="rc am">
+        <div class="rc-lbl">Real Income Today</div>
+        <div class="rc-val">${fc(realIncome)}</div>
+        <div class="rc-sub">Today's equivalent of £${fmt(income)}/yr at ${fp(infl*100)} inflation</div>
+      </div>`:''}
+    </div>
+
+    <div class="insight${base.retireAge&&base.retireAge-age>30?' am':''}">
+      To draw <em>£${fmt(income)}/yr</em> at a <em>${fp(wd*100)} withdrawal rate</em>,
+      you need a nest egg of <em>${fc(base.target)}</em>.
+      ${base.retireAge
+        ? `At current savings rate, you could reach this at <em>age ${base.retireAge}</em>.`
+        : `<em>The target is not reached within 60 years</em> with these inputs.`
+      }
+    </div>
+
+    <div class="chart-box">
+      <div class="chart-lbl">Savings Trajectory vs Target · All Three Strategies</div>
+      <div class="chart-h"><canvas id="rchart"></canvas></div>
+    </div>
+
+    <div class="rlbl" style="margin-bottom:.75rem">Strategy Scenarios</div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Strategy</th><th>Assumptions</th><th>Retire Age</th><th>Years Away</th><th>Pot</th></tr></thead>
+        <tbody>${tRows}</tbody>
+      </table>
+    </div>
+
+    <div class="disc"><strong>Indicative only.</strong> Assumes constant annual returns — real investment returns fluctuate significantly. Tax, state pension, fees, and life events are not modelled. The safe withdrawal rate is a research guideline, not a guarantee. Consult a qualified financial adviser before making retirement decisions.</div>
+  `;
+
+  const c = gc('rchart');
+  if (c) drawChart('r', c, 'line', {
+    labels: chartLbls,
+    datasets: [
+      { label:'Base Case',     data:chartBase,   borderColor:'#3b82c4', backgroundColor:'rgba(59,130,196,.06)', borderWidth:2, pointRadius:0, fill:true,  tension:.3 },
+      { label:'Boost +50%',    data:chartBoost,  borderColor:'#2ecc8a', backgroundColor:'transparent',          borderWidth:1.5, pointRadius:0, fill:false, tension:.3, borderDash:[3,3] },
+      { label:'Higher Return', data:chartHighr,  borderColor:'#d4a843', backgroundColor:'transparent',          borderWidth:1.5, pointRadius:0, fill:false, tension:.3, borderDash:[6,3] },
+      { label:'Target',        data:chartTarget, borderColor:'#e05252', backgroundColor:'transparent',          borderWidth:1, pointRadius:0, fill:false, borderDash:[4,4] },
+    ]
+  }, {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{display:true,position:'top',labels:{boxWidth:10,padding:14,font:{size:10}}},
+      tooltip:{...TT,callbacks:{label:ctx=>` ${ctx.dataset.label}: £${fmt(ctx.raw)}`}},
+    },
+    scales:{
+      x:{grid:{color:'#1e2a3a'},title:{display:true,text:'Age',color:'#4a5d72',font:{size:10}}},
+      y:{grid:{color:'#1e2a3a'},ticks:{callback:v=>v>=1e6?(v/1e6).toFixed(1)+'M':v>=1e3?(v/1e3).toFixed(0)+'k':''+v}},
+    }
+  });
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// C03 — INFLATION IMPACT CALCULATOR
+// ════════════════════════════════════════════════════════════════════════════
+function calcI() {
+  const amt  = gv('iamt');
+  const yrs  = gv('iyrs');
+  const low  = gv('ilow')  / 100;
+  const base = gv('ibase') / 100;
+  const high = gv('ihigh') / 100;
+  const showTbl = gc('ishowtbl').checked;
+  const out  = gc('iout');
+
+  if (!amt || !yrs) return;
+
+  const pv = (r,y=yrs) => amt / Math.pow(1+r, y);
+  const pvLow  = pv(low),  pvBase = pv(base),  pvHigh = pv(high);
+  const lossBase = amt - pvBase;
+  const lossPct  = (lossBase/amt)*100;
+  const doubleYrs = base > 0 ? 70/(base*100) : null;
+
+  // Chart data — thin out for large horizons
+  const step = Math.max(1, Math.round(yrs/20));
+  const cYrs=[], cLow=[], cBase=[], cHigh=[];
+  for (let y=0; y<=yrs; y+=step) {
+    cYrs.push(y===0?'Now':'Yr '+y);
+    cLow.push(+pv(low,y).toFixed(2));
+    cBase.push(+pv(base,y).toFixed(2));
+    cHigh.push(+pv(high,y).toFixed(2));
+  }
+  if (cYrs[cYrs.length-1] !== 'Yr '+yrs) {
+    cYrs.push('Yr '+yrs); cLow.push(+pvLow.toFixed(2)); cBase.push(+pvBase.toFixed(2)); cHigh.push(+pvHigh.toFixed(2));
+  }
+
+  // Table: every 5 years
+  let tblRows = '';
+  if (showTbl) {
+    for (let y=0; y<=yrs; y++) {
+      if (y%5===0 || y===yrs) {
+        const l=pv(low,y), b=pv(base,y), h=pv(high,y);
+        tblRows += `<tr><td>${y===0?'Now':'Year '+y}</td><td class="cg">${fc(l)}</td><td>${fc(b)}</td><td class="cr">${fc(h)}</td><td class="${y===0?'':'cr'}">${y===0?'—':'-'+fc(amt-b)+' ('+fp((amt-b)/amt*100)+')'}</td></tr>`;
+      }
+    }
+  }
+
+  out.innerHTML = `
+    <div class="rlbl">Purchasing Power after ${yrs} Year${yrs!==1?'s':''}</div>
+
+    <div class="rg">
+      <div class="rc gr">
+        <div class="rc-lbl">Low · ${fp(low*100)}</div>
+        <div class="rc-val lg">${fc(pvLow)}</div>
+        <div class="rc-sub">−${fc(amt-pvLow)} · ${fp((amt-pvLow)/amt*100)} lost</div>
+      </div>
+      <div class="rc am">
+        <div class="rc-lbl">Base · ${fp(base*100)}</div>
+        <div class="rc-val lg">${fc(pvBase)}</div>
+        <div class="rc-sub">−${fc(lossBase)} · ${fp(lossPct)} lost</div>
+      </div>
+      <div class="rc rd">
+        <div class="rc-lbl">High · ${fp(high*100)}</div>
+        <div class="rc-val lg">${fc(pvHigh)}</div>
+        <div class="rc-sub">−${fc(amt-pvHigh)} · ${fp((amt-pvHigh)/amt*100)} lost</div>
+      </div>
+    </div>
+
+    <div class="insight am">
+      At base inflation of <em>${fp(base*100)}</em>, your <em>${fc(amt)}</em> loses
+      <em>${fp(lossPct)}</em> of its purchasing power over ${yrs} years
+      — equivalent to losing <em>${fc(lossBase)}</em>.
+      ${doubleYrs ? `Prices roughly double every <em>${fmt(doubleYrs,0)} years</em> at this rate (Rule of 70).` : ''}
+    </div>
+
+    <div class="chart-box">
+      <div class="chart-lbl">Purchasing Power Decay · Three Scenarios</div>
+      <div class="chart-h"><canvas id="ichart"></canvas></div>
+    </div>
+
+    ${showTbl ? `
+    <div class="rlbl" style="margin-bottom:.75rem">Year-by-Year Breakdown</div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Year</th><th>Low ${fp(low*100)}</th><th>Base ${fp(base*100)}</th><th>High ${fp(high*100)}</th><th>Base Erosion</th></tr></thead>
+        <tbody>${tblRows}</tbody>
+      </table>
+    </div>` : ''}
+
+    <div class="disc"><strong>Indicative only.</strong> Inflation rates vary year to year and cannot be predicted. This calculator uses constant rates for illustration purposes only. Past inflation is no guide to future inflation. Not financial advice — consult a qualified financial adviser for inflation-adjusted planning.</div>
+  `;
+
+  const c = gc('ichart');
+  if (c) drawChart('i', c, 'line', {
+    labels: cYrs,
+    datasets: [
+      { label:`Low ${fp(low*100)}`,  data:cLow,  borderColor:'#2ecc8a', backgroundColor:'rgba(46,204,138,.05)', borderWidth:2,   pointRadius:0, fill:false, tension:.35 },
+      { label:`Base ${fp(base*100)}`,data:cBase, borderColor:'#d4a843', backgroundColor:'rgba(212,168,67,.07)', borderWidth:2.5, pointRadius:0, fill:true,  tension:.35 },
+      { label:`High ${fp(high*100)}`,data:cHigh, borderColor:'#e05252', backgroundColor:'rgba(224,82,82,.05)',  borderWidth:2,   pointRadius:0, fill:false, tension:.35 },
+    ]
+  }, {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{display:true,position:'top',labels:{boxWidth:10,padding:14,font:{size:10}}},
+      tooltip:{...TT,callbacks:{label:ctx=>` ${ctx.dataset.label}: £${fmt(ctx.raw)}`}},
+    },
+    scales:{
+      x:{grid:{color:'#1e2a3a'}},
+      y:{grid:{color:'#1e2a3a'},min:0,ticks:{callback:v=>'£'+fmt(v)}},
+    }
+  });
+}
+
+
+// ── Init & event wiring ────────────────────────────────────────────────────
+let vtimer;
+gc('vd').addEventListener('input', () => { clearTimeout(vtimer); vtimer=setTimeout(calcV,280); });
+
+document.addEventListener('DOMContentLoaded', () => {
+  calcV();
+  calcR();
+  calcI();
+});
+</script>
+</body>
+</html>
