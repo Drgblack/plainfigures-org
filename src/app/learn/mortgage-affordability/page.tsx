@@ -1,132 +1,122 @@
 import type { Metadata } from 'next';
-import GuideLayout from '@/components/layout/GuideLayout';
+import GuideLayout from '@/components/learn/GuideLayout';
 
 export const metadata: Metadata = {
-  title: 'How Mortgage Affordability Is Calculated UK 2026 — Plain Figures',
-  description: 'How UK lenders calculate maximum mortgage borrowing in 2026 — income multiples, affordability stress tests, LTV bands, and what reduces borrowing power. With worked examples.',
+  title: 'How Mortgage Affordability Is Assessed: LTI, Stress Tests & Deposit Rules',
+  description: 'Understand exactly how lenders calculate mortgage affordability in 2025/26. Covers income multiples, stress testing, deposit requirements, and the factors that affect how much you can borrow.',
 };
 
-export default function AffordabilityGuide() {
+export default function Guide() {
   return (
     <GuideLayout
-      title="How Mortgage Affordability Is Assessed"
-      description="How lenders calculate what you can borrow — income multiples, payment affordability checks, stress tests, and LTV thresholds — with worked examples and what-if scenarios."
-      readTime="6 min"
-      relatedCalc={{ href: '/affordability', label: 'Mortgage Affordability Calculator' }}
-      relatedGuides={[
-        { href: '/learn/mortgage-repayment', label: 'How Mortgage Repayment Calculations Work' },
-        { href: '/learn/mortgage-overpayment', label: 'Mortgage Overpayment: How Much Does It Save?' },
-        { href: '/learn/rent-vs-buy', label: 'Rent vs Buy: The Key Numbers to Compare' },
-      ]}
+      number="G05"
+      title="How Mortgage Affordability Is Assessed (2025/26)"
+      readTime="7 min"
+      keywords={['mortgage affordability calculator UK 2025', 'how much can I borrow mortgage', 'mortgage income multiple 2025', 'mortgage stress test UK explained', 'mortgage deposit requirements 2025']}
     >
-      <div className="guide-content">
-        <h2>The Two Constraints Lenders Apply</h2>
-        <p>
-          Mortgage lenders apply two parallel limits and lend the lower of the two: an <strong>income multiple cap</strong> and a <strong>payment affordability check</strong>. Both must be satisfied. A borrower who passes the income multiple test may still be declined if the affordability assessment finds insufficient disposable income after existing commitments.
-        </p>
+      <p>
+        Mortgage affordability determines how much a lender will let you borrow. It is not simply
+        a multiple of your salary — lenders run detailed income verification, credit stress tests,
+        and affordability calculations that factor in your outgoings, dependants, and interest rate
+        sensitivity. Knowing the methodology helps you predict approval and manage expectations.
+      </p>
 
-        <h2>Income Multiple</h2>
-        <p>
-          The most commonly cited limit. Most UK lenders cap lending at 4–4.5× gross annual income for single applicants and joint applications. Some lenders — particularly for high earners in specific professions or for first-time buyers using specific schemes — will lend up to 5× or 5.5×.
-        </p>
+      <h2>The Two Key Tests</h2>
 
-        <div className="example-block">
-          <div className="example-label">Income multiple examples — 4.5× cap</div>
-          <div className="example-row"><span>£35,000 salary</span><span>Max loan: £157,500</span></div>
-          <div className="example-row"><span>£50,000 salary</span><span>Max loan: £225,000</span></div>
-          <div className="example-row"><span>£70,000 salary</span><span>Max loan: £315,000</span></div>
-          <div className="example-row"><span>£40,000 + £35,000 joint</span><span>Max loan: £337,500</span></div>
-          <div className="example-row"><span>£100,000 salary</span><span>Max loan: £450,000–£550,000 (lender-dependent)</span></div>
-        </div>
+      <h3>1. Loan-to-Income (LTI) Multiple</h3>
+      <p>
+        Most lenders cap borrowing at 4–4.5× single income or 3.5–4× joint income.
+        The Bank of England requires that no more than 15% of a lender's new mortgages exceed 4.5× income.
+      </p>
+      <table>
+        <thead><tr><th>Income</th><th>4× Multiple</th><th>4.5× Multiple</th></tr></thead>
+        <tbody>
+          <tr><td>£35,000 (single)</td><td>£140,000</td><td>£157,500</td></tr>
+          <tr><td>£50,000 (single)</td><td>£200,000</td><td>£225,000</td></tr>
+          <tr><td>£60,000 + £30,000 (joint)</td><td>£360,000</td><td>£405,000</td></tr>
+          <tr><td>£80,000 + £50,000 (joint)</td><td>£520,000</td><td>£585,000</td></tr>
+        </tbody>
+      </table>
 
-        <h2>Affordability Assessment (Payment Check)</h2>
-        <p>
-          Since the Mortgage Market Review (2014), lenders are required to assess whether borrowers can afford repayments — not just whether the income multiple is satisfied. This involves:
-        </p>
-        <ul>
-          <li><strong>Net income after tax</strong> — not gross</li>
-          <li><strong>Committed expenditure</strong> — existing loans, credit cards, car finance, maintenance payments</li>
-          <li><strong>Living costs</strong> — either declared or estimated using statistical benchmarks (ONS expenditure data)</li>
-          <li><strong>Remaining disposable income</strong> — must comfortably cover the mortgage payment</li>
-        </ul>
-        <p>
-          A general rule: lenders want mortgage payments to represent no more than 35–40% of net monthly income after committed debts. This is why existing debt commitments significantly reduce borrowing power — each £100/month of existing debt typically reduces maximum mortgage by £20,000–£25,000.
-        </p>
+      <h3>2. Affordability / Stress Test</h3>
+      <p>
+        Lenders test that you could still afford repayments if rates rose by typically 2–3%.
+        The FCA removed prescriptive stress test requirements in 2022, but lenders continue to apply
+        their own — most still test at SVR + 1–2%.
+      </p>
+      <pre className="formula-block">{
+`Stress Test Rate = Your offered rate + Lender stress buffer (typically 2–3%)
 
-        <h2>The Stress Test</h2>
-        <p>
-          Following FCA guidelines, lenders verify that borrowers could still afford payments if interest rates rose substantially above the product's initial rate. Most lenders apply a stress rate of approximately 3 percentage points above their reversion (standard variable) rate.
-        </p>
+Example: 5% mortgage rate → tested at 7–8%
+Monthly payment at 5% on £250,000 (25y): £1,461
+Monthly payment at 8% on £250,000 (25y): £1,929
 
-        <div className="formula-block">
-          <div className="formula-label">Stress Test — Worked Example</div>
-          Mortgage: £250,000, 25-year term<br /><br />
-          At 4.5% (contract rate):&nbsp;&nbsp; monthly payment = £1,389<br />
-          At 7.5% (stress rate):&nbsp;&nbsp;&nbsp;&nbsp; monthly payment = £1,848<br /><br />
-          The lender asks: can this borrower afford £1,848/month?<br />
-          If net income after debts and living costs leaves less than this,<br />
-          the loan may be declined or offered at a lower amount.
-        </div>
+Lender checks your income/outgoings can absorb £1,929/month.`
+      }</pre>
 
-        <h2>Loan to Value (LTV)</h2>
-        <p>
-          LTV is the loan amount as a percentage of the property value. Higher LTVs mean higher risk for the lender, which affects product availability and rates:
-        </p>
-        <table>
-          <thead><tr><th>LTV</th><th>Typical rate effect</th><th>Product availability</th></tr></thead>
-          <tbody>
-            <tr><td>≤60%</td><td>Best available rates</td><td>Widest choice</td></tr>
-            <tr><td>61–75%</td><td>Good rates</td><td>Full market</td></tr>
-            <tr><td>76–85%</td><td>Moderately higher rates</td><td>Most products</td></tr>
-            <tr><td>86–90%</td><td>Significantly higher rates</td><td>Narrower choice</td></tr>
-            <tr><td>91–95%</td><td>Highest rates</td><td>Limited; government schemes often used</td></tr>
-          </tbody>
-        </table>
+      <h2>What Counts as Income</h2>
+      <table>
+        <thead><tr><th>Income Type</th><th>Typically Accepted?</th><th>At What %?</th></tr></thead>
+        <tbody>
+          <tr><td>Employed basic salary</td><td>Yes</td><td>100%</td></tr>
+          <tr><td>Regular bonuses (evidenced)</td><td>Usually</td><td>50–100%</td></tr>
+          <tr><td>Overtime (regular)</td><td>Usually</td><td>50–75%</td></tr>
+          <tr><td>Self-employed profits</td><td>Yes (2–3yr average)</td><td>100% of average</td></tr>
+          <tr><td>Rental income</td><td>Yes</td><td>70–100%</td></tr>
+          <tr><td>Benefits (DLA, PIP etc.)</td><td>Some lenders</td><td>100% if accepted</td></tr>
+          <tr><td>Investment income</td><td>Some lenders</td><td>100% if evidenced</td></tr>
+        </tbody>
+      </table>
 
-        <h2>What-If Scenarios</h2>
+      <h2>What Affects the Maximum Loan</h2>
+      <ul>
+        <li><strong>Credit score</strong> — impacts rate offered, not directly the multiple, but a poor score may mean lower LTI access</li>
+        <li><strong>Deposit size</strong> — higher LTV (lower deposit) means higher rate, reducing max loan via affordability test</li>
+        <li><strong>Committed outgoings</strong> — car finance, credit cards, child maintenance, childcare all reduce affordability</li>
+        <li><strong>Term length</strong> — longer term reduces monthly payment, increasing the amount you pass affordability at</li>
+        <li><strong>Number of dependants</strong> — increases assumed living costs, reducing headroom</li>
+      </ul>
 
-        <h3>What if existing debt is cleared before applying?</h3>
-        <p>
-          A borrower with £350/month in car finance commitments has their disposable income reduced by that amount in the affordability assessment. At a stress rate of 7.5% over 25 years, each £100/month of supportable repayment capacity corresponds to approximately £13,500 in loan. Clearing £350/month of commitments before applying could increase borrowing capacity by approximately <strong>£47,000</strong> — significantly more than the remaining car finance balance in many cases.
-        </p>
+      <h2>What-If Scenarios</h2>
 
-        <h3>What if the applicant is self-employed?</h3>
-        <p>
-          Lenders typically require 2–3 years of self-employed accounts. Income is assessed on the lower of: average of the last 2–3 years' net profit (sole trader) or salary plus dividends (limited company director). A highly profitable final year following a loss-making earlier year will often be averaged down. Fluctuating income reduces the assessed figure compared to equivalent PAYE earnings.
-        </p>
+      <h3>Scenario 1: Impact of car finance on borrowing capacity</h3>
+      <p>
+        £350/month car finance reduces monthly disposable income by £350.
+        At typical affordability ratios, this can reduce maximum mortgage by £50,000–£80,000.
+        Clearing car finance before applying can materially increase borrowing capacity.
+      </p>
 
-        <h2>What Reduces Borrowing Power</h2>
-        <ul>
-          <li>Existing debt commitments (loans, credit cards, buy now pay later, student loan)</li>
-          <li>Self-employment or irregular income (averaged over 2–3 years of accounts)</li>
-          <li>Recent credit events (missed payments, defaults, County Court Judgements)</li>
-          <li>High LTV (fewer products, higher rates)</li>
-          <li>Multiple dependants (increases estimated living costs in the affordability model)</li>
-          <li>Bonus or commission income (often counted at only 50% or excluded entirely)</li>
-          <li>Probationary employment (many lenders require 3–6 months in current role)</li>
-        </ul>
+      <h3>Scenario 2: Extending the term from 25 to 35 years</h3>
+      <p>
+        Extending the term lowers monthly payments, which can help pass the affordability test.
+        £250,000 mortgage at 5%: 25y = £1,461/month; 35y = £1,264/month. But total interest paid rises by ~£60,000.
+      </p>
 
-        <div className="warning-point">
-          The maximum a lender will offer and the amount that is prudent to borrow are not the same number. Borrowing at the maximum income multiple leaves limited headroom for rate rises, income disruption, or major expenses. The affordability check is a minimum threshold — not a recommended level.
-        </div>
+      <h3>Scenario 3: Raising the deposit from 5% to 20%</h3>
+      <p>
+        On a £300,000 property: 5% deposit (£15,000) → likely 5.5–6% rate.
+        20% deposit (£60,000) → likely 4.5–5% rate. Lower rate means lower stress test threshold
+        and improved affordability — allowing a larger loan at the same income.
+      </p>
 
-        <h2>Frequently Asked Questions</h2>
+      <h2>Frequently Asked Questions</h2>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          { "@type": "Question", "name": "How many times my salary can I borrow for a mortgage in 2025?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Most UK lenders will lend up to 4–4.5 times your annual income. Some specialist lenders will go to 5–6× for certain professions (doctors, lawyers). The Bank of England limits lenders from giving more than 15% of new mortgages above 4.5× income." }},
+          { "@type": "Question", "name": "What is a mortgage stress test?",
+            "acceptedAnswer": { "@type": "Answer", "text": "A mortgage stress test checks whether you could afford repayments if interest rates rose by 2–3%. Even if the FCA removed prescriptive rules in 2022, lenders continue to apply their own stress buffers, typically testing at their standard variable rate plus 1–2%." }},
+          { "@type": "Question", "name": "Does a higher deposit increase how much I can borrow?",
+            "acceptedAnswer": { "@type": "Answer", "text": "A higher deposit lowers your LTV, which typically means a lower interest rate. A lower rate reduces your monthly payment and the stress test threshold, meaning you pass affordability at a higher loan amount for the same income." }},
+          { "@type": "Question", "name": "Does child maintenance affect mortgage affordability?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Regular committed outgoings including child maintenance, car finance, and childcare costs are deducted from your disposable income before the lender calculates how much you can afford. They reduce the maximum mortgage available." }}
+        ]
+      })}} />
 
-        <h3>Do lenders use gross or net income for income multiples?</h3>
-        <p>
-          Income multiples are typically applied to gross (pre-tax) income. The affordability payment check uses net income. Both assessments happen, and the lower resulting loan amount prevails.
-        </p>
-
-        <h3>Does a larger deposit increase how much I can borrow?</h3>
-        <p>
-          A larger deposit reduces LTV, which may unlock lower rates — and a lower rate produces a lower monthly payment, which may pass a stress test that a higher-rate loan would fail. So yes, indirectly: a larger deposit can increase borrowing capacity by reducing the required rate and improving affordability. But it does not directly increase the income multiple limit.
-        </p>
-
-        <h3>What is the Bank of England's 4.5× income limit?</h3>
-        <p>
-          The Bank of England previously required that no more than 15% of new mortgage lending could exceed 4.5× income (the "flow limit"). This restriction was removed in August 2023. Individual lenders still set their own caps — most have retained similar limits — but the regulatory constraint no longer applies.
-        </p>
-      </div>
+      <p className="tool-link">→ <a href="/affordability">Calculate your maximum borrowing with the Mortgage Affordability Calculator</a></p>
+      <p className="disclaimer">Indicative only. Each lender has different criteria. These figures reflect typical UK high street lender practice in 2025. Always obtain a Decision in Principle before making an offer.</p>
     </GuideLayout>
   );
 }

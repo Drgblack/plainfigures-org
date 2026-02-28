@@ -306,6 +306,143 @@ const GUIDES = [
     tags: ['Digital CX', 'NPS', 'Engagement'],
   },
 
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// PART A: 12 NEW GUIDES â€” add after G28 in src/app/learn/page.tsx
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+  {
+    number: 'G29',
+    title: 'Financial Crisis Simulator: How Long Will Savings Last?',
+    slug: 'financial-crisis-simulator',
+    excerpt: 'Given your savings and monthly burn rate, how many months can you survive without income? The maths most people have never run.',
+    readTime: '6 min',
+    tags: ['savings', 'emergency fund', 'financial runway', 'crisis planning'],
+    professional: false,
+    keywords: ['financial crisis calculator', 'savings runway', 'emergency fund burn rate'],
+  },
+  {
+    number: 'G30',
+    title: 'Retirement Savings: Employer Contributions & Inflation Impact',
+    slug: 'retirement-employer-contributions',
+    excerpt: 'A pension projection that ignores employer contributions underestimates your pot by 30â€“50%. One that ignores inflation overestimates what it buys.',
+    readTime: '7 min',
+    tags: ['pension', 'retirement', 'employer contributions', 'inflation'],
+    professional: false,
+    keywords: ['employer pension contribution', 'inflation pension impact', 'auto enrolment rates'],
+  },
+  {
+    number: 'G31',
+    title: 'Emergency Fund: How Much Is Enough?',
+    slug: 'emergency-fund-how-much',
+    excerpt: 'The 3â€“6 month rule is a wide range. The right buffer depends on income stability, dependants, and fixed obligations. Here is how to find your number.',
+    readTime: '5 min',
+    tags: ['savings', 'emergency fund', 'financial planning'],
+    professional: false,
+    keywords: ['emergency fund calculator', 'how much emergency savings', 'financial buffer'],
+  },
+  {
+    number: 'G32',
+    title: 'Buy-to-Let Yield: Gross, Net, and Cash-on-Cash Return',
+    slug: 'buy-to-let-yield',
+    excerpt: 'Gross, net, and cash-on-cash returns can differ by 3â€“5 percentage points on the same property. Using the wrong measure produces dangerously misleading comparisons.',
+    readTime: '6 min',
+    tags: ['property', 'buy to let', 'rental yield', 'investment'],
+    professional: false,
+    keywords: ['buy to let yield calculator', 'gross net rental yield', 'cash on cash return'],
+  },
+  {
+    number: 'G33',
+    title: 'Capital Gains Tax: How the Calculation Works (2025/26)',
+    slug: 'capital-gains-tax',
+    excerpt: 'CGT applies when you dispose of an asset for more than you paid. The rate, exemptions, and reporting rules changed in October 2024. Here is how it works now.',
+    readTime: '7 min',
+    tags: ['tax', 'capital gains', 'investment', 'property'],
+    professional: false,
+    keywords: ['capital gains tax calculator UK', 'CGT rates 2025', 'annual CGT allowance'],
+  },
+  {
+    number: 'G34',
+    title: 'Pension Drawdown: Sustainable Withdrawal Rates Explained',
+    slug: 'pension-drawdown',
+    excerpt: 'Withdraw too much too early and the fund depletes. Too little leaves money unspent. The 4% rule is a starting point â€” here is what it means for UK retirees.',
+    readTime: '6 min',
+    tags: ['pension', 'retirement', 'drawdown', 'withdrawal rate'],
+    professional: false,
+    keywords: ['pension drawdown calculator', 'sustainable withdrawal rate', '4 percent rule UK'],
+  },
+  {
+    number: 'G35',
+    title: 'Salary Sacrifice: Tax and National Insurance Savings Explained',
+    slug: 'salary-sacrifice',
+    excerpt: 'Salary sacrifice saves 28â€“42p per Â£1 depending on your tax band â€” plus your employer saves NI too. Here is how the numbers work for pensions, EVs, and cycle to work.',
+    readTime: '5 min',
+    tags: ['salary', 'tax', 'pension', 'benefits', 'NI savings'],
+    professional: false,
+    keywords: ['salary sacrifice calculator', 'salary sacrifice tax saving', 'salary sacrifice NI'],
+  },
+  {
+    number: 'G36',
+    title: 'Student Loan Repayment: Plan 1, Plan 2, and Plan 5 Compared',
+    slug: 'student-loan-repayment',
+    excerpt: 'Student loans work more like a graduate tax than a debt. Whether you repay in full, partially, or never depends on your income over the loan term.',
+    readTime: '6 min',
+    tags: ['student loan', 'repayment', 'salary', 'tax'],
+    professional: false,
+    keywords: ['student loan repayment calculator', 'plan 2 vs plan 5 student loan', 'student loan write off'],
+  },
+  {
+    number: 'G37',
+    title: 'LISA vs Help to Buy ISA: When the Government Bonus Actually Helps',
+    slug: 'lisa-help-to-buy',
+    excerpt: 'The 25% LISA bonus sounds generous. But the withdrawal penalty, Â£450k property cap, and 12-month wait mean it is not always the right choice.',
+    readTime: '5 min',
+    tags: ['ISA', 'first time buyer', 'LISA', 'savings', 'property'],
+    professional: false,
+    keywords: ['lifetime ISA calculator', 'LISA vs help to buy ISA', 'first time buyer bonus'],
+  },
+  {
+    number: 'G38',
+    title: 'Inheritance Tax: Nil-Rate Band, Taper Relief, and How It Is Calculated',
+    slug: 'inheritance-tax',
+    excerpt: 'IHT affects fewer than 4% of estates â€” but rising house prices and frozen thresholds are changing that. Here is how the calculation, exemptions, and 7-year rule work.',
+    readTime: '7 min',
+    tags: ['inheritance tax', 'IHT', 'estate planning', 'gifting'],
+    professional: false,
+    keywords: ['inheritance tax calculator UK', 'nil rate band 2025', 'IHT taper relief'],
+  },
+  {
+    number: 'G39',
+    title: 'Currency Exchange: The Real Cost of FX Fees and Spread',
+    slug: 'currency-exchange-fees',
+    excerpt: 'Banks include a spread markup in the exchange rate â€” making "no fee" transfers misleading. The real cost on a Â£10,000 transfer can reach Â£250â€“Â£400.',
+    readTime: '5 min',
+    tags: ['currency', 'FX', 'international transfer', 'fees'],
+    professional: false,
+    keywords: ['currency exchange fee calculator', 'real cost FX fees', 'bank vs FX broker'],
+  },
+  {
+    number: 'G40',
+    title: 'Dividend Yield vs Growth Investing: Total Return Comparison',
+    slug: 'dividend-vs-growth',
+    excerpt: 'Dividend and growth strategies can produce identical total returns. The difference is timing, tax treatment, and cashflow profile â€” here is how to compare them properly.',
+    readTime: '6 min',
+    tags: ['investing', 'dividends', 'growth', 'ISA', 'total return'],
+    professional: false,
+    keywords: ['dividend vs growth investing', 'total return calculator', 'dividend reinvestment explained'],
+  },
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// PART B: EXPANDED GUIDES â€” these replace existing entries (G02, G05)
+// Update these in place in the GUIDES array by finding G02 and G05 entries
+// and replacing their excerpt/keywords with the expanded versions below:
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+// G02 updated excerpt:
+// 'Compounding frequency changes your effective return â€” and why the EAR differs from the nominal rate. Includes frequency comparison table, Rule of 72, and debt examples.'
+
+// G05 updated excerpt:
+// 'Lenders run income multiples, stress tests, and outgoings analysis. Understanding all three helps you predict approval, optimise your application, and know your realistic ceiling.'
+
 ];
 
 export default function LearnIndexPage() {
@@ -357,4 +494,5 @@ export default function LearnIndexPage() {
     </div>
   );
 }
+
 
