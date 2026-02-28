@@ -2,15 +2,17 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { ALL_TOOLS, PERSONAL_TOOLS, PROFESSIONAL_TOOLS, ToolMeta } from '@/lib/siteData';
+import { ALL_TOOLS, PERSONAL_TOOLS, PROFESSIONAL_TOOLS, ToolMeta, ToolPreviewResult } from '@/lib/siteData';
 import { getRecentHrefs, getSavedCalcs, deleteSavedCalc, SavedCalc } from '@/lib/localStorage';
 import SeasonalBanner from '@/components/ui/SeasonalBanner';
 
 const FEATURED_GUIDES = [
-  { href: '/learn/mortgage-repayment', title: 'How Mortgage Repayment Calculations Work', readTime: '5 min' },
+  { href: '/learn/mortgage-repayment', title: 'How Mortgage Repayment Works', readTime: '5 min' },
   { href: '/learn/compound-interest', title: 'Understanding Compound Interest', readTime: '4 min' },
-  { href: '/learn/salary-take-home', title: 'How Salary Take-Home Is Calculated', readTime: '7 min' },
-  { href: '/learn/rent-vs-buy', title: 'Rent vs Buy: The Key Numbers to Compare', readTime: '6 min' },
+  { href: '/learn/salary-take-home', title: 'Salary Take-Home: How It's Calculated', readTime: '7 min' },
+  { href: '/learn/rent-vs-buy', title: 'Rent vs Buy: The Key Numbers', readTime: '6 min' },
+  { href: '/learn/loan-repayment', title: 'Loan Repayment & True APR', readTime: '5 min' },
+  { href: '/learn/tdee', title: 'TDEE & Calorie Needs Explained', readTime: '5 min' },
 ];
 
 function Sparkline({ path, color = 'var(--accent)' }: { path?: string; color?: string }) {
@@ -22,9 +24,62 @@ function Sparkline({ path, color = 'var(--accent)' }: { path?: string; color?: s
   );
 }
 
-function CalcRow({ tool, professional }: { tool: ToolMeta; professional?: boolean }) {
+function CalcRowPreview({ results, professional }: { results: ToolPreviewResult[]; professional?: boolean }) {
   return (
-    <Link href={tool.href} className="calc-link" style={{ borderLeft: professional ? '2px solid rgba(212,168,67,0.4)' : 'none' }}>
+    <div style={{
+      position: 'absolute',
+      right: '3rem',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      background: 'var(--bg-elevated)',
+      border: `1px solid ${professional ? 'rgba(212,168,67,0.35)' : 'var(--border-light)'}`,
+      borderRadius: '6px',
+      padding: '0.75rem 1rem',
+      minWidth: '180px',
+      boxShadow: '0 8px 20px rgba(0,0,0,0.4)',
+      zIndex: 10,
+      pointerEvents: 'none',
+    }}>
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.6rem' }}>
+        Sample output
+      </div>
+      {results.map((r, i) => (
+        <div key={i} style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+          gap: '0.75rem',
+          padding: '0.3rem 0',
+          borderTop: i > 0 ? '1px solid var(--border)' : 'none',
+        }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', flexShrink: 0 }}>
+            {r.label}
+          </span>
+          <div style={{ textAlign: 'right' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: professional ? '#d4a843' : 'var(--accent)', fontWeight: 500 }}>
+              {r.value}
+            </span>
+            {r.sub && (
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', marginTop: '0.1rem' }}>
+                {r.sub}
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CalcRow({ tool, professional }: { tool: ToolMeta; professional?: boolean }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <Link
+      href={tool.href}
+      className="calc-link"
+      style={{ borderLeft: professional ? '2px solid rgba(212,168,67,0.4)' : 'none', position: 'relative' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: professional ? '#d4a843' : 'var(--text-muted)', letterSpacing: '0.06em', flexShrink: 0 }}>{tool.code}</div>
       <div style={{ flex: 1 }}>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', color: 'var(--text-primary)', fontWeight: 500, marginBottom: '0.3rem', letterSpacing: '-0.01em' }}>{tool.title}</div>
@@ -42,6 +97,10 @@ function CalcRow({ tool, professional }: { tool: ToolMeta; professional?: boolea
         {tool.sparkline && <Sparkline path={tool.sparkline} color={professional ? '#d4a843' : 'var(--accent)'} />}
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.1rem', color: 'var(--text-muted)', flexShrink: 0 }}>→</div>
       </div>
+      {/* Hover preview panel */}
+      {hovered && tool.preview && tool.preview.length > 0 && (
+        <CalcRowPreview results={tool.preview} professional={professional} />
+      )}
     </Link>
   );
 }
@@ -192,7 +251,7 @@ export default function HomePage() {
           Check the maths.<br /><span style={{ color: 'var(--text-muted)' }}>Without the noise.</span>
         </h1>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '520px', fontWeight: 300, marginBottom: '2rem' }}>
-          26 calculators and 8 formula-first guides for personal decisions and professional use. No advice, no opinions, no products. Just numbers you can trust.
+          26 calculators and 16 formula-first guides for personal decisions and professional use. No advice, no opinions, no products. Just numbers you can trust.
         </p>
 
         {/* Search */}
@@ -235,7 +294,7 @@ export default function HomePage() {
           <div style={{ marginBottom: '3rem', padding: '1.25rem 1.5rem', background: 'rgba(46,200,138,0.04)', border: '1px solid rgba(46,200,138,0.15)', borderRadius: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#2ec88a', letterSpacing: '0.14em', textTransform: 'uppercase' }}>Learning Centre</div>
-              <Link href="/learn" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#2ec88a', textDecoration: 'none', letterSpacing: '0.06em' }}>All 8 guides →</Link>
+              <Link href="/learn" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#2ec88a', textDecoration: 'none', letterSpacing: '0.06em' }}>All 16 guides →</Link>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.5rem' }}>
               {FEATURED_GUIDES.map(({ href, title, readTime }) => (

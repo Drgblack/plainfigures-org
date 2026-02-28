@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Learning Centre — How Financial Calculations Work — Plain Figures',
-  description: 'Formula-first guides explaining how mortgage repayments, compound interest, salary take-home, overpayments, subscriptions, freelance rates, and other financial calculations work. No advice. Just the maths.',
+  description: '16 formula-first guides explaining how financial calculations work — mortgage, compound interest, salary, retirement, APR, TDEE, and more. No advice. Just the maths.',
 };
 
 const GUIDES = [

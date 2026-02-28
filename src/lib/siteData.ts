@@ -1,5 +1,11 @@
 // Central registry — tool metadata used by search, related tools, recently used, sparklines, etc.
 
+export interface ToolPreviewResult {
+  label: string;
+  value: string;
+  sub?: string;
+}
+
 export interface ToolMeta {
   href: string;
   code: string;
@@ -13,6 +19,8 @@ export interface ToolMeta {
   sparkline?: string;
   // Contextual fact shown below results based on output range
   rateContext?: string;
+  // Sample output shown on hover (3 key results)
+  preview?: ToolPreviewResult[];
 }
 
 export const ALL_TOOLS: ToolMeta[] = [
@@ -24,6 +32,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     relatedHrefs: ['/overpayment', '/affordability', '/offset'],
     sparkline: 'M0,20 C10,18 20,14 30,10 C40,6 50,4 60,3',
     rateContext: 'Bank of England base rate: 5.25% (Feb 2026). Revisit when your fixed deal ends.',
+    preview: [
+      { label: 'Monthly payment', value: '£1,520', sub: '£300k · 4.5% · 25yr' },
+      { label: 'Total interest', value: '£156,200' },
+      { label: 'Total cost', value: '£456,200' },
+    ],
   },
   {
     href: '/savings', code: '02', title: 'Savings Growth',
@@ -32,6 +45,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     relatedHrefs: ['/compound', '/retirement', '/save-goal'],
     sparkline: 'M0,18 C10,17 20,14 30,10 C40,6 50,3 60,1',
     rateContext: 'Best easy-access savings rates are currently around 5% (Feb 2026). Worth comparing.',
+    preview: [
+      { label: 'Balance at 10yr', value: '£82,300', sub: '£500/mo · 4.5%' },
+      { label: 'Total contributed', value: '£60,000' },
+      { label: 'Interest earned', value: '£22,300' },
+    ],
   },
   {
     href: '/rent-vs-buy', code: '03', title: 'Rent vs Buy',
@@ -40,6 +58,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     learnHref: '/learn/rent-vs-buy',
     relatedHrefs: ['/mortgage', '/affordability', '/savings'],
     sparkline: 'M0,16 L15,15 L30,10 L45,8 L60,5 M0,18 L15,18 L30,16 L45,14 L60,12',
+    preview: [
+      { label: 'Break-even point', value: 'Year 8', sub: '£350k property · 4.5%' },
+      { label: 'Buyer net worth yr10', value: '£124,500' },
+      { label: 'Renter net worth yr10', value: '£89,200' },
+    ],
   },
   {
     href: '/compound', code: '04', title: 'Compound Interest',
@@ -48,6 +71,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     learnHref: '/learn/compound-interest',
     relatedHrefs: ['/savings', '/retirement'],
     sparkline: 'M0,19 C15,17 25,13 35,8 C45,3 52,1 60,0',
+    preview: [
+      { label: 'Effective rate (daily)', value: '5.127%', sub: '5% nominal' },
+      { label: '£10,000 after 10yr', value: '£16,487' },
+      { label: 'vs annual compound', value: '£16,289' },
+    ],
   },
   {
     href: '/loan', code: '05', title: 'Loan Repayment',
@@ -55,6 +83,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     tags: ['APR', 'Personal Loan', 'Car Finance'],
     relatedHrefs: ['/mortgage', '/subscriptions'],
     sparkline: 'M0,2 C10,4 20,8 30,12 C40,16 50,18 60,19',
+    preview: [
+      { label: 'Monthly payment', value: '£308', sub: '£10k · 6.9% · 3yr' },
+      { label: 'True APR', value: '9.9%', sub: 'inc. £300 fee' },
+      { label: 'Total interest', value: '£1,116' },
+    ],
   },
   {
     href: '/retirement', code: '06', title: 'Retirement Savings',
@@ -63,6 +96,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     learnHref: '/learn/retirement-savings',
     relatedHrefs: ['/savings', '/compound', '/take-home'],
     sparkline: 'M0,20 C5,19 15,17 25,13 C35,8 45,4 60,1',
+    preview: [
+      { label: 'Pot at 65', value: '£412,000', sub: '£500/mo · 6% · 30yr' },
+      { label: 'Monthly income (4%)', value: '£1,373' },
+      { label: 'Real value (2.5% inf)', value: '£201,000' },
+    ],
   },
   {
     href: '/offset', code: '07', title: 'Offset Mortgage',
@@ -71,6 +109,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     learnHref: '/learn/offset-mortgage',
     relatedHrefs: ['/mortgage', '/overpayment', '/savings'],
     sparkline: 'M0,4 C10,5 20,8 30,11 C40,14 50,17 60,19',
+    preview: [
+      { label: 'Interest saved', value: '£23,400', sub: '£50k savings offset' },
+      { label: 'Term reduction', value: '3.2 years' },
+      { label: 'Effective rate', value: '4.5% tax-free' },
+    ],
   },
   {
     href: '/overpayment', code: '08', title: 'Mortgage Overpayment',
@@ -78,6 +121,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     tags: ['Overpayment', 'Interest Saved', 'Early Payoff'],
     relatedHrefs: ['/mortgage', '/offset'],
     sparkline: 'M0,2 C10,4 20,8 30,13 C40,16 50,18 60,19',
+    preview: [
+      { label: 'Interest saved', value: '£22,900', sub: '£200/mo extra' },
+      { label: 'Years saved', value: '3.9 years' },
+      { label: 'Payoff date', value: '21yr 1mo' },
+    ],
   },
   {
     href: '/save-goal', code: '09', title: 'Save for a Goal',
@@ -85,6 +133,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     tags: ['Target', 'Deadline', 'Monthly Required'],
     relatedHrefs: ['/savings', '/subscriptions'],
     sparkline: 'M0,20 L20,14 L40,8 L60,2',
+    preview: [
+      { label: 'Time to goal', value: '4yr 2mo', sub: '£25k · £450/mo · 4.5%' },
+      { label: 'Interest earned', value: '£2,310' },
+      { label: 'Total contributed', value: '£22,690' },
+    ],
   },
   {
     href: '/take-home', code: '10', title: 'Salary Take-Home',
@@ -93,6 +146,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     learnHref: '/learn/salary-take-home',
     relatedHrefs: ['/freelance', '/lifestyle-inflation', '/retirement'],
     sparkline: 'M0,20 L15,14 L30,12 L45,10 L60,8',
+    preview: [
+      { label: 'Net take-home', value: '£3,618/mo', sub: '£55k gross · UK' },
+      { label: 'Income tax', value: '£8,432' },
+      { label: 'Effective rate', value: '26.3%' },
+    ],
   },
   {
     href: '/affordability', code: '11', title: 'Mortgage Affordability',
@@ -101,6 +159,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     learnHref: '/learn/mortgage-affordability',
     relatedHrefs: ['/mortgage', '/rent-vs-buy'],
     sparkline: 'M0,20 L20,14 L40,8 L60,4',
+    preview: [
+      { label: 'Max borrowing', value: '£247,500', sub: '£55k income · 4.5× mult' },
+      { label: 'Stress test rate', value: '7.5%' },
+      { label: 'LTV (10% deposit)', value: '90%' },
+    ],
   },
   {
     href: '/tdee', code: '12', title: 'TDEE & Calorie Calculator',
@@ -108,6 +171,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     tags: ['Calories', 'BMI', 'Fitness'],
     relatedHrefs: ['/subscriptions'],
     sparkline: 'M0,10 L10,9 L20,10 L30,8 L40,9 L50,11 L60,10',
+    preview: [
+      { label: 'TDEE', value: '2,114 kcal', sub: '65kg · 168cm · moderate' },
+      { label: 'BMR', value: '1,431 kcal' },
+      { label: 'Deficit target', value: '1,614 kcal' },
+    ],
   },
   {
     href: '/subscriptions', code: '13', title: 'Subscription Drain',
@@ -115,6 +183,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     tags: ['Subscriptions', '10-Year Cost', 'Opportunity Cost'],
     relatedHrefs: ['/lifestyle-inflation', '/save-goal'],
     sparkline: 'M0,18 C10,16 20,13 30,9 C40,5 50,3 60,2',
+    preview: [
+      { label: '10-year cost', value: '£12,840', sub: '£85/mo · 5% increases' },
+      { label: 'Opportunity cost', value: '£13,900', sub: 'invested at 6%' },
+      { label: 'Annual spend', value: '£1,020' },
+    ],
   },
   {
     href: '/freelance', code: '14', title: 'Freelance Rate Calculator',
@@ -122,6 +195,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     tags: ['Day Rate', 'Freelance', 'Contractor'],
     relatedHrefs: ['/take-home', '/lifestyle-inflation'],
     sparkline: 'M0,20 L30,10 L60,2',
+    preview: [
+      { label: 'Required day rate', value: '£311/day', sub: 'Target net £40k' },
+      { label: 'Hourly rate', value: '£38.90/hr' },
+      { label: 'Billable days', value: '202/yr' },
+    ],
   },
   {
     href: '/lifestyle-inflation', code: '15', title: 'Lifestyle Inflation Tracker',
@@ -129,6 +207,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     tags: ['Lifestyle Creep', 'Spending', 'Opportunity Cost'],
     relatedHrefs: ['/subscriptions', '/take-home'],
     sparkline: 'M0,15 C15,13 25,10 35,7 C45,4 55,2 60,1',
+    preview: [
+      { label: 'Wealth gap at yr20', value: '£212,600', sub: '80% vs 10% save rate' },
+      { label: 'High-saver pot', value: '£243,000' },
+      { label: 'Low-saver pot', value: '£30,400' },
+    ],
   },
   {
     href: '/crisis', code: '16', title: 'Financial Crisis Simulator',
@@ -137,6 +220,11 @@ export const ALL_TOOLS: ToolMeta[] = [
     learnHref: '/learn/financial-crisis',
     relatedHrefs: ['/savings', '/subscriptions'],
     sparkline: 'M0,2 C10,3 20,6 30,11 C40,15 50,18 60,20',
+    preview: [
+      { label: 'Runway', value: '6.4 months', sub: '£18k · £2,800/mo burn' },
+      { label: 'With 25% cuts', value: '8.6 months' },
+      { label: 'Monthly burn', value: '£2,800' },
+    ],
   },
   {
     href: '/bi', code: 'P01', title: 'Business Interruption Sum Insured',

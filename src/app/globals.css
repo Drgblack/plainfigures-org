@@ -320,3 +320,169 @@ input[type='range']::-webkit-slider-thumb {
 .guide-content tr:last-child td {
   border-bottom: none;
 }
+
+/* ── Skip to content link ────────────────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.6rem 1.2rem;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  border-radius: 0 0 6px 6px;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* ── Calc-link hover — reveal left-border accent ─────────────────────────── */
+/* Original .calc-link and :hover definitions are at L145-157. */
+/* This adds the border-left accent cleanly using a different property: */
+.calc-link {
+  box-shadow: inset 3px 0 0 transparent;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+.calc-link:hover {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+/* ── Calc-link preview panel ─────────────────────────────────────────────────── */
+.calc-preview-panel {
+  position: absolute;
+  right: 3.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  animation: preview-in 0.12s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes preview-in {
+  from { opacity: 0; transform: translateY(-50%) translateX(6px); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+/* ── Nav button hover state ──────────────────────────────────────────────────── */
+nav a:hover,
+nav button:hover {
+  color: var(--text-primary) !important;
+}
+
+/* ── Search input expand animation ──────────────────────────────────────────── */
+.nav-search-input {
+  transition: width 0.2s ease, border-color 0.15s ease;
+}
+.nav-search-input:focus {
+  border-color: var(--accent) !important;
+}
+
+/* ── Currency picker dropdown ────────────────────────────────────────────────── */
+.currency-dropdown {
+  animation: dropdown-in 0.1s ease forwards;
+}
+@keyframes dropdown-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Language strip (Google Translate) ──────────────────────────────────────── */
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+.skiptranslate {
+  display: none !important;
+}
+body { top: 0 !important; }
+
+/* ── High-contrast focus rings ───────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 2px !important;
+  border-radius: 3px !important;
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Mobile: hide scrollable nav labels beyond logo ─────────────────────────── */
+@media (max-width: 640px) {
+  .nav-tool-links { display: none !important; }
+  .nav-search-input { width: 100px !important; }
+}
+
+/* ── Calculator row enhancements ─────────────────────────────────────────── */
+/* Left-border accent added via inline style on CalcRow based on professional prop */
+
+/* ── Smooth theme transition ──────────────────────────────────────────────── */
+html {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* ── Skip to content ─────────────────────────────────────────────────────── */
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.6rem 1.25rem;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  border-radius: 4px;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: top 0.15s ease;
+}
+
+.skip-to-content:focus {
+  top: 0.5rem;
+}
+
+/* ── Nav search expand ───────────────────────────────────────────────────── */
+.nav-search-input:focus,
+.nav-search-input:not(:placeholder-shown) {
+  width: 200px !important;
+}
+
+/* Tool preview uses inline position:relative on CalcRow component */
+
+/* ── Light mode nav bg ───────────────────────────────────────────────────── */
+[data-theme='light'] nav {
+  --nav-bg-solid: rgba(247,248,250,0.97);
+}
+
+/* ── Improved focus ring (Windows High Contrast compatible) ──────────────── */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 3px solid ButtonText;
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Print: show calc-link as readable list ──────────────────────────────── */
+@media print {
+  .calc-link {
+    display: flex !important;
+    border: 1px solid #ccc !important;
+    margin-bottom: 0.5rem !important;
+    padding: 0.5rem !important;
+  }
+}

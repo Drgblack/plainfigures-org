@@ -93,8 +93,8 @@ export default function TCORCalc() {
               toolTitle="Total Cost of Risk"
               summary={`TCOR analysis`}
               keyResults={[
-                { label: 'Base TCOR', value: fmt(result.base.tcor) },
-                { label: 'TCOR Rate', value: `${formatNumber(result.base.tcorRate, 2)} per £1k revenue` },
+                { label: 'Base TCOR', value: fmt(base.tcor) },
+                { label: 'TCOR Rate', value: `${formatNumber(base.tcorRate, 2)} per £1k revenue` },
               ]}
             />
           </div>
