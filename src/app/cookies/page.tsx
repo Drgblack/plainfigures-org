@@ -37,16 +37,20 @@ export default function CookiesPage() {
         <div>
           <h2 style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>Manage your consent</h2>
           <p>You can review and change your cookie preferences at any time using the declaration below.</p>
+          <p style={{ marginTop: '0.75rem' }}>
+            <a
+              href="#"
+              data-cc="show-preferencesModal"
+              style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontSize: '0.84rem', textDecoration: 'none' }}
+            >
+              Manage cookie preferences →
+            </a>
+          </p>
         </div>
 
         {/* Cookiebot Declaration — renders the consent management widget */}
         <div style={{ marginTop: '1rem' }}>
-          <script
-            id="CookieDeclaration"
-            src="https://consent.cookiebot.com/649cb5c1-62ac-4296-b4e4-446cca128ece/cd.js"
-            type="text/javascript"
-            async
-          />
+          <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/a94ee732bd655739457a79c94415999f/script.js" />
         </div>
       </div>
     </div>
