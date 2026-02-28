@@ -55,30 +55,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             borderTop: '1px solid var(--border)',
             padding: '1.5rem 2rem',
             display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '0.75rem',
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
-              <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.03em' }}>
-                PLAIN FIGURES — Numbers without noise. Not financial advice.
-              </span>
-              <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}>
-                Updated Feb 2026 — 2025/26 UK tax bands
-              </span>
-            </div>
-            <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-              {([
-                ['/about', 'About'],
-                ['/privacy', 'Privacy'],
-                ['/terms', 'Terms'],
-                ['/disclaimer', 'Disclaimer'],
-                ['/contact', 'Contact'],
-              ] as [string, string][]).map(([href, label]) => (
-                <a key={href} href={href} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)', textDecoration: 'none', letterSpacing: '0.06em' }}>
-                  {label}
-                </a>
-              ))}
-            </div>
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.78rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.03em' }}>
+              PLAIN FIGURES — Numbers without noise. Not financial advice.
+            </span>
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}>
+              Updated Feb 2026 — 2025/26 UK tax bands
+            </span>
           </footer>
         </CurrencyProvider>
       </body>
