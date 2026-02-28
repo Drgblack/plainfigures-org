@@ -69,7 +69,14 @@ export default function LangMenu() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem(LANG_KEY) as LangCode | null;
-      if (saved && LANGUAGES.find(l => l.code === saved)) setLang(saved);
+      if (saved && LANGUAGES.find(l => l.code === saved)) {
+        setLang(saved);
+        // Re-apply translation on page load if user previously chose a language
+        if (saved !== 'en') {
+          // Small delay to let page render first
+          setTimeout(() => triggerGoogleTranslate(saved), 300);
+        }
+      }
     } catch {}
   }, []);
 

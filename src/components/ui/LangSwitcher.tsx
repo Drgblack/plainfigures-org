@@ -1,7 +1,7 @@
 ﻿'use client';
 
 /**
- * LangSwitcher â€” Plain Figures lightweight i18n
+ * LangSwitcher ”” Plain Figures lightweight i18n
  *
  * Architecture:
  * - 5 supported languages: English, German, French, Spanish, Mandarin
@@ -11,19 +11,19 @@
  * - Custom event 'pf-lang-change' broadcast so other components can re-render
  * - detectBrowserLang() auto-selects on first visit (no stored preference)
  *
- * SEO (current â€” UI-only i18n):
+ * SEO (current ”” UI-only i18n):
  * - hreflang tags in layout.tsx metadata.alternates (all pointing to same URL)
  * - ?lang=de URL parameter readable by crawlers
  *
- * SEO (future â€” full route-based i18n):
+ * SEO (future ”” full route-based i18n):
  * - Add [locale] dynamic segment: /app/[locale]/page.tsx
  * - hreflang: https://plainfigures.org/de/mortgage etc.
  * - Use next-intl or i18next (see /src/lib/i18n.ts for migration guide)
  *
  * Usage:
  *   import LangSwitcher from '@/components/ui/LangSwitcher';
- *   <LangSwitcher compact /> â€” flag-only button (for navbar)
- *   <LangSwitcher />         â€” flag + label button (for footer)
+ *   <LangSwitcher compact /> ”” flag-only button (for navbar)
+ *   <LangSwitcher />         ”” flag + label button (for footer)
  *
  *   To translate a string in another component:
  *   import { useLang } from '@/components/ui/LangSwitcher';
@@ -68,7 +68,7 @@ export function useLang() {
   return useContext(LangContext);
 }
 
-// â”€â”€ Provider â€” wraps the app; LangSwitcher is just the UI trigger â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â”€â”€ Provider ”” wraps the app; LangSwitcher is just the UI trigger â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function LangProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLang] = useState<Lang>('en');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -259,7 +259,7 @@ export default function LangSwitcher({ compact = false }: { compact?: boolean })
             color: 'var(--text-muted)',
             lineHeight: 1.5,
           }}>
-            UI strings only Â· Calculations unchanged
+            UI strings only · Calculations unchanged
           </div>
         </div>
       )}
