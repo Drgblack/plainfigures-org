@@ -95,6 +95,60 @@ export default function MortgageGuide() {
         <p>
           The formula above assumes a constant rate throughout. In practice, most mortgages have an initial fixed period (2, 3, or 5 years) after which they revert to the lender's Standard Variable Rate (SVR). Calculators that show the full 25-year picture using today's fixed rate are illustrative — the actual cost depends on what rate is available at each remortgage point.
         </p>
+
+        <h2>What-If: Rate Change Scenarios</h2>
+        <p>
+          On the £250,000, 25-year mortgage — the sensitivity of monthly payment to rate:
+        </p>
+        <table>
+          <thead>
+            <tr><th>Rate</th><th>Monthly payment</th><th>Total interest (25yr)</th><th>vs 4.5% baseline</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>3.0%</td><td>£1,185</td><td>~£105,500</td><td>−£61,300</td></tr>
+            <tr><td>4.5%</td><td>£1,389</td><td>~£166,800</td><td>—</td></tr>
+            <tr><td>5.5%</td><td>£1,531</td><td>~£209,300</td><td>+£42,500</td></tr>
+            <tr><td>7.0%</td><td>£1,767</td><td>~£280,100</td><td>+£113,300</td></tr>
+          </tbody>
+        </table>
+        <p>
+          A 2.5 percentage point rate rise on a £250,000 mortgage adds £378/month and £113,000 in total interest over 25 years. This is the scale of exposure when a fixed-rate period ends and a borrower reverts to a higher rate without remortgaging.
+        </p>
+
+        <h2>What-If: Term Comparison</h2>
+        <table>
+          <thead>
+            <tr><th>Term</th><th>Monthly payment (4.5%)</th><th>Total interest</th><th>Monthly saving vs 20yr</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>20 years</td><td>£1,582</td><td>~£129,800</td><td>—</td></tr>
+            <tr><td>25 years</td><td>£1,389</td><td>~£166,800</td><td>+£193/month cheaper</td></tr>
+            <tr><td>30 years</td><td>£1,267</td><td>~£206,100</td><td>+£315/month cheaper</td></tr>
+            <tr><td>35 years</td><td>£1,193</td><td>~£250,900</td><td>+£389/month cheaper</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>Why is the monthly payment the same throughout even though the interest/principal split changes?</h3>
+        <p>
+          The amortisation formula is designed so the payment stays constant while the split shifts. In early months, the outstanding balance is high — so interest consumes most of the payment. As the balance falls, less of each payment goes to interest and more to principal. The algebra works out so the payment covers both interest and a gradually increasing principal reduction each month, arriving at zero balance on exactly the final payment.
+        </p>
+
+        <h3>How is a mortgage different from a personal loan?</h3>
+        <p>
+          Mathematically, they use the same amortisation formula. The differences are: mortgages are secured against property (lower rates due to lower lender risk), have much longer terms (25–35 years vs 1–7 for personal loans), and typically have an LTV constraint. Both can be prepaid; mortgages are more likely to have early repayment charges during fixed-rate periods.
+        </p>
+
+        <h3>Does it matter whether interest is calculated daily or monthly?</h3>
+        <p>
+          Yes, slightly. Most UK mortgage lenders calculate interest daily rather than monthly. Daily calculation means any overpayment immediately reduces the balance and the next day's interest charge. Monthly calculation only applies the overpayment benefit at the month end. The difference is small in absolute terms but daily calculation is marginally more favourable for overpayers.
+        </p>
+
+        <h3>What happens to the monthly payment when I remortgage?</h3>
+        <p>
+          When you remortgage, the new payment is calculated on the outstanding balance at the time, at the new rate, over the remaining term. If rates have risen and the term has stayed the same, the payment will be higher. The amortisation resets with the new inputs — there is no memory of the original deal.
+        </p>
       </div>
     </GuideLayout>
   );

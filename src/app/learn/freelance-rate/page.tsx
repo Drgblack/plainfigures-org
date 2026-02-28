@@ -119,6 +119,33 @@ export default function FreelanceRateGuide() {
         <p>
           If clients require an hourly rate rather than a day rate, the convention is typically: hourly rate = day rate ÷ 8. For a £311/day rate, that is approximately £38.90/hour. Some sectors use 6-hour billing days — in that case, hourly rate = day rate ÷ 6 (£51.83/hour at the same income target).
         </p>
+
+        <h2>What-If: Limited Company vs Sole Trader</h2>
+        <p>
+          A limited company structure can be more tax-efficient at higher income levels. Directors typically take a small salary (at the NI secondary threshold, ~£9,100) and extract remaining profit as dividends, which are taxed at lower rates (8.75% basic, 33.75% higher rate in 2025/26) and exempt from NI. However, corporation tax (19–25%) applies first. At earnings above approximately £50,000–£60,000, the limited company route often produces a meaningfully higher net take-home — but involves additional administration costs (accountancy, filing) of £1,500–£3,000/year.
+        </p>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>How do I calculate my freelance rate if I want to match my old salary?</h3>
+        <p>
+          Work backwards: determine your target net take-home, reverse the tax calculation to find the required gross, add business overheads (insurance, accountancy, equipment), then divide by your realistic billable days. The result is your minimum viable day rate. Add a margin — most experienced freelancers build in 10–20% above minimum to account for gaps and price negotiation.
+        </p>
+
+        <h3>What is a typical utilisation rate for a freelancer?</h3>
+        <p>
+          Experienced freelancers with established client networks typically achieve 70–80% utilisation (140–160 billable days/year). New freelancers in their first year often run at 50–65%. Utilisation above 85% sustained is unusual and leaves little buffer for business development, learning, or illness without income gaps.
+        </p>
+
+        <h3>Should I quote a day rate or hourly rate to clients?</h3>
+        <p>
+          Day rates are standard in most UK contractor and professional services markets. Hourly rates are more common in creative fields (design, copywriting, development) and for shorter engagements. If converting: day rate ÷ 8 gives the hourly equivalent on a standard working day. Some sectors use 6-hour billing days — clarify the assumption when quoting.
+        </p>
+
+        <h3>Does VAT affect my day rate calculation?</h3>
+        <p>
+          If your annual turnover exceeds the VAT registration threshold (£90,000 in 2024/25), you must register for VAT and charge it to clients. VAT is passed on, not absorbed — so your day rate to VAT-registered clients is effectively the same net of VAT. Voluntary registration below the threshold can be beneficial if your clients are VAT-registered businesses (they can reclaim the VAT), but adds administrative complexity.
+        </p>
       </div>
     </GuideLayout>
   );

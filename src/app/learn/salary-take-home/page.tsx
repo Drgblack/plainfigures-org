@@ -88,11 +88,74 @@ export default function TakeHomeGuide() {
         </div>
 
         <h2>Effective vs Marginal Rate</h2>
+
+        <div className="formula-block">
+          <div className="formula-label">Effective Rate Formula</div>
+          Effective Rate = Total Tax Paid ÷ Gross Income<br /><br />
+          Example — UK, £60,000 gross salary (2025/26):<br />
+          Tax on £0–£12,570:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;£0 (Personal Allowance)<br />
+          Tax on £12,571–£50,270: £7,540 (20% basic rate)<br />
+          Tax on £50,271–£60,000: £3,892 (40% higher rate)<br />
+          Total income tax:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;£11,432<br />
+          NI on £12,571–£50,270:&nbsp;&nbsp;&nbsp;£3,016 (8%)<br />
+          NI on £50,271–£60,000:&nbsp;&nbsp;&nbsp;£195 (2%)<br />
+          Total deductions:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;£14,643<br />
+          Effective rate:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;£14,643 ÷ £60,000 = 24.4%<br />
+          Marginal rate:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;42% (40% tax + 2% NI)
+        </div>
+
         <p>
           The <strong>marginal rate</strong> is the rate applied to the next £/$/€ earned. The <strong>effective rate</strong> is total tax paid divided by gross income. At £60,000 in the UK, the marginal rate is 40% (higher rate band) but the effective rate is around 29% — because most income was taxed at 0% or 20%.
         </p>
         <p>
           The effective rate is more useful for understanding actual take-home. The marginal rate matters when evaluating whether additional earnings (overtime, bonuses, second income) are worthwhile.
+        </p>
+
+        <h2>What-If: The £100,000 Trap (UK Personal Allowance Taper)</h2>
+        <p>
+          One of the least-understood features of UK income tax is the Personal Allowance taper. Above £100,000, the £12,570 Personal Allowance is reduced by £1 for every £2 of income, creating an effective 60% marginal tax rate on income between £100,000 and £125,140.
+        </p>
+        <table>
+          <thead>
+            <tr><th>Gross income</th><th>Effective marginal rate</th><th>Net take-home (approx)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>£99,000</td><td>40% + 2% NI = 42%</td><td>~£66,800</td></tr>
+            <tr><td>£100,000</td><td>60% effective (taper begins)</td><td>~£67,400</td></tr>
+            <tr><td>£110,000</td><td>60% effective</td><td>~£70,600</td></tr>
+            <tr><td>£125,140</td><td>60% effective (taper ends)</td><td>~£75,400</td></tr>
+            <tr><td>£126,000</td><td>45% + 2% NI = 47%</td><td>~£75,900</td></tr>
+          </tbody>
+        </table>
+        <p>
+          An extra £25,000 of gross income between £100,000 and £125,140 produces only approximately £8,000 in additional take-home. Pension contributions that bring adjusted net income below £100,000 restore the full Personal Allowance, making them particularly high-value at this income level.
+        </p>
+
+        <h2>What-If: Pension Contributions and Take-Home</h2>
+        <p>
+          Salary sacrifice pension contributions reduce gross income subject to both income tax and National Insurance. For a basic-rate taxpayer contributing £200/month gross, the actual take-home reduction is only approximately £134 (after 20% tax + 8% NI relief on the contribution). For a higher-rate taxpayer, the effective cost of a £200/month pension contribution is approximately £116/month in reduced take-home.
+        </p>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>How do I calculate my take-home pay manually?</h3>
+        <p>
+          For UK PAYE (2025/26): (1) Subtract Personal Allowance (£12,570) from gross. (2) Apply 20% to income up to £50,270, 40% between £50,270 and £125,140, 45% above. (3) Apply NI: 8% between £12,570 and £50,270, 2% above. (4) Sum income tax + NI and subtract from gross. Use the calculator for precise figures — manual calculation is error-prone with partial-year adjustments and taper effects.
+        </p>
+
+        <h3>Why does my tax code affect take-home pay?</h3>
+        <p>
+          HMRC uses tax codes to tell employers how much tax-free income to apply. The standard code 1257L means £12,570 Personal Allowance. Emergency codes (W1/M1) apply tax without accounting for the full year's allowance. Codes with deductions (e.g., K codes) apply additional tax. If your code doesn't match your situation — for example, if you have untaxed income from another source — your monthly take-home may be higher or lower than the standard calculation.
+        </p>
+
+        <h3>Is National Insurance separate from income tax?</h3>
+        <p>
+          Yes — NI is a separate statutory deduction from income tax, calculated on different thresholds with different rates. They appear on the same payslip but are charged independently. NI funds the NHS, state pension, and certain benefits. Income tax funds general government expenditure. The combined deduction is what most people experience as their total tax burden, but they are legally distinct charges.
+        </p>
+
+        <h3>How does salary sacrifice work with take-home pay?</h3>
+        <p>
+          Salary sacrifice reduces contractual gross salary in exchange for an employer-provided benefit (typically pension contributions, childcare vouchers, or cycle-to-work). Because NI is calculated on the post-sacrifice gross, salary sacrifice saves NI as well as income tax — meaning the net cost to the employee is lower than a direct personal contribution would be. The employer also saves employer NI on the sacrificed amount.
         </p>
       </div>
     </GuideLayout>

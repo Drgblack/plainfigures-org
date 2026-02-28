@@ -108,6 +108,45 @@ export default function MortgageOverpaymentGuide() {
         <p>
           Investment returns above are future values, not net gains. Tax, charges, and return variability are not modelled. The overpayment saving is the net interest reduction — certain and immediate.
         </p>
+
+        <h2>What-If: Lump Sum vs Monthly Overpayments</h2>
+        <p>
+          On a £200,000, 4.5%, 25-year mortgage — comparing a £10,000 lump sum in year 1 vs spreading it as ~£833/month over 12 months:
+        </p>
+        <table>
+          <thead>
+            <tr><th>Method</th><th>Interest saved</th><th>Term reduction</th><th>Difference</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>£10,000 lump sum (month 1)</td><td>~£15,200</td><td>~1.6 years</td><td>—</td></tr>
+            <tr><td>£833/month × 12 months</td><td>~£14,800</td><td>~1.5 years</td><td>~£400 less saved</td></tr>
+          </tbody>
+        </table>
+        <p>
+          The lump sum saves slightly more because the full £10,000 reduces the principal from day 1, whereas spreading the same amount across 12 months means the average outstanding balance is higher for most of that year. The difference is modest — either approach is substantially better than no overpayment.
+        </p>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>Does overpaying a mortgage always reduce the term?</h3>
+        <p>
+          Only if you choose that option. Most lenders offer two ways to apply overpayments: reduce the term (keep the monthly payment the same) or reduce the monthly payment (keep the term the same). Reducing the term saves more total interest — the principal falls faster, leaving less balance to accrue interest. Reducing the monthly payment improves short-term cash flow but saves less overall. Check your lender's default setting and specify your preference.
+        </p>
+
+        <h3>What is the 10% annual overpayment allowance?</h3>
+        <p>
+          Most fixed-rate mortgage products allow overpayments of up to 10% of the outstanding balance in any calendar year without incurring an Early Repayment Charge (ERC). On a £180,000 outstanding balance, that is £18,000/year, or £1,500/month. Above this threshold during a fixed period, ERCs of 1–5% of the excess typically apply. Tracker and SVR mortgages typically allow unlimited overpayments without penalty.
+        </p>
+
+        <h3>Is it better to overpay the mortgage or invest the money?</h3>
+        <p>
+          The comparison depends on: mortgage rate, expected after-tax investment return, and risk tolerance. Overpaying a 4.5% mortgage delivers a certain, tax-free 4.5% effective return. Investing in equities has historically returned more but with volatility — and returns are subject to tax in non-ISA wrappers. Neither option is universally correct. This calculator models the overpayment side; compare with an investment projection for a complete picture. This is not financial advice.
+        </p>
+
+        <h3>Can I overpay a fixed-rate mortgage mid-term?</h3>
+        <p>
+          Yes, up to the annual allowance (typically 10% of outstanding balance). Above the allowance, or on some products with stricter terms, ERCs apply. Always check your mortgage terms — the allowance resets each calendar year, not on the mortgage anniversary. Unused allowance from one year does not carry over to the next.
+        </p>
       </div>
     </GuideLayout>
   );

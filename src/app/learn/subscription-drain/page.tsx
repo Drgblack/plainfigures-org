@@ -111,6 +111,33 @@ export default function SubscriptionDrainGuide() {
         <div className="warning-point">
           Free trials that convert to paid subscriptions automatically are the most common source of forgotten subscriptions. Payment data from bank statements is more reliable than memory for identifying all active subscriptions.
         </div>
+
+        <h2>What-If: Cancel Half Your Subscriptions</h2>
+        <p>
+          Using the five-subscription example above (£84.96/month total): cancelling the two least-used (music streaming + news, ~£26/month) and redirecting that £26/month to a savings account at 4.5% AER produces approximately £3,230 after 10 years — vs £3,116 paid if kept. The opportunity gap is modest at this scale, but the pattern compounds across multiple cancellations over time.
+        </p>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>What is the fastest way to find all my active subscriptions?</h3>
+        <p>
+          Bank and credit card statements are more reliable than memory. Search for recurring transactions — particularly those with 28–31 day intervals. Annual billing cycles (often ending in -99) are easy to miss. Some banking apps categorise recurring payments automatically. A dedicated review every 6 months typically surfaces 1–3 forgotten subscriptions.
+        </p>
+
+        <h3>Do annual subscriptions work out cheaper than monthly?</h3>
+        <p>
+          Typically yes — most services offer 15–20% discount for annual billing. The trade-off is reduced flexibility (you've committed for 12 months) and the upfront cash outlay. For services you use consistently, annual billing is usually the lower-cost option. For services you use variably, monthly billing preserves the option to cancel without loss.
+        </p>
+
+        <h3>How do price increases affect long-term subscription costs?</h3>
+        <p>
+          Most major subscription services have increased prices by 3–8% annually in recent years. A subscription costing £10/month today at 5% annual increases costs £16.29/month in 10 years and a total of £1,509 over that period — vs £1,200 at fixed pricing, a 26% difference. Long-term projections should always include a price increase assumption.
+        </p>
+
+        <h3>What is the opportunity cost of subscriptions vs investing?</h3>
+        <p>
+          The future value formula (FV = M × [(1+r)^n − 1] / r) quantifies this: £85/month invested at 6% for 10 years produces approximately £13,900. This is the hypothetical future value foregone — not a guaranteed return on investing, as investment returns are variable. It provides a framework for comparing the long-term financial weight of recurring costs.
+        </p>
       </div>
     </GuideLayout>
   );

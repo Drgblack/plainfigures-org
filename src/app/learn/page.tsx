@@ -147,6 +147,26 @@ const GUIDES = [
     calcLabel: 'BI Calculator',
     tags: ['Gross Profit', 'Indemnity Period', 'Average Clause'],
   },
+  {
+    href: '/learn/tdee',
+    code: 'G15',
+    title: 'TDEE & Calorie Needs: How the Calculation Works',
+    description: 'How Total Daily Energy Expenditure is calculated — the Mifflin-St Jeor BMR formula, activity multipliers, and what the resulting numbers mean for calorie targets.',
+    readTime: '5 min',
+    calcHref: '/tdee',
+    calcLabel: 'TDEE Calculator',
+    tags: ['BMR', 'Activity Multiplier', 'Mifflin-St Jeor'],
+  },
+  {
+    href: '/learn/loan-repayment',
+    code: 'G16',
+    title: 'Loan Repayment: True APR Explained',
+    description: 'How monthly loan repayments are calculated, what APR actually measures versus the stated interest rate, and how fees change the true cost of borrowing.',
+    readTime: '5 min',
+    calcHref: '/loan',
+    calcLabel: 'Loan Repayment Calculator',
+    tags: ['APR', 'Amortisation', 'Flat vs Reducing'],
+  },
 ];
 
 export default function LearnIndexPage() {

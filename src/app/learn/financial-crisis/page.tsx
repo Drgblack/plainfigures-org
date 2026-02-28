@@ -55,7 +55,7 @@ export default function FinancialCrisisGuide() {
           Self-employed people, contractors, and those in cyclical industries (construction, finance, hospitality) typically need 6–12 months. Dual-income households with stable employment may be adequately covered by 3 months.
         </div>
 
-        <h2>How a Cost-of-Living Shock Changes the Equation</h2>
+        <h2>What-If: Cost-of-Living Shock + Income Loss</h2>
         <p>
           Financial crises don't always mean zero income — they often mean a combination of income reduction and cost increases simultaneously. Redundancy may come with reduced income (statutory redundancy pay, then benefits), while inflation or healthcare costs increase expenses.
         </p>
@@ -70,7 +70,7 @@ export default function FinancialCrisisGuide() {
           <div className="example-row"><span>Runway</span><span>5.1 months (vs 6.4 at normal costs)</span></div>
         </div>
 
-        <h2>How Expense Cuts Extend Runway Non-Linearly</h2>
+        <h2>What-If: How Expense Cuts Extend Runway</h2>
         <p>
           Emergency expense cuts (cancelling subscriptions, reducing dining, deferring non-essential purchases) typically reduce monthly outgoings by 20–35% for most households. The runway extension is proportionally significant:
         </p>
@@ -106,6 +106,28 @@ export default function FinancialCrisisGuide() {
         </p>
         <p>
           The Plain Figures Crisis Simulator models the burndown graphically — showing exactly when savings hit zero under different expense-cut and income-replacement scenarios. The goal is clarity before the situation arises.
+        </p>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>What counts as a financial crisis for this calculator?</h3>
+        <p>
+          Any scenario where monthly expenses exceed monthly income — job loss, significant income reduction, sudden large expense, or a combination. The calculator models the depletion of liquid savings under a given burn rate. The trigger event doesn't need to be catastrophic; even a 30% income cut against fixed costs can produce a runway problem within 12 months.
+        </p>
+
+        <h3>Should I include my stocks and shares ISA in liquid savings?</h3>
+        <p>
+          With caution. Stocks and shares ISAs are technically accessible but carry sequencing risk — selling during a market downturn crystallises losses permanently. A conservative approach excludes them from liquid savings calculations. If included, apply a stress discount of 20–40% to reflect potential drawdown at time of crisis.
+        </p>
+
+        <h3>How much emergency fund do I actually need?</h3>
+        <p>
+          The conventional 3–6 months is a population average heuristic. Self-employed and contract workers should target 6–12 months. The right number depends on your minimum non-negotiable monthly expenses (rent/mortgage, utilities, food, debt service), how quickly your income could realistically recover, and whether you have any flexible credit available as a buffer.
+        </p>
+
+        <h3>Does the 3–6 month rule refer to income or expenses?</h3>
+        <p>
+          Expenses — specifically your minimum essential monthly outgoings, not your gross income. The purpose is to cover what you must pay during a crisis, not to replace your full lifestyle. Many people with modest savings have adequate runway because their minimum essential expenses are significantly below their income.
         </p>
       </div>
     </GuideLayout>

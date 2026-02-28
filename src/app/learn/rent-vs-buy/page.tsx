@@ -103,6 +103,53 @@ export default function RentVsBuyGuide() {
         <p>
           The Plain Figures Rent vs Buy calculator tracks annual net worth for both paths: the buyer's equity minus cumulative ownership costs, versus the renter's investment portfolio built from the deposit and monthly savings. It identifies the break-even year and shows the gap at any chosen comparison point.
         </p>
+
+        <h2>What-If Scenarios</h2>
+
+        <h3>What if property prices rise 3% per year vs stay flat?</h3>
+        <p>
+          On a £300,000 property with a £270,000 mortgage (10% deposit), 4.5% rate over 25 years:
+        </p>
+        <table>
+          <thead>
+            <tr><th>Scenario</th><th>Buyer net worth at year 10</th><th>Renter net worth at year 10</th><th>Winner</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Property +3%/yr, deposit invested at 7%</td><td>~£186,000</td><td>~£97,000</td><td>Buyer by £89k</td></tr>
+            <tr><td>Property flat, deposit invested at 7%</td><td>~£94,000</td><td>~£97,000</td><td>Renter by £3k</td></tr>
+            <tr><td>Property −1%/yr, deposit invested at 7%</td><td>~£48,000</td><td>~£97,000</td><td>Renter by £49k</td></tr>
+          </tbody>
+        </table>
+        <p>
+          Property appreciation is the dominant variable. In a flat or declining market, the renter who invests the deposit and monthly savings can match or exceed the buyer's net worth within 10 years. In an appreciating market, buying wins significantly — but the outcome depends on assumptions neither party can control.
+        </p>
+
+        <h3>What if transaction costs are high — stamp duty + legal + survey?</h3>
+        <p>
+          On a £300,000 purchase in the UK, transaction costs are approximately £8,000–£12,000 (SDLT at 2.5–5%, legal fees ~£1,500–£2,000, survey £500–£1,500). These costs must be recouped through equity build-up before buying becomes financially advantageous. At 3% annual appreciation, a £10,000 transaction cost adds approximately 1–1.5 years to the break-even point.
+        </p>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>Is renting "dead money"?</h3>
+        <p>
+          No — and the phrase is misleading. Rent pays for housing — a real service. Mortgage interest also pays for housing; the principal component builds equity, but interest is also "gone." The fair comparison is between the total cost of each option, not between "rent paid to landlord" and "equity built." Transaction costs, maintenance, insurance, and opportunity cost of the deposit are all costs of ownership that have no renting equivalent.
+        </p>
+
+        <h3>What is the typical break-even point for buying vs renting?</h3>
+        <p>
+          In most UK markets, the break-even point — the year at which buying overtakes renting in net worth terms — is typically 6–12 years under moderate assumptions (3% property appreciation, 5–6% investment return on deposit). High transaction costs, slow price growth, or strong investment returns push this out. In high-appreciation urban markets it can be as short as 3–5 years.
+        </p>
+
+        <h3>Should I include principal repayment in the cost of buying?</h3>
+        <p>
+          No — principal repayment is not a cost. It converts cash into equity, which has value. The true ownership cost is mortgage interest (not the full repayment), plus maintenance, tax, insurance, and transaction costs. Including principal repayment as a "cost" inflates the apparent expense of buying relative to renting.
+        </p>
+
+        <h3>How does rent inflation affect the comparison?</h3>
+        <p>
+          Rent typically rises with inflation and local market conditions. A mortgage payment on a fixed-rate product stays constant (in nominal terms) for the fixed period. As rent rises above the mortgage payment over time, the renter's ongoing costs increase while the buyer's stay flat — this is a significant long-run advantage for buying in inflationary environments, and one that simple one-period comparisons miss entirely.
+        </p>
       </div>
     </GuideLayout>
   );

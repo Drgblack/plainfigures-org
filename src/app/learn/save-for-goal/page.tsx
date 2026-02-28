@@ -120,6 +120,52 @@ export default function SaveForGoalGuide() {
         <p>
           If the goal amount itself will rise with inflation — for example, a house deposit where property prices are increasing — the nominal target grows over time. A goal of £25,000 today at 3% annual house price inflation becomes approximately £28,200 in four years. Savings projections that assume a fixed target may understate the real gap.
         </p>
+
+        <h2>What-If: Rate vs Saving Rate Comparison</h2>
+        <p>
+          For a £25,000 house deposit goal — which matters more, finding a better savings rate or saving more per month?
+        </p>
+        <table>
+          <thead>
+            <tr><th>Monthly saving</th><th>Rate</th><th>Time to goal</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>£400</td><td>2.0% AER</td><td>~59 months</td></tr>
+            <tr><td>£400</td><td>4.5% AER</td><td>~54 months</td></tr>
+            <tr><td>£400</td><td>6.0% AER</td><td>~52 months</td></tr>
+            <tr><td>£500</td><td>4.5% AER</td><td>~44 months</td></tr>
+            <tr><td>£600</td><td>4.5% AER</td><td>~37 months</td></tr>
+          </tbody>
+        </table>
+        <p>
+          Increasing the monthly saving by £200 (from £400 to £600) saves 17 months — more than the 7 months saved by tripling the interest rate from 2% to 6%. For short-to-medium term goals, the saving rate dominates the interest rate.
+        </p>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>How do I calculate how long it takes to save a specific amount?</h3>
+        <p>
+          With a savings account earning interest: n = log(1 + (G × r) / M) ÷ log(1 + r), where G is the goal, r is the monthly rate (annual AER ÷ 12), and M is the monthly saving. Without interest (cash): n = G ÷ M. For most short-term goals, the interest contribution is modest — the monthly saving amount is the primary driver.
+        </p>
+
+        <h3>What is the best account type for a savings goal?</h3>
+        <p>
+          This depends on the goal timeline. For goals under 12 months, instant-access savings accounts provide flexibility. For 1–3 year goals, fixed-rate bonds or fixed-term ISAs typically offer higher rates with acceptable lock-up periods. For goals over 5 years, stocks and shares ISAs may be appropriate — though with investment risk. This is not a recommendation — compare current available rates and terms independently.
+        </p>
+
+        <h3>Should I include interest in my savings goal calculation?</h3>
+        <p>
+          Yes, if the account earns interest — it reduces the time needed or the monthly saving required. The formula accounts for it automatically. Note that the AER figure is what matters, not the nominal rate. For goals where the target itself may inflate (e.g., house deposits rising with property prices), use the inflating target figure rather than today's price.
+        </p>
+
+        <h3>How does a Lifetime ISA (LISA) affect savings goal calculations?</h3>
+        <p>
+          A LISA adds a 25% government bonus on contributions up to £4,000/year — effectively a 25% instant return on savings for qualifying first-home purchases or retirement. If eligible, the LISA bonus significantly accelerates savings goals for first-time buyers. The calculator models a standard savings account; LISA bonus calculations should be added separately to the projected total.
+        </p>
+
+        <div className="warning-point">
+          All savings projections are indicative only. Savings rates change frequently and are not guaranteed. Inflation may reduce the real value of the goal target over time. This is not financial advice — compare current rates independently and consult a professional adviser for significant financial decisions.
+        </div>
       </div>
     </GuideLayout>
   );

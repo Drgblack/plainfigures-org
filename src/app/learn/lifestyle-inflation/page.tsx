@@ -94,6 +94,33 @@ export default function LifestyleInflationGuide() {
         <div className="warning-point">
           This guide is for general information only. The projection figures are illustrative and assume constant returns that real investments do not provide. Tax on investment gains is not modelled. This is not financial advice.
         </div>
+
+        <h2>What-If: Higher Starting Savings Rate</h2>
+        <p>
+          The scenarios above model only the savings from pay rises. If Person A also saves 15% of their base salary from the start (£5,250/year on £35,000) while Person B saves 3% (£1,050/year), the 20-year gap widens to over £380,000. The pay-rise savings compound the effect of base savings discipline — the two habits reinforce each other.
+        </p>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>What is the difference between lifestyle inflation and lifestyle creep?</h3>
+        <p>
+          They describe the same phenomenon — spending that rises proportionally with income. "Lifestyle creep" is the informal term commonly used in personal finance writing. "Lifestyle inflation" is more frequently used in academic and research contexts. The calculation is identical either way.
+        </p>
+
+        <h3>Is lifestyle inflation always bad financially?</h3>
+        <p>
+          No — the maths only quantifies the opportunity cost. Spending increases that produce genuine long-term value (education, preventive healthcare, time savings) may be rational even if they reduce the savings rate. The calculator does not distinguish between categories of spending; that is a judgement the numbers alone cannot make.
+        </p>
+
+        <h3>How does lifestyle inflation interact with retirement planning?</h3>
+        <p>
+          Two ways. First, higher spending increases the income replacement needed in retirement — a person spending £4,000/month needs a larger pot than one spending £2,500/month. Second, reduced savings from lifestyle inflation compounds with the first problem: the person needs more retirement income but has saved less to generate it. The retirement gap created by lifestyle inflation is typically larger than the direct savings shortfall.
+        </p>
+
+        <h3>What savings rate do financial planners recommend?</h3>
+        <p>
+          The commonly cited benchmark is 15–20% of gross income (including employer pension contributions) for retirement savings. This varies significantly by age of starting, desired retirement age, existing savings, and expected state pension entitlement. These benchmarks are planning heuristics — not targets that guarantee outcomes. This is not financial advice.
+        </p>
       </div>
     </GuideLayout>
   );

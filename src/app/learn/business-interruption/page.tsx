@@ -121,6 +121,16 @@ export default function BusinessInterruptionGuide() {
         <p>
           Most insurance market guidance suggests that businesses underestimate their recovery time. An 18–24 month indemnity period is commonly recommended as a minimum for businesses with any material complexity, unless a specific shorter recovery scenario can be demonstrated.
         </p>
+
+        <h3>What is the maximum indemnity period typically available?</h3>
+        <p>
+          UK commercial BI policies typically offer indemnity periods of 12, 18, 24, or 36 months. Some specialist policies for large manufacturers or complex supply chains extend to 48 months. The period should reflect the worst-case scenario for recovery — including rebuilding, equipment lead times, regulatory approvals, and customer reacquisition. Underestimating leads to cover running out before trading is fully restored.
+        </p>
+
+        <h3>How does the average clause apply to BI under-insurance?</h3>
+        <p>
+          The average clause (or co-insurance clause) applies when the declared sum insured is below the actual gross profit at risk. In that case, the insurer treats the policyholder as a co-insurer for the shortfall. Example: if gross profit at risk is £500,000 but declared sum is £300,000 (60%), a £100,000 claim is paid at 60% = £60,000. The policyholder absorbs £40,000 of a covered loss — despite paying for BI cover — purely due to under-declaration.
+        </p>
       </div>
     </GuideLayout>
   );
