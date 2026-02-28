@@ -8,6 +8,7 @@ import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateCompound } from '@/lib/calculations';
 import { formatCurrency, formatPercent, formatNumber } from '@/lib/formatting';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import AdSlot from '@/components/ui/AdSlot';
 
 const FREQUENCIES = [
   { label: 'Annual', value: 1 },

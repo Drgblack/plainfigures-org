@@ -2,6 +2,7 @@
 
 import SaveCalcButton from '@/components/ui/SaveCalcButton';
 import ToolPreview from '@/components/ui/ToolPreview';
+import AdSlot from '@/components/ui/AdSlot';
 
 import { useState, useMemo } from 'react';
 import { calculateTakeHome, COUNTRY_CONFIG, CountryCode } from '@/lib/tax-calculations';
