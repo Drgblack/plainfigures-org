@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "language": "Español",
+    "code": "es",
+    "direction": "ltr"
+  },
+  "nav": {
+    "home": "Plain Figures",
+    "learn": "Aprender",
+    "search_placeholder": "Buscar…",
+    "search_label": "Buscar calculadoras y guías",
+    "saved_label": "Cálculos guardados",
+    "currency_label": "Moneda",
+    "language_label": "Idioma",
+    "theme_to_light": "Cambiar al modo claro",
+    "theme_to_dark": "Cambiar al modo oscuro",
+    "theme_light": "Claro",
+    "theme_dark": "Oscuro"
+  },
+  "currency": {
+    "saved_note": "Guardado en el navegador. Cambia todas las calculadoras.",
+    "detect_note": "Detectado desde tu configuración regional."
+  },
+  "lang": {
+    "ui_only_note": "Solo cadenas de UI · Cálculos sin cambios",
+    "machine_note": "Traducción automática · Los números no se traducen."
+  },
+  "home": {
+    "tagline_1": "Comprueba los números.",
+    "tagline_2": "Sin el ruido.",
+    "disclaimer": "Sin consejos. Sin opiniones. Sin productos.",
+    "personal_section": "Finanzas personales y estilo de vida",
+    "pro_section": "Herramientas profesionales",
+    "recently_used": "Usados recientemente",
+    "saved_calcs": "Cálculos guardados",
+    "featured_guides": "Guías destacadas",
+    "all_guides": "Las 16 guías →",
+    "no_saved": "Aún no hay cálculos guardados.",
+    "no_recent": "Tus herramientas usadas recientemente aparecerán aquí."
+  },
+  "calc": {
+    "inputs": "Parámetros",
+    "results": "Resultados",
+    "save": "Guardar",
+    "saved": "Guardado",
+    "share": "Compartir",
+    "print": "Imprimir",
+    "learn_more": "Aprende cómo se calcula esto",
+    "rate_context_label": "Contexto de tasas"
+  },
+  "footer": {
+    "tagline": "Números sin ruido. No es asesoramiento financiero.",
+    "updated": "Actualizado feb. 2026 — ejercicio fiscal 2025/26",
+    "about": "Acerca de",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "disclaimer": "Aviso legal",
+    "contact": "Contacto"
+  },
+  "a11y": {
+    "skip_to_content": "Ir al contenido",
+    "external_link": "abre en nueva pestaña",
+    "required_field": "obligatorio"
+  }
+}

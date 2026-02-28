@@ -3,7 +3,7 @@ import Script from 'next/script';
 import './globals.css';
 import { CurrencyProvider } from '@/lib/CurrencyContext';
 import Navbar from '@/components/layout/Navbar';
-import LangMenu from '@/components/ui/LangMenu';
+import LangSwitcher, { LangProvider } from '@/components/ui/LangSwitcher';
 
 export const metadata: Metadata = {
   title: {
@@ -55,9 +55,10 @@ export const metadata: Metadata = {
     languages: {
       'en-GB': 'https://plainfigures.org',
       'en-US': 'https://plainfigures.org',
-      'de': 'https://plainfigures.org',
-      'fr': 'https://plainfigures.org',
-      'es': 'https://plainfigures.org',
+      'de': 'https://plainfigures.org/?lang=de',
+      'fr': 'https://plainfigures.org/?lang=fr',
+      'es': 'https://plainfigures.org/?lang=es',
+      'zh': 'https://plainfigures.org/?lang=zh',
     },
   },
   icons: {
@@ -82,7 +83,7 @@ const jsonLd = {
       'url': 'https://plainfigures.org',
       'name': 'Plain Figures',
       'description': 'Neutral financial calculators. No advice. No noise.',
-      'inLanguage': ['en-GB', 'en-US'],
+      'inLanguage': ['en-GB', 'en-US', 'de', 'fr', 'es', 'zh'],
       'potentialAction': {
         '@type': 'SearchAction',
         'target': {
@@ -128,10 +129,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <CurrencyProvider>
+          <LangProvider>
           {/* Skip-to-content accessibility link */}
           <a
             href="#main-content"
-            className="skip-to-content"
+            style={{
+              position: 'absolute',
+              top: '-100px',
+              left: '1rem',
+              zIndex: 9999,
+              padding: '0.6rem 1.25rem',
+              background: 'var(--accent)',
+              color: '#fff',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.78rem',
+              borderRadius: '4px',
+              textDecoration: 'none',
+              letterSpacing: '0.04em',
+              transition: 'top 0.15s ease',
+            }}
+            onFocus={e => (e.currentTarget.style.top = '0.5rem')}
+            onBlur={e => (e.currentTarget.style.top = '-100px')}
           >
             Skip to content
           </a>
@@ -160,7 +178,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 PLAIN FIGURES — Numbers without noise. Not financial advice.
               </span>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                <LangMenu />
+                <LangSwitcher />
                 <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}>
                   Updated Feb 2026 — 2025/26 UK tax bands
                 </span>
@@ -182,6 +200,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
             </nav>
           </footer>
+          </LangProvider>
         </CurrencyProvider>
       </body>
     </html>

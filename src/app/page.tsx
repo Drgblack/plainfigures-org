@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { ALL_TOOLS, PERSONAL_TOOLS, PROFESSIONAL_TOOLS, ToolMeta, ToolPreviewResult } from '@/lib/siteData';
 import { getRecentHrefs, getSavedCalcs, deleteSavedCalc, SavedCalc } from '@/lib/localStorage';
 import SeasonalBanner from '@/components/ui/SeasonalBanner';
+import { useLang } from '@/components/ui/LangSwitcher';
 
 const FEATURED_GUIDES = [
   { href: '/learn/mortgage-repayment', title: 'How Mortgage Repayment Works', readTime: '5 min' },
   { href: '/learn/compound-interest', title: 'Understanding Compound Interest', readTime: '4 min' },
-  { href: '/learn/salary-take-home', title: "Salary Take-Home: How It's Calculated", readTime: '7 min' },
+  { href: '/learn/salary-take-home', title: 'Salary Take-Home: How It's Calculated', readTime: '7 min' },
   { href: '/learn/rent-vs-buy', title: 'Rent vs Buy: The Key Numbers', readTime: '6 min' },
   { href: '/learn/loan-repayment', title: 'Loan Repayment & True APR', readTime: '5 min' },
   { href: '/learn/tdee', title: 'TDEE & Calorie Needs Explained', readTime: '5 min' },
@@ -143,6 +144,7 @@ function SearchResults({ query }: { query: string }) {
 }
 
 function RecentlyUsed() {
+  const { t } = useLang();
   const [recentTools, setRecentTools] = useState<ToolMeta[]>([]);
   useEffect(() => {
     const hrefs = getRecentHrefs();
@@ -153,7 +155,7 @@ function RecentlyUsed() {
   return (
     <div style={{ marginBottom: '2rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.85rem' }}>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Recently Used</div>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{t('home.recently_used')}</div>
         <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.5rem' }}>
@@ -177,6 +179,7 @@ function RecentlyUsed() {
 }
 
 function SavedCalcsPanel() {
+  const { t } = useLang();
   const [saves, setSaves] = useState<SavedCalc[]>([]);
   const [expanded, setExpanded] = useState(false);
   useEffect(() => { setSaves(getSavedCalcs()); }, []);
@@ -186,7 +189,7 @@ function SavedCalcsPanel() {
   return (
     <div style={{ marginBottom: '2.5rem', padding: '1.25rem 1.5rem', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '8px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Saved Calculations ({saves.length})</div>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{t('home.saved_calcs')} ({saves.length})</div>
         {saves.length > 3 && (
           <button onClick={() => setExpanded(e => !e)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.68rem', cursor: 'pointer', letterSpacing: '0.06em' }}>
             {expanded ? 'Show less' : `Show all ${saves.length}`}
@@ -225,6 +228,7 @@ function SavedCalcsPanel() {
 }
 
 export default function HomePage() {
+  const { t } = useLang();
   const [query, setQuery] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -248,10 +252,10 @@ export default function HomePage() {
       <div style={{ marginBottom: '3rem' }}>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Financial Calculator Hub</div>
         <h1 style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(2rem, 5vw, 3.25rem)', fontWeight: 300, color: 'var(--text-primary)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '1.5rem' }}>
-          Check the maths.<br /><span style={{ color: 'var(--text-muted)' }}>Without the noise.</span>
+          {t('home.tagline_1')}<br /><span style={{ color: 'var(--text-muted)' }}>{t('home.tagline_2')}</span>
         </h1>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '520px', fontWeight: 300, marginBottom: '2rem' }}>
-          26 calculators and 16 formula-first guides for personal decisions and professional use. No advice, no opinions, no products. Just numbers you can trust.
+          26 calculators and 16 formula-first guides for personal decisions and professional use. {t('home.disclaimer')} Just numbers you can trust.
         </p>
 
         {/* Search */}
@@ -294,7 +298,7 @@ export default function HomePage() {
           <div style={{ marginBottom: '3rem', padding: '1.25rem 1.5rem', background: 'rgba(46,200,138,0.04)', border: '1px solid rgba(46,200,138,0.15)', borderRadius: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#2ec88a', letterSpacing: '0.14em', textTransform: 'uppercase' }}>Learning Centre</div>
-              <Link href="/learn" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#2ec88a', textDecoration: 'none', letterSpacing: '0.06em' }}>All 16 guides →</Link>
+              <Link href="/learn" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#2ec88a', textDecoration: 'none', letterSpacing: '0.06em' }}>{t('home.all_guides')}</Link>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.5rem' }}>
               {FEATURED_GUIDES.map(({ href, title, readTime }) => (
@@ -309,7 +313,7 @@ export default function HomePage() {
           {/* Personal tools */}
           <div style={{ marginBottom: '3rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>Personal Finance & Lifestyle</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>{t('home.personal_section')}</div>
               <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)' }}>{PERSONAL_TOOLS.length} calculators</div>
             </div>
@@ -319,7 +323,7 @@ export default function HomePage() {
           {/* Professional tools */}
           <div style={{ marginBottom: '3rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#d4a843', letterSpacing: '0.14em', textTransform: 'uppercase' }}>Professional Tools</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: '#d4a843', letterSpacing: '0.14em', textTransform: 'uppercase' }}>{t('home.pro_section')}</div>
               <div style={{ flex: 1, height: '1px', background: 'rgba(212,168,67,0.2)' }} />
               <div style={{ padding: '0.15rem 0.5rem', background: 'rgba(212,168,67,0.1)', border: '1px solid rgba(212,168,67,0.25)', borderRadius: '3px', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: '#d4a843', letterSpacing: '0.1em' }}>FOR BROKERS & RISK MANAGERS</div>
             </div>

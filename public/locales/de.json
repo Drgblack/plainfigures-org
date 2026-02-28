@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "language": "Deutsch",
+    "code": "de",
+    "direction": "ltr"
+  },
+  "nav": {
+    "home": "Plain Figures",
+    "learn": "Lernen",
+    "search_placeholder": "Suchen…",
+    "search_label": "Rechner und Anleitungen suchen",
+    "saved_label": "Gespeicherte Berechnungen",
+    "currency_label": "Währung",
+    "language_label": "Sprache",
+    "theme_to_light": "Zum hellen Modus wechseln",
+    "theme_to_dark": "Zum dunklen Modus wechseln",
+    "theme_light": "Hell",
+    "theme_dark": "Dunkel"
+  },
+  "currency": {
+    "saved_note": "Im Browser gespeichert. Ändert alle Rechner.",
+    "detect_note": "Aus Ihrem Browser-Locale erkannt."
+  },
+  "lang": {
+    "ui_only_note": "Nur UI-Texte · Berechnungen unverändert",
+    "machine_note": "Maschinelle Übersetzung · Zahlen werden nicht übersetzt."
+  },
+  "home": {
+    "tagline_1": "Die Zahlen prüfen.",
+    "tagline_2": "Ohne das Rauschen.",
+    "disclaimer": "Keine Beratung. Keine Meinungen. Keine Produkte.",
+    "personal_section": "Privatfinanzen & Lebensstil",
+    "pro_section": "Professionelle Werkzeuge",
+    "recently_used": "Zuletzt verwendet",
+    "saved_calcs": "Gespeicherte Berechnungen",
+    "featured_guides": "Empfohlene Anleitungen",
+    "all_guides": "Alle 16 Anleitungen →",
+    "no_saved": "Noch keine gespeicherten Berechnungen.",
+    "no_recent": "Ihre zuletzt verwendeten Tools erscheinen hier."
+  },
+  "calc": {
+    "inputs": "Eingaben",
+    "results": "Ergebnisse",
+    "save": "Speichern",
+    "saved": "Gespeichert",
+    "share": "Teilen",
+    "print": "Drucken",
+    "learn_more": "Erfahren Sie, wie dies berechnet wird",
+    "rate_context_label": "Zinssatz-Kontext"
+  },
+  "footer": {
+    "tagline": "Zahlen ohne Lärm. Keine Finanzberatung.",
+    "updated": "Aktualisiert Feb 2026 — Steuerjahr 2025/26",
+    "about": "Über uns",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "disclaimer": "Haftungsausschluss",
+    "contact": "Kontakt"
+  },
+  "a11y": {
+    "skip_to_content": "Zum Inhalt springen",
+    "external_link": "öffnet in neuem Tab",
+    "required_field": "Pflichtfeld"
+  }
+}

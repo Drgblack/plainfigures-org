@@ -1,18 +1,38 @@
 'use client';
 
 /**
- * LangSwitcher — lightweight i18n for Plain Figures
+ * LangSwitcher — Plain Figures lightweight i18n
  *
- * Strategy: Google Translate iframe is too invasive for a trust-first site.
- * Instead we use a URL-query parameter (?lang=de) + a client-side string map
- * for the 10 most visible UI strings. This keeps the page fast, avoids
- * third-party cookies, and lets users switch language without a reload.
+ * Architecture:
+ * - 5 supported languages: English, German, French, Spanish, Mandarin
+ * - Locale JSON files loaded from /public/locales/{lang}.json
+ * - String lookup via t(key, dict) from @/lib/i18n
+ * - Language persisted to localStorage + URL ?lang= param for crawlers
+ * - Custom event 'pf-lang-change' broadcast so other components can re-render
+ * - detectBrowserLang() auto-selects on first visit (no stored preference)
  *
- * To use: import LangSwitcher from '@/components/ui/LangSwitcher'
- *         and drop <LangSwitcher /> in the footer or navbar overflow.
+ * SEO (current — UI-only i18n):
+ * - hreflang tags in layout.tsx metadata.alternates (all pointing to same URL)
+ * - ?lang=de URL parameter readable by crawlers
+ *
+ * SEO (future — full route-based i18n):
+ * - Add [locale] dynamic segment: /app/[locale]/page.tsx
+ * - hreflang: https://plainfigures.org/de/mortgage etc.
+ * - Use next-intl or i18next (see /src/lib/i18n.ts for migration guide)
+ *
+ * Usage:
+ *   import LangSwitcher from '@/components/ui/LangSwitcher';
+ *   <LangSwitcher compact /> — flag-only button (for navbar)
+ *   <LangSwitcher />         — flag + label button (for footer)
+ *
+ *   To translate a string in another component:
+ *   import { useLang } from '@/components/ui/LangSwitcher';
+ *   const { t } = useLang();
+ *   <span>{t('nav.learn')}</span>
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, createContext, useContext, useCallback } from 'react';
+import { detectBrowserLang, loadLocale, t as tFn } from '@/lib/i18n';
 
 export type Lang = 'en' | 'de' | 'fr' | 'es' | 'zh';
 
@@ -33,107 +53,73 @@ export const LANGUAGES: LangOption[] = [
 
 const LANG_KEY = 'pf_lang_v1';
 
-// ── Core UI strings ── add keys here as the site grows ──────────────────────
-const UI_STRINGS: Record<string, Record<Lang, string>> = {
-  'Check the maths.': {
-    en: 'Check the maths.',
-    de: 'Die Zahlen prüfen.',
-    fr: 'Vérifiez les calculs.',
-    es: 'Comprueba los números.',
-    zh: '核实数据。',
-  },
-  'Without the noise.': {
-    en: 'Without the noise.',
-    de: 'Ohne das Rauschen.',
-    fr: 'Sans le bruit.',
-    es: 'Sin el ruido.',
-    zh: '简单纯粹。',
-  },
-  'Search calculators and tools…': {
-    en: 'Search calculators and tools…',
-    de: 'Rechner suchen…',
-    fr: 'Rechercher des outils…',
-    es: 'Buscar calculadoras…',
-    zh: '搜索计算工具…',
-  },
-  'Learning Centre': {
-    en: 'Learning Centre',
-    de: 'Lernbereich',
-    fr: 'Centre d\'apprentissage',
-    es: 'Centro de aprendizaje',
-    zh: '学习中心',
-  },
-  'Personal Finance & Lifestyle': {
-    en: 'Personal Finance & Lifestyle',
-    de: 'Privatfinanzen & Lebensstil',
-    fr: 'Finances personnelles & style de vie',
-    es: 'Finanzas personales y estilo de vida',
-    zh: '个人理财与生活',
-  },
-  'Professional Tools': {
-    en: 'Professional Tools',
-    de: 'Professionelle Werkzeuge',
-    fr: 'Outils professionnels',
-    es: 'Herramientas profesionales',
-    zh: '专业工具',
-  },
-  'Recently Used': {
-    en: 'Recently Used',
-    de: 'Zuletzt verwendet',
-    fr: 'Récemment utilisés',
-    es: 'Usados recientemente',
-    zh: '最近使用',
-  },
-  'No advice. No noise. Just the maths.': {
-    en: 'No advice. No noise. Just the maths.',
-    de: 'Keine Beratung. Kein Lärm. Nur Zahlen.',
-    fr: 'Pas de conseil. Juste les chiffres.',
-    es: 'Sin consejos. Solo los números.',
-    zh: '无建议。无噪音。只有数字。',
-  },
-};
-
-// Expose translation function globally so other components can use it
-if (typeof window !== 'undefined') {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (window as any).__pfTranslate = (key: string, lang: Lang): string => {
-    return UI_STRINGS[key]?.[lang] ?? key;
-  };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (window as any).__pfLang = 'en';
+// ── Context so any component can call t() without prop-drilling ───────────────
+interface LangContextType {
+  lang: Lang;
+  t: (key: string) => string;
 }
 
+const LangContext = createContext<LangContextType>({
+  lang: 'en',
+  t: (key: string) => key,
+});
+
+export function useLang() {
+  return useContext(LangContext);
+}
+
+// ── Provider — wraps the app; LangSwitcher is just the UI trigger ─────────────
+export function LangProvider({ children }: { children: React.ReactNode }) {
+  const [lang, setLang] = useState<Lang>('en');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [dict, setDict] = useState<Record<string, Record<string, string>>>({});
+
+  useEffect(() => {
+    const detected = detectBrowserLang();
+    setLang(detected);
+    loadLocale(detected).then(setDict);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const code = (e as CustomEvent<{ lang: Lang }>).detail.lang;
+      setLang(code);
+      loadLocale(code).then(setDict);
+    };
+    window.addEventListener('pf-lang-change', handler);
+    return () => window.removeEventListener('pf-lang-change', handler);
+  }, []);
+
+  const translate = useCallback(
+    (key: string) => tFn(key, dict),
+    [dict]
+  );
+
+  return (
+    <LangContext.Provider value={{ lang, t: translate }}>
+      {children}
+    </LangContext.Provider>
+  );
+}
+
+// ── Utility: get current lang synchronously (for non-React use) ───────────────
 export function getCurrentLang(): Lang {
   if (typeof window === 'undefined') return 'en';
   try {
     const stored = localStorage.getItem(LANG_KEY) as Lang | null;
     if (stored && LANGUAGES.find(l => l.code === stored)) return stored;
   } catch {}
-  // Also check URL param
   const params = new URLSearchParams(window.location.search);
   const param = params.get('lang') as Lang | null;
   if (param && LANGUAGES.find(l => l.code === param)) return param;
-  return 'en';
+  return detectBrowserLang();
 }
 
-export function t(key: string): string {
-  if (typeof window === 'undefined') return key;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const lang = (window as any).__pfLang as Lang || 'en';
-  return UI_STRINGS[key]?.[lang] ?? key;
-}
-
+// ── LangSwitcher UI component ────────────────────────────────────────────────
 export default function LangSwitcher({ compact = false }: { compact?: boolean }) {
-  const [lang, setLang] = useState<Lang>('en');
+  const { lang } = useLang();
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const current = getCurrentLang();
-    setLang(current);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).__pfLang = current;
-  }, []);
 
   // Close on click outside
   useEffect(() => {
@@ -145,16 +131,10 @@ export default function LangSwitcher({ compact = false }: { compact?: boolean })
   }, []);
 
   const switchLang = (code: Lang) => {
-    setLang(code);
     setOpen(false);
     try { localStorage.setItem(LANG_KEY, code); } catch {}
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).__pfLang = code;
 
-    // Trigger a custom event so other components can re-render
-    window.dispatchEvent(new CustomEvent('pf-lang-change', { detail: { lang: code } }));
-
-    // Update URL param without reload (for crawlers)
+    // Update URL param (for crawlers + sharable links)
     if (code !== 'en') {
       const url = new URL(window.location.href);
       url.searchParams.set('lang', code);
@@ -164,6 +144,9 @@ export default function LangSwitcher({ compact = false }: { compact?: boolean })
       url.searchParams.delete('lang');
       window.history.replaceState({}, '', url.toString());
     }
+
+    // Broadcast to all LangProviders + subscribers
+    window.dispatchEvent(new CustomEvent('pf-lang-change', { detail: { lang: code } }));
   };
 
   const current = LANGUAGES.find(l => l.code === lang) ?? LANGUAGES[0];
@@ -190,12 +173,18 @@ export default function LangSwitcher({ compact = false }: { compact?: boolean })
           transition: 'all 0.15s ease',
           outline: 'none',
           lineHeight: 1,
+          whiteSpace: 'nowrap',
+        }}
+        onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+        onMouseLeave={e => {
+          if (!open) {
+            e.currentTarget.style.borderColor = 'var(--border-light)';
+            e.currentTarget.style.color = 'var(--text-secondary)';
+          }
         }}
       >
-        <span style={{ fontSize: '0.9rem' }} aria-hidden="true">{current.flag}</span>
-        {!compact && (
-          <span style={{ fontSize: '0.68rem', letterSpacing: '0.04em' }}>{current.label}</span>
-        )}
+        <span style={{ fontSize: compact ? '0.85rem' : '0.9rem', lineHeight: 1 }} aria-hidden="true">{current.flag}</span>
+        {!compact && <span style={{ fontSize: '0.68rem', letterSpacing: '0.04em' }}>{current.label}</span>}
         <span style={{ fontSize: '0.52rem', color: 'var(--text-muted)' }} aria-hidden="true">▾</span>
       </button>
 
@@ -203,7 +192,6 @@ export default function LangSwitcher({ compact = false }: { compact?: boolean })
         <div
           role="listbox"
           aria-label="Select language"
-          className="currency-dropdown"
           style={{
             position: 'absolute',
             bottom: compact ? 'calc(100% + 6px)' : undefined,
@@ -216,9 +204,18 @@ export default function LangSwitcher({ compact = false }: { compact?: boolean })
             boxShadow: '0 8px 24px rgba(0,0,0,0.35)',
             zIndex: 300,
             overflow: 'hidden',
+            animation: 'dropdown-in 0.1s ease forwards',
           }}
         >
-          <div style={{ padding: '0.4rem 0.75rem 0.25rem', fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase', borderBottom: '1px solid var(--border)' }}>
+          <div style={{
+            padding: '0.4rem 0.75rem 0.25rem',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.58rem',
+            color: 'var(--text-muted)',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            borderBottom: '1px solid var(--border)',
+          }}>
             Language
           </div>
           {LANGUAGES.map(l => (
@@ -244,7 +241,7 @@ export default function LangSwitcher({ compact = false }: { compact?: boolean })
               onMouseEnter={e => { if (l.code !== lang) e.currentTarget.style.background = 'var(--bg-surface)'; }}
               onMouseLeave={e => { if (l.code !== lang) e.currentTarget.style.background = 'transparent'; }}
             >
-              <span style={{ fontSize: '1rem', lineHeight: 1 }}>{l.flag}</span>
+              <span style={{ fontSize: '1rem', lineHeight: 1, flexShrink: 0 }}>{l.flag}</span>
               <span style={{ flex: 1, fontSize: '0.78rem', color: 'var(--text-primary)' }}>{l.name}</span>
               <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{l.label}</span>
               {l.code === lang && (
@@ -252,8 +249,14 @@ export default function LangSwitcher({ compact = false }: { compact?: boolean })
               )}
             </button>
           ))}
-          <div style={{ padding: '0.35rem 0.75rem', fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-            UI strings only · Core calculations unchanged
+          <div style={{
+            padding: '0.35rem 0.75rem',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.58rem',
+            color: 'var(--text-muted)',
+            lineHeight: 1.5,
+          }}>
+            UI strings only · Calculations unchanged
           </div>
         </div>
       )}

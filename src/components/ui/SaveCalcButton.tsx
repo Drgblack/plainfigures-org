@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLang } from '@/components/ui/LangSwitcher';
 import { saveCalc, SavedCalc } from '@/lib/localStorage';
 
 interface SaveCalcButtonProps {
@@ -11,6 +12,7 @@ interface SaveCalcButtonProps {
 }
 
 export default function SaveCalcButton({ toolHref, toolTitle, summary, keyResults }: SaveCalcButtonProps) {
+  const { t } = useLang();
   const [state, setState] = useState<'idle' | 'labelling' | 'saved'>('idle');
   const [label, setLabel] = useState('');
 
@@ -24,7 +26,7 @@ export default function SaveCalcButton({ toolHref, toolTitle, summary, keyResult
   if (state === 'saved') {
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--positive)' }}>
-        ✓ Saved
+        {t('calc.saved') || '✓ Saved'}
       </div>
     );
   }
@@ -59,7 +61,7 @@ export default function SaveCalcButton({ toolHref, toolTitle, summary, keyResult
           fontFamily: 'var(--font-mono)',
           fontSize: '0.7rem',
           cursor: 'pointer',
-        }}>Save</button>
+        }}>{t('calc.save') || 'Save'}</button>
         <button onClick={() => setState('idle')} style={{
           padding: '0.3rem 0.5rem',
           background: 'none',
@@ -77,7 +79,7 @@ export default function SaveCalcButton({ toolHref, toolTitle, summary, keyResult
   return (
     <button
       onClick={() => setState('labelling')}
-      title="Save this calculation to your browser"
+      title={t('calc.save') + ' this calculation to your browser'}
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -93,7 +95,7 @@ export default function SaveCalcButton({ toolHref, toolTitle, summary, keyResult
         transition: 'all 0.15s ease',
       }}
     >
-      ⊕ Save
+      ⊕ {t('calc.save') || 'Save'}
     </button>
   );
 }

@@ -18,6 +18,8 @@
   --warning: #d4a843;
   --font-sans: 'DM Sans', sans-serif;
   --font-mono: 'DM Mono', monospace;
+  /* Nav link inactive — passes WCAG AA (5.8:1) on dark nav bg #0a0e14 */
+  --nav-link: #7a8fa8;
 }
 
 /* ── Light mode ──────────────────────────────────────────────────────────────── */
@@ -40,6 +42,8 @@
 
 [data-theme='light'] {
   --nav-bg-solid: rgba(247,248,250,0.97);
+  /* Nav link inactive — passes WCAG AA (7.9:1) on light nav bg #f7f8fa */
+  --nav-link: #3d4f63;
 }
 
 [data-theme='light'] body {
@@ -486,3 +490,23 @@ html {
     padding: 0.5rem !important;
   }
 }
+
+/* ── Mobile hamburger ────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .nav-tool-links   { display: none !important; }
+  .nav-controls-desktop { display: none !important; }
+  .nav-hamburger    { display: flex !important; }
+  .nav-search-input { width: 100px !important; }
+}
+
+/* Mobile menu slide-in */
+@keyframes menu-slide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Nav link hover: accent glow bg ──────────────────────────────────────── */
+nav a:not([aria-current='page']):hover {
+  color: var(--text-primary) !important;
+}
+

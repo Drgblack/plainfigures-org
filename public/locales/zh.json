@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "language": "中文",
+    "code": "zh",
+    "direction": "ltr"
+  },
+  "nav": {
+    "home": "Plain Figures",
+    "learn": "学习",
+    "search_placeholder": "搜索…",
+    "search_label": "搜索计算器和指南",
+    "saved_label": "已保存的计算",
+    "currency_label": "货币",
+    "language_label": "语言",
+    "theme_to_light": "切换至浅色模式",
+    "theme_to_dark": "切换至深色模式",
+    "theme_light": "浅色",
+    "theme_dark": "深色"
+  },
+  "currency": {
+    "saved_note": "已保存在浏览器中。适用于所有计算器。",
+    "detect_note": "根据您的浏览器语言自动检测。"
+  },
+  "lang": {
+    "ui_only_note": "仅界面文字 · 计算结果不变",
+    "machine_note": "机器翻译 · 数字不作翻译。"
+  },
+  "home": {
+    "tagline_1": "验证数字。",
+    "tagline_2": "去除噪音。",
+    "disclaimer": "无建议。无观点。无产品。",
+    "personal_section": "个人理财与生活",
+    "pro_section": "专业工具",
+    "recently_used": "最近使用",
+    "saved_calcs": "已保存的计算",
+    "featured_guides": "精选指南",
+    "all_guides": "全部 16 篇指南 →",
+    "no_saved": "暂无已保存的计算。",
+    "no_recent": "您最近使用的工具将显示在这里。"
+  },
+  "calc": {
+    "inputs": "输入",
+    "results": "结果",
+    "save": "保存",
+    "saved": "已保存",
+    "share": "分享",
+    "print": "打印",
+    "learn_more": "了解此计算的原理",
+    "rate_context_label": "利率背景"
+  },
+  "footer": {
+    "tagline": "数字，不含噪音。非金融建议。",
+    "updated": "更新于 2026年2月 — 2025/26 英国税率",
+    "about": "关于",
+    "privacy": "隐私",
+    "terms": "条款",
+    "disclaimer": "免责声明",
+    "contact": "联系"
+  },
+  "a11y": {
+    "skip_to_content": "跳至内容",
+    "external_link": "在新标签页中打开",
+    "required_field": "必填"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "language": "Français",
+    "code": "fr",
+    "direction": "ltr"
+  },
+  "nav": {
+    "home": "Plain Figures",
+    "learn": "Apprendre",
+    "search_placeholder": "Rechercher…",
+    "search_label": "Rechercher des calculateurs et guides",
+    "saved_label": "Calculs sauvegardés",
+    "currency_label": "Devise",
+    "language_label": "Langue",
+    "theme_to_light": "Passer au mode clair",
+    "theme_to_dark": "Passer au mode sombre",
+    "theme_light": "Clair",
+    "theme_dark": "Sombre"
+  },
+  "currency": {
+    "saved_note": "Enregistré dans le navigateur. Modifie tous les calculateurs.",
+    "detect_note": "Détecté depuis votre paramètre régional."
+  },
+  "lang": {
+    "ui_only_note": "Chaînes UI uniquement · Calculs inchangés",
+    "machine_note": "Traduction automatique · Les chiffres ne sont pas traduits."
+  },
+  "home": {
+    "tagline_1": "Vérifiez les calculs.",
+    "tagline_2": "Sans le bruit.",
+    "disclaimer": "Pas de conseils. Pas d'opinions. Pas de produits.",
+    "personal_section": "Finances personnelles & style de vie",
+    "pro_section": "Outils professionnels",
+    "recently_used": "Récemment utilisés",
+    "saved_calcs": "Calculs sauvegardés",
+    "featured_guides": "Guides en vedette",
+    "all_guides": "Tous les 16 guides →",
+    "no_saved": "Aucun calcul sauvegardé pour l'instant.",
+    "no_recent": "Vos outils récemment utilisés apparaîtront ici."
+  },
+  "calc": {
+    "inputs": "Paramètres",
+    "results": "Résultats",
+    "save": "Sauvegarder",
+    "saved": "Sauvegardé",
+    "share": "Partager",
+    "print": "Imprimer",
+    "learn_more": "En savoir plus sur ce calcul",
+    "rate_context_label": "Contexte des taux"
+  },
+  "footer": {
+    "tagline": "Des chiffres sans bruit. Pas de conseils financiers.",
+    "updated": "Mis à jour fév. 2026 — exercice fiscal 2025/26",
+    "about": "À propos",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "disclaimer": "Avertissement",
+    "contact": "Contact"
+  },
+  "a11y": {
+    "skip_to_content": "Aller au contenu",
+    "external_link": "ouvre dans un nouvel onglet",
+    "required_field": "requis"
+  }
+}
