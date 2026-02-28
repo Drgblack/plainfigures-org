@@ -6,6 +6,7 @@ import { useEffect, useState, useRef, useId } from 'react';
 import { useCurrency, CURRENCIES } from '@/lib/CurrencyContext';
 import { recordVisit, getTheme, setTheme } from '@/lib/localStorage';
 import LangSwitcher, { useLang } from '@/components/ui/LangSwitcher';
+import LangMenu from '@/components/ui/LangMenu';
 import { ALL_TOOLS } from '@/lib/siteData';
 
 // ── Autocomplete search data: all tools + all learning guides ─────────────────
@@ -698,7 +699,7 @@ export default function Navbar() {
           >
             ⊞
           </Link>
-          <LangSwitcher compact />
+          <LangMenu />
           <ThemeToggle />
         </div>
 

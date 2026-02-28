@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useRef, useEffect } from 'react';
 
@@ -23,10 +23,12 @@ const LANG_KEY = 'pf_lang_v1';
 // Trigger Google Translate programmatically (non-widget approach)
 function triggerGoogleTranslate(langCode: string) {
   if (langCode === 'en') {
-    // Reset: restore original page
-    const select = document.querySelector<HTMLSelectElement>('.goog-te-combo');
-    if (select) { select.value = ''; select.dispatchEvent(new Event('change')); }
-    try { localStorage.setItem(LANG_KEY, 'en'); } catch {}
+    // Reset: clear stored lang and reload the page (most reliable GT reset)
+    try { localStorage.removeItem(LANG_KEY); } catch {}
+    // Remove Google Translate cookie and reload
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + window.location.hostname + ';';
+    window.location.reload();
     return;
   }
 
@@ -126,8 +128,8 @@ export default function LangMenu() {
           aria-label="Select language"
           style={{
             position: 'absolute',
-            bottom: 'calc(100% + 6px)',
-            left: 0,
+            top: 'calc(100% + 6px)',
+            right: 0,
             background: 'var(--bg-elevated)',
             border: '1px solid var(--border-light)',
             borderRadius: '6px',

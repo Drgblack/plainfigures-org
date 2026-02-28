@@ -1,7 +1,7 @@
-'use client';
+﻿'use client';
 
 /**
- * LangSwitcher — Plain Figures lightweight i18n
+ * LangSwitcher â€” Plain Figures lightweight i18n
  *
  * Architecture:
  * - 5 supported languages: English, German, French, Spanish, Mandarin
@@ -11,19 +11,19 @@
  * - Custom event 'pf-lang-change' broadcast so other components can re-render
  * - detectBrowserLang() auto-selects on first visit (no stored preference)
  *
- * SEO (current — UI-only i18n):
+ * SEO (current â€” UI-only i18n):
  * - hreflang tags in layout.tsx metadata.alternates (all pointing to same URL)
  * - ?lang=de URL parameter readable by crawlers
  *
- * SEO (future — full route-based i18n):
+ * SEO (future â€” full route-based i18n):
  * - Add [locale] dynamic segment: /app/[locale]/page.tsx
  * - hreflang: https://plainfigures.org/de/mortgage etc.
  * - Use next-intl or i18next (see /src/lib/i18n.ts for migration guide)
  *
  * Usage:
  *   import LangSwitcher from '@/components/ui/LangSwitcher';
- *   <LangSwitcher compact /> — flag-only button (for navbar)
- *   <LangSwitcher />         — flag + label button (for footer)
+ *   <LangSwitcher compact /> â€” flag-only button (for navbar)
+ *   <LangSwitcher />         â€” flag + label button (for footer)
  *
  *   To translate a string in another component:
  *   import { useLang } from '@/components/ui/LangSwitcher';
@@ -53,7 +53,7 @@ export const LANGUAGES: LangOption[] = [
 
 const LANG_KEY = 'pf_lang_v1';
 
-// ── Context so any component can call t() without prop-drilling ───────────────
+// â”€â”€ Context so any component can call t() without prop-drilling â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface LangContextType {
   lang: Lang;
   t: (key: string) => string;
@@ -68,16 +68,19 @@ export function useLang() {
   return useContext(LangContext);
 }
 
-// ── Provider — wraps the app; LangSwitcher is just the UI trigger ─────────────
+// â”€â”€ Provider â€” wraps the app; LangSwitcher is just the UI trigger â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function LangProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLang] = useState<Lang>('en');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [dict, setDict] = useState<Record<string, Record<string, string>>>({});
 
   useEffect(() => {
-    const detected = detectBrowserLang();
-    setLang(detected);
-    loadLocale(detected).then(setDict);
+    // Only use browser detection if user has never made an explicit choice
+    // This prevents auto-switching to German just because the browser is set to DE
+    const stored = (() => { try { return localStorage.getItem('pf_lang_v1'); } catch { return null; } })();
+    const lang = (stored && ['en','de','fr','es','zh'].includes(stored)) ? stored as Lang : 'en';
+    setLang(lang);
+    loadLocale(lang).then(setDict);
   }, []);
 
   useEffect(() => {
@@ -102,7 +105,7 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ── Utility: get current lang synchronously (for non-React use) ───────────────
+// â”€â”€ Utility: get current lang synchronously (for non-React use) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function getCurrentLang(): Lang {
   if (typeof window === 'undefined') return 'en';
   try {
@@ -115,7 +118,7 @@ export function getCurrentLang(): Lang {
   return detectBrowserLang();
 }
 
-// ── LangSwitcher UI component ────────────────────────────────────────────────
+// â”€â”€ LangSwitcher UI component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function LangSwitcher({ compact = false }: { compact?: boolean }) {
   const { lang } = useLang();
   const [open, setOpen] = useState(false);
@@ -194,8 +197,8 @@ export default function LangSwitcher({ compact = false }: { compact?: boolean })
           aria-label="Select language"
           style={{
             position: 'absolute',
-            bottom: compact ? 'calc(100% + 6px)' : undefined,
-            top: compact ? undefined : 'calc(100% + 6px)',
+            top: 'calc(100% + 6px)',
+            
             right: 0,
             minWidth: '170px',
             background: 'var(--bg-elevated)',
@@ -245,7 +248,7 @@ export default function LangSwitcher({ compact = false }: { compact?: boolean })
               <span style={{ flex: 1, fontSize: '0.78rem', color: 'var(--text-primary)' }}>{l.name}</span>
               <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{l.label}</span>
               {l.code === lang && (
-                <span style={{ fontSize: '0.65rem', color: 'var(--accent)', marginLeft: '0.25rem' }} aria-hidden="true">✓</span>
+                <span style={{ fontSize: '0.65rem', color: 'var(--accent)', marginLeft: '0.25rem' }} aria-hidden="true">âœ“</span>
               )}
             </button>
           ))}
@@ -256,10 +259,11 @@ export default function LangSwitcher({ compact = false }: { compact?: boolean })
             color: 'var(--text-muted)',
             lineHeight: 1.5,
           }}>
-            UI strings only · Calculations unchanged
+            UI strings only Â· Calculations unchanged
           </div>
         </div>
       )}
     </div>
   );
 }
+
