@@ -51,8 +51,8 @@ export default function SaveGoalCalc() {
           toolTitle="Save for a Goal"
           summary={`Savings goal calculation`}
           keyResults={[
-              { label: 'Monthly Required', value: fmt(result.monthlyRequired ?? result.monthlySaving ?? 0) },
-              { label: 'Time to Goal', value: `${result.months ?? result.timeMonths ?? 0} months` },
+              { label: 'Monthly Required', value: fmt(result.requiredMonthly) },
+              { label: 'Time to Goal', value: `${result.monthsNeeded} months` },
           ]}
         />
 

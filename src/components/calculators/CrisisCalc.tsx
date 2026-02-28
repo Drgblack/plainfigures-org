@@ -108,7 +108,7 @@ export default function CrisisCalc() {
           summary={`${fmt(savings)} savings, ${fmt(expenses)}/mo expenses`}
           keyResults={[
               { label: 'Runway', value: `${result.runwayMonths?.toFixed(1) ?? '?'} months` },
-              { label: 'Monthly Burn', value: fmt(result.monthlyBurn ?? result.netExpenses) },
+              { label: 'Monthly Burn', value: fmt(result.monthlyBurn) },
           ]}
         />
 

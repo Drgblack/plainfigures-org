@@ -32,6 +32,9 @@ export default function RentVsBuyCalc() {
 
   const fmt = (v: number) => formatCurrency(v, currency);
   const buyingIsBetter = result.netWorthDifference > 0;
+  const finalYear = result.yearlyComparison[result.yearlyComparison.length - 1];
+  const buyNetPosition = finalYear ? finalYear.buyNetPosition : 0;
+  const rentNetPosition = finalYear ? finalYear.rentNetPosition : 0;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -70,8 +73,8 @@ export default function RentVsBuyCalc() {
           toolTitle="Rent vs Buy"
           summary={`${fmt(homePrice)} property vs ${fmt(monthlyRent)}/mo rent over ${years}y`}
           keyResults={[
-              { label: 'Buy Net Position', value: fmt(result.buyNetPosition ?? result.buyEquity) },
-              { label: 'Rent Net Position', value: fmt(result.rentNetPosition ?? result.rentSavings) },
+              { label: 'Buy Net Position', value: fmt(buyNetPosition) },
+              { label: 'Rent Net Position', value: fmt(rentNetPosition) },
           ]}
         />
 

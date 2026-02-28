@@ -56,8 +56,8 @@ export default function AffordabilityCalc() {
           toolTitle="Mortgage Affordability"
           summary={`Income ${fmt(income)}, deposit ${fmt(deposit)}`}
           keyResults={[
-              { label: 'Max Borrowing', value: fmt(result.maxBorrowing) },
-              { label: 'Max Property', value: fmt(result.maxPropertyPrice ?? result.maxBorrowing + deposit) },
+              { label: 'Max Borrowing', value: fmt(result.maxLoan) },
+              { label: 'Max Property', value: fmt(result.maxPropertyPrice) },
           ]}
         />
 

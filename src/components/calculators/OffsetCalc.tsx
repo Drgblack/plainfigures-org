@@ -21,6 +21,8 @@ export default function OffsetCalc() {
 
   const termReductionYears = Math.floor(result.termReductionMonths / 12);
   const termReductionRemainingMonths = result.termReductionMonths % 12;
+  const annualSaving = term > 0 ? result.interestSavedTotal / term : 0;
+  const monthlySaving = annualSaving / 12;
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
@@ -44,8 +46,8 @@ export default function OffsetCalc() {
           toolTitle="Offset Mortgage"
           summary={`${fmt(balance)} mortgage, ${fmt(savings)} offset at ${rate}%`}
           keyResults={[
-              { label: 'Monthly Saving', value: fmt(result.monthlySaving) },
-              { label: 'Annual Saving', value: fmt(result.annualSaving) },
+              { label: 'Monthly Saving', value: fmt(monthlySaving) },
+              { label: 'Annual Saving', value: fmt(annualSaving) },
               { label: 'Term Reduction', value: `${termReductionYears}y ${termReductionRemainingMonths}m` },
           ]}
         />

@@ -94,8 +94,8 @@ export default function TDEECalc() {
           toolTitle="TDEE & Calorie Calculator"
           summary={`TDEE calculation`}
           keyResults={[
-              { label: 'TDEE', value: `${result.tdee ?? result.totalDailyEnergyExpenditure ?? 0} kcal` },
-              { label: 'BMR', value: `${result.bmr ?? 0} kcal` },
+              { label: 'TDEE', value: `${result.tdee} kcal` },
+              { label: 'BMR', value: `${result.bmr} kcal` },
           ]}
         />
 

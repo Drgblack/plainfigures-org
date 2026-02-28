@@ -54,8 +54,8 @@ export default function FreelanceCalc() {
           toolTitle="Freelance Rate"
           summary={`Freelance rate calculation`}
           keyResults={[
-              { label: 'Day Rate', value: fmt(result.dayRate ?? result.recommendedDayRate ?? 0) },
-              { label: 'Hourly Rate', value: fmt(result.hourlyRate ?? 0) },
+              { label: 'Day Rate', value: fmt(result.dayRate) },
+              { label: 'Hourly Rate', value: fmt(result.hourlyRate) },
           ]}
         />
 

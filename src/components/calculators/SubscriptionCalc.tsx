@@ -100,8 +100,8 @@ export default function SubscriptionCalc() {
           toolTitle="Subscription Drain"
           summary={`Subscription cost analysis`}
           keyResults={[
-              { label: 'Annual Cost', value: fmt(result.annualCost ?? result.totalAnnual ?? 0) },
-              { label: '10-Year Cost', value: fmt(result.tenYearCost ?? 0) },
+              { label: 'Annual Cost', value: fmt(result.totalAnnual) },
+              { label: '10-Year Cost', value: fmt(result.total10Year) },
           ]}
         />
 

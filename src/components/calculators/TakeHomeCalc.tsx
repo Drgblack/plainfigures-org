@@ -19,6 +19,7 @@ export default function TakeHomeCalc() {
   const cfg = COUNTRY_CONFIG[country];
 
   const result = useMemo(() => calculateTakeHome(gross, country), [gross, country]);
+  const incomeTax = Math.abs(result.breakdown.find(item => item.label.toLowerCase().includes('income tax'))?.amount ?? 0);
 
   const handleCountryChange = (c: CountryCode) => {
     setCountry(c);
@@ -113,9 +114,9 @@ export default function TakeHomeCalc() {
           toolTitle="Salary Take-Home"
           summary={`${cfg.symbol}${gross.toLocaleString()} gross (${country})`}
           keyResults={[
-              { label: 'Monthly Take-Home', value: fmt(result.monthlyNet, cfg.symbol) },
-              { label: 'Income Tax', value: fmt(result.incomeTax, cfg.symbol) },
-              { label: 'Net Annual', value: fmt(result.annualNet, cfg.symbol) },
+              { label: 'Monthly Take-Home', value: fmt(result.netMonthly, cfg.symbol) },
+              { label: 'Income Tax', value: fmt(incomeTax, cfg.symbol) },
+              { label: 'Net Annual', value: fmt(result.netAnnual, cfg.symbol) },
           ]}
         />
 

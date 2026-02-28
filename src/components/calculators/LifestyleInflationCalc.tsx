@@ -45,7 +45,7 @@ export default function LifestyleInflationCalc() {
           toolTitle="Lifestyle Inflation"
           summary={`Lifestyle inflation analysis`}
           keyResults={[
-              { label: 'Opportunity Cost', value: fmt(result.opportunityCost ?? result.totalCost ?? 0) },
+              { label: 'Opportunity Cost', value: fmt(result.opportunityCost10Year) },
           ]}
         />
 
