@@ -123,6 +123,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-GB">
             <head>/client_data/a94ee732bd655739457a79c94415999f/script.js"
 
+        {/* Google AdSense — verification + future ads */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6207224775263883"
+          crossOrigin="anonymous"
+        />
         {/* Prevent theme flash before React hydrates */}
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
@@ -195,14 +201,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <CookieConsent />
           </LangProvider>
         </CurrencyProvider>
-      {process.env.NEXT_PUBLIC_ADS_ENABLED === 'true' && (
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6207224775263883"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-      )}
+      
     </body>
     </html>
   );
