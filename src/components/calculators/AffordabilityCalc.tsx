@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateAffordability } from '@/lib/lifestyle-calculations';
@@ -27,6 +30,7 @@ export default function AffordabilityCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+      <ToolPreview id="affordability" />
       <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Your Income">
           <InputField label="Your Annual Gross Income" value={income} onChange={setIncome} min={10000} max={500000} step={1000} prefix={currency.symbol} />
@@ -46,6 +50,19 @@ export default function AffordabilityCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="What You Can Borrow">
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/affordability"
+          toolTitle="Mortgage Affordability"
+          summary={`Income ${fmt(income)}, deposit ${fmt(deposit)}`}
+          keyResults={[
+              { label: 'Max Borrowing', value: fmt(result.maxBorrowing) },
+              { label: 'Max Property', value: fmt(result.maxPropertyPrice ?? result.maxBorrowing + deposit) },
+          ]}
+        />
+
+          </div>
+
           <ResultCard label="Maximum Property Price" value={fmt(result.maxPropertyPrice)} size="large" color="positive" />
           <ResultCard label="Maximum Mortgage" value={fmt(result.maxLoan)} sub={`${formatNumber(result.loanToIncome, 1)}x annual income`} />
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>

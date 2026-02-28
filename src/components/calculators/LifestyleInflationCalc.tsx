@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateLifestyleInflation } from '@/lib/lifestyle-calculations';
@@ -33,8 +36,21 @@ export default function LifestyleInflationCalc() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <ToolPreview id="loan" />
       {/* Results at top */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/lifestyle-inflation"
+          toolTitle="Lifestyle Inflation"
+          summary={`Lifestyle inflation analysis`}
+          keyResults={[
+              { label: 'Opportunity Cost', value: fmt(result.opportunityCost ?? result.totalCost ?? 0) },
+          ]}
+        />
+
+        </div>
+
         <ResultCard label="Entry-Level Monthly" value={fmt(result.entryLevelMonthlySpend)} />
         <ResultCard label="Current Monthly" value={fmt(result.currentMonthlySpend)} color="warning" />
         <ResultCard label="Lifestyle Inflation" value={fmt(result.lifestyleInflation)}

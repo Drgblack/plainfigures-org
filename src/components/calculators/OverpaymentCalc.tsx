@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateOverpayment } from '@/lib/calculations';
@@ -23,6 +26,7 @@ export default function OverpaymentCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+      <ToolPreview id="overpayment" />
       <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Mortgage Details">
           <InputField label="Outstanding Balance" value={balance} onChange={setBalance} min={10000} max={2000000} step={5000} prefix={currency.symbol} />
@@ -49,6 +53,19 @@ export default function OverpaymentCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="Impact of Overpaying">
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/overpayment"
+          toolTitle="Mortgage Overpayment"
+          summary={`${fmt(balance)} at ${rate}%, overpaying ${fmt(overpayment)}/mo`}
+          keyResults={[
+              { label: 'Interest Saved', value: fmt(result.interestSaved) },
+              { label: 'Time Saved', value: `${yearsSaved}y ${monthsSavedRemainder}m` },
+          ]}
+        />
+
+          </div>
+
           <ResultCard label="Interest Saved" value={fmt(result.interestSaved)} size="large" color="positive" />
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             <ResultCard

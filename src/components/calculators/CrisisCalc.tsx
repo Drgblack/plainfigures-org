@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateCrisisSurvival } from '@/lib/lifestyle-calculations';
@@ -34,6 +37,7 @@ export default function CrisisCalc() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <ToolPreview id="crisis" />
       {/* Verdict banner */}
       <div style={{ padding: '1.25rem 1.5rem', background: vc.bg, border: `1px solid ${vc.border}`, borderRadius: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', color: vc.color, letterSpacing: '0.04em' }}>{vc.label}</div>
@@ -97,6 +101,19 @@ export default function CrisisCalc() {
         {/* Results */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <Section title="Survival Runway">
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/crisis"
+          toolTitle="Financial Crisis Simulator"
+          summary={`${fmt(savings)} savings, ${fmt(expenses)}/mo expenses`}
+          keyResults={[
+              { label: 'Runway', value: `${result.runwayMonths?.toFixed(1) ?? '?'} months` },
+              { label: 'Monthly Burn', value: fmt(result.monthlyBurn ?? result.netExpenses) },
+          ]}
+        />
+
+            </div>
+
             <ResultCard label="Without Expense Cuts" value={survive}
               color={result.monthsSurvive >= 999 ? 'positive' : result.monthsSurvive >= 12 ? 'warning' : 'negative'}
               sub={result.monthsSurvive < 999 ? `Monthly burn: ${fmt(result.monthlyBurn)}` : 'Income covers expenses'} size="large" />

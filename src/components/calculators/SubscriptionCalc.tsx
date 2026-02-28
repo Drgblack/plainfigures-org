@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateSubscriptionDrain, Subscription } from '@/lib/lifestyle-calculations';
@@ -43,6 +46,7 @@ export default function SubscriptionCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+      <ToolPreview id="loan" />
       <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Your Subscriptions — Toggle Active">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', maxHeight: '400px', overflowY: 'auto' }}>
@@ -90,6 +94,19 @@ export default function SubscriptionCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="The Real Cost">
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/subscriptions"
+          toolTitle="Subscription Drain"
+          summary={`Subscription cost analysis`}
+          keyResults={[
+              { label: 'Annual Cost', value: fmt(result.annualCost ?? result.totalAnnual ?? 0) },
+              { label: '10-Year Cost', value: fmt(result.tenYearCost ?? 0) },
+          ]}
+        />
+
+          </div>
+
           <ResultCard label="Monthly Subscription Spend" value={fmt(result.totalMonthly)} size="large" color="negative" />
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             <ResultCard label="Annual Cost" value={fmt(result.totalAnnual)} color="negative" />

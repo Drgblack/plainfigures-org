@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { calculateTDEE } from '@/lib/lifestyle-calculations';
 import { ResultCard, Section } from '@/components/ui';
@@ -36,6 +39,7 @@ export default function TDEECalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+      <ToolPreview id="loan" />
       <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         {/* Units + Sex */}
         <Section title="Settings">
@@ -84,6 +88,19 @@ export default function TDEECalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="Your Calorie Needs">
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/tdee"
+          toolTitle="TDEE & Calorie Calculator"
+          summary={`TDEE calculation`}
+          keyResults={[
+              { label: 'TDEE', value: `${result.tdee ?? result.totalDailyEnergyExpenditure ?? 0} kcal` },
+              { label: 'BMR', value: `${result.bmr ?? 0} kcal` },
+          ]}
+        />
+
+          </div>
+
           <ResultCard label="TDEE — Maintenance Calories" value={`${result.tdee.toLocaleString()} kcal`} size="large" />
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             <ResultCard label="Weight Loss (−500 kcal)" value={`${result.weightLoss.toLocaleString()} kcal`} color="positive" sub="~0.5kg/week loss" />

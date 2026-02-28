@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateFreelanceRate } from '@/lib/lifestyle-calculations';
@@ -24,6 +27,7 @@ export default function FreelanceCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+      <ToolPreview id="loan" />
       <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="What You Need to Earn">
           <InputField label="Desired Annual Take-Home" value={desiredSalary} onChange={setDesiredSalary} min={10000} max={500000} step={1000} prefix={currency.symbol} />
@@ -44,6 +48,19 @@ export default function FreelanceCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="Your Required Rate">
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/freelance"
+          toolTitle="Freelance Rate"
+          summary={`Freelance rate calculation`}
+          keyResults={[
+              { label: 'Day Rate', value: fmt(result.dayRate ?? result.recommendedDayRate ?? 0) },
+              { label: 'Hourly Rate', value: fmt(result.hourlyRate ?? 0) },
+          ]}
+        />
+
+          </div>
+
           <ResultCard label="Minimum Hourly Rate" value={fmt(result.hourlyRate)} size="large" color="warning"
             sub="to hit your take-home target" />
           <ResultCard label="Minimum Day Rate" value={fmt(result.dayRate)} color="warning"

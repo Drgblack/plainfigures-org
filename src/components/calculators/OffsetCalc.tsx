@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateOffset } from '@/lib/calculations';
@@ -21,6 +24,7 @@ export default function OffsetCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+      <ToolPreview id="offset" />
       <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Mortgage Details">
           <InputField label="Mortgage Balance" value={balance} onChange={setBalance} min={10000} max={2000000} step={5000} prefix={currency.symbol} />
@@ -34,6 +38,20 @@ export default function OffsetCalc() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="Results">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/offset"
+          toolTitle="Offset Mortgage"
+          summary={`${fmt(balance)} mortgage, ${fmt(savings)} offset at ${rate}%`}
+          keyResults={[
+              { label: 'Monthly Saving', value: fmt(result.monthlySaving) },
+              { label: 'Annual Saving', value: fmt(result.annualSaving) },
+              { label: 'Term Reduction', value: `${termReductionYears}y ${termReductionRemainingMonths}m` },
+          ]}
+        />
+
+            </div>
+
             <ResultCard label="Effective Mortgage Balance" value={fmt(result.effectiveBalance)}
               sub={`${fmt(savings)} offset`} />
             <ResultCard label="Monthly Payment" value={fmt(result.standardMonthlyPayment)} />

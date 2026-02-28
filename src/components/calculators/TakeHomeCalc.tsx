@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { calculateTakeHome, COUNTRY_CONFIG, CountryCode } from '@/lib/tax-calculations';
 import { ResultCard, Section } from '@/components/ui';
@@ -24,6 +27,7 @@ export default function TakeHomeCalc() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <ToolPreview id="take-home" />
       {/* Country selector */}
       <Section title="Select Country">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '0.5rem' }}>
@@ -103,6 +107,20 @@ export default function TakeHomeCalc() {
         {/* Results */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <Section title="Results">
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/take-home"
+          toolTitle="Salary Take-Home"
+          summary={`${cfg.symbol}${gross.toLocaleString()} gross (${country})`}
+          keyResults={[
+              { label: 'Monthly Take-Home', value: fmt(result.monthlyNet, cfg.symbol) },
+              { label: 'Income Tax', value: fmt(result.incomeTax, cfg.symbol) },
+              { label: 'Net Annual', value: fmt(result.annualNet, cfg.symbol) },
+          ]}
+        />
+
+            </div>
+
             <ResultCard label="Monthly Take-Home" value={fmt(result.netMonthly, cfg.symbol)} size="large" color="positive" />
             <ResultCard label="Annual Take-Home" value={fmt(result.netAnnual, cfg.symbol)} color="positive"
               sub={`${fmt(result.netMonthly, cfg.symbol)}/month · ${fmt(result.netMonthly / 4.33, cfg.symbol)}/week`} />

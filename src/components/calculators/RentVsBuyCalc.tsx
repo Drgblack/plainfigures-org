@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateRentVsBuy } from '@/lib/calculations';
@@ -32,6 +35,7 @@ export default function RentVsBuyCalc() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <ToolPreview id="rent-vs-buy" />
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
         {/* Buy inputs */}
         <Section title="Buying">
@@ -60,6 +64,19 @@ export default function RentVsBuyCalc() {
       {/* Results */}
       <Section title={`Verdict after ${years} years`}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/rent-vs-buy"
+          toolTitle="Rent vs Buy"
+          summary={`${fmt(homePrice)} property vs ${fmt(monthlyRent)}/mo rent over ${years}y`}
+          keyResults={[
+              { label: 'Buy Net Position', value: fmt(result.buyNetPosition ?? result.buyEquity) },
+              { label: 'Rent Net Position', value: fmt(result.rentNetPosition ?? result.rentSavings) },
+          ]}
+        />
+
+          </div>
+
           <ResultCard
             label="Better financial outcome"
             value={buyingIsBetter ? 'Buying' : 'Renting'}

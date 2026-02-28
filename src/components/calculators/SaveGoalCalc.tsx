@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateSaveGoal } from '@/lib/calculations';
@@ -26,6 +29,7 @@ export default function SaveGoalCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+      <ToolPreview id="savings" />
       <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Your Goal">
           <InputField label="Target Amount" value={target} onChange={setTarget} min={1000} max={5000000} step={1000} prefix={currency.symbol} />
@@ -41,6 +45,19 @@ export default function SaveGoalCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="Results">
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/save-goal"
+          toolTitle="Save for a Goal"
+          summary={`Savings goal calculation`}
+          keyResults={[
+              { label: 'Monthly Required', value: fmt(result.monthlyRequired ?? result.monthlySaving ?? 0) },
+              { label: 'Time to Goal', value: `${result.months ?? result.timeMonths ?? 0} months` },
+          ]}
+        />
+
+          </div>
+
           <ResultCard
             label="Time to Reach Goal (at current rate)"
             value={result.monthsNeeded >= 1200 ? 'Over 100 years' : `${naturalYears > 0 ? `${naturalYears}y ` : ''}${naturalMonths > 0 ? `${naturalMonths}m` : ''}`}

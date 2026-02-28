@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateCompound } from '@/lib/calculations';
@@ -25,6 +28,7 @@ export default function CompoundCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+      <ToolPreview id="compound" />
       <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Parameters">
           <InputField label="Principal" value={principal} onChange={setPrincipal} min={100} max={1000000} step={500} prefix={currency.symbol} />
@@ -55,6 +59,20 @@ export default function CompoundCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="Results">
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/compound"
+          toolTitle="Compound Interest"
+          summary={`${fmt(principal)} at ${rate}% over ${years} years`}
+          keyResults={[
+              { label: 'Final Amount', value: fmt(result.finalAmount) },
+              { label: 'Total Interest', value: fmt(result.totalInterest) },
+              { label: 'Effective Rate', value: `${result.effectiveRate?.toFixed(3) ?? rate}%` },
+          ]}
+        />
+
+          </div>
+
           <ResultCard label="Final Amount" value={fmt(result.finalAmount)} size="large" color="positive" />
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             <ResultCard label="Principal" value={fmt(principal)} />

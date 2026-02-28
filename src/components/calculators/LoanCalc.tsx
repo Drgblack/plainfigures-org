@@ -1,5 +1,8 @@
 'use client';
 
+import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import ToolPreview from '@/components/ui/ToolPreview';
+
 import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateLoan } from '@/lib/calculations';
@@ -33,6 +36,7 @@ export default function LoanCalc() {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+      <ToolPreview id="loan" />
       <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <Section title="Loan Details">
           <InputField label="Loan Amount" value={amount} onChange={setAmount} min={500} max={500000} step={500} prefix={currency.symbol} />
@@ -44,6 +48,20 @@ export default function LoanCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="Results">
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+        <SaveCalcButton
+          toolHref="/loan"
+          toolTitle="Loan Repayment"
+          summary={`${fmt(amount)} at ${rate}% over ${termMonths} months`}
+          keyResults={[
+              { label: 'Monthly', value: fmt(result.monthlyPayment) },
+              { label: 'Total Interest', value: fmt(result.totalInterest) },
+              { label: 'Total Repaid', value: fmt(result.totalPayment) },
+          ]}
+        />
+
+          </div>
+
           <ResultCard label="Monthly Payment" value={fmt(result.monthlyPayment)} size="large" />
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             <ResultCard label="Total Repaid" value={fmt(result.totalPayment)} color="warning" />
