@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" width="320" height="64" role="img" aria-label="Plain Figures">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;display=swap');
+    </style>
+  </defs>
+
+  <!-- Icon mark: 3×3 grid of square dots, PF letterform baked in -->
+  <!-- Grid origin: x=0, y=0, cell=20px, gap=3px -->
+  <!-- Dot size: 9px squares, rounded 1.5px -->
+
+  <!-- Row 1 -->
+  <rect x="0"  y="0"  width="9" height="9" rx="1.5" fill="#3b82c4" opacity="0.9"/>
+  <rect x="12" y="0"  width="9" height="9" rx="1.5" fill="#3b82c4" opacity="0.6"/>
+  <rect x="24" y="0"  width="9" height="9" rx="1.5" fill="#d4a843" opacity="1"/>
+
+  <!-- Row 2 -->
+  <rect x="0"  y="12" width="9" height="9" rx="1.5" fill="#3b82c4" opacity="0.9"/>
+  <rect x="12" y="12" width="9" height="9" rx="1.5" fill="#3b82c4" opacity="0.25"/>
+  <rect x="24" y="12" width="9" height="9" rx="1.5" fill="#3b82c4" opacity="0.6"/>
+
+  <!-- Row 3 -->
+  <rect x="0"  y="24" width="9" height="9" rx="1.5" fill="#3b82c4" opacity="0.9"/>
+  <rect x="12" y="24" width="9" height="9" rx="1.5" fill="#3b82c4" opacity="0.4"/>
+  <rect x="24" y="24" width="9" height="9" rx="1.5" fill="#3b82c4" opacity="0.25"/>
+
+  <!-- Vertical rule separator -->
+  <rect x="48" y="6" width="1" height="52" fill="#dde2ea"/>
+
+  <!-- Wordmark: "PLAIN FIGURES" in DM Mono -->
+  <!-- Using SVG text with system monospace fallback — actual font loads via CSS on web -->
+  <text x="60" y="23"
+        font-family="'DM Mono', 'Courier New', monospace"
+        font-size="13"
+        font-weight="500"
+        fill="#111720"
+        letter-spacing="0.14em"
+        text-anchor="start">PLAIN</text>
+
+  <text x="60" y="44"
+        font-family="'DM Mono', 'Courier New', monospace"
+        font-size="13"
+        font-weight="400"
+        fill="#7a8fa8"
+        letter-spacing="0.14em"
+        text-anchor="start">FIGURES</text>
+
+  <!-- Amber underline accent on PLAIN -->
+  <rect x="60" y="27" width="52" height="1.5" rx="0.75" fill="#d4a843" opacity="0.7"/>
+</svg>
