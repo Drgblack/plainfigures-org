@@ -120,18 +120,14 @@ const themeScript = `
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GB">
-      <head>
+            <head>
         {/* CookieYes CMP — GDPR consent banner. Must be first in <head>. */}
-        <script type="text/javascript" src="https://app.cookieyes.com/WKOIzccAuR5rTmRbGM953fub48VTA8Kkyg9IBO3B5mfeXV-EyYBip7j1T31E5sIpFwboN2yH0h34M-vHT-6cpQy31U3X4lmBJzi8tpacpP8D6-mB2qt-72PJBjhOYBBH27u1c4BAhJZZdW6Y0KLPyiGrSL3O7Lrxaqco6e9YNIKktGpYrnYp7qSDBtRNSBY6d9JcqenINjiEPTUxVZ68-QBTV_Rj4w_SYr2-O0XxloviKG4ufrHbiAx-bDzVH6K8txkN-r-qJWsqwpRM148KZTBqdI86mMTEKM9LLTg68LaAVxql2woiZp-zdv9x9DxEZnfrpLRAYBUCW5QEUdmp62-0QzeAeh9YP7l8jSv0jww_8QOBfyuij-S418ypSe06OxQKQnQt49lB_6_J2O7LSA0RKlWV68Fc4JqHhMy8ODJBuCVn7e5yTRQf2hsG-QeEiZenq3UVidRMh_CFooQ0yrJcnCA76GlYKYImaJs8hh1h2YI2zYCrlr0" />
-        <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/a94ee732bd655739457a79c94415999f/script.js" />
-        {/* Cookiebot CMP — GDPR consent banner. Must be first script in <head>. */}
         <script
-          id="Cookiebot"
-          src="https://consent.cookiebot.com/uc.js"
-          data-cbid="649cb5c1-62ac-4296-b4e4-446cca128ece"
-          data-blockingmode="auto"
+          id="cookieyes"
           type="text/javascript"
+          src="https://cdn-cookieyes.com/client_data/a94ee732bd655739457a79c94415999f/script.js"
         />
+        {/* Prevent theme flash before React hydrates */}
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script
