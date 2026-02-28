@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Contact — Plain Figures',
@@ -8,79 +7,64 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div style={{ maxWidth: '680px', margin: '0 auto', padding: '4rem 2rem 6rem' }}>
+    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '3rem 1.5rem' }}>
+      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+        Contact
+      </p>
+      <h1 style={{ fontFamily: 'var(--font-mono)', fontSize: '1.75rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '2rem' }}>
+        Get in touch.
+      </h1>
 
-      {/* Breadcrumb */}
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em', marginBottom: '2.5rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-        <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>PLAIN FIGURES</Link>
-        <span>/</span>
-        <span style={{ color: 'var(--accent)' }}>CONTACT</span>
-      </div>
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.85, display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
-      {/* Header */}
-      <div style={{ marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid var(--border)' }}>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-          Contact
+        <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: '6px', padding: '1.25rem 1.5rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginBottom: '0.5rem', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            Important
+          </p>
+          <p>
+            Plain Figures does not provide financial, investment, insurance, or professional advice.
+            We cannot comment on your personal financial situation, validate your decisions,
+            or recommend products or advisers. All calculators are indicative tools only —
+            use them at your own discretion.
+          </p>
         </div>
-        <h1 style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '1rem' }}>
-          Get in touch.
-        </h1>
-        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.75, fontWeight: 300 }}>
-          For site issues, technical questions, or feedback on any calculator or guide.
+
+        <p>
+          For site issues, calculation errors, technical questions, accessibility concerns,
+          or general feedback, we welcome your message.
         </p>
-      </div>
 
-      <div className="guide-content">
-
-        {/* The email CTA — prominent but calm */}
-        <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: '6px', padding: '1.75rem 2rem', marginBottom: '2.5rem' }}>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+        <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginBottom: '0.5rem', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Email
-          </div>
+          </p>
           <a
             href="mailto:help@plainfigures.org"
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: '1.15rem',
+              fontSize: '1rem',
               color: 'var(--accent)',
               textDecoration: 'none',
-              letterSpacing: '-0.01em',
+              letterSpacing: '0.02em',
             }}
           >
             help@plainfigures.org
           </a>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.6, fontWeight: 300, marginTop: '0.75rem', marginBottom: 0 }}>
-            We aim to respond within 2–3 business days.
-          </p>
         </div>
 
-        <h2>What we can help with</h2>
-        <ul>
-          <li>Reporting a calculation error or unexpected result</li>
-          <li>Technical issues with the site (layout, loading, accessibility)</li>
-          <li>Feedback on an existing calculator or learning guide</li>
-          <li>Suggesting a calculator or topic not yet covered</li>
-          <li>Privacy or data enquiries</li>
-        </ul>
-
-        <h2>What we cannot help with</h2>
-
-        {/* Hard boundary — styled as a calm warning, not a rejection */}
-        <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderLeft: '3px solid var(--warning)', borderRadius: '4px', padding: '1.1rem 1.25rem', margin: '1rem 0 1.5rem' }}>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
-            <strong style={{ color: 'var(--text-primary)', fontWeight: 500 }}>We do not provide financial advice.</strong> Plain Figures is a mathematical tool, not an advisory service. We cannot help you decide whether to buy or rent, how much to borrow, which mortgage to choose, or any other financial decision. Use the calculators to inform your thinking, then consult a qualified financial adviser, mortgage broker, or other relevant professional.
+        <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginBottom: '0.5rem', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            Response time
           </p>
+          <p>We aim to respond within 3–5 business days. We are a small team.</p>
         </div>
 
-        <ul>
-          <li>Financial, investment, tax, or legal advice of any kind</li>
-          <li>Interpretation of your specific results for your specific situation</li>
-          <li>Recommendations on products, providers, or courses of action</li>
-        </ul>
-
-        <p>
-          The calculators on this site produce indicative figures only. Results depend on assumptions that may not match your actual circumstances. Plain Figures accepts no responsibility for decisions made on the basis of figures generated by these tools. See our <Link href="/terms" style={{ color: 'var(--accent)', textDecoration: 'none' }}>Terms of Use</Link> and <Link href="/disclaimer" style={{ color: 'var(--accent)', textDecoration: 'none' }}>Disclaimer</Link> for full details.
-        </p>
+        <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginBottom: '0.5rem', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            Location
+          </p>
+          <p>Plain Figures is operated from Germany.</p>
+        </div>
 
       </div>
     </div>

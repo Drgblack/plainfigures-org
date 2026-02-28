@@ -1,117 +1,120 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy — Plain Figures',
-  description: 'Plain Figures privacy policy. No personal data is stored from calculator use. Minimal data collection, no tracking on tools, GDPR compliant.',
+  description: 'Plain Figures privacy policy. We collect no personal data from calculator use. GDPR compliant. No tracking, no data sales, no third-party sharing.',
 };
 
-const LAST_UPDATED = 'February 2026';
+const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div style={{ marginBottom: '2rem' }}>
+    <h2 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.75rem', letterSpacing: '0.04em' }}>
+      {title}
+    </h2>
+    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.85, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      {children}
+    </div>
+  </div>
+);
 
 export default function PrivacyPage() {
   return (
-    <div style={{ maxWidth: '680px', margin: '0 auto', padding: '4rem 2rem 6rem' }}>
+    <div style={{ maxWidth: '720px', margin: '0 auto', padding: '3rem 1.5rem' }}>
+      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+        Legal
+      </p>
+      <h1 style={{ fontFamily: 'var(--font-mono)', fontSize: '1.75rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
+        Privacy Policy
+      </h1>
+      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '2.5rem' }}>
+        Last updated: February 2026
+      </p>
 
-      {/* Breadcrumb */}
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em', marginBottom: '2.5rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-        <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>PLAIN FIGURES</Link>
-        <span>/</span>
-        <span style={{ color: 'var(--accent)' }}>PRIVACY</span>
-      </div>
+      <Section title="Summary">
+        <p>
+          Plain Figures does not collect, store, or process personal data from calculator use.
+          No account is required. No form submissions occur. No data leaves your device when
+          you use our tools.
+        </p>
+      </Section>
 
-      {/* Header */}
-      <div style={{ marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid var(--border)' }}>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-          Privacy Policy
-        </div>
-        <h1 style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '0.75rem' }}>
-          Your data. Your browser.
-        </h1>
-        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.7, fontWeight: 300 }}>
-          No personal data is stored from calculator use. What you enter into our tools stays in your browser.
+      <Section title="What we collect">
+        <p>
+          <strong style={{ color: 'var(--text-primary)' }}>Calculator use:</strong> None.
+          All calculations run in your browser. No inputs, results, or usage data are transmitted to our servers.
         </p>
-        <div style={{ marginTop: '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.06em' }}>
-          Last updated: {LAST_UPDATED}
-        </div>
-      </div>
+        <p>
+          <strong style={{ color: 'var(--text-primary)' }}>Browser storage:</strong> We use
+          localStorage to remember your currency preference, theme (dark/light), and any scenarios
+          you explicitly save. This data never leaves your device and can be cleared at any time
+          via your browser settings.
+        </p>
+        <p>
+          <strong style={{ color: 'var(--text-primary)' }}>Analytics:</strong> We may use
+          privacy-respecting analytics (aggregate page view counts, no personal identifiers,
+          no cross-site tracking). If used, this collects only: page URL, referrer, country-level
+          location, device type. No cookies are set for analytics purposes without consent.
+        </p>
+        <p>
+          <strong style={{ color: 'var(--text-primary)' }}>Contact:</strong> If you email us at
+          help@plainfigures.org, we receive your email address and message content. We use this
+          solely to respond to your enquiry and do not add it to any mailing list.
+        </p>
+      </Section>
 
-      {/* Body */}
-      <div className="guide-content">
+      <Section title="Cookies">
+        <p>
+          We use functional cookies only — strictly necessary for the site to operate (e.g.,
+          theme persistence). We do not use advertising, tracking, or third-party analytics cookies.
+          No consent banner is shown because no non-essential cookies are set by default.
+        </p>
+      </Section>
 
-        <h2>Who we are</h2>
+      <Section title="Third parties">
         <p>
-          Plain Figures (<strong>plainfigures.org</strong>) is a financial calculator and learning resource. For data protection purposes, the data controller is the operator of plainfigures.org, based in Germany. Contact: <a href="mailto:help@plainfigures.org" style={{ color: 'var(--accent)', textDecoration: 'none' }}>help@plainfigures.org</a>.
+          We do not sell, rent, or share your data with any third party for marketing or commercial purposes.
+          Our site is hosted on Vercel (infrastructure provider). Vercel's privacy policy applies to
+          server-level access logs, which we do not control or actively process.
         </p>
+        <p>
+          The site may in future display contextual advertising (Google AdSense). If implemented,
+          this will be disclosed here and governed by Google's privacy and cookie policies.
+          Calculator pages will remain ad-free.
+        </p>
+      </Section>
 
-        <h2>What data we collect — and what we do not</h2>
+      <Section title="Your rights (GDPR)">
         <p>
-          <strong>Calculator tools:</strong> No personal data is collected, transmitted, or stored when you use any calculator on this site. Numbers you enter are processed entirely within your browser. Nothing is sent to our servers. We cannot see what figures you input.
+          As we hold minimal personal data, most GDPR rights are exercised automatically — there is
+          nothing to access or delete from calculator use. If you have contacted us by email and wish
+          us to delete your correspondence, contact help@plainfigures.org and we will do so within 30 days.
         </p>
         <p>
-          <strong>Analytics:</strong> We may use privacy-respecting, aggregate analytics (such as page view counts and country-level traffic) to understand which tools are used most. If analytics are active, they do not track individuals, do not use persistent identifiers, and do not record calculator inputs. No analytics data is sold or shared with third parties.
+          You have the right to: access data we hold about you; request correction; request deletion;
+          object to processing; lodge a complaint with your national data protection authority.
+          Our supervisory authority is the German Federal Commissioner for Data Protection (BfDI).
         </p>
-        <p>
-          <strong>Contact email:</strong> If you email us at help@plainfigures.org, we receive your email address and the content of your message. We use this only to respond to your enquiry and do not add it to any marketing list or share it with third parties.
-        </p>
+      </Section>
 
-        <h2>Cookies</h2>
+      <Section title="Data retention">
         <p>
-          We use a small number of functional cookies to maintain site preferences — for example, your chosen display theme (dark or light mode) and currency selection. These cookies:
+          Email correspondence is retained for up to 12 months and then deleted.
+          No other personal data is retained.
         </p>
-        <ul>
-          <li>Are stored locally in your browser</li>
-          <li>Do not contain personal information</li>
-          <li>Are not shared with any third party</li>
-          <li>Can be cleared at any time via your browser settings</li>
-        </ul>
-        <p>
-          We do not use advertising cookies, tracking cookies, or any cookies for behavioural profiling.
-        </p>
+      </Section>
 
-        <h2>Third-party services</h2>
+      <Section title="Changes to this policy">
         <p>
-          The core calculator tools on this site use no third-party tracking, analytics SDKs, or advertising scripts. If advertising is introduced in future (for example, Google AdSense), this policy will be updated in advance and a cookie consent mechanism will be added where required by applicable law.
+          We will update this page if our data practices change. Continued use of the site
+          after changes constitutes acceptance of the updated policy.
         </p>
-        <p>
-          The site is hosted on a third-party infrastructure provider. Standard server logs (IP address, request path, timestamp) may be retained for security purposes for a short period. These are not used to identify individuals for marketing purposes.
-        </p>
+      </Section>
 
-        <h2>Your rights under GDPR</h2>
+      <Section title="Contact">
         <p>
-          As a user in the European Union or European Economic Area, you have rights under the General Data Protection Regulation (GDPR), including the right to:
+          Data controller: Plain Figures, Germany.
+          Contact: <a href="mailto:help@plainfigures.org" style={{ color: 'var(--accent)', textDecoration: 'none' }}>help@plainfigures.org</a>
         </p>
-        <ul>
-          <li>Access any personal data we hold about you</li>
-          <li>Request correction of inaccurate data</li>
-          <li>Request deletion of your personal data</li>
-          <li>Object to or restrict processing</li>
-          <li>Lodge a complaint with your national supervisory authority</li>
-        </ul>
-        <p>
-          Because we collect almost no personal data from calculator use, most of these rights will apply only in the context of email correspondence. To exercise any right, contact us at <a href="mailto:help@plainfigures.org" style={{ color: 'var(--accent)', textDecoration: 'none' }}>help@plainfigures.org</a>.
-        </p>
-
-        <h2>Data retention</h2>
-        <p>
-          We retain email correspondence for as long as necessary to resolve the enquiry, and for a reasonable period thereafter for record-keeping. There is no personal data to retain from calculator use. Browser-stored preferences (theme, currency) remain until you clear your browser storage.
-        </p>
-
-        <h2>Children</h2>
-        <p>
-          This site is not directed at children under 16. We do not knowingly collect personal data from children.
-        </p>
-
-        <h2>Changes to this policy</h2>
-        <p>
-          If we make material changes to this policy — for example, if we introduce advertising or a new data-processing activity — we will update this page and revise the "last updated" date above. Continued use of the site after changes are posted constitutes acceptance of the updated policy.
-        </p>
-
-        <h2>Contact</h2>
-        <p>
-          For any privacy question or data request: <a href="mailto:help@plainfigures.org" style={{ color: 'var(--accent)', textDecoration: 'none' }}>help@plainfigures.org</a>
-        </p>
-
-      </div>
+      </Section>
     </div>
   );
 }

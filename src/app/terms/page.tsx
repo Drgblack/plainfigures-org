@@ -1,96 +1,112 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Terms of Use — Plain Figures',
-  description: 'Plain Figures terms of use. Calculators are indicative only. No financial advice provided. Governing law: Germany.',
+  description: 'Plain Figures terms of use. Calculators are indicative tools only. No financial advice is provided. Governed by German law.',
 };
 
-const LAST_UPDATED = 'February 2026';
+const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div style={{ marginBottom: '2rem' }}>
+    <h2 style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.75rem', letterSpacing: '0.04em' }}>
+      {title}
+    </h2>
+    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.85, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      {children}
+    </div>
+  </div>
+);
 
 export default function TermsPage() {
   return (
-    <div style={{ maxWidth: '680px', margin: '0 auto', padding: '4rem 2rem 6rem' }}>
+    <div style={{ maxWidth: '720px', margin: '0 auto', padding: '3rem 1.5rem' }}>
+      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+        Legal
+      </p>
+      <h1 style={{ fontFamily: 'var(--font-mono)', fontSize: '1.75rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
+        Terms of Use
+      </h1>
+      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '2.5rem' }}>
+        Last updated: February 2026. By using Plain Figures, you agree to these terms.
+      </p>
 
-      {/* Breadcrumb */}
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em', marginBottom: '2.5rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-        <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>PLAIN FIGURES</Link>
-        <span>/</span>
-        <span style={{ color: 'var(--accent)' }}>TERMS</span>
-      </div>
-
-      {/* Header */}
-      <div style={{ marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid var(--border)' }}>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-          Terms of Use
-        </div>
-        <h1 style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: '0.75rem' }}>
-          Terms of Use
-        </h1>
-        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.7, fontWeight: 300 }}>
-          By using plainfigures.org, you agree to these terms. They are written in plain English.
-        </p>
-        <div style={{ marginTop: '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.06em' }}>
-          Last updated: {LAST_UPDATED}
-        </div>
-      </div>
-
-      <div className="guide-content">
-
-        <h2>1. What Plain Figures is</h2>
+      <Section title="1. What Plain Figures is">
         <p>
-          Plain Figures (<strong>plainfigures.org</strong>) provides online mathematical calculators and explanatory guides for informational purposes. It is a tool, not a service. It does not employ advisers, brokers, analysts, or any professional who could give you personal guidance.
+          Plain Figures provides mathematical calculation tools for informational and educational purposes.
+          We are not a financial adviser, broker, insurer, lender, or regulated professional service.
+          Nothing on this site constitutes financial, investment, tax, insurance, or legal advice.
         </p>
+      </Section>
 
-        <h2>2. Calculators are indicative only</h2>
+      <Section title="2. No warranty on calculations">
         <p>
-          Every calculator on this site produces <strong>illustrative figures based on the inputs you provide</strong>. Results are not guarantees, projections, valuations, or recommendations. They depend on assumptions — about interest rates, tax rules, future conditions, and your specific situation — that may be incomplete, out of date, or simply wrong for your circumstances.
+          All calculators produce indicative results based on the inputs you provide and standard
+          mathematical formulas. Results are approximations. They do not account for all real-world
+          factors, individual circumstances, regulatory changes, tax variations, or lender-specific criteria.
         </p>
         <p>
-          Do not make any significant financial, legal, tax, insurance, or investment decision based solely on output from this site. Always verify results independently and consult a qualified professional before acting.
+          Plain Figures is provided "as is" without warranty of any kind — express, implied, or statutory.
+          We do not warrant that calculations are error-free, complete, or suitable for any specific purpose.
         </p>
+      </Section>
 
-        <h2>3. No financial advice</h2>
+      <Section title="3. Your responsibility">
         <p>
-          Plain Figures does not provide financial advice, investment advice, tax advice, legal advice, insurance advice, or any other regulated or professional advisory service. Nothing on this site constitutes a recommendation to buy, sell, borrow, invest, insure, or take any other action. Use of the site does not create any advisory or fiduciary relationship between you and Plain Figures.
+          You use Plain Figures at your own risk. You are solely responsible for any decisions made
+          on the basis of results from this site. Before making significant financial decisions, you
+          should consult a qualified professional appropriate to your situation.
         </p>
+      </Section>
 
-        <h2>4. No warranty</h2>
+      <Section title="4. Limitation of liability">
         <p>
-          The site is provided "as is" and "as available" without any warranty of any kind, express or implied. We make no representations about the accuracy, completeness, reliability, or fitness for purpose of any calculation. Formulas are reviewed periodically, but tax bands, rates, and other inputs change — we cannot guarantee that every figure is current at the moment you use it.
+          To the fullest extent permitted by applicable law, Plain Figures and its operators accept
+          no liability for any direct, indirect, incidental, special, or consequential loss or damage
+          arising from your use of, or reliance on, this site or its calculators.
         </p>
+      </Section>
 
-        <h2>5. Limitation of liability</h2>
+      <Section title="5. Intellectual property">
         <p>
-          To the maximum extent permitted by applicable law, Plain Figures and its operator accept no liability for any loss, damage, or cost — direct or indirect — arising from your use of or reliance on any calculator, guide, or other content on this site. This includes but is not limited to financial loss, lost income, or costs of professional advice obtained to correct a decision made on the basis of figures from this site.
+          All content on Plain Figures — including calculators, guides, code, and design — is the
+          property of Plain Figures. You may use the site for personal, non-commercial purposes.
+          You may not copy, reproduce, scrape, republish, or redistribute content without express
+          written permission.
         </p>
-
-        <h2>6. Intellectual property</h2>
         <p>
-          Content on this site — including calculator logic, text, and guides — is the property of Plain Figures and protected by copyright. You may use the calculators for personal, non-commercial purposes. You may not reproduce, copy, scrape, republish, redistribute, or use the content commercially without prior written permission. Automated scraping of the site is not permitted.
+          Automated data extraction (scraping, crawling beyond normal indexing) is not permitted.
         </p>
+      </Section>
 
-        <h2>7. External links</h2>
+      <Section title="6. Third-party links">
         <p>
-          Where the site links to external websites, those sites are beyond our control. We are not responsible for their content, accuracy, or privacy practices.
+          Where the site links to external tools, resources, or services, we are not responsible
+          for their content, accuracy, or practices. A link does not constitute endorsement.
         </p>
+      </Section>
 
-        <h2>8. Changes to the site</h2>
+      <Section title="7. Changes to the site">
         <p>
-          We may update, modify, or remove calculators, guides, or other content at any time without notice. We may also update these terms — the "last updated" date above will reflect the most recent revision. Continued use of the site after a revision constitutes acceptance of the updated terms.
+          We may modify, suspend, or discontinue any part of Plain Figures at any time without notice.
+          We may update these terms — continued use after updates constitutes acceptance.
         </p>
+      </Section>
 
-        <h2>9. Governing law and disputes</h2>
+      <Section title="8. Governing law and disputes">
         <p>
-          These terms are governed by the laws of the <strong>Federal Republic of Germany</strong>. Any disputes arising from use of this site shall be subject to the exclusive jurisdiction of the courts of Germany, to the extent permitted by applicable law. If you are a consumer in the EU, you may also be entitled to remedies under the law of your country of residence.
+          These terms are governed by the laws of Germany. Any disputes arising from use of Plain Figures
+          shall be subject to the exclusive jurisdiction of the courts of Germany, to the extent
+          permitted by applicable consumer protection law in your country of residence.
         </p>
+      </Section>
 
-        <h2>10. Contact</h2>
+      <Section title="9. Contact">
         <p>
-          For questions about these terms: <a href="mailto:help@plainfigures.org" style={{ color: 'var(--accent)', textDecoration: 'none' }}>help@plainfigures.org</a>
+          Questions about these terms:{' '}
+          <a href="mailto:help@plainfigures.org" style={{ color: 'var(--accent)', textDecoration: 'none' }}>
+            help@plainfigures.org
+          </a>
         </p>
-
-      </div>
+      </Section>
     </div>
   );
 }
