@@ -169,7 +169,6 @@ function NavSearch() {
           type="text"
           value={query}
           onChange={e => { setQuery(e.target.value); setOpen(true); setActiveIdx(-1); }}
-          onFocus={() => setOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           aria-label={searchLabel}
@@ -192,7 +191,7 @@ function NavSearch() {
             outline: 'none',
             cursor: 'text',
           }}
-          onFocus={e => { e.currentTarget.style.width = '200px'; e.currentTarget.style.borderColor = 'var(--accent)'; }}
+          onFocus={e => { setOpen(true); e.currentTarget.style.width = '200px'; e.currentTarget.style.borderColor = 'var(--accent)'; }}
           onBlur={e => { if (!query) e.currentTarget.style.width = '120px'; e.currentTarget.style.borderColor = 'var(--border)'; }}
         />
         {query ? (

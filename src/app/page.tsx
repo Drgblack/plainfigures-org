@@ -10,7 +10,7 @@ import { useLang } from '@/components/ui/LangSwitcher';
 const FEATURED_GUIDES = [
   { href: '/learn/mortgage-repayment', title: 'How Mortgage Repayment Works', readTime: '5 min' },
   { href: '/learn/compound-interest', title: 'Understanding Compound Interest', readTime: '4 min' },
-  { href: '/learn/salary-take-home', title: 'Salary Take-Home: How It's Calculated', readTime: '7 min' },
+  { href: '/learn/salary-take-home', title: "Salary Take-Home: How It's Calculated", readTime: '7 min' },
   { href: '/learn/rent-vs-buy', title: 'Rent vs Buy: The Key Numbers', readTime: '6 min' },
   { href: '/learn/loan-repayment', title: 'Loan Repayment & True APR', readTime: '5 min' },
   { href: '/learn/tdee', title: 'TDEE & Calorie Needs Explained', readTime: '5 min' },

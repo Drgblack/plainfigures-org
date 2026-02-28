@@ -133,23 +133,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {/* Skip-to-content accessibility link */}
           <a
             href="#main-content"
-            style={{
-              position: 'absolute',
-              top: '-100px',
-              left: '1rem',
-              zIndex: 9999,
-              padding: '0.6rem 1.25rem',
-              background: 'var(--accent)',
-              color: '#fff',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.78rem',
-              borderRadius: '4px',
-              textDecoration: 'none',
-              letterSpacing: '0.04em',
-              transition: 'top 0.15s ease',
-            }}
-            onFocus={e => (e.currentTarget.style.top = '0.5rem')}
-            onBlur={e => (e.currentTarget.style.top = '-100px')}
+            className="skip-to-content"
           >
             Skip to content
           </a>
