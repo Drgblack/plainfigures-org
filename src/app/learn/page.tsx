@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Learning Centre — How Financial Calculations Work — Plain Figures',
-  description: 'Clear, formula-based guides explaining how mortgage repayments, compound interest, salary take-home, and other financial calculations actually work. No advice. Just the maths.',
+  description: 'Formula-first guides explaining how mortgage repayments, compound interest, salary take-home, overpayments, subscriptions, freelance rates, and other financial calculations work. No advice. Just the maths.',
 };
 
 const GUIDES = [
@@ -86,6 +86,66 @@ const GUIDES = [
     calcHref: '/crisis',
     calcLabel: 'Crisis Simulator',
     tags: ['Emergency Fund', 'Burn Rate', 'Runway'],
+  },
+  {
+    href: '/learn/mortgage-overpayment',
+    code: 'G09',
+    title: 'Mortgage Overpayment: How Much Does It Save?',
+    description: 'How extra payments reduce total interest and shorten the term — and why overpaying in year 1 saves significantly more than the same amount in year 20.',
+    readTime: '5 min',
+    calcHref: '/overpayment',
+    calcLabel: 'Overpayment Calculator',
+    tags: ['Overpayment', 'Term Reduction', 'ERC'],
+  },
+  {
+    href: '/learn/save-for-goal',
+    code: 'G10',
+    title: 'Save for a Goal: Time & Amount Basics',
+    description: 'How to calculate how long it takes to reach a savings target, or how much to save each month to hit a deadline. Formula, examples, and what-if scenarios.',
+    readTime: '4 min',
+    calcHref: '/save-goal',
+    calcLabel: 'Savings Goal Calculator',
+    tags: ['Savings Target', 'Timeline', 'Deposit'],
+  },
+  {
+    href: '/learn/subscription-drain',
+    code: 'G11',
+    title: 'Subscription Drain: The True Long-Term Cost',
+    description: 'How recurring monthly subscriptions accumulate into significant multi-year sums — and what the same money produces if invested instead.',
+    readTime: '4 min',
+    calcHref: '/subscriptions',
+    calcLabel: 'Subscription Calculator',
+    tags: ['Opportunity Cost', 'Recurring Costs', 'Price Increases'],
+  },
+  {
+    href: '/learn/freelance-rate',
+    code: 'G12',
+    title: 'Freelance Rate: Working Backwards from Desired Salary',
+    description: 'How to calculate the day rate needed to match a target take-home — accounting for billable days, tax, NI, pension, and overheads.',
+    readTime: '5 min',
+    calcHref: '/freelance',
+    calcLabel: 'Freelance Rate Calculator',
+    tags: ['Day Rate', 'Self-Employed', 'Utilisation'],
+  },
+  {
+    href: '/learn/lifestyle-inflation',
+    code: 'G13',
+    title: 'Lifestyle Inflation: Real Cost Over Time',
+    description: 'How spending that rises with income compounds into a large long-run wealth gap — and the maths behind two identical salaries, two different outcomes.',
+    readTime: '5 min',
+    calcHref: '/lifestyle-inflation',
+    calcLabel: 'Lifestyle Inflation Calculator',
+    tags: ['Lifestyle Creep', 'Compounding', 'Wealth Gap'],
+  },
+  {
+    href: '/learn/business-interruption',
+    code: 'G14',
+    title: 'Business Interruption Sum Insured: How It Works',
+    description: 'How BI insurance sums insured are calculated on a gross profit basis — indemnity period selection, the average clause, and under-insurance risk.',
+    readTime: '5 min',
+    calcHref: '/bi',
+    calcLabel: 'BI Calculator',
+    tags: ['Gross Profit', 'Indemnity Period', 'Average Clause'],
   },
 ];
 
