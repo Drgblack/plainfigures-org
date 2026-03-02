@@ -7,7 +7,9 @@ import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateOverpayment } from '@/lib/calculations';
 import { formatCurrency } from '@/lib/formatting';
+import { exportToCsv } from '@/lib/exportCsv';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 
 export default function OverpaymentCalc() {
   const { currency } = useCurrency();
@@ -23,6 +25,35 @@ export default function OverpaymentCalc() {
   const monthsSavedRemainder = result.monthsSaved % 12;
   const newTermYears = Math.floor(result.newTermMonths / 12);
   const newTermMonthsRemainder = result.newTermMonths % 12;
+
+  const yearlyRows = useMemo(
+    () =>
+      result.yearlyComparison.map(({ year, stdBalance, ovBalance }) => ({
+        Year: year,
+        'Standard Balance': formatCurrency(stdBalance, currency),
+        'Overpayment Balance': formatCurrency(ovBalance, currency),
+        'Balance Saved': formatCurrency(stdBalance - ovBalance, currency),
+      })),
+    [result.yearlyComparison, currency]
+  );
+
+  const downloadCsv = () => {
+    exportToCsv({
+      fileName: 'plainfigures-overpayment-results',
+      metadata: [
+        { key: 'Calculator', value: 'Mortgage Overpayment' },
+        { key: 'Currency', value: `${currency.code} (${currency.symbol})` },
+        { key: 'Outstanding Balance', value: fmt(balance) },
+        { key: 'Annual Interest Rate', value: `${rate}%` },
+        { key: 'Remaining Term', value: `${term} years` },
+        { key: 'Extra Monthly Payment', value: fmt(overpayment) },
+        { key: 'Interest Saved', value: fmt(result.interestSaved) },
+        { key: 'Time Saved', value: `${yearsSaved}y ${monthsSavedRemainder}m` },
+        { key: 'New Term', value: `${newTermYears}y ${newTermMonthsRemainder}m` },
+      ],
+      rows: yearlyRows,
+    });
+  };
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
@@ -53,17 +84,17 @@ export default function OverpaymentCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="Impact of Overpaying">
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
-        <SaveCalcButton
-          toolHref="/overpayment"
-          toolTitle="Mortgage Overpayment"
-          summary={`${fmt(balance)} at ${rate}%, overpaying ${fmt(overpayment)}/mo`}
-          keyResults={[
-              { label: 'Interest Saved', value: fmt(result.interestSaved) },
-              { label: 'Time Saved', value: `${yearsSaved}y ${monthsSavedRemainder}m` },
-          ]}
-        />
-
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            <DownloadCsvButton onDownload={downloadCsv} />
+            <SaveCalcButton
+              toolHref="/overpayment"
+              toolTitle="Mortgage Overpayment"
+              summary={`${fmt(balance)} at ${rate}%, overpaying ${fmt(overpayment)}/mo`}
+              keyResults={[
+                { label: 'Interest Saved', value: fmt(result.interestSaved) },
+                { label: 'Time Saved', value: `${yearsSaved}y ${monthsSavedRemainder}m` },
+              ]}
+            />
           </div>
 
           <ResultCard label="Interest Saved" value={fmt(result.interestSaved)} size="large" color="positive" />

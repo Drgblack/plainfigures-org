@@ -4,8 +4,10 @@ import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateMortgage } from '@/lib/calculations';
 import { formatCurrency, formatPercent } from '@/lib/formatting';
+import { exportToCsv } from '@/lib/exportCsv';
 import { InputField, ResultCard, Section } from '@/components/ui';
 import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 import AdSlot from '@/components/ui/AdSlot';
 
 export default function MortgageCalc() {
@@ -20,6 +22,36 @@ export default function MortgageCalc() {
   );
 
   const fmt = (v: number) => formatCurrency(v, currency);
+
+  const amortizationRows = useMemo(
+    () =>
+      result.schedule.map(({ month, principal: principalPaid, interest, balance }) => ({
+        Year: Math.ceil(month / 12),
+        Month: month,
+        Payment: formatCurrency(principalPaid + interest, currency),
+        Interest: formatCurrency(interest, currency),
+        Principal: formatCurrency(principalPaid, currency),
+        Balance: formatCurrency(balance, currency),
+      })),
+    [result.schedule, currency]
+  );
+
+  const downloadCsv = () => {
+    exportToCsv({
+      fileName: 'plainfigures-mortgage-results',
+      metadata: [
+        { key: 'Calculator', value: 'Mortgage Repayment' },
+        { key: 'Currency', value: `${currency.code} (${currency.symbol})` },
+        { key: 'Principal', value: fmt(principal) },
+        { key: 'Interest Rate', value: formatPercent(rate) },
+        { key: 'Term', value: `${term} years` },
+        { key: 'Monthly Payment', value: fmt(result.monthlyPayment) },
+        { key: 'Total Interest', value: fmt(result.totalInterest) },
+        { key: 'Total Repaid', value: fmt(result.totalPayment) },
+      ],
+      rows: amortizationRows,
+    });
+  };
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
@@ -68,6 +100,7 @@ export default function MortgageCalc() {
           >
             ✉ Email
           </a>
+          <DownloadCsvButton onDownload={downloadCsv} />
           <SaveCalcButton
             toolHref="/mortgage"
             toolTitle="Mortgage Repayment"

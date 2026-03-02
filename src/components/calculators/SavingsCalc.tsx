@@ -4,8 +4,10 @@ import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateSavings } from '@/lib/calculations';
 import { formatCurrency, formatPercent } from '@/lib/formatting';
+import { exportToCsv } from '@/lib/exportCsv';
 import { InputField, ResultCard, Section } from '@/components/ui';
 import SaveCalcButton from '@/components/ui/SaveCalcButton';
+import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 import AdSlot from '@/components/ui/AdSlot';
 
 export default function SavingsCalc() {
@@ -22,6 +24,34 @@ export default function SavingsCalc() {
 
   const fmt = (v: number) => formatCurrency(v, currency);
   const totalContributions = initialDeposit + monthly * 12 * term;
+
+  const yearlyRows = useMemo(
+    () =>
+      result.yearlyBreakdown.map(({ year, balance, contributions, interest }) => ({
+        Year: year,
+        Balance: formatCurrency(balance, currency),
+        Contributions: formatCurrency(contributions, currency),
+        Interest: formatCurrency(interest, currency),
+      })),
+    [result.yearlyBreakdown, currency]
+  );
+
+  const downloadCsv = () => {
+    exportToCsv({
+      fileName: 'plainfigures-savings-results',
+      metadata: [
+        { key: 'Calculator', value: 'Savings Growth' },
+        { key: 'Currency', value: `${currency.code} (${currency.symbol})` },
+        { key: 'Initial Deposit', value: fmt(initialDeposit) },
+        { key: 'Monthly Contribution', value: fmt(monthly) },
+        { key: 'Annual Interest Rate', value: formatPercent(rate) },
+        { key: 'Term', value: `${term} years` },
+        { key: 'Final Balance', value: fmt(result.finalBalance) },
+        { key: 'Total Contributed', value: fmt(totalContributions) },
+      ],
+      rows: yearlyRows,
+    });
+  };
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
@@ -70,7 +100,8 @@ export default function SavingsCalc() {
 
       {/* Results */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+          <DownloadCsvButton onDownload={downloadCsv} />
           <SaveCalcButton
             toolHref="/savings"
             toolTitle="Savings Growth"

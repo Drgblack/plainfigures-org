@@ -7,7 +7,9 @@ import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateRentVsBuy } from '@/lib/calculations';
 import { formatCurrency } from '@/lib/formatting';
+import { exportToCsv } from '@/lib/exportCsv';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 
 export default function RentVsBuyCalc() {
   const { currency } = useCurrency();
@@ -35,6 +37,41 @@ export default function RentVsBuyCalc() {
   const finalYear = result.yearlyComparison[result.yearlyComparison.length - 1];
   const buyNetPosition = finalYear ? finalYear.buyNetPosition : 0;
   const rentNetPosition = finalYear ? finalYear.rentNetPosition : 0;
+
+  const yearlyRows = useMemo(
+    () =>
+      result.yearlyComparison.map((row) => ({
+        Year: row.year,
+        'Buy Cumulative Cost': formatCurrency(row.buyCumulativeCost, currency),
+        'Rent Cumulative Cost': formatCurrency(row.rentCumulativeCost, currency),
+        'Buy Equity': formatCurrency(row.buyEquity, currency),
+        'Buy Net Position': formatCurrency(row.buyNetPosition, currency),
+        'Rent Net Position': formatCurrency(row.rentNetPosition, currency),
+      })),
+    [result.yearlyComparison, currency]
+  );
+
+  const downloadCsv = () => {
+    exportToCsv({
+      fileName: 'plainfigures-rent-vs-buy-results',
+      metadata: [
+        { key: 'Calculator', value: 'Rent vs Buy' },
+        { key: 'Currency', value: `${currency.code} (${currency.symbol})` },
+        { key: 'Home Price', value: fmt(homePrice) },
+        { key: 'Down Payment', value: fmt(downPayment) },
+        { key: 'Mortgage Rate', value: `${mortgageRate}%` },
+        { key: 'Mortgage Term', value: `${mortgageTerm} years` },
+        { key: 'Monthly Rent', value: fmt(monthlyRent) },
+        { key: 'Rent Increase', value: `${rentIncrease}%` },
+        { key: 'Home Appreciation', value: `${appreciation}%` },
+        { key: 'Investment Return', value: `${investReturn}%` },
+        { key: 'Comparison Period', value: `${years} years` },
+        { key: 'Better Outcome', value: buyingIsBetter ? 'Buying' : 'Renting' },
+        { key: 'Net Worth Difference', value: fmt(Math.abs(result.netWorthDifference)) },
+      ],
+      rows: yearlyRows,
+    });
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -66,20 +103,19 @@ export default function RentVsBuyCalc() {
 
       {/* Results */}
       <Section title={`Verdict after ${years} years`}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
-        <SaveCalcButton
-          toolHref="/rent-vs-buy"
-          toolTitle="Rent vs Buy"
-          summary={`${fmt(homePrice)} property vs ${fmt(monthlyRent)}/mo rent over ${years}y`}
-          keyResults={[
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginBottom: '0.75rem' }}>
+          <DownloadCsvButton onDownload={downloadCsv} />
+          <SaveCalcButton
+            toolHref="/rent-vs-buy"
+            toolTitle="Rent vs Buy"
+            summary={`${fmt(homePrice)} property vs ${fmt(monthlyRent)}/mo rent over ${years}y`}
+            keyResults={[
               { label: 'Buy Net Position', value: fmt(buyNetPosition) },
               { label: 'Rent Net Position', value: fmt(rentNetPosition) },
-          ]}
-        />
-
-          </div>
-
+            ]}
+          />
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
           <ResultCard
             label="Better financial outcome"
             value={buyingIsBetter ? 'Buying' : 'Renting'}

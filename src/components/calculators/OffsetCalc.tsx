@@ -7,7 +7,9 @@ import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateOffset } from '@/lib/calculations';
 import { formatCurrency, formatNumber } from '@/lib/formatting';
+import { exportToCsv } from '@/lib/exportCsv';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 
 export default function OffsetCalc() {
   const { currency } = useCurrency();
@@ -24,6 +26,36 @@ export default function OffsetCalc() {
   const annualSaving = term > 0 ? result.interestSavedTotal / term : 0;
   const monthlySaving = annualSaving / 12;
 
+  const yearlyRows = useMemo(
+    () =>
+      result.yearlyComparison.map(({ year, standardInterest, offsetInterest, saving }) => ({
+        Year: year,
+        'Standard Interest (Cumulative)': formatCurrency(standardInterest, currency),
+        'Offset Interest (Cumulative)': formatCurrency(offsetInterest, currency),
+        'Interest Saved (Cumulative)': formatCurrency(saving, currency),
+      })),
+    [result.yearlyComparison, currency]
+  );
+
+  const downloadCsv = () => {
+    exportToCsv({
+      fileName: 'plainfigures-offset-results',
+      metadata: [
+        { key: 'Calculator', value: 'Offset Mortgage' },
+        { key: 'Currency', value: `${currency.code} (${currency.symbol})` },
+        { key: 'Mortgage Balance', value: fmt(balance) },
+        { key: 'Offset Savings', value: fmt(savings) },
+        { key: 'Annual Interest Rate', value: `${rate}%` },
+        { key: 'Remaining Term', value: `${term} years` },
+        { key: 'Monthly Payment', value: fmt(result.standardMonthlyPayment) },
+        { key: 'Total Interest Saved', value: fmt(result.interestSavedTotal) },
+        { key: 'Monthly Saving', value: fmt(monthlySaving) },
+        { key: 'Annual Saving', value: fmt(annualSaving) },
+      ],
+      rows: yearlyRows,
+    });
+  };
+
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
       <ToolPreview id="offset" />
@@ -39,21 +71,20 @@ export default function OffsetCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="Results">
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            <DownloadCsvButton onDownload={downloadCsv} />
+            <SaveCalcButton
+              toolHref="/offset"
+              toolTitle="Offset Mortgage"
+              summary={`${fmt(balance)} mortgage, ${fmt(savings)} offset at ${rate}%`}
+              keyResults={[
+                { label: 'Monthly Saving', value: fmt(monthlySaving) },
+                { label: 'Annual Saving', value: fmt(annualSaving) },
+                { label: 'Term Reduction', value: `${termReductionYears}y ${termReductionRemainingMonths}m` },
+              ]}
+            />
+          </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
-        <SaveCalcButton
-          toolHref="/offset"
-          toolTitle="Offset Mortgage"
-          summary={`${fmt(balance)} mortgage, ${fmt(savings)} offset at ${rate}%`}
-          keyResults={[
-              { label: 'Monthly Saving', value: fmt(monthlySaving) },
-              { label: 'Annual Saving', value: fmt(annualSaving) },
-              { label: 'Term Reduction', value: `${termReductionYears}y ${termReductionRemainingMonths}m` },
-          ]}
-        />
-
-            </div>
-
             <ResultCard label="Effective Mortgage Balance" value={fmt(result.effectiveBalance)}
               sub={`${fmt(savings)} offset`} />
             <ResultCard label="Monthly Payment" value={fmt(result.standardMonthlyPayment)} />

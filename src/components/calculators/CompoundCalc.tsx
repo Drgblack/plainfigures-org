@@ -7,7 +7,9 @@ import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateCompound } from '@/lib/calculations';
 import { formatCurrency, formatPercent, formatNumber } from '@/lib/formatting';
+import { exportToCsv } from '@/lib/exportCsv';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 import AdSlot from '@/components/ui/AdSlot';
 
 const FREQUENCIES = [
@@ -26,6 +28,36 @@ export default function CompoundCalc() {
 
   const result = useMemo(() => calculateCompound(principal, rate, years, freq), [principal, rate, years, freq]);
   const fmt = (v: number) => formatCurrency(v, currency);
+
+  const yearlyRows = useMemo(
+    () =>
+      result.yearlyBreakdown.map(({ year, balance, interest }) => ({
+        Year: year,
+        Balance: formatCurrency(balance, currency),
+        Interest: formatCurrency(interest, currency),
+      })),
+    [result.yearlyBreakdown, currency]
+  );
+
+  const frequencyLabel = FREQUENCIES.find((item) => item.value === freq)?.label ?? `${freq}x per year`;
+
+  const downloadCsv = () => {
+    exportToCsv({
+      fileName: 'plainfigures-compound-results',
+      metadata: [
+        { key: 'Calculator', value: 'Compound Interest' },
+        { key: 'Currency', value: `${currency.code} (${currency.symbol})` },
+        { key: 'Principal', value: fmt(principal) },
+        { key: 'Annual Interest Rate', value: formatPercent(rate) },
+        { key: 'Term', value: `${years} years` },
+        { key: 'Compounding Frequency', value: frequencyLabel },
+        { key: 'Final Amount', value: fmt(result.finalAmount) },
+        { key: 'Interest Earned', value: fmt(result.totalInterest) },
+        { key: 'Effective Annual Rate', value: formatPercent(result.effectiveRate) },
+      ],
+      rows: yearlyRows,
+    });
+  };
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
@@ -60,18 +92,18 @@ export default function CompoundCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="Results">
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
-        <SaveCalcButton
-          toolHref="/compound"
-          toolTitle="Compound Interest"
-          summary={`${fmt(principal)} at ${rate}% over ${years} years`}
-          keyResults={[
-              { label: 'Final Amount', value: fmt(result.finalAmount) },
-              { label: 'Total Interest', value: fmt(result.totalInterest) },
-              { label: 'Effective Rate', value: `${result.effectiveRate?.toFixed(3) ?? rate}%` },
-          ]}
-        />
-
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            <DownloadCsvButton onDownload={downloadCsv} />
+            <SaveCalcButton
+              toolHref="/compound"
+              toolTitle="Compound Interest"
+              summary={`${fmt(principal)} at ${rate}% over ${years} years`}
+              keyResults={[
+                { label: 'Final Amount', value: fmt(result.finalAmount) },
+                { label: 'Total Interest', value: fmt(result.totalInterest) },
+                { label: 'Effective Rate', value: `${result.effectiveRate?.toFixed(3) ?? rate}%` },
+              ]}
+            />
           </div>
 
           <ResultCard label="Final Amount" value={fmt(result.finalAmount)} size="large" color="positive" />

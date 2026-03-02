@@ -7,7 +7,9 @@ import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateLoan } from '@/lib/calculations';
 import { formatCurrency, formatPercent, formatNumber } from '@/lib/formatting';
+import { exportToCsv } from '@/lib/exportCsv';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 import AdSlot from '@/components/ui/AdSlot';
 
 export default function LoanCalc() {
@@ -35,6 +37,36 @@ export default function LoanCalc() {
     return years;
   }, [result.schedule, termMonths]);
 
+  const yearlyRows = useMemo(
+    () =>
+      yearlySummary.map(({ year, interest, principal, balance }) => ({
+        Year: year,
+        'Monthly Payment': formatCurrency(result.monthlyPayment, currency),
+        'Interest Paid': formatCurrency(interest, currency),
+        'Principal Paid': formatCurrency(principal, currency),
+        'Ending Balance': formatCurrency(balance, currency),
+      })),
+    [yearlySummary, result.monthlyPayment, currency]
+  );
+
+  const downloadCsv = () => {
+    exportToCsv({
+      fileName: 'plainfigures-loan-results',
+      metadata: [
+        { key: 'Calculator', value: 'Loan Repayment' },
+        { key: 'Currency', value: `${currency.code} (${currency.symbol})` },
+        { key: 'Loan Amount', value: fmt(amount) },
+        { key: 'Annual Interest Rate', value: formatPercent(rate) },
+        { key: 'Loan Term', value: `${termMonths} months` },
+        { key: 'Monthly Payment', value: fmt(result.monthlyPayment) },
+        { key: 'Total Interest', value: fmt(result.totalInterest) },
+        { key: 'Total Repaid', value: fmt(result.totalPayment) },
+        { key: 'Effective APR', value: formatPercent(result.apr) },
+      ],
+      rows: yearlyRows,
+    });
+  };
+
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
       <ToolPreview id="loan" />
@@ -49,18 +81,18 @@ export default function LoanCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="Results">
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
-        <SaveCalcButton
-          toolHref="/loan"
-          toolTitle="Loan Repayment"
-          summary={`${fmt(amount)} at ${rate}% over ${termMonths} months`}
-          keyResults={[
-              { label: 'Monthly', value: fmt(result.monthlyPayment) },
-              { label: 'Total Interest', value: fmt(result.totalInterest) },
-              { label: 'Total Repaid', value: fmt(result.totalPayment) },
-          ]}
-        />
-
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            <DownloadCsvButton onDownload={downloadCsv} />
+            <SaveCalcButton
+              toolHref="/loan"
+              toolTitle="Loan Repayment"
+              summary={`${fmt(amount)} at ${rate}% over ${termMonths} months`}
+              keyResults={[
+                { label: 'Monthly', value: fmt(result.monthlyPayment) },
+                { label: 'Total Interest', value: fmt(result.totalInterest) },
+                { label: 'Total Repaid', value: fmt(result.totalPayment) },
+              ]}
+            />
           </div>
 
           <ResultCard label="Monthly Payment" value={fmt(result.monthlyPayment)} size="large" />

@@ -7,7 +7,9 @@ import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateAffordability } from '@/lib/lifestyle-calculations';
 import { formatCurrency, formatNumber } from '@/lib/formatting';
+import { exportToCsv } from '@/lib/exportCsv';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 
 export default function AffordabilityCalc() {
   const { currency } = useCurrency();
@@ -27,6 +29,37 @@ export default function AffordabilityCalc() {
 
   const fmt = (v: number) => formatCurrency(v, currency);
   const depositPct = result.maxPropertyPrice > 0 ? (deposit / result.maxPropertyPrice) * 100 : 0;
+
+  const summaryRows = useMemo(
+    () => [
+      { Metric: 'Maximum Property Price', Value: formatCurrency(result.maxPropertyPrice, currency) },
+      { Metric: 'Maximum Mortgage', Value: formatCurrency(result.maxLoan, currency) },
+      { Metric: 'Loan-to-Income', Value: `${formatNumber(result.loanToIncome, 1)}x` },
+      { Metric: 'Monthly Payment', Value: formatCurrency(result.monthlyPayment, currency) },
+      { Metric: 'Stress Test Payment (+3%)', Value: formatCurrency(result.stressTestPayment, currency) },
+      { Metric: 'Deposit %', Value: `${formatNumber(depositPct, 1)}%` },
+    ],
+    [result, depositPct, currency]
+  );
+
+  const downloadCsv = () => {
+    exportToCsv({
+      fileName: 'plainfigures-affordability-results',
+      metadata: [
+        { key: 'Calculator', value: 'Mortgage Affordability' },
+        { key: 'Currency', value: `${currency.code} (${currency.symbol})` },
+        { key: 'Your Income', value: fmt(income) },
+        { key: 'Partner Income', value: fmt(partnerIncome) },
+        { key: 'Combined Income', value: fmt(totalIncome) },
+        { key: 'Monthly Debt Commitments', value: fmt(commitments) },
+        { key: 'Deposit', value: fmt(deposit) },
+        { key: 'Interest Rate', value: `${rate}%` },
+        { key: 'Term', value: `${term} years` },
+        { key: 'Income Multiple', value: `${multiple}x` },
+      ],
+      rows: summaryRows,
+    });
+  };
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
@@ -50,17 +83,17 @@ export default function AffordabilityCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Section title="What You Can Borrow">
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
-        <SaveCalcButton
-          toolHref="/affordability"
-          toolTitle="Mortgage Affordability"
-          summary={`Income ${fmt(income)}, deposit ${fmt(deposit)}`}
-          keyResults={[
-              { label: 'Max Borrowing', value: fmt(result.maxLoan) },
-              { label: 'Max Property', value: fmt(result.maxPropertyPrice) },
-          ]}
-        />
-
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            <DownloadCsvButton onDownload={downloadCsv} />
+            <SaveCalcButton
+              toolHref="/affordability"
+              toolTitle="Mortgage Affordability"
+              summary={`Income ${fmt(income)}, deposit ${fmt(deposit)}`}
+              keyResults={[
+                { label: 'Max Borrowing', value: fmt(result.maxLoan) },
+                { label: 'Max Property', value: fmt(result.maxPropertyPrice) },
+              ]}
+            />
           </div>
 
           <ResultCard label="Maximum Property Price" value={fmt(result.maxPropertyPrice)} size="large" color="positive" />
