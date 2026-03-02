@@ -5,7 +5,7 @@ import ToolPreview from '@/components/ui/ToolPreview';
 import AdSlot from '@/components/ui/AdSlot';
 import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { calculateTakeHome, COUNTRY_CONFIG, CountryCode } from '@/lib/tax-calculations';
 import { exportToCsv } from '@/lib/exportCsv';
 import { ResultCard, Section } from '@/components/ui';
@@ -23,10 +23,6 @@ export default function TakeHomeCalc() {
 
   const result = useMemo(() => calculateTakeHome(gross, country), [gross, country]);
   const incomeTax = Math.abs(result.breakdown.find(item => item.label.toLowerCase().includes('income tax'))?.amount ?? 0);
-
-  useEffect(() => {
-    console.log('CSV button rendered [CSV-DEBUG-v1] - TakeHomeCalc');
-  }, []);
 
   const downloadCsv = () => {
     exportToCsv({
@@ -135,7 +131,7 @@ export default function TakeHomeCalc() {
         {/* Results */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <DownloadCsvButton onDownload={downloadCsv} debugTag="CSV-DEBUG-v1" />
+            <DownloadCsvButton onDownload={downloadCsv} />
           </div>
           <Section title="Results">
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginBottom: '0.75rem' }}>

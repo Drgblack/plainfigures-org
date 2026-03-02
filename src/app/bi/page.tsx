@@ -2,15 +2,12 @@ import type { Metadata } from 'next';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import BICalc from '@/components/calculators/BICalc';
 
-export const dynamic = 'force-dynamic';
-
 export const metadata: Metadata = {
   title: 'Business Interruption Sum Insured Calculator — Plain Figures',
   description: 'Calculate the correct Business Interruption sum insured using gross profit, trend uplift, and ICOW — for brokers and commercial clients.',
 };
 
 export default function BIPage() {
-  console.log('[DEPLOY-DEBUG] render /bi page');
   return (
     <CalcPageWrapper
       code="P01 / BUSINESS INTERRUPTION"

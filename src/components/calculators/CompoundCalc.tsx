@@ -3,7 +3,7 @@
 import SaveCalcButton from '@/components/ui/SaveCalcButton';
 import ToolPreview from '@/components/ui/ToolPreview';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateCompound } from '@/lib/calculations';
 import { formatCurrency, formatPercent, formatNumber } from '@/lib/formatting';
@@ -40,10 +40,6 @@ export default function CompoundCalc() {
   );
 
   const frequencyLabel = FREQUENCIES.find((item) => item.value === freq)?.label ?? `${freq}x per year`;
-
-  useEffect(() => {
-    console.log('CSV button rendered [CSV-DEBUG-v1] - CompoundCalc');
-  }, []);
 
   const downloadCsv = () => {
     exportToCsv({
@@ -96,7 +92,7 @@ export default function CompoundCalc() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <DownloadCsvButton onDownload={downloadCsv} debugTag="CSV-DEBUG-v1" />
+          <DownloadCsvButton onDownload={downloadCsv} />
         </div>
         <Section title="Results">
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginBottom: '0.75rem' }}>

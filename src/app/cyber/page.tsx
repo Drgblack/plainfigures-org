@@ -2,15 +2,12 @@ import type { Metadata } from 'next';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import CyberCalc from '@/components/calculators/CyberCalc';
 
-export const dynamic = 'force-dynamic';
-
 export const metadata: Metadata = {
   title: 'Cyber Risk Exposure Calculator — Plain Figures',
   description: 'Estimate cyber breach costs, risk score, and recommended cover limit for SMBs. For brokers, risk managers, and business owners.',
 };
 
 export default function CyberPage() {
-  console.log('[DEPLOY-DEBUG] render /cyber page');
   return (
     <CalcPageWrapper
       code="P03 / CYBER RISK"

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateCyberRisk } from '@/lib/insurance-calculations';
 import { formatCurrency } from '@/lib/formatting';
@@ -50,10 +50,6 @@ export default function CyberCalc() {
 
   const riskColor = RISK_COLORS[result.riskLevel];
   const fmt = (v: number) => formatCurrency(v, currency);
-
-  useEffect(() => {
-    console.log('CSV button rendered [CSV-DEBUG-v1] - CyberCalc');
-  }, []);
 
   const downloadCsv = () => {
     const breakdownRows = result.breakdown.map((item) => ({
@@ -131,7 +127,7 @@ export default function CyberCalc() {
         {/* Results */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <DownloadCsvButton onDownload={downloadCsv} debugTag="CSV-DEBUG-v1" />
+            <DownloadCsvButton onDownload={downloadCsv} />
           </div>
           {/* Risk Score */}
           <Section title="Risk Score">

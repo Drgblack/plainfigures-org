@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateBI } from '@/lib/insurance-calculations';
 import { formatCurrency, formatNumber } from '@/lib/formatting';
@@ -26,10 +26,6 @@ export default function BICalc() {
 
   const fmt = (v: number) => formatCurrency(v, currency);
   const grossProfitRate = ((result.grossProfit / revenue) * 100).toFixed(1);
-
-  useEffect(() => {
-    console.log('CSV button rendered [CSV-DEBUG-v1] - BICalc');
-  }, []);
 
   const downloadCsv = () => {
     exportToCsv({
@@ -101,7 +97,7 @@ export default function BICalc() {
         {/* Results */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <DownloadCsvButton onDownload={downloadCsv} debugTag="CSV-DEBUG-v1" />
+            <DownloadCsvButton onDownload={downloadCsv} />
           </div>
           <Section title="Recommended Sum Insured">
             <ResultCard
