@@ -359,7 +359,7 @@ function CurrencyPicker() {
           ))}
 
           <div style={{ padding: '0.4rem 0.75rem', fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--text-muted)', lineHeight: 1.5, borderTop: '1px solid var(--border)' }}>
-            Saved in browser. Changes all calculators.
+            Defaults follow language (e.g. Deutsch - EUR) until you choose manually.
           </div>
         </div>
       )}

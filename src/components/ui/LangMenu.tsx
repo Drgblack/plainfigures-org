@@ -20,6 +20,14 @@ type LangCode = (typeof LANGUAGES)[number]['code'];
 
 const LANG_KEY = 'pf_lang_v1';
 
+function normalizeLangForApp(code: LangCode): 'en' | 'de' | 'fr' | 'es' | 'zh' {
+  if (code === 'de') return 'de';
+  if (code === 'fr') return 'fr';
+  if (code === 'es') return 'es';
+  if (code.startsWith('zh')) return 'zh';
+  return 'en';
+}
+
 // Trigger Google Translate programmatically (non-widget approach)
 function triggerGoogleTranslate(langCode: string) {
   if (langCode === 'en') {
@@ -92,6 +100,10 @@ export default function LangMenu() {
     setLang(code);
     setOpen(false);
     triggerGoogleTranslate(code);
+
+    const normalizedLang = normalizeLangForApp(code);
+    window.dispatchEvent(new CustomEvent('pf-lang-preference-change', { detail: { lang: code } }));
+    window.dispatchEvent(new CustomEvent('pf-lang-change', { detail: { lang: normalizedLang } }));
   };
 
   const current = LANGUAGES.find(l => l.code === lang)!;

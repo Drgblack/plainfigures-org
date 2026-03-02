@@ -75,10 +75,10 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
   const [dict, setDict] = useState<Record<string, Record<string, string>>>({});
 
   useEffect(() => {
-    // Only use browser detection if user has never made an explicit choice
-    // This prevents auto-switching to German just because the browser is set to DE
     const stored = (() => { try { return localStorage.getItem('pf_lang_v1'); } catch { return null; } })();
-    const lang = (stored && ['en','de','fr','es','zh'].includes(stored)) ? stored as Lang : 'en';
+    const lang = (stored && ['en', 'de', 'fr', 'es', 'zh'].includes(stored))
+      ? stored as Lang
+      : detectBrowserLang();
     setLang(lang);
     loadLocale(lang).then(setDict);
   }, []);
@@ -150,6 +150,7 @@ export default function LangSwitcher({ compact = false }: { compact?: boolean })
 
     // Broadcast to all LangProviders + subscribers
     window.dispatchEvent(new CustomEvent('pf-lang-change', { detail: { lang: code } }));
+    window.dispatchEvent(new CustomEvent('pf-lang-preference-change', { detail: { lang: code } }));
   };
 
   const current = LANGUAGES.find(l => l.code === lang) ?? LANGUAGES[0];

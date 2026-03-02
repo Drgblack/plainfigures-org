@@ -4,7 +4,9 @@ import { useState, useMemo } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateSCR, SCRScenario } from '@/lib/insurance-calculations';
 import { formatCurrency, formatNumber } from '@/lib/formatting';
+import { exportToCsv } from '@/lib/exportCsv';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 
 const ADEQUACY_CONFIG = {
   strong:   { label: 'Strong', color: '#2ec88a', bg: 'rgba(46,200,138,0.08)', border: 'rgba(46,200,138,0.25)', desc: 'Well-capitalised. Significant buffer above regulatory minimum.' },
@@ -101,6 +103,47 @@ export default function SCRCalc() {
 
   const navPct = totalAssets > 0 ? (current.navBase / totalAssets) * 100 : 0;
 
+  const csvRows = useMemo(() => {
+    const balanceSheetRows = [
+      { Section: 'Balance Sheet', Item: 'Total Assets', Scenario: 'Base', Value: fmt(totalAssets) },
+      { Section: 'Balance Sheet', Item: 'Technical Provisions', Scenario: 'Base', Value: fmt(technicalProvisions) },
+      { Section: 'Balance Sheet', Item: 'Other Liabilities', Scenario: 'Base', Value: fmt(otherLiabilities) },
+      { Section: 'Balance Sheet', Item: 'Net Asset Value (NAV)', Scenario: 'Base', Value: fmt(result.base.navBase) },
+    ];
+
+    const scenarioRows = result.scenarios.flatMap((scenario) => [
+      { Section: 'SCR Scenario', Item: 'Market Risk', Scenario: scenario.label, Value: fmt(scenario.marketRisk) },
+      { Section: 'SCR Scenario', Item: 'Underwriting Risk', Scenario: scenario.label, Value: fmt(scenario.underwritingRisk) },
+      { Section: 'SCR Scenario', Item: 'Operational Risk', Scenario: scenario.label, Value: fmt(scenario.operationalRisk) },
+      { Section: 'SCR Scenario', Item: 'Basic SCR', Scenario: scenario.label, Value: fmt(scenario.basicSCR) },
+      { Section: 'SCR Scenario', Item: 'Adjusted SCR', Scenario: scenario.label, Value: fmt(scenario.adjustedSCR) },
+      { Section: 'SCR Scenario', Item: 'Surplus / Deficit', Scenario: scenario.label, Value: fmt(scenario.surplusOrDeficit) },
+      { Section: 'SCR Scenario', Item: 'Solvency Ratio', Scenario: scenario.label, Value: `${formatNumber(scenario.solvencyRatio, 1)}%` },
+      { Section: 'SCR Scenario', Item: 'Adequacy', Scenario: scenario.label, Value: ADEQUACY_CONFIG[scenario.adequacy].label },
+    ]);
+
+    return [...balanceSheetRows, ...scenarioRows];
+  }, [result, totalAssets, technicalProvisions, otherLiabilities, fmt]);
+
+  const downloadCsv = () => {
+    exportToCsv({
+      fileName: 'plainfigures-scr-results',
+      metadata: [
+        { key: 'Calculator', value: 'Solvency Capital Requirement (SCR) Estimator' },
+        { key: 'Currency', value: `${currency.code} (${currency.symbol})` },
+        { key: 'Total Assets', value: fmt(totalAssets) },
+        { key: 'Technical Provisions', value: fmt(technicalProvisions) },
+        { key: 'Other Liabilities', value: fmt(otherLiabilities) },
+        { key: 'Market Risk Factor', value: `${formatNumber(marketRiskFactor, 1)}%` },
+        { key: 'Underwriting Risk Factor', value: `${formatNumber(underwritingRiskFactor, 1)}%` },
+        { key: 'Annual Premiums', value: fmt(annualPremiums) },
+        { key: 'Operational Risk Loading', value: `${formatNumber(operationalRiskFactor, 1)}%` },
+        { key: 'Diversification Credit', value: `${formatNumber(diversificationCredit, 0)}%` },
+      ],
+      rows: csvRows,
+    });
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
@@ -127,6 +170,9 @@ export default function SCRCalc() {
 
         {/* Results */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <DownloadCsvButton onDownload={downloadCsv} />
+          </div>
           {/* Solvency gauge */}
           <Section title="Solvency Ratio">
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0.5rem 0' }}>
