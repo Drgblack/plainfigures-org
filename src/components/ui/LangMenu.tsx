@@ -31,11 +31,20 @@ function normalizeLangForApp(code: LangCode): 'en' | 'de' | 'fr' | 'es' | 'zh' {
 // Trigger Google Translate programmatically (non-widget approach)
 function triggerGoogleTranslate(langCode: string) {
   if (langCode === 'en') {
-    // Reset: clear stored lang and reload the page (most reliable GT reset)
-    try { localStorage.removeItem(LANG_KEY); } catch {}
-    // Remove Google Translate cookie and reload
+    // Explicit English preference should persist and not fall back to browser locale.
+    try { localStorage.setItem(LANG_KEY, 'en'); } catch {}
+
+    // Remove language query param so app-level locale detection doesn't lock to non-English.
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('lang');
+      window.history.replaceState({}, '', url.toString());
+    } catch {}
+
+    // Reset Google Translate cookies and reload.
     document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + window.location.hostname + ';';
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.' + window.location.hostname + ';';
     window.location.reload();
     return;
   }
