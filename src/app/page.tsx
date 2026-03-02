@@ -6,6 +6,8 @@ import { ALL_TOOLS, PERSONAL_TOOLS, PROFESSIONAL_TOOLS, ToolMeta, ToolPreviewRes
 import { getRecentHrefs, getSavedCalcs, deleteSavedCalc, SavedCalc } from '@/lib/localStorage';
 import SeasonalBanner from '@/components/ui/SeasonalBanner';
 import { useLang } from '@/components/ui/LangSwitcher';
+import { useCurrency } from '@/lib/CurrencyContext';
+import { replaceCurrencySymbol } from '@/lib/formatting';
 
 const FEATURED_GUIDES = [
   { href: '/learn/mortgage-repayment', title: 'How Mortgage Repayment Works', readTime: '5 min' },
@@ -26,6 +28,8 @@ function Sparkline({ path, color = 'var(--accent)' }: { path?: string; color?: s
 }
 
 function CalcRowPreview({ results, professional }: { results: ToolPreviewResult[]; professional?: boolean }) {
+  const { currency } = useCurrency();
+
   return (
     <div style={{
       position: 'absolute',
@@ -52,15 +56,15 @@ function CalcRowPreview({ results, professional }: { results: ToolPreviewResult[
           borderTop: i > 0 ? '1px solid var(--border)' : 'none',
         }}>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', flexShrink: 0 }}>
-            {r.label}
+            {replaceCurrencySymbol(r.label, currency)}
           </span>
           <div style={{ textAlign: 'right' }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: professional ? '#d4a843' : 'var(--accent)', fontWeight: 500 }}>
-              {r.value}
+              {replaceCurrencySymbol(r.value, currency)}
             </span>
             {r.sub && (
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--text-muted)', marginTop: '0.1rem' }}>
-                {r.sub}
+                {replaceCurrencySymbol(r.sub, currency)}
               </div>
             )}
           </div>

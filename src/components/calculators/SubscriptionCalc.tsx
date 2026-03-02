@@ -67,7 +67,7 @@ export default function SubscriptionCalc() {
           {/* Add new */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 80px auto', gap: '0.5rem', marginTop: '0.5rem' }}>
             <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Add subscription..." style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '4px', padding: '0.4rem 0.6rem', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', outline: 'none' }} />
-            <input type="number" value={newAmount} onChange={e => setNewAmount(e.target.value)} placeholder="£/mo" style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '4px', padding: '0.4rem 0.6rem', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', outline: 'none' }} />
+            <input type="number" value={newAmount} onChange={e => setNewAmount(e.target.value)} placeholder={`${currency.symbol}/mo`} style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '4px', padding: '0.4rem 0.6rem', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', outline: 'none' }} />
             <button onClick={addSub} style={{ background: 'var(--accent-dim)', border: '1px solid var(--accent)', borderRadius: '4px', color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', cursor: 'pointer', padding: '0.4rem 0.6rem' }}>Add</button>
           </div>
         </Section>

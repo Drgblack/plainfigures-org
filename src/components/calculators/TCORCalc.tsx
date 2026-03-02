@@ -81,7 +81,7 @@ export default function TCORCalc() {
           </Section>
           <Section title="Context">
             <InputField label="Annual Revenue (for TCOR Rate)" value={revenue} onChange={setRevenue} min={100000} max={1000000000} step={100000} prefix={currency.symbol}
-              hint="Used to calculate TCOR per £1,000 revenue" />
+              hint={`Used to calculate TCOR per ${currency.symbol}1,000 revenue`} />
           </Section>
         </div>
 
@@ -94,14 +94,14 @@ export default function TCORCalc() {
               summary={`TCOR analysis`}
               keyResults={[
                 { label: 'Base TCOR', value: fmt(result.base.tcor) },
-                { label: 'TCOR Rate', value: `${formatNumber(result.base.tcorRate, 2)} per £1k revenue` },
+                { label: 'TCOR Rate', value: `${formatNumber(result.base.tcorRate, 2)} per ${currency.symbol}1k revenue` },
               ]}
             />
           </div>
           <Section title="Base Case">
             <ResultCard label="Total Cost of Risk (TCOR)" value={fmt(result.base.tcor)} size="large" color="warning" />
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-              <ResultCard label="TCOR Rate" value={`${formatNumber(result.base.tcorRate, 2)}`} sub="per £1,000 revenue" color="warning" />
+              <ResultCard label="TCOR Rate" value={`${formatNumber(result.base.tcorRate, 2)}`} sub={`per ${currency.symbol}1,000 revenue`} color="warning" />
               <ResultCard label="TCOR as % Revenue" value={`${formatNumber((result.base.tcor / revenue) * 100, 2)}%`} />
             </div>
           </Section>
@@ -176,7 +176,7 @@ export default function TCORCalc() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
             <ResultCard label="TCOR" value={fmt(current.tcor)} color={activeScenario === 0 ? 'default' : current.tcor > result.base.tcor ? 'negative' : 'positive'} />
-            <ResultCard label="TCOR Rate /£1k revenue" value={formatNumber(current.tcorRate, 2)} />
+            <ResultCard label={`TCOR Rate /${currency.symbol}1k revenue`} value={formatNumber(current.tcorRate, 2)} />
             <ResultCard label="vs Base" value={activeScenario === 0 ? '—' : `${current.tcor > result.base.tcor ? '+' : ''}${fmt(current.tcor - result.base.tcor)}`}
               color={activeScenario === 0 ? 'default' : current.tcor > result.base.tcor ? 'negative' : 'positive'} />
           </div>

@@ -19,6 +19,7 @@
 
 import { useState, useEffect } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
+import { replaceCurrencySymbol } from '@/lib/formatting';
 
 interface PreviewScenario {
   label: string;         // e.g. "Sample: £300,000 mortgage"
@@ -190,6 +191,7 @@ interface ToolPreviewProps {
 }
 
 export default function ToolPreview({ id }: ToolPreviewProps) {
+  const { currency } = useCurrency();
   const [visible, setVisible] = useState(true);
   const scenario = PREVIEWS[id];
 
@@ -257,7 +259,7 @@ export default function ToolPreview({ id }: ToolPreviewProps) {
           {scenario.inputs.map(({ key, value }) => (
             <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.2rem 0', borderBottom: '1px solid var(--border)' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)' }}>{key}</span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{value}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{replaceCurrencySymbol(value, currency)}</span>
             </div>
           ))}
         </div>
@@ -273,7 +275,7 @@ export default function ToolPreview({ id }: ToolPreviewProps) {
                 color: highlight ? 'var(--text-primary)' : 'var(--text-secondary)',
                 fontWeight: highlight ? 600 : 400,
               }}>
-                {value}
+                {replaceCurrencySymbol(value, currency)}
               </span>
             </div>
           ))}
@@ -284,7 +286,7 @@ export default function ToolPreview({ id }: ToolPreviewProps) {
       {/* Footer note */}
       {scenario.note && (
         <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'var(--text-muted)', marginTop: '0.6rem', lineHeight: 1.5 }}>
-          {scenario.note} · Enter your own figures above to calculate
+          {replaceCurrencySymbol(scenario.note, currency)} · Enter your own figures above to calculate
         </p>
       )}
       {!scenario.note && (

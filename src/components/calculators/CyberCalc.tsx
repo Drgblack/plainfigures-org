@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateCyberRisk } from '@/lib/insurance-calculations';
-import { formatCurrency, formatNumber } from '@/lib/formatting';
+import { formatCurrency } from '@/lib/formatting';
 import { InputField, ResultCard, Section } from '@/components/ui';
 
 const INDUSTRIES = [
@@ -20,8 +21,6 @@ const RISK_COLORS = {
   Critical: 'var(--negative)',
 };
 
-const fmt = (v: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(v);
-
 interface Control { key: string; label: string; description: string }
 
 const CONTROLS: Control[] = [
@@ -33,6 +32,7 @@ const CONTROLS: Control[] = [
 ];
 
 export default function CyberCalc() {
+  const { currency } = useCurrency();
   const [revenue, setRevenue] = useState(5000000);
   const [employees, setEmployees] = useState(50);
   const [records, setRecords] = useState(10000);
@@ -47,6 +47,7 @@ export default function CyberCalc() {
   ), [revenue, employees, records, industryRisk, controls]);
 
   const riskColor = RISK_COLORS[result.riskLevel];
+  const fmt = (v: number) => formatCurrency(v, currency);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -54,7 +55,7 @@ export default function CyberCalc() {
         {/* Inputs */}
         <div className="sticky-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <Section title="Business Profile">
-            <InputField label="Annual Revenue" value={revenue} onChange={setRevenue} min={100000} max={500000000} step={100000} prefix="$" />
+            <InputField label="Annual Revenue" value={revenue} onChange={setRevenue} min={100000} max={500000000} step={100000} prefix={currency.symbol} />
             <InputField label="Number of Employees" value={employees} onChange={setEmployees} min={1} max={50000} step={1} suffix="staff" />
             <InputField label="Customer / Data Records Held" value={records} onChange={setRecords} min={0} max={10000000} step={1000} suffix="records" />
           </Section>

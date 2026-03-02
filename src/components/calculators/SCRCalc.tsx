@@ -63,9 +63,9 @@ function SolvencyGauge({ ratio, size = 120 }: { ratio: number; size?: number }) 
   );
 }
 
-function ScenarioCard({ s, color, isActive, onClick }: { s: SCRScenario; color: string; isActive: boolean; onClick: () => void }) {
+function ScenarioCard({ s, color, isActive, onClick, currencySymbol }: { s: SCRScenario; color: string; isActive: boolean; onClick: () => void; currencySymbol: string }) {
   const cfg = ADEQUACY_CONFIG[s.adequacy];
-  const fmt = (v: number) => `£${(v / 1000000).toFixed(1)}M`;
+  const fmt = (v: number) => `${currencySymbol}${(v / 1000000).toFixed(1)}M`;
   return (
     <button onClick={onClick} style={{ textAlign: 'left', padding: '1rem', background: isActive ? `${color}10` : 'var(--bg)', border: `1px solid ${isActive ? color + '60' : 'var(--border)'}`, borderRadius: '6px', cursor: 'pointer', transition: 'all 0.2s ease', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
       <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: isActive ? color : 'var(--text-muted)', letterSpacing: '0.04em' }}>{s.label}</div>
@@ -161,7 +161,7 @@ export default function SCRCalc() {
       <Section title="Stress Test Scenarios">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', marginBottom: '1.5rem' }}>
           {result.scenarios.map((s, i) => (
-            <ScenarioCard key={i} s={s} color={SCENARIO_COLORS[i]} isActive={activeScenario === i} onClick={() => setActiveScenario(i)} />
+            <ScenarioCard key={i} s={s} color={SCENARIO_COLORS[i]} isActive={activeScenario === i} onClick={() => setActiveScenario(i)} currencySymbol={currency.symbol} />
           ))}
         </div>
 
