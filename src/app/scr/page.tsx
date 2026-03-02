@@ -1,11 +1,15 @@
 import type { Metadata } from 'next';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import SCRCalc from '@/components/calculators/SCRCalc';
+
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Solvency Capital Requirement (SCR) Estimator — Plain Figures',
   description: 'Estimate SCR using simplified Solvency II standard formula principles. Market risk, underwriting risk, operational risk, diversification credit. Stress test scenarios.',
 };
 export default function Page() {
+  console.log('[DEPLOY-DEBUG] render /scr page');
   return (
     <CalcPageWrapper
       code="P06 / SCR"

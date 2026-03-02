@@ -29,20 +29,23 @@ export default function DownloadCsvButton({ onDownload, debugTag }: DownloadCsvB
         display: 'flex',
         alignItems: 'center',
         gap: '0.35rem',
-        padding: '0.3rem 0.65rem',
-        background: 'none',
-        border: '1px solid var(--border)',
+        padding: '0.45rem 0.8rem',
+        background: '#fff5f5',
+        border: '2px solid #ff2d2d',
         borderRadius: '4px',
-        color: downloaded ? 'var(--positive)' : 'var(--text-muted)',
+        color: '#a00000',
         fontFamily: 'var(--font-mono)',
-        fontSize: '0.7rem',
+        fontSize: '0.74rem',
+        fontWeight: 700,
         cursor: 'pointer',
         transition: 'all 0.15s ease',
       }}
       title="Download calculation as CSV"
       type="button"
     >
-      {downloaded ? `✓ ${prefix}${doneLabel}` : `↓ ${prefix}${idleLabel}`}
+      {downloaded
+        ? `✓ FORCE-VISIBLE-DEBUG - ${prefix}${doneLabel}`
+        : `FORCE-VISIBLE-DEBUG - CLICK ME - ${prefix}${idleLabel}`}
     </button>
   );
 }

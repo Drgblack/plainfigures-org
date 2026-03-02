@@ -121,10 +121,13 @@ const themeScript = `
   } catch(e) {}
 `;
 
+const DEPLOY_DEBUG_MARKER = `DEBUG-COMMIT-63e8803-${new Date().toISOString()}`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GB">
-            <head>/client_data/a94ee732bd655739457a79c94415999f/script.js"
+      <head>/client_data/a94ee732bd655739457a79c94415999f/script.js"
+        <meta name="deploy-debug-marker" content={DEPLOY_DEBUG_MARKER} />
 
         {/* Google AdSense — verification + future ads */}
         <script
@@ -141,6 +144,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <div
+          id="deploy-debug-marker"
+          style={{
+            position: 'absolute',
+            left: '-9999px',
+            top: 0,
+            height: 0,
+            width: 0,
+            overflow: 'hidden',
+          }}
+        >
+          {DEPLOY_DEBUG_MARKER}
+        </div>
         <CurrencyProvider>
           <LangProvider>
           {/* Skip-to-content accessibility link */}

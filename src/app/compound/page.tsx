@@ -4,6 +4,8 @@ import CompoundCalc from '@/components/calculators/CompoundCalc';
 
 import { calcPageJsonLd, CALC_FAQS } from '@/lib/structuredData';
 
+export const dynamic = 'force-dynamic';
+
 // JSON-LD structured data for search engines
 const jsonLdData = calcPageJsonLd({
   name: 'Compound Interest Calculator',
@@ -18,6 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default function CompoundPage() {
+  console.log('[DEPLOY-DEBUG] render /compound page');
   return (
     <>
       {jsonLdData.map((schema, i) => (

@@ -134,9 +134,11 @@ export default function TakeHomeCalc() {
 
         {/* Results */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <DownloadCsvButton onDownload={downloadCsv} debugTag="CSV-DEBUG-v1" />
+          </div>
           <Section title="Results">
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginBottom: '0.75rem' }}>
-        <DownloadCsvButton onDownload={downloadCsv} debugTag="CSV-DEBUG-v1" />
         <SaveCalcButton
           toolHref="/take-home"
           toolTitle="Salary Take-Home"

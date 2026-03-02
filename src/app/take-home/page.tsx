@@ -4,6 +4,8 @@ import TakeHomeCalc from '@/components/calculators/TakeHomeCalc';
 
 import { calcPageJsonLd, CALC_FAQS } from '@/lib/structuredData';
 
+export const dynamic = 'force-dynamic';
+
 // JSON-LD structured data for search engines
 const jsonLdData = calcPageJsonLd({
   name: 'Salary Take-Home Calculator',
@@ -16,6 +18,7 @@ export const metadata: Metadata = {
   description: 'Calculate your net take-home pay after tax and national insurance in the UK, Germany, USA, France, Netherlands, and Australia.',
 };
 export default function Page() {
+  console.log('[DEPLOY-DEBUG] render /take-home page');
   return (
     <>
       {jsonLdData.map((schema, i) => (
