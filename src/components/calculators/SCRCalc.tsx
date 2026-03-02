@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateSCR, SCRScenario } from '@/lib/insurance-calculations';
 import { formatCurrency, formatNumber } from '@/lib/formatting';
@@ -103,6 +103,10 @@ export default function SCRCalc() {
 
   const navPct = totalAssets > 0 ? (current.navBase / totalAssets) * 100 : 0;
 
+  useEffect(() => {
+    console.log('CSV button rendered [CSV-DEBUG-v1] - SCRCalc');
+  }, []);
+
   const csvRows = useMemo(() => {
     const balanceSheetRows = [
       { Section: 'Balance Sheet', Item: 'Total Assets', Scenario: 'Base', Value: fmt(totalAssets) },
@@ -171,7 +175,7 @@ export default function SCRCalc() {
         {/* Results */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <DownloadCsvButton onDownload={downloadCsv} />
+            <DownloadCsvButton onDownload={downloadCsv} debugTag="CSV-DEBUG-v1" />
           </div>
           {/* Solvency gauge */}
           <Section title="Solvency Ratio">

@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateBI } from '@/lib/insurance-calculations';
 import { formatCurrency, formatNumber } from '@/lib/formatting';
+import { exportToCsv } from '@/lib/exportCsv';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 
 const INDEMNITY_OPTIONS = [12, 18, 24, 36];
 
@@ -24,6 +26,36 @@ export default function BICalc() {
 
   const fmt = (v: number) => formatCurrency(v, currency);
   const grossProfitRate = ((result.grossProfit / revenue) * 100).toFixed(1);
+
+  useEffect(() => {
+    console.log('CSV button rendered [CSV-DEBUG-v1] - BICalc');
+  }, []);
+
+  const downloadCsv = () => {
+    exportToCsv({
+      fileName: 'plainfigures-business-interruption-results',
+      metadata: [
+        { key: 'Calculator', value: 'Business Interruption Sum Insured Calculator' },
+        { key: 'Currency', value: `${currency.code} (${currency.symbol})` },
+        { key: 'Annual Revenue', value: fmt(revenue) },
+        { key: 'Variable Costs', value: `${variableCosts}%` },
+        { key: 'Annual Payroll', value: fmt(payroll) },
+        { key: 'Indemnity Period', value: `${indemnityMonths} months` },
+        { key: 'Trend Rate', value: `${trendRate}%` },
+        { key: 'ICOW Rate', value: `${icowRate}%` },
+        { key: 'Gross Profit', value: fmt(result.grossProfit) },
+        { key: 'Trend-Adjusted Gross Profit', value: fmt(result.adjustedForTrend) },
+        { key: 'ICOW Allowance', value: fmt(result.icow) },
+        { key: 'Recommended Sum Insured', value: fmt(result.recommendedSumInsured) },
+      ],
+      rows: result.yearlyBreakdown.map((row) => ({
+        Month: row.month,
+        'Cumulative Gross Profit Loss': fmt(row.cumulativeLoss),
+        'Cumulative ICOW': fmt(row.icow),
+        'Total Exposure': fmt(row.cumulativeLoss + row.icow),
+      })),
+    });
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -68,6 +100,9 @@ export default function BICalc() {
 
         {/* Results */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <DownloadCsvButton onDownload={downloadCsv} debugTag="CSV-DEBUG-v1" />
+          </div>
           <Section title="Recommended Sum Insured">
             <ResultCard
               label="Total Recommended BI Sum Insured"

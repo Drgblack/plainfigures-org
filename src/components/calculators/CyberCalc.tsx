@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useCurrency } from '@/lib/CurrencyContext';
 import { calculateCyberRisk } from '@/lib/insurance-calculations';
 import { formatCurrency } from '@/lib/formatting';
+import { exportToCsv } from '@/lib/exportCsv';
 import { InputField, ResultCard, Section } from '@/components/ui';
+import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 
 const INDUSTRIES = [
   { label: 'Low Risk', description: 'Manufacturing, Construction, Agriculture', value: 1 },
@@ -49,6 +51,45 @@ export default function CyberCalc() {
   const riskColor = RISK_COLORS[result.riskLevel];
   const fmt = (v: number) => formatCurrency(v, currency);
 
+  useEffect(() => {
+    console.log('CSV button rendered [CSV-DEBUG-v1] - CyberCalc');
+  }, []);
+
+  const downloadCsv = () => {
+    const breakdownRows = result.breakdown.map((item) => ({
+      Section: 'Cost Breakdown',
+      Category: item.category,
+      Cost: fmt(item.cost),
+      Description: item.description,
+    }));
+
+    const controlRows = CONTROLS.map((control) => ({
+      Section: 'Security Controls',
+      Category: control.label,
+      Cost: controls[control.key as keyof typeof controls] ? 'Enabled' : 'Not enabled',
+      Description: control.description,
+    }));
+
+    exportToCsv({
+      fileName: 'plainfigures-cyber-risk-results',
+      metadata: [
+        { key: 'Calculator', value: 'Cyber Risk Exposure Calculator' },
+        { key: 'Currency', value: `${currency.code} (${currency.symbol})` },
+        { key: 'Annual Revenue', value: fmt(revenue) },
+        { key: 'Employees', value: employees },
+        { key: 'Data Records', value: records },
+        { key: 'Industry Risk Tier', value: INDUSTRIES.find((item) => item.value === industryRisk)?.label ?? industryRisk },
+        { key: 'Risk Score', value: `${result.riskScore}` },
+        { key: 'Risk Level', value: result.riskLevel },
+        { key: 'Estimated Breach Cost', value: fmt(result.estimatedBreachCost) },
+        { key: 'Recommended Cover Limit', value: fmt(result.recommendedCoverLimit) },
+        { key: 'Estimated Premium (Low)', value: fmt(result.annualPremiumEstimate.low) },
+        { key: 'Estimated Premium (High)', value: fmt(result.annualPremiumEstimate.high) },
+      ],
+      rows: [...breakdownRows, ...controlRows],
+    });
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
@@ -89,6 +130,9 @@ export default function CyberCalc() {
 
         {/* Results */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <DownloadCsvButton onDownload={downloadCsv} debugTag="CSV-DEBUG-v1" />
+          </div>
           {/* Risk Score */}
           <Section title="Risk Score">
             <div style={{ background: 'var(--bg-elevated)', border: `1px solid ${riskColor}40`, borderRadius: '6px', padding: '1.5rem', textAlign: 'center' }}>

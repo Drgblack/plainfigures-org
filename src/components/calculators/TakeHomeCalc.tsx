@@ -3,9 +3,11 @@
 import SaveCalcButton from '@/components/ui/SaveCalcButton';
 import ToolPreview from '@/components/ui/ToolPreview';
 import AdSlot from '@/components/ui/AdSlot';
+import DownloadCsvButton from '@/components/ui/DownloadCsvButton';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { calculateTakeHome, COUNTRY_CONFIG, CountryCode } from '@/lib/tax-calculations';
+import { exportToCsv } from '@/lib/exportCsv';
 import { ResultCard, Section } from '@/components/ui';
 
 const COUNTRIES: CountryCode[] = ['UK', 'DE', 'US', 'FR', 'NL', 'AU'];
@@ -21,6 +23,30 @@ export default function TakeHomeCalc() {
 
   const result = useMemo(() => calculateTakeHome(gross, country), [gross, country]);
   const incomeTax = Math.abs(result.breakdown.find(item => item.label.toLowerCase().includes('income tax'))?.amount ?? 0);
+
+  useEffect(() => {
+    console.log('CSV button rendered [CSV-DEBUG-v1] - TakeHomeCalc');
+  }, []);
+
+  const downloadCsv = () => {
+    exportToCsv({
+      fileName: 'plainfigures-take-home-results',
+      metadata: [
+        { key: 'Calculator', value: 'Salary Take-Home Calculator' },
+        { key: 'Country', value: `${cfg.name} (${country})` },
+        { key: 'Currency', value: `${cfg.currency} (${cfg.symbol})` },
+        { key: 'Gross Salary', value: fmt(gross, cfg.symbol) },
+        { key: 'Net Annual', value: fmt(result.netAnnual, cfg.symbol) },
+        { key: 'Net Monthly', value: fmt(result.netMonthly, cfg.symbol) },
+        { key: 'Effective Tax Rate', value: `${result.effectiveTaxRate.toFixed(1)}%` },
+      ],
+      rows: result.breakdown.map((item) => ({
+        Item: item.label,
+        Amount: item.amount < 0 ? `(${fmt(item.amount, cfg.symbol)})` : fmt(item.amount, cfg.symbol),
+        Rate: item.rate !== undefined ? `${item.rate.toFixed(1)}%` : '',
+      })),
+    });
+  };
 
   const handleCountryChange = (c: CountryCode) => {
     setCountry(c);
@@ -109,7 +135,8 @@ export default function TakeHomeCalc() {
         {/* Results */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <Section title="Results">
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginBottom: '0.75rem' }}>
+        <DownloadCsvButton onDownload={downloadCsv} debugTag="CSV-DEBUG-v1" />
         <SaveCalcButton
           toolHref="/take-home"
           toolTitle="Salary Take-Home"

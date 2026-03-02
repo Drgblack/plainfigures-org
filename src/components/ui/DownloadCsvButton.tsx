@@ -1,13 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { useLang } from '@/components/ui/LangSwitcher';
 
 interface DownloadCsvButtonProps {
   onDownload: () => void;
+  debugTag?: string;
 }
 
-export default function DownloadCsvButton({ onDownload }: DownloadCsvButtonProps) {
+export default function DownloadCsvButton({ onDownload, debugTag }: DownloadCsvButtonProps) {
+  const { lang } = useLang();
   const [downloaded, setDownloaded] = useState(false);
+  const isGerman = lang === 'de';
+  const idleLabel = isGerman ? 'CSV herunterladen' : 'Download CSV';
+  const doneLabel = isGerman ? 'CSV heruntergeladen' : 'CSV Downloaded';
+  const prefix = debugTag ? `${debugTag} · ` : '';
 
   const handleClick = () => {
     onDownload();
@@ -35,7 +42,7 @@ export default function DownloadCsvButton({ onDownload }: DownloadCsvButtonProps
       title="Download calculation as CSV"
       type="button"
     >
-      {downloaded ? '✓ CSV Downloaded' : '↓ Download CSV'}
+      {downloaded ? `✓ ${prefix}${doneLabel}` : `↓ ${prefix}${idleLabel}`}
     </button>
   );
 }
