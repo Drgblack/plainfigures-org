@@ -5,12 +5,19 @@ import { renderToString } from 'katex';
 import 'katex/dist/katex.min.css';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import ProgrammaticCalculatorExplorer from '@/components/calculators/ProgrammaticCalculatorExplorer';
-import { calculators, CalculatorConfig, generateAllSlugs } from '@/lib/calculators/config';
+import {
+  calculators,
+  CalculatorConfig,
+  findGeneratedSlug,
+  generateStaticProgrammaticPaths,
+  getRepresentativeGeneratedSlug,
+} from '@/lib/calculators/config';
 import { generateUniquePageContent } from '@/lib/calculators/generator';
 import styles from './page.module.css';
 
 export const revalidate = 86400;
 export const dynamicParams = true;
+const PROGRAMMATIC_PRERENDER_LIMIT = 24;
 
 type PageProps = {
   params: Promise<{
@@ -31,15 +38,7 @@ type CategorySupport = {
   relatedCategories: string[];
 };
 
-const ALL_VARIANTS = generateAllSlugs();
 const CONFIG_BY_CATEGORY = new Map(calculators.map((config) => [config.categorySlug, config]));
-const VARIANT_BY_KEY = new Map(ALL_VARIANTS.map((variant) => [`${variant.categorySlug}/${variant.slug}`, variant]));
-const FIRST_VARIANT_BY_CATEGORY = new Map<string, Variant>();
-ALL_VARIANTS.forEach((variant) => {
-  if (!FIRST_VARIANT_BY_CATEGORY.has(variant.categorySlug)) {
-    FIRST_VARIANT_BY_CATEGORY.set(variant.categorySlug, variant);
-  }
-});
 
 const PROFESSIONAL_CATEGORIES = new Set([
   'business-interruption',
@@ -123,7 +122,7 @@ function renderTemplate(template: string, params: Record<string, number | string
 
 function resolveVariant(category: string, expression: string): { config: CalculatorConfig; variant: Variant } | null {
   const config = CONFIG_BY_CATEGORY.get(category);
-  const variant = VARIANT_BY_KEY.get(`${category}/${expression}`);
+  const variant = findGeneratedSlug(category, expression);
 
   if (!config || !variant) {
     return null;
@@ -149,7 +148,7 @@ function buildRelatedCalculatorLinks(categorySlug: string) {
 
   return support.relatedCategories
     .map((relatedCategory) => {
-      const variant = FIRST_VARIANT_BY_CATEGORY.get(relatedCategory);
+      const variant = getRepresentativeGeneratedSlug(relatedCategory);
       const config = CONFIG_BY_CATEGORY.get(relatedCategory);
 
       if (!variant || !config) {
@@ -196,7 +195,7 @@ function formulaMarkup(formula: string) {
 }
 
 export async function generateStaticParams() {
-  return ALL_VARIANTS.slice(0, 1200).map((variant) => ({
+  return generateStaticProgrammaticPaths(PROGRAMMATIC_PRERENDER_LIMIT).map((variant) => ({
     category: variant.categorySlug,
     expression: variant.slug,
   }));

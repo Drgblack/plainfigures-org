@@ -1,10 +1,4 @@
-import { generateAllSlugs } from '@/lib/calculators/config';
-import { MetadataRoute } from 'next';
-
-export const revalidate = 86400;
-export const dynamic = 'force-static';
-
-const STATIC_PAGE_URLS = [
+export const STATIC_PAGE_URLS = [
   'https://www.plainfigures.org',
   'https://www.plainfigures.org/about',
   'https://www.plainfigures.org/privacy',
@@ -15,7 +9,7 @@ const STATIC_PAGE_URLS = [
   'https://www.plainfigures.org/learn',
 ];
 
-const CALCULATOR_HUB_URLS = [
+export const CALCULATOR_HUB_URLS = [
   'https://www.plainfigures.org/mortgage',
   'https://www.plainfigures.org/savings',
   'https://www.plainfigures.org/rent-vs-buy',
@@ -34,7 +28,7 @@ const CALCULATOR_HUB_URLS = [
   'https://www.plainfigures.org/crisis',
 ];
 
-const PRO_TOOL_URLS = [
+export const PRO_TOOL_URLS = [
   'https://www.plainfigures.org/bi',
   'https://www.plainfigures.org/hlv',
   'https://www.plainfigures.org/cyber',
@@ -47,7 +41,7 @@ const PRO_TOOL_URLS = [
   'https://www.plainfigures.org/cyber-limit',
 ];
 
-const LEARN_GUIDE_URLS = [
+export const LEARN_GUIDE_URLS = [
   'https://www.plainfigures.org/learn/mortgage-repayment',
   'https://www.plainfigures.org/learn/compound-interest',
   'https://www.plainfigures.org/learn/rent-vs-buy',
@@ -90,7 +84,7 @@ const LEARN_GUIDE_URLS = [
   'https://www.plainfigures.org/learn/dividend-vs-growth',
 ];
 
-const LEARN_EXTENSION_URLS = [
+export const LEARN_EXTENSION_URLS = [
   'https://www.plainfigures.org/learn/mortgage-payment-examples',
   'https://www.plainfigures.org/learn/mortgage-rate-vs-term',
   'https://www.plainfigures.org/learn/compound-interest-by-frequency',
@@ -104,43 +98,13 @@ const LEARN_EXTENSION_URLS = [
   'https://www.plainfigures.org/learn/freelance-day-rate-from-salary',
 ];
 
-function createEntries(
-  urls: string[],
-  changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'],
-  priority: number,
-  now: Date
-): MetadataRoute.Sitemap {
-  return urls.map((url) => ({
-    url,
-    lastModified: now,
-    changeFrequency,
-    priority,
-  }));
-}
-
-export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-  const staticPages = [
-    ...createEntries(STATIC_PAGE_URLS, 'monthly', 0.6, now),
-    ...createEntries(CALCULATOR_HUB_URLS, 'weekly', 0.9, now),
-    ...createEntries(PRO_TOOL_URLS, 'monthly', 0.85, now),
-    ...createEntries(LEARN_GUIDE_URLS, 'monthly', 0.75, now),
-    ...createEntries(LEARN_EXTENSION_URLS, 'monthly', 0.72, now),
+export function getStaticSitemapUrls(): string[] {
+  return [
+    ...STATIC_PAGE_URLS,
+    ...CALCULATOR_HUB_URLS,
+    ...PRO_TOOL_URLS,
+    ...LEARN_GUIDE_URLS,
+    ...LEARN_EXTENSION_URLS,
   ];
-
-  staticPages[0] = {
-    ...staticPages[0],
-    priority: 1,
-  };
-
-  const programmatic = generateAllSlugs().map((page) => ({
-    url: `https://www.plainfigures.org/calculators/${page.categorySlug}/${page.slug}`,
-    lastModified: now,
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
-  }));
-
-  console.log(`Total URLs: ${staticPages.length + programmatic.length}`);
-
-  return [...staticPages, ...programmatic];
 }
+

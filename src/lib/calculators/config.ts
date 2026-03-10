@@ -34,6 +34,86 @@ function numberRange(start: number, end: number, step: number): number[] {
   return values;
 }
 
+export const HIGH_VALUE_COUNTRIES = [
+  'US', 'UK', 'CA', 'AU',
+  'NZ', 'IE', 'SG', 'ZA',
+  'DE', 'NL', 'NO',
+];
+
+export const US_STATES = [
+  'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+  'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
+  'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+  'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
+  'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY',
+  'DC',
+];
+
+const NON_ENGLISH_LANGUAGE_HINTS: Record<string, string> = {
+  DE: 'de',
+  NL: 'nl',
+  NO: 'no',
+};
+
+const COUNTRY_NAME_MAP: Record<string, string> = {
+  US: 'United States',
+  UK: 'United Kingdom',
+  CA: 'Canada',
+  AU: 'Australia',
+  NZ: 'New Zealand',
+  IE: 'Ireland',
+  SG: 'Singapore',
+  ZA: 'South Africa',
+  DE: 'Germany',
+  NL: 'Netherlands',
+  NO: 'Norway',
+};
+
+export function getGeoVariants(config: CalculatorConfig): { country?: string; state?: string; languageHint?: string }[] {
+  const geoRelevantIds = [
+    'uk-tax-take-home',
+    'salary-take-home',
+    'mortgage-repayment',
+    'offset-mortgage',
+    'student-loan-refinance',
+    'auto-loan',
+    'heloc-drawdown',
+    'home-equity-loan-vs-heloc',
+    'car-insurance-comparison',
+    'home-insurance-addons',
+    'pet-insurance-vs-vet',
+    'cost-of-living',
+    'rent-vs-buy-home',
+    'rent-vs-buy-apartment',
+    'fire-number',
+    'retirement-savings',
+    'reverse-mortgage-calculator',
+    'passive-income-projector',
+    'credit-utilization-optimizer',
+    'emergency-fund-goal',
+    'zero-based-budget-planner',
+  ];
+
+  if (!geoRelevantIds.includes(config.id)) {
+    return [{ country: undefined, state: undefined, languageHint: undefined }];
+  }
+
+  const variants: { country?: string; state?: string; languageHint?: string }[] = [];
+
+  // Expanded 2026 geo-layering: priority US states + high-CPC English markets (AU/CA/UK/NZ/IE/SG) + future non-English (DE/NL/NO)
+  US_STATES.forEach((state) => variants.push({ country: 'US', state }));
+  HIGH_VALUE_COUNTRIES
+    .filter((country) => country !== 'US')
+    .forEach((country) =>
+      variants.push({
+        country,
+        languageHint: NON_ENGLISH_LANGUAGE_HINTS[country],
+      }),
+    );
+
+  return variants.slice(0, 2500);
+}
+
 export const calculators: CalculatorConfig[] = [
   {
     id: 'mortgage-repayment',
@@ -44,7 +124,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'rate', label: 'Interest rate', prefix: '%', step: 0.25, values: [4.5, 4.75, 5, 4.25, 5.25, 4, 5.5, 5.75, 6, 3.75, 6.25, 6.5, 7] },
       { key: 'termYears', label: 'Term', step: 5, values: [25, 30, 35, 20, 40, 15] },
     ],
-    maxVariants: 335,
+    maxVariants: 600,
     seoTemplate: {
       title: 'Mortgage Repayment Calculator - {{principal}} at {{rate}} over {{termYears}} years | Plain Figures',
       description: 'Monthly payment, total interest, and worked mortgage maths for {{principal}} at {{rate}} over {{termYears}} years.',
@@ -132,7 +212,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'growthRate', label: 'Growth rate', prefix: '%', step: 0.25, values: [7, 7.25, 7.5, 8, 6.75, 8.25, 6.5, 6, 5.5, 8.5, 9, 10] },
       { key: 'years', label: 'Years to retirement', step: 1, values: [20, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 40, 45, 15] },
     ],
-    maxVariants: 295,
+    maxVariants: 420,
     seoTemplate: {
       title: 'Retirement Savings Calculator - {{monthlyContribution}} a month for {{years}} years | Plain Figures',
       description: 'Projected retirement pot for {{monthlyContribution}} monthly, {{growthRate}} growth, and {{years}} years of saving.',
@@ -150,7 +230,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'rate', label: 'Rate', prefix: '%', step: 0.5, values: [4.5, 5, 4, 3.5] },
       { key: 'termYears', label: 'Term', step: 5, values: [20, 25, 30, 15] },
     ],
-    maxVariants: 200,
+    maxVariants: 380,
     seoTemplate: {
       title: 'Offset Mortgage Calculator - {{balance}} balance with {{savings}} savings | Plain Figures',
       description: 'Offset mortgage maths for {{balance}} balance, {{savings}} savings, {{rate}} rate, and {{termYears}} years remaining.',
@@ -203,7 +283,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'gross', label: 'Gross salary', prefix: '$', step: 10000, values: [50000, 60000, 75000, 85000, 100000, 120000, 150000, 200000, 30000, 250000, 400000] },
       { key: 'payPeriod', label: 'Pay period', values: ['annual', 'monthly', 'weekly', 'bonus'] },
     ],
-    maxVariants: 255,
+    maxVariants: 330,
     seoTemplate: {
       title: 'Salary Take-Home Calculator - {{gross}} {{country}} gross pay | Plain Figures',
       description: 'Gross-to-net pay estimate for {{gross}} in {{country}} on a {{payPeriod}} basis.',
@@ -512,7 +592,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'region', label: 'Tax Region', values: ['England', 'Scotland'] },
       { key: 'otherDeductions', label: 'Other monthly deductions (£)', prefix: '£', step: 100, values: [0, 100, 200, 500, 1000] },
     ],
-    maxVariants: 1200,
+    maxVariants: 2250,
     seoTemplate: {
       title: '{{salary}} Salary After Tax & NI - UK {{taxYear}} Take-Home Pay Calculator | Plain Figures',
       description: 'Formula-first UK take-home pay for {{salary}} in {{taxYear}}, with {{pensionPercent}} pension, {{studentLoanPlan}}, {{region}} rates, and {{otherDeductions}} monthly deductions.',
@@ -531,7 +611,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'inflationRate', label: 'Inflation rate', prefix: '%', step: 1, values: [1, 2, 3, 5] },
       { key: 'timeHorizonYears', label: 'Time horizon years', step: 5, values: [5, 10, 20, 30, 40] },
     ],
-    maxVariants: 1800,
+    maxVariants: 2100,
     seoTemplate: {
       title: 'Project Your Net Worth in {{timeHorizonYears}} Years - {{monthlySavings}} a month at {{expectedReturnRate}} return | Plain Figures',
       description: 'Net-worth projection using {{currentNetWorth}} starting wealth, {{monthlySavings}} monthly saving, {{expectedReturnRate}} returns, {{inflationRate}} inflation, and {{timeHorizonYears}} years.',
@@ -551,7 +631,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'balloonPercent', label: 'Balloon percent', prefix: '%', step: 10, values: [0, 20, 35] },
       { key: 'includePCP', label: 'Include PCP', values: ['yes', 'no'] },
     ],
-    maxVariants: 1400,
+    maxVariants: 2000,
     seoTemplate: {
       title: '{{carPrice}} Car Loan Calculator - Monthly Payments & Total Cost | Plain Figures',
       description: 'Car finance maths for {{carPrice}}, {{depositPercent}} deposit, {{interestRate}} APR, {{termYears}} years, {{balloonPercent}} balloon, and PCP {{includePCP}}.',
@@ -582,7 +662,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'years', label: 'Years', step: 5, values: [1, 5, 10, 20, 40] },
       { key: 'compoundingFrequency', label: 'Compounding frequency', values: ['monthly', 'quarterly', 'annual'] },
     ],
-    maxVariants: 2000,
+    maxVariants: 2800,
     seoTemplate: {
       title: '{{initialAmount}} + {{monthlyContribution}} a month at {{annualReturn}} - Future Value in {{years}} Years | Plain Figures',
       description: 'Future value of {{initialAmount}} plus {{monthlyContribution}} monthly at {{annualReturn}} for {{years}} years with {{compoundingFrequency}} compounding.',
@@ -665,7 +745,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'monthlySaveAmount', label: 'Monthly save amount', prefix: '£', step: 100, values: [100, 250, 500, 750, 1000, 1250, 1500, 2000] },
       { key: 'interestRate', label: 'Interest rate', prefix: '%', step: 0.25, values: [0, 0.5, 1, 2, 3, 4, 5] },
     ],
-    maxVariants: 1800,
+    maxVariants: 2800,
     seoTemplate: {
       title: 'Build {{monthsOfCoverage}} Months Emergency Fund - Save {{monthlySaveAmount}} a Month at {{interestRate}} | Plain Figures',
       description: 'Work out how fast you can build a {{monthsOfCoverage}}-month emergency fund using {{monthlyExpenses}} monthly expenses, {{currentSavings}} current savings, {{monthlySaveAmount}} monthly saving, and {{interestRate}} interest.',
@@ -724,7 +804,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'familySize', label: 'Family size', step: 1, values: numberRange(1, 6, 1) },
       { key: 'housingType', label: 'Housing type', values: ['Rent 1-bed', 'Rent 3-bed', 'Buy'] },
     ],
-    maxVariants: 2000,
+    maxVariants: 2800,
     seoTemplate: {
       title: 'Cost of Living: {{currentCity}} vs {{targetCity}} - Salary Needed in 2026 | Plain Figures',
       description: 'Compare cost of living between {{currentCity}} and {{targetCity}} using {{salary}} income, family size {{familySize}}, and {{housingType}} housing assumptions.',
@@ -745,7 +825,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'refiTermYears', label: 'Refinance Term (Years)', step: 5, values: [5, 7, 10, 15, 20] },
       { key: 'country', label: 'Country (Rules)', values: ['US'] },
     ],
-    maxVariants: 1800,
+    maxVariants: 2400,
     seoTemplate: {
       title: '{{loanBalance}} Student Loan - Refinance Savings & Forgiveness 2026 | Plain Figures',
       description: 'Compare refinance savings and forgiveness timing for {{loanBalance}} at {{currentRate}}, {{annualIncome}} income, {{forgivenessProgram}}, and a {{refiTermYears}}-year refi term.',
@@ -806,7 +886,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'investmentReturn', label: 'Investment return', prefix: '%', step: 0.5, values: [4, 5, 6, 7, 8, 10] },
       { key: 'inflationRate', label: 'Inflation rate', prefix: '%', step: 0.5, values: [1.5, 2, 2.5, 3, 3.5, 4] },
     ],
-    maxVariants: 1800,
+    maxVariants: 2400,
     seoTemplate: {
       title: 'Your FIRE Number: Retire with {{annualExpenses}} Annual Expenses | Plain Figures',
       description: 'Estimate your FIRE target and timeline using {{annualExpenses}} annual expenses, {{safeWithdrawalRate}} withdrawal rate, {{currentSavings}} current savings, {{monthlyContributions}} monthly contributions, and {{investmentReturn}} growth.',
@@ -865,7 +945,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'weddingType', label: 'Wedding type', values: ['Traditional', 'Destination', 'Micro', 'Multi-Event'] },
       { key: 'locationMultiplier', label: 'Location multiplier', step: 0.1, values: [1, 1.2, 1.5] },
     ],
-    maxVariants: 1800,
+    maxVariants: 2400,
     seoTemplate: {
       title: '{{totalBudget}} Wedding Budget for {{guestCount}} Guests - 2026 Planner | Plain Figures',
       description: 'Plan a {{totalBudget}} wedding for {{guestCount}} guests using {{venuePercent}} venue allocation, {{cateringPercent}} catering, {{weddingType}} style, and a {{locationMultiplier}} location multiplier.',
@@ -926,7 +1006,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'growthRate', label: 'Growth rate', prefix: '%', step: 1, values: numberRange(3, 8, 1) },
       { key: 'yearsToTransfer', label: 'Years to transfer', step: 5, values: [5, 10, 15, 20, 25, 30] },
     ],
-    maxVariants: 1600,
+    maxVariants: 2200,
     seoTemplate: {
       title: '{{totalWealth}} Wealth Transfer to {{beneficiaries}} Heirs - Tax-Efficient 2026 | Plain Figures',
       description: 'Illustrate multi-generational wealth transfer using {{totalWealth}} wealth, {{annualGifting}} annual gifting, {{beneficiaries}} beneficiaries, {{taxJurisdiction}} rules, {{growthRate}} growth, and {{yearsToTransfer}} years.',
@@ -946,7 +1026,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'repayYears', label: 'Repayment Period (Years)', step: 5, values: [5, 10, 15, 20] },
       { key: 'drawStrategy', label: 'Draw Schedule', values: ['Lump Sum', 'Over 2 Years', 'Over 5 Years'] },
     ],
-    maxVariants: 1800,
+    maxVariants: 2400,
     seoTemplate: {
       title: 'Draw {{drawAmount}} from HELOC on {{homeValue}} Home - Monthly Payments 2026 | Plain Figures',
       description: 'Estimate HELOC drawdown costs for {{drawAmount}} on a {{homeValue}} home with {{equityPercent}} available equity, {{interestRate}} rates, {{repayYears}} repayment, and {{drawStrategy}} draw timing.',
@@ -968,7 +1048,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'reimbursementPercent', label: 'Reimbursement percent', prefix: '%', step: 10, values: [70, 80, 90] },
       { key: 'years', label: 'Years', step: 2, values: [3, 5, 7, 10] },
     ],
-    maxVariants: 1600,
+    maxVariants: 2200,
     seoTemplate: {
       title: 'Pet Insurance vs Vet Bills: {{annualVetCostEstimate}} a Year Expected Costs - 2026 | Plain Figures',
       description: 'Compare pet insurance against self-funding vet bills using {{petType}}, age {{petAgeYears}}, {{annualVetCostEstimate}} annual vet costs, {{insurancePremiumMonthly}} monthly premium, {{deductible}} deductible, and {{reimbursementPercent}} reimbursement.',
@@ -1047,7 +1127,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'cancelNow', label: 'Cancel now', values: ['yes', 'no'] },
       { key: 'annualReviewFrequency', label: 'Annual review frequency', step: 1, values: [1, 2, 3, 4] },
     ],
-    maxVariants: 1400,
+    maxVariants: 2000,
     seoTemplate: {
       title: 'Cancel Unused Subscriptions - Save Money in 2026 | Plain Figures',
       description: 'Estimate annual subscription savings using {{monthlySubscriptionsCount}} subscriptions, {{averageMonthlyCostPerSub}} average cost, {{unusedPercent}} unused services, cancel-now {{cancelNow}}, and {{annualReviewFrequency}} reviews per year.',
@@ -1066,7 +1146,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'addonPercentIncrease', label: 'Add-on percent increase', prefix: '%', step: 5, values: numberRange(5, 40, 5) },
       { key: 'coverageAmount', label: 'Coverage amount', prefix: '$', step: 100000, values: [50000, 100000, 200000, 300000, 400000, 500000] },
     ],
-    maxVariants: 1500,
+    maxVariants: 2100,
     seoTemplate: {
       title: 'Add Flood/Earthquake Coverage to {{homeValue}} Home Insurance - Cost 2026 | Plain Figures',
       description: 'Model home-insurance add-on costs for a {{homeValue}} home using {{locationRiskLevel}} risk, {{basePremiumAnnual}} base premium, {{addonPercentIncrease}} premium uplift, and {{coverageAmount}} extra cover.',
@@ -1107,7 +1187,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'maintenanceDiffAnnual', label: 'Maintenance difference annual', prefix: '$', step: 100, values: [100, 250, 400, 600, 800] },
       { key: 'years', label: 'Years', step: 1, values: [1, 2, 3, 4, 5] },
     ],
-    maxVariants: 1400,
+    maxVariants: 2000,
     seoTemplate: {
       title: 'eBike vs Car Commute: {{commuteDistanceMilesDaily}} Miles/Day - 3-Year Cost Savings 2026 | Plain Figures',
       description: 'Compare commuting costs using {{commuteDistanceMilesDaily}} daily miles, {{daysPerWeek}} days a week, {{ebikeCost}} eBike cost, {{carFuelCostPerMile}} car fuel cost, {{maintenanceDiffAnnual}} maintenance difference, and {{years}} years.',
@@ -1149,7 +1229,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'rentIncrease', label: 'Rent increase', prefix: '%', step: 1, values: [2, 3, 4, 5] },
       { key: 'yearsLiving', label: 'Years living', step: 3, values: [3, 5, 7, 10, 12, 15] },
     ],
-    maxVariants: 1800,
+    maxVariants: 2500,
     seoTemplate: {
       title: 'Rent {{monthlyRent}}/mo vs Buy {{homePrice}} Home - 2026 Comparison | Plain Figures',
       description: 'Compare renting and buying for {{monthlyRent}} monthly rent versus a {{homePrice}} home using {{downPaymentPercent}} down, {{mortgageRate}} mortgage rates, {{propertyTaxRate}} property tax, {{homeAppreciation}} appreciation, and {{yearsLiving}} years.',
@@ -1191,7 +1271,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'drawPeriodYears', label: 'Draw period years', step: 1, values: [5, 7, 10] },
       { key: 'repayPeriodYears', label: 'Repay period years', step: 5, values: [10, 15, 20] },
     ],
-    maxVariants: 1600,
+    maxVariants: 2200,
     seoTemplate: {
       title: 'Home Equity Loan vs HELOC: {{amountNeeded}} Borrowed - Costs 2026 | Plain Figures',
       description: 'Compare home-equity loan and HELOC costs for {{amountNeeded}} on a {{homeValue}} home with {{equityPercent}} equity, {{fixedLoanRate}} fixed rates, {{helocVariableRate}} HELOC rates, and {{repayPeriodYears}} repayment.',
@@ -1213,7 +1293,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'creditScoreImpact', label: 'Credit score impact', values: ['poor', 'fair', 'good', 'excellent'] },
       { key: 'locationRisk', label: 'Location risk', values: ['low', 'medium', 'high'] },
     ],
-    maxVariants: 1400,
+    maxVariants: 2000,
     seoTemplate: {
       title: 'Save on Car Insurance - Quote Comparison for {{driverAge}}-Year-Old Driver 2026 | Plain Figures',
       description: 'Compare car-insurance cost assumptions for a {{driverAge}}-year-old driver with {{vehicleValue}} vehicle value, {{annualMiles}} annual miles, {{coverageLevel}} cover, {{claimsLast5Years}} claims, {{creditScoreImpact}} credit, and {{locationRisk}} location risk.',
@@ -1234,7 +1314,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'yearsStaying', label: 'Years You Plan to Stay', step: 2, values: [3, 5, 7, 10, 12, 15] },
       { key: 'appreciationRate', label: 'Annual Home Appreciation %', prefix: '%', step: 1, values: [1, 2, 3, 4, 5, 6] },
     ],
-    maxVariants: 1800,
+    maxVariants: 2500,
     seoTemplate: {
       title: 'Rent {{monthlyRent}}/mo vs Buy {{purchasePrice}} Apartment - 2026 Break-Even Analysis | Plain Figures',
       description: 'Compare renting and buying an apartment for {{monthlyRent}} monthly rent versus {{purchasePrice}} purchase price using {{downPaymentPercent}} down, {{mortgageRate}} mortgage rates, {{hoaMonthly}} HOA fees, {{yearsStaying}} years staying, and {{appreciationRate}} appreciation.',
@@ -1341,6 +1421,236 @@ export const calculators: CalculatorConfig[] = [
     },
     formula: 'Projected pot = current savings compounded + future value of employee and employer contributions',
   },
+  {
+    id: 'how-much-house-can-i-afford',
+    categorySlug: 'real-estate',
+    name: 'How Much House Can I Afford Calculator 2026',
+    params: [
+      { key: 'annualIncome', label: 'Annual Household Income ($/£)', prefix: '$', step: 5000, values: numberRange(40000, 250000, 5000) },
+      { key: 'monthlyDebtPayments', label: 'Monthly Debt Payments (excl. mortgage)', prefix: '$', step: 100, values: numberRange(0, 3000, 100) },
+      { key: 'downPayment', label: 'Down Payment Amount', prefix: '$', step: 5000, values: numberRange(0, 100000, 5000) },
+      { key: 'interestRate', label: 'Current Mortgage Rate %', prefix: '%', step: 0.25, values: numberRange(4, 8, 0.25) },
+      { key: 'loanTermYears', label: 'Loan Term (Years)', step: 5, values: [15, 20, 30] },
+      { key: 'propertyTaxRate', label: 'Annual Property Tax Rate %', prefix: '%', step: 0.25, values: numberRange(0.5, 2.5, 0.25) },
+      { key: 'homeInsuranceAnnual', label: 'Annual Home Insurance Estimate', prefix: '$', step: 200, values: numberRange(800, 3000, 200) },
+    ],
+    maxVariants: 2200,
+    seoTemplate: {
+      title: 'How Much House Can I Afford on {{annualIncome}} Salary? – 2026 Calculator | Plain Figures',
+      description: 'Estimate how much house you can afford in 2026 using {{annualIncome}} income, {{monthlyDebtPayments}} monthly debts, {{downPayment}} down payment, {{interestRate}} mortgage rates, {{propertyTaxRate}} property tax, and {{homeInsuranceAnnual}} insurance.',
+      h1: 'How Much House Can I Afford on {{annualIncome}} Salary?',
+    },
+    formula: 'Affordable\\ home \\approx \\frac{(income \\times DTI\\ allowance) - debts - taxes - insurance}{monthly\\ mortgage\\ factor}',
+  },
+  {
+    id: 'social-security-estimator',
+    categorySlug: 'retirement',
+    name: 'Social Security Benefits Calculator 2026',
+    params: [
+      { key: 'birthYear', label: 'Birth Year', step: 1, values: numberRange(1955, 2005, 1) },
+      { key: 'currentEarnings', label: 'Current Earnings', prefix: '$', step: 5000, values: numberRange(20000, 168600, 5000) },
+      { key: 'expectedFutureEarningsGrowth', label: 'Expected Future Earnings Growth %', prefix: '%', step: 0.5, values: numberRange(0, 5, 0.5) },
+      { key: 'claimingAge', label: 'Claiming Age', step: 1, values: numberRange(62, 70, 1) },
+      { key: 'spousalBenefits', label: 'Spousal Benefits', values: ['single', 'yes', 'no'] },
+    ],
+    maxVariants: 1800,
+    seoTemplate: {
+      title: 'Estimate Your 2026 Social Security Benefits – Born {{birthYear}}, Claim at {{claimingAge}} | Plain Figures',
+      description: 'Estimate Social Security benefits for someone born in {{birthYear}} with {{currentEarnings}} earnings, {{expectedFutureEarningsGrowth}} growth, claiming at {{claimingAge}}, and {{spousalBenefits}} spousal assumptions.',
+      h1: 'Estimate Your 2026 Social Security Benefits – Born {{birthYear}}, Claim at {{claimingAge}}',
+    },
+    formula: 'Estimated\\ benefit \\approx AIME \\times PIA\\ bend\\ factors \\times claiming\\ age\\ adjustment + spousal\\ adjustment',
+  },
+  {
+    id: 'save-to-millionaire',
+    categorySlug: 'savings',
+    name: 'Save to Become a Millionaire Calculator 2026',
+    params: [
+      { key: 'currentSavings', label: 'Current Savings', prefix: '$', step: 5000, values: numberRange(0, 500000, 5000) },
+      { key: 'monthlyContribution', label: 'Monthly Contribution', prefix: '$', step: 100, values: numberRange(100, 5000, 100) },
+      { key: 'annualReturn', label: 'Annual Return %', prefix: '%', step: 0.5, values: numberRange(4, 12, 0.5) },
+      { key: 'currentAge', label: 'Current Age', step: 1, values: numberRange(18, 60, 1) },
+      { key: 'targetAge', label: 'Target Age', step: 1, values: numberRange(23, 100, 1) },
+      { key: 'inflationRate', label: 'Inflation Rate %', prefix: '%', step: 0.5, values: numberRange(2, 4, 0.5) },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'How to Save $1 Million – Monthly Savings Needed at {{annualReturn}}% Return 2026 | Plain Figures',
+      description: 'Model the path to $1 million with {{currentSavings}} saved, {{monthlyContribution}} monthly contributions, {{annualReturn}} returns, age {{currentAge}} to {{targetAge}}, and {{inflationRate}} inflation.',
+      h1: 'How to Save $1 Million – Monthly Savings Needed at {{annualReturn}}% Return',
+    },
+    formula: '1{,}000{,}000 \\approx current\\ savings \\times (1+r)^t + PMT \\times \\frac{(1+r)^t - 1}{r}',
+    isValidVariant: (params) => {
+      const currentAge = Number(params.currentAge);
+      const targetAge = Number(params.targetAge);
+      const difference = targetAge - currentAge;
+
+      return difference >= 5 && difference <= 40;
+    },
+  },
+  {
+    id: 'debt-payoff-timeline',
+    categorySlug: 'debt',
+    name: 'Debt Payoff Timeline Calculator with Extra Payments 2026',
+    params: [
+      { key: 'totalDebt', label: 'Total Debt', prefix: '$', step: 1000, values: numberRange(5000, 100000, 1000) },
+      { key: 'averageInterestRate', label: 'Average Interest Rate', prefix: '%', step: 1, values: numberRange(5, 25, 1) },
+      { key: 'minimumMonthlyPayment', label: 'Minimum Monthly Payment', prefix: '$', step: 50, values: numberRange(200, 2000, 50) },
+      { key: 'extraMonthlyPayment', label: 'Extra Monthly Payment', prefix: '$', step: 50, values: numberRange(0, 1000, 50) },
+      { key: 'debtType', label: 'Debt Type', values: ['Credit Card', 'Personal Loan', 'Student Loan', 'Mixed'] },
+    ],
+    maxVariants: 1800,
+    seoTemplate: {
+      title: 'Pay Off {{totalDebt}} Debt Faster – Timeline with Extra {{extraMonthlyPayment}}/mo 2026 | Plain Figures',
+      description: 'Estimate a payoff timeline for {{totalDebt}} of {{debtType}} debt at {{averageInterestRate}} APR, {{minimumMonthlyPayment}} minimum payments, and {{extraMonthlyPayment}} extra per month.',
+      h1: 'Pay Off {{totalDebt}} Debt Faster – Timeline with Extra {{extraMonthlyPayment}}/mo',
+    },
+    formula: 'Balance_{t+1} = Balance_t \\times (1 + r/12) - (minimum\\ payment + extra\\ payment)',
+  },
+  {
+    id: 'investment-future-value',
+    categorySlug: 'investing',
+    name: 'Investment Future Value & Growth Calculator 2026',
+    params: [
+      { key: 'initialInvestment', label: 'Initial Investment', prefix: '$', step: 1000, values: numberRange(1000, 100000, 1000) },
+      { key: 'monthlyContribution', label: 'Monthly Contribution', prefix: '$', step: 100, values: numberRange(0, 2000, 100) },
+      { key: 'annualReturn', label: 'Annual Return %', prefix: '%', step: 0.5, values: numberRange(3, 12, 0.5) },
+      { key: 'years', label: 'Years', step: 1, values: numberRange(5, 40, 1) },
+      { key: 'compounding', label: 'Compounding', values: ['monthly', 'quarterly', 'annual'] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: '{{initialInvestment}} + {{monthlyContribution}}/mo at {{annualReturn}}% – Future Value in {{years}} Years | Plain Figures',
+      description: 'Calculate future value for {{initialInvestment}} invested with {{monthlyContribution}} monthly contributions, {{annualReturn}} returns, {{years}} years, and {{compounding}} compounding.',
+      h1: '{{initialInvestment}} + {{monthlyContribution}}/mo at {{annualReturn}}% – Future Value in {{years}} Years',
+    },
+    formula: 'FV = PV(1 + r/n)^{nt} + PMT \\times \\frac{(1 + r/n)^{nt} - 1}{r/n}',
+  },
+  {
+    id: 'reverse-mortgage-calculator',
+    categorySlug: 'retirement',
+    name: 'Reverse Mortgage / Home Equity Conversion Calculator 2026',
+    params: [
+      { key: 'homeValue', label: 'Current Home Value ($/£)', prefix: '$', step: 50000, values: [200000, 300000, 425000, 550000, 700000, 850000, 1000000] },
+      { key: 'borrowerAge', label: 'Youngest Borrower Age', step: 5, values: [62, 65, 68, 72, 76, 80, 85, 90, 95] },
+      { key: 'interestRate', label: 'Expected Interest Rate %', prefix: '%', step: 0.5, values: [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9] },
+      { key: 'payoutType', label: 'Payout Option', values: ['Tenure (monthly payments)', 'Lump Sum', 'Line of Credit', 'Modified Tenure'] },
+      { key: 'closingCosts', label: 'Estimated Closing Costs', prefix: '$', step: 2000, values: [2000, 4000, 6000, 8000, 10000, 12500, 15000] },
+      { key: 'expectedTenureYears', label: 'Expected Years in Home', step: 5, values: [5, 8, 10, 12, 15, 20, 25] },
+    ],
+    maxVariants: 2100,
+    seoTemplate: {
+      title: 'Reverse Mortgage on {{homeValue}} Home - Age {{borrowerAge}} Payout Estimate 2026 | Plain Figures',
+      description: 'Estimate reverse-mortgage proceeds on a {{homeValue}} home at age {{borrowerAge}} using {{interestRate}} rates, {{payoutType}} payouts, {{closingCosts}} closing costs, and {{expectedTenureYears}} expected years in the home.',
+      h1: 'Reverse Mortgage on {{homeValue}} Home - Age {{borrowerAge}} Payout Estimate',
+    },
+    formula: 'PL \\approx H \\times f(a,r) - C',
+  },
+  {
+    id: 'passive-income-projector',
+    categorySlug: 'investing',
+    name: 'Passive Income Stream Projector 2026',
+    params: [
+      { key: 'currentMonthlyPassive', label: 'Current monthly passive income', prefix: '$', step: 500, values: [0, 250, 500, 1000, 2000, 3500, 5000] },
+      { key: 'monthlyInvestment', label: 'Monthly investment', prefix: '$', step: 250, values: [100, 250, 500, 750, 1000, 1500, 2000, 3000] },
+      { key: 'annualReturn', label: 'Annual return', prefix: '%', step: 1, values: [4, 5, 6, 7, 8, 9, 10] },
+      { key: 'dividendYield', label: 'Dividend yield', prefix: '%', step: 0.5, values: [2, 2.5, 3, 4, 5, 6] },
+      { key: 'yearsToGoal', label: 'Years to goal', step: 5, values: [5, 8, 10, 15, 20, 25, 30] },
+      { key: 'targetMonthlyPassive', label: 'Target monthly passive income', prefix: '$', step: 500, values: [500, 1000, 2000, 3000, 5000, 7500, 10000] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'Build {{targetMonthlyPassive}}/mo Passive Income - Monthly Investment Needed 2026 | Plain Figures',
+      description: 'Project the path to {{targetMonthlyPassive}} monthly passive income using {{currentMonthlyPassive}} current passive income, {{monthlyInvestment}} monthly investing, {{annualReturn}} returns, {{dividendYield}} yield, and {{yearsToGoal}} years.',
+      h1: 'Build {{targetMonthlyPassive}}/mo Passive Income',
+    },
+    formula: 'I_p \\approx (PV + FV_{contrib}) \\times y / 12',
+    isValidVariant: (params) => Number(params.targetMonthlyPassive) >= Number(params.currentMonthlyPassive),
+  },
+  {
+    id: 'credit-utilization-optimizer',
+    categorySlug: 'credit',
+    name: 'Credit Utilization Optimizer & Score Impact Calculator 2026',
+    params: [
+      { key: 'totalCreditLimit', label: 'Total credit limit', prefix: '$', step: 10000, values: [5000, 10000, 15000, 25000, 40000, 60000, 80000, 100000] },
+      { key: 'currentBalance', label: 'Current balance', prefix: '$', step: 2500, values: [0, 1000, 2500, 5000, 7500, 10000, 15000, 20000, 30000] },
+      { key: 'targetUtilization', label: 'Target utilization', prefix: '%', step: 5, values: [0, 5, 10, 15, 20, 25, 30] },
+      { key: 'newBalanceAfterPaydown', label: 'New balance after paydown', prefix: '$', step: 2500, values: [0, 500, 1000, 2000, 3000, 5000, 7500, 10000, 15000, 20000] },
+      { key: 'numberOfCards', label: 'Number of cards', step: 2, values: [1, 2, 3, 5, 8, 12, 15] },
+      { key: 'scoreChangeEstimate', label: 'Estimated score change', step: 10, values: [0, 10, 20, 30, 40, 50, 75, 100] },
+    ],
+    maxVariants: 1800,
+    seoTemplate: {
+      title: 'Optimize Credit Utilization from {{currentBalance}} Balance to {{targetUtilization}}% - Score Impact 2026 | Plain Figures',
+      description: 'Estimate credit-utilization improvements using {{totalCreditLimit}} total limits, {{currentBalance}} current balances, {{newBalanceAfterPaydown}} balance after paydown, {{targetUtilization}} target utilization, {{numberOfCards}} cards, and {{scoreChangeEstimate}} estimated score change.',
+      h1: 'Optimize Credit Utilization - Score Impact Calculator',
+    },
+    formula: 'U = B / L',
+    isValidVariant: (params) => {
+      const totalCreditLimit = Number(params.totalCreditLimit);
+      const currentBalance = Number(params.currentBalance);
+      const newBalanceAfterPaydown = Number(params.newBalanceAfterPaydown);
+      const targetUtilization = Number(params.targetUtilization);
+      const currentUtilization = totalCreditLimit === 0 ? 0 : (currentBalance / totalCreditLimit) * 100;
+      const newUtilization = totalCreditLimit === 0 ? 0 : (newBalanceAfterPaydown / totalCreditLimit) * 100;
+
+      return (
+        currentBalance <= totalCreditLimit &&
+        newBalanceAfterPaydown <= currentBalance &&
+        targetUtilization <= currentUtilization &&
+        newUtilization <= targetUtilization
+      );
+    },
+  },
+  {
+    id: 'emergency-fund-goal',
+    categorySlug: 'savings',
+    name: 'Emergency Fund Goal & Timeline Calculator 2026',
+    params: [
+      { key: 'monthlyExpenses', label: 'Monthly expenses', prefix: '$', step: 500, values: [1500, 2000, 2500, 3000, 4000, 5000, 6500, 8000, 10000] },
+      { key: 'monthsCoverageGoal', label: 'Months coverage goal', step: 1, values: numberRange(3, 12, 1) },
+      { key: 'currentSavings', label: 'Current savings', prefix: '$', step: 5000, values: [0, 1000, 3000, 5000, 10000, 15000, 20000, 30000, 40000, 50000] },
+      { key: 'monthlySaveAmount', label: 'Monthly save amount', prefix: '$', step: 250, values: [100, 250, 500, 750, 1000, 1250, 1500, 2000] },
+      { key: 'interestRate', label: 'Interest rate', prefix: '%', step: 0.5, values: [3, 3.5, 4, 4.5, 5, 5.5] },
+    ],
+    maxVariants: 1900,
+    seoTemplate: {
+      title: 'Build {{monthsCoverageGoal}} Months Emergency Fund ({{monthlyExpenses}}/mo Expenses) - Timeline 2026 | Plain Figures',
+      description: 'Estimate the time to build a {{monthsCoverageGoal}}-month emergency fund using {{monthlyExpenses}} monthly expenses, {{currentSavings}} current savings, {{monthlySaveAmount}} monthly saving, and {{interestRate}} interest.',
+      h1: 'Build {{monthsCoverageGoal}} Months Emergency Fund - Timeline 2026',
+    },
+    formula: 'Goal = E \\times m',
+  },
+  {
+    id: 'zero-based-budget-planner',
+    categorySlug: 'budget',
+    name: 'Zero-Based Budget Planner & Category Allocator 2026',
+    params: [
+      { key: 'monthlyTakeHome', label: 'Monthly take-home', prefix: '$', step: 1000, values: [2000, 3000, 4000, 5000, 6500, 8000, 10000, 12000] },
+      { key: 'fixedExpenses', label: 'Fixed expenses', prefix: '$', step: 500, values: [800, 1200, 1600, 2000, 2500, 3000, 3500, 4000] },
+      { key: 'variableExpenses', label: 'Variable expenses', prefix: '$', step: 500, values: [500, 800, 1000, 1500, 2000, 2500, 3000] },
+      { key: 'debtPayments', label: 'Debt payments', prefix: '$', step: 250, values: [0, 100, 250, 500, 750, 1000, 1250, 1500] },
+      { key: 'savingsGoal', label: 'Savings goal', prefix: '$', step: 250, values: [200, 400, 600, 800, 1000, 1500, 2000] },
+      { key: 'funMoney', label: 'Fun money', prefix: '$', step: 250, values: [100, 200, 300, 500, 750, 1000] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'Zero-Based Budget on {{monthlyTakeHome}}/mo Take-Home - Allocate Every Dollar 2026 | Plain Figures',
+      description: 'Build a zero-based budget using {{monthlyTakeHome}} take-home pay, {{fixedExpenses}} fixed costs, {{variableExpenses}} variable spending, {{debtPayments}} debt payments, {{savingsGoal}} savings, and {{funMoney}} fun money.',
+      h1: 'Zero-Based Budget on {{monthlyTakeHome}}/mo Take-Home',
+    },
+    formula: 'T = F + V + D + S + U',
+    isValidVariant: (params) => {
+      const totalAllocated =
+        Number(params.fixedExpenses) +
+        Number(params.variableExpenses) +
+        Number(params.debtPayments) +
+        Number(params.savingsGoal) +
+        Number(params.funMoney);
+
+      return totalAllocated <= Number(params.monthlyTakeHome);
+    },
+  },
 ];
 
 const slugBuilders: Partial<Record<string, (params: ParamMap) => string>> = {
@@ -1436,6 +1746,26 @@ const slugBuilders: Partial<Record<string, (params: ParamMap) => string>> = {
   'credit-card-rewards-comparison': ({ annualSpend, rewardsType, rewardsRate, annualFee, promoMonths, categoryBonusSpend }) =>
     `credit-card-rewards-comparison-${annualSpend}-spend-${normalizeSlugPart(rewardsType)}-${rewardsRate}-rate-${annualFee}-fee-${promoMonths}-promo-${categoryBonusSpend}-bonus`,
   'pension-contribution-scenarios': ({ salary, employeePct, employerPct, years }) => `pension-contribution-scenarios-${salary}-salary-${employeePct}-employee-${employerPct}-employer-${years}-years`,
+  'how-much-house-can-i-afford': ({ annualIncome, monthlyDebtPayments, downPayment, interestRate, loanTermYears, propertyTaxRate, homeInsuranceAnnual }) =>
+    `how-much-house-can-i-afford-${annualIncome}-income-${monthlyDebtPayments}-debt-${downPayment}-down-${interestRate}-rate-${loanTermYears}-years-${propertyTaxRate}-tax-${homeInsuranceAnnual}-insurance`,
+  'social-security-estimator': ({ birthYear, currentEarnings, expectedFutureEarningsGrowth, claimingAge, spousalBenefits }) =>
+    `social-security-estimator-${birthYear}-birth-${currentEarnings}-earnings-${expectedFutureEarningsGrowth}-growth-claim-at-${claimingAge}-${normalizeSlugPart(spousalBenefits)}`,
+  'save-to-millionaire': ({ currentSavings, monthlyContribution, annualReturn, currentAge, targetAge, inflationRate }) =>
+    `save-to-millionaire-${currentSavings}-saved-${monthlyContribution}-month-${annualReturn}-return-${currentAge}-to-${targetAge}-${inflationRate}-inflation`,
+  'debt-payoff-timeline': ({ totalDebt, averageInterestRate, minimumMonthlyPayment, extraMonthlyPayment, debtType }) =>
+    `debt-payoff-${totalDebt}-debt-${averageInterestRate}-rate-${minimumMonthlyPayment}-minimum-${extraMonthlyPayment}-extra-${normalizeSlugPart(debtType)}`,
+  'investment-future-value': ({ initialInvestment, monthlyContribution, annualReturn, years, compounding }) =>
+    `future-value-${initialInvestment}-initial-${monthlyContribution}-month-${annualReturn}-return-${years}-years-${normalizeSlugPart(compounding)}`,
+  'reverse-mortgage-calculator': ({ homeValue, borrowerAge, interestRate, payoutType, closingCosts, expectedTenureYears }) =>
+    `reverse-mortgage-${homeValue}-home-${borrowerAge}-age-${interestRate}-rate-${normalizeSlugPart(payoutType)}-${closingCosts}-costs-${expectedTenureYears}-years`,
+  'passive-income-projector': ({ currentMonthlyPassive, monthlyInvestment, annualReturn, dividendYield, yearsToGoal, targetMonthlyPassive }) =>
+    `passive-income-${currentMonthlyPassive}-current-${monthlyInvestment}-invest-${annualReturn}-return-${dividendYield}-yield-${yearsToGoal}-years-${targetMonthlyPassive}-target`,
+  'credit-utilization-optimizer': ({ totalCreditLimit, currentBalance, targetUtilization, newBalanceAfterPaydown, numberOfCards, scoreChangeEstimate }) =>
+    `credit-utilization-${totalCreditLimit}-limit-${currentBalance}-current-${targetUtilization}-target-${newBalanceAfterPaydown}-new-${numberOfCards}-cards-${scoreChangeEstimate}-score`,
+  'emergency-fund-goal': ({ monthlyExpenses, monthsCoverageGoal, currentSavings, monthlySaveAmount, interestRate }) =>
+    `emergency-fund-goal-${monthlyExpenses}-expenses-${monthsCoverageGoal}-months-${currentSavings}-saved-${monthlySaveAmount}-monthly-${interestRate}-rate`,
+  'zero-based-budget-planner': ({ monthlyTakeHome, fixedExpenses, variableExpenses, debtPayments, savingsGoal, funMoney }) =>
+    `zero-based-budget-${monthlyTakeHome}-take-home-${fixedExpenses}-fixed-${variableExpenses}-variable-${debtPayments}-debt-${savingsGoal}-savings-${funMoney}-fun`,
 };
 
 function normalizeSlugPart(value: ParamValue): string {
@@ -1490,26 +1820,138 @@ function enumerateVariants(config: CalculatorConfig): { params: ParamMap; score:
   });
 }
 
+type GeneratedSlug = {
+  categorySlug: string;
+  slug: string;
+  params: ParamMap;
+};
+
+type GeneratedSlugPath = {
+  categorySlug: string;
+  slug: string;
+};
+
+function buildGeneratedEntries<T extends { categorySlug: string; slug: string }>(
+  config: CalculatorConfig,
+  project: (baseEntry: { categorySlug: string; slug: string; params: ParamMap }) => T
+): T[] {
+  const variants = enumerateVariants(config);
+  const seen = new Set<string>();
+  const baseEntries = variants
+    .map(({ params }) => {
+      const slug = buildSlug(config, params);
+      if (seen.has(slug)) {
+        return null;
+      }
+
+      seen.add(slug);
+
+      return {
+        categorySlug: config.categorySlug,
+        slug,
+        params,
+      };
+    })
+    .filter((variant): variant is GeneratedSlug => Boolean(variant))
+    .slice(0, config.maxVariants);
+
+  const geoVariants = getGeoVariants(config).filter((variant) => variant.country || variant.state);
+  const allEntries = [...baseEntries];
+
+  if (geoVariants.length > 0) {
+    // Expanded 2026 geo-layering: priority US states + high-CPC English markets (AU/CA/UK/NZ/IE/SG) + future non-English (DE/NL/NO)
+    const geoCap = Math.min(2200, Math.max(1600, Math.round(config.maxVariants * 0.85)));
+    const maxGeoCombinations = baseEntries.length * geoVariants.length;
+    const geoTarget = Math.min(geoCap, maxGeoCombinations);
+
+    for (let index = 0; index < geoTarget; index += 1) {
+      const baseEntry = baseEntries[index % baseEntries.length];
+      const geo = geoVariants[Math.floor(index / baseEntries.length) % geoVariants.length];
+      const suffix = geo.state ? geo.state.toLowerCase() : geo.country?.toLowerCase();
+      const countryName = geo.country ? COUNTRY_NAME_MAP[geo.country] ?? geo.country : undefined;
+      const stateName = geo.state;
+      const geoParams: ParamMap = {
+        ...(geo.country ? { country: geo.country } : {}),
+        ...(geo.state ? { state: geo.state } : {}),
+        ...(geo.languageHint ? { languageHint: geo.languageHint } : {}),
+        ...(countryName ? { countryName } : {}),
+        ...(stateName ? { stateName } : {}),
+      };
+
+      if (!suffix) {
+        continue;
+      }
+
+      const slug = `${baseEntry.slug}-${suffix}`;
+      if (seen.has(slug)) {
+        continue;
+      }
+
+      seen.add(slug);
+      allEntries.push({
+        categorySlug: baseEntry.categorySlug,
+        slug,
+        params: {
+          ...baseEntry.params,
+          ...geoParams,
+        },
+      });
+    }
+  }
+
+  return allEntries.map(project);
+}
+
+export function generateStaticProgrammaticPaths(limit: number): GeneratedSlugPath[] {
+  const entries: GeneratedSlugPath[] = [];
+
+  for (const config of calculators) {
+    const configEntries = buildGeneratedEntries(config, ({ categorySlug, slug }) => ({
+      categorySlug,
+      slug,
+    }));
+
+    for (const entry of configEntries) {
+      entries.push(entry);
+      if (entries.length >= limit) {
+        return entries;
+      }
+    }
+  }
+
+  return entries;
+}
+
+export function generateAllSitemapEntries(): GeneratedSlugPath[] {
+  return calculators.flatMap((config) =>
+    buildGeneratedEntries(config, ({ categorySlug, slug }) => ({
+      categorySlug,
+      slug,
+    }))
+  );
+}
+
+export function findGeneratedSlug(categorySlug: string, slug: string): GeneratedSlug | null {
+  const config = calculators.find((entry) => entry.categorySlug === categorySlug);
+
+  if (!config) {
+    return null;
+  }
+
+  return buildGeneratedEntries(config, (entry) => entry).find((entry) => entry.slug === slug) ?? null;
+}
+
+export function getRepresentativeGeneratedSlug(categorySlug: string): GeneratedSlug | null {
+  const config = calculators.find((entry) => entry.categorySlug === categorySlug);
+
+  if (!config) {
+    return null;
+  }
+
+  return buildGeneratedEntries(config, (entry) => entry)[0] ?? null;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function generateAllSlugs(): { categorySlug: string; slug: string; params: Record<string, any> }[] {
-  return calculators.flatMap((config) => {
-    const variants = enumerateVariants(config);
-    const seen = new Set<string>();
-
-    return variants
-      .map(({ params }) => {
-        const slug = buildSlug(config, params);
-        if (seen.has(slug)) {
-          return null;
-        }
-        seen.add(slug);
-        return {
-          categorySlug: config.categorySlug,
-          slug,
-          params,
-        };
-      })
-      .filter((variant): variant is { categorySlug: string; slug: string; params: ParamMap } => Boolean(variant))
-      .slice(0, config.maxVariants);
-  });
+  return calculators.flatMap((config) => buildGeneratedEntries(config, (entry) => entry));
 }
