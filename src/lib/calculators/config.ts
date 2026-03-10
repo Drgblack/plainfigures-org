@@ -3537,6 +3537,8 @@ type GeneratedSlugPath = {
   slug: string;
 };
 
+const sitemapEntryCountCache = new Map<string, number>();
+
 function buildGeneratedEntries<T extends { categorySlug: string; slug: string }>(
   config: CalculatorConfig,
   project: (baseEntry: { categorySlug: string; slug: string; params: ParamMap }) => T
@@ -3648,6 +3650,71 @@ function buildGeneratedEntries<T extends { categorySlug: string; slug: string }>
   return allEntries.map(project);
 }
 
+function getBaseVariantCount(config: CalculatorConfig): number {
+  if (!config.isValidVariant) {
+    const rawCount = config.params.reduce((total, param) => total * param.values.length, 1);
+    return Math.min(rawCount, config.maxVariants);
+  }
+
+  let validCount = 0;
+
+  const visit = (index: number, current: ParamMap) => {
+    if (validCount >= config.maxVariants) {
+      return;
+    }
+
+    if (index === config.params.length) {
+      if (config.isValidVariant?.(current)) {
+        validCount += 1;
+      }
+      return;
+    }
+
+    const param = config.params[index];
+
+    for (const value of param.values) {
+      if (validCount >= config.maxVariants) {
+        break;
+      }
+
+      current[param.key] = value;
+      visit(index + 1, current);
+    }
+
+    delete current[param.key];
+  };
+
+  visit(0, {});
+
+  return validCount;
+}
+
+function getGeneratedEntryCount(config: CalculatorConfig): number {
+  const cached = sitemapEntryCountCache.get(config.id);
+
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  const baseCount = getBaseVariantCount(config);
+  const geoVariants = getGeoVariants(config).filter(
+    (variant) => variant.country || variant.state || variant.region || variant.province || variant.buyerStatus || variant.flatType,
+  );
+  const geoCap = Math.min(
+    getGeoVariantCap(config),
+    Math.max(
+      US_STATE_SENSITIVE_CALCULATOR_IDS.has(config.id) ? 2200 : 1600,
+      Math.round(config.maxVariants * (US_STATE_SENSITIVE_CALCULATOR_IDS.has(config.id) ? 0.95 : 0.85)),
+    ),
+  );
+  const geoCount = geoVariants.length > 0 ? Math.min(geoCap, baseCount * geoVariants.length) : 0;
+  const count = baseCount + geoCount;
+
+  sitemapEntryCountCache.set(config.id, count);
+
+  return count;
+}
+
 export function generateStaticProgrammaticPaths(limit: number): GeneratedSlugPath[] {
   const entries: GeneratedSlugPath[] = [];
 
@@ -3675,6 +3742,45 @@ export function generateAllSitemapEntries(): GeneratedSlugPath[] {
       slug,
     }))
   );
+}
+
+export function getSitemapEntryCount(): number {
+  return calculators.reduce((total, config) => total + getGeneratedEntryCount(config), 0);
+}
+
+export function generateSitemapChunkEntries(chunkIndex: number, chunkSize: number): GeneratedSlugPath[] {
+  if (chunkIndex < 0 || chunkSize <= 0) {
+    return [];
+  }
+
+  let offset = chunkIndex * chunkSize;
+  let remaining = chunkSize;
+  const entries: GeneratedSlugPath[] = [];
+
+  for (const config of calculators) {
+    const configCount = getGeneratedEntryCount(config);
+
+    if (offset >= configCount) {
+      offset -= configCount;
+      continue;
+    }
+
+    const configEntries = buildGeneratedEntries(config, ({ categorySlug, slug }) => ({
+      categorySlug,
+      slug,
+    }));
+
+    const slice = configEntries.slice(offset, offset + remaining);
+    entries.push(...slice);
+    remaining -= slice.length;
+    offset = 0;
+
+    if (remaining <= 0) {
+      break;
+    }
+  }
+
+  return entries;
 }
 
 export function findGeneratedSlug(categorySlug: string, slug: string): GeneratedSlug | null {

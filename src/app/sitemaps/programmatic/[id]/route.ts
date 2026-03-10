@@ -1,4 +1,4 @@
-import { generateAllSitemapEntries } from '@/lib/calculators/config';
+import { generateSitemapChunkEntries } from '@/lib/calculators/config';
 
 export const revalidate = 86400;
 export const dynamic = 'force-dynamic';
@@ -28,9 +28,7 @@ export async function GET(_request: Request, context: RouteContext) {
     return new Response('Invalid sitemap chunk', { status: 404 });
   }
 
-  const start = chunkIndex * PROGRAMMATIC_CHUNK_SIZE;
-  const end = start + PROGRAMMATIC_CHUNK_SIZE;
-  const entries = generateAllSitemapEntries().slice(start, end);
+  const entries = generateSitemapChunkEntries(chunkIndex, PROGRAMMATIC_CHUNK_SIZE);
 
   if (entries.length === 0) {
     return new Response('Not found', { status: 404 });
