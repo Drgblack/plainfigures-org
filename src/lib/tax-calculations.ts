@@ -277,8 +277,69 @@ function calcAU(gross: number): TaxResult {
   };
 }
 
+// ── Canada ────────────────────────────────────────────────────────────────────
+function calcCA(gross: number): TaxResult {
+  const federalBrackets = [[55867, 0.15], [111733, 0.205], [173205, 0.26], [246752, 0.29], [Infinity, 0.33]];
+  let federalTax = 0;
+  let previous = 0;
+
+  for (const [limit, rate] of federalBrackets) {
+    const taxable = Math.min(gross - previous, (limit as number) - previous);
+    if (taxable <= 0) break;
+    federalTax += taxable * (rate as number);
+    previous = limit as number;
+  }
+
+  const provincialTax = gross * 0.085;
+  const cpp = Math.min(gross, 68500) * 0.0595;
+  const ei = Math.min(gross, 63200) * 0.0166;
+  const totalDeductions = federalTax + provincialTax + cpp + ei;
+  const net = gross - totalDeductions;
+
+  return {
+    grossAnnual: gross, netAnnual: net, netMonthly: net / 12,
+    effectiveTaxRate: (totalDeductions / gross) * 100,
+    currency: 'CAD', country: 'Canada',
+    breakdown: [
+      { label: 'Gross Salary', amount: gross },
+      { label: 'Federal Income Tax', amount: -federalTax, rate: (federalTax / gross) * 100 },
+      { label: 'Provincial Tax (blended)', amount: -provincialTax, rate: 8.5 },
+      { label: 'CPP', amount: -cpp, rate: 5.95 },
+      { label: 'EI', amount: -ei, rate: 1.66 },
+      { label: 'Net Take-Home', amount: net },
+    ],
+  };
+}
+
+// ── Ireland ───────────────────────────────────────────────────────────────────
+function calcIE(gross: number): TaxResult {
+  const standardRateCutoff = 42000;
+  const incomeTax = Math.min(gross, standardRateCutoff) * 0.20 + Math.max(0, gross - standardRateCutoff) * 0.40;
+  const usc =
+    Math.min(gross, 12012) * 0.005 +
+    Math.max(0, Math.min(gross, 25760) - 12012) * 0.02 +
+    Math.max(0, Math.min(gross, 70044) - 25760) * 0.04 +
+    Math.max(0, gross - 70044) * 0.08;
+  const prsi = gross * 0.041;
+  const totalDeductions = incomeTax + usc + prsi;
+  const net = gross - totalDeductions;
+
+  return {
+    grossAnnual: gross, netAnnual: net, netMonthly: net / 12,
+    effectiveTaxRate: (totalDeductions / gross) * 100,
+    currency: 'EUR', country: 'Ireland',
+    breakdown: [
+      { label: 'Gross Salary', amount: gross },
+      { label: 'Income Tax', amount: -incomeTax, rate: (incomeTax / gross) * 100 },
+      { label: 'USC', amount: -usc, rate: (usc / gross) * 100 },
+      { label: 'PRSI', amount: -prsi, rate: 4.1 },
+      { label: 'Net Take-Home', amount: net },
+    ],
+  };
+}
+
 // ── Main export ───────────────────────────────────────────────────────────────
-export type CountryCode = 'UK' | 'DE' | 'US' | 'FR' | 'NL' | 'AU';
+export type CountryCode = 'UK' | 'DE' | 'US' | 'FR' | 'NL' | 'AU' | 'CA' | 'IE';
 
 export function calculateTakeHome(gross: number, country: CountryCode): TaxResult {
   switch (country) {
@@ -288,6 +349,8 @@ export function calculateTakeHome(gross: number, country: CountryCode): TaxResul
     case 'FR': return calcFR(gross);
     case 'NL': return calcNL(gross);
     case 'AU': return calcAU(gross);
+    case 'CA': return calcCA(gross);
+    case 'IE': return calcIE(gross);
   }
 }
 
@@ -298,4 +361,6 @@ export const COUNTRY_CONFIG: Record<CountryCode, { name: string; flag: string; c
   FR: { name: 'France', flag: '🇫🇷', currency: 'EUR', symbol: '€', defaultGross: 45000 },
   NL: { name: 'Netherlands', flag: '🇳🇱', currency: 'EUR', symbol: '€', defaultGross: 55000 },
   AU: { name: 'Australia', flag: '🇦🇺', currency: 'AUD', symbol: 'A$', defaultGross: 90000 },
+  CA: { name: 'Canada', flag: '🇨🇦', currency: 'CAD', symbol: 'C$', defaultGross: 85000 },
+  IE: { name: 'Ireland', flag: '🇮🇪', currency: 'EUR', symbol: '€', defaultGross: 65000 },
 };

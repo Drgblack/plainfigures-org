@@ -141,6 +141,8 @@ const COUNTRY_TO_CURRENCY: Record<CountryCode, CurrencyKey> = {
   FR: 'eur',
   NL: 'eur',
   AU: 'aud',
+  CA: 'cad',
+  IE: 'eur',
 };
 
 const PROGRAMMATIC_TEMPLATES: Record<string, ProgrammaticTemplate> = {
@@ -465,7 +467,7 @@ function parseRetirement(expression: string): ParsedState | null {
 }
 
 function parseSalary(expression: string): ParsedState | null {
-  const match = expression.match(/^salary-take-home-(uk|de|us|fr|nl|au)-(\d+)$/);
+  const match = expression.match(/^salary-take-home-(uk|de|us|fr|nl|au|ca|ie)-(\d+)$/);
   if (!match) return null;
   const [, country, gross] = match;
   return {
