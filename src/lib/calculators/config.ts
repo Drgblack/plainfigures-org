@@ -36,7 +36,7 @@ function numberRange(start: number, end: number, step: number): number[] {
 
 export const HIGH_VALUE_COUNTRIES = [
   'US', 'UK', 'CA', 'AU',
-  'NZ', 'IE', 'SG', 'ZA',
+  'NZ', 'IE', 'SG', 'ZA', 'IN',
   'DE', 'NL', 'NO',
 ];
 
@@ -64,10 +64,35 @@ const COUNTRY_NAME_MAP: Record<string, string> = {
   IE: 'Ireland',
   SG: 'Singapore',
   ZA: 'South Africa',
+  IN: 'India',
   DE: 'Germany',
   NL: 'Netherlands',
   NO: 'Norway',
 };
+
+export const US_STATE_MARKET_CONTEXT = {
+  incomeTaxFree: ['AK', 'FL', 'NV', 'SD', 'TN', 'TX', 'WA', 'WY'],
+  highPropertyTax: ['CT', 'IL', 'NH', 'NJ', 'NY', 'TX', 'VT', 'WI'],
+  highInsuranceRisk: ['CA', 'FL', 'LA', 'OK', 'TX'],
+  lowCostHousing: ['AL', 'AR', 'IA', 'IN', 'KS', 'KY', 'MS', 'MO', 'OK', 'WV'],
+  highCostHousing: ['CA', 'CO', 'DC', 'HI', 'MA', 'NJ', 'NY', 'WA'],
+} as const;
+
+const US_STATE_SENSITIVE_CALCULATOR_IDS = new Set([
+  'salary-take-home',
+  'cost-of-living',
+  'mortgage-repayment',
+  'how-much-house-can-i-afford',
+  'car-insurance-comparison',
+  'home-insurance-addons',
+  'rent-vs-buy-home',
+  'net-worth-growth',
+  'investment-future-value',
+]);
+
+function getGeoVariantCap(config: CalculatorConfig): number {
+  return US_STATE_SENSITIVE_CALCULATOR_IDS.has(config.id) ? 3000 : 2500;
+}
 
 export function getGeoVariants(config: CalculatorConfig): { country?: string; state?: string; languageHint?: string }[] {
   const geoRelevantIds = [
@@ -97,18 +122,98 @@ export function getGeoVariants(config: CalculatorConfig): { country?: string; st
     'credit-rebuild-timeline',
     'emergency-fund-with-interest',
     'zero-based-budget-debt-snowball',
+    'reverse-mortgage-payout',
+    'passive-income-reinvestment',
+    'credit-score-rebuild-path',
+    'tiered-emergency-fund',
+    'zero-based-budget-sinking-funds',
+    'ca-mortgage-affordability-stress-test',
+    'ca-rrsp-vs-tfsa-optimizer',
+    'ca-income-tax-take-home',
+    'ca-cpp-oas-estimator',
+    'ca-cmhc-home-affordability',
+    'au-superannuation-retirement-projection',
+    'au-mortgage-offset-savings',
+    'au-income-tax-take-home',
+    'au-first-home-buyer-affordability',
+    'au-negative-gearing-return',
+    'uk-mortgage-affordability-stress-test',
+    'uk-pension-tax-relief-optimizer',
+    'uk-income-tax-ni-take-home',
+    'uk-isa-vs-pension-comparison',
+    'uk-stamp-duty-first-time-buyer',
+    'sg-cpf-retirement-projection',
+    'sg-hdb-loan-affordability',
+    'sg-income-tax-take-home',
+    'sg-srs-vs-cpf-top-up',
+    'sg-buyer-stamp-duty-absd',
+    'in-home-loan-eligibility-emi',
+    'in-ppf-epf-retirement-projection',
+    'in-income-tax-take-home',
+    'in-nps-vs-epf-comparison',
+    'in-stamp-duty-registration',
+    'how-much-house-can-i-afford',
+    'investment-future-value',
+    'net-worth-growth',
   ];
+  const canadaPriorityIds = new Set([
+    'ca-mortgage-affordability-stress-test',
+    'ca-rrsp-vs-tfsa-optimizer',
+    'ca-income-tax-take-home',
+    'ca-cpp-oas-estimator',
+    'ca-cmhc-home-affordability',
+  ]);
+  const australiaPriorityIds = new Set([
+    'au-superannuation-retirement-projection',
+    'au-mortgage-offset-savings',
+    'au-income-tax-take-home',
+    'au-first-home-buyer-affordability',
+    'au-negative-gearing-return',
+  ]);
+  const ukPriorityIds = new Set([
+    'uk-mortgage-affordability-stress-test',
+    'uk-pension-tax-relief-optimizer',
+    'uk-income-tax-ni-take-home',
+    'uk-isa-vs-pension-comparison',
+    'uk-stamp-duty-first-time-buyer',
+  ]);
+  const singaporePriorityIds = new Set([
+    'sg-cpf-retirement-projection',
+    'sg-hdb-loan-affordability',
+    'sg-income-tax-take-home',
+    'sg-srs-vs-cpf-top-up',
+    'sg-buyer-stamp-duty-absd',
+  ]);
+  const indiaPriorityIds = new Set([
+    'in-home-loan-eligibility-emi',
+    'in-ppf-epf-retirement-projection',
+    'in-income-tax-take-home',
+    'in-nps-vs-epf-comparison',
+    'in-stamp-duty-registration',
+  ]);
 
   if (!geoRelevantIds.includes(config.id)) {
     return [{ country: undefined, state: undefined, languageHint: undefined }];
   }
 
   const variants: { country?: string; state?: string; languageHint?: string }[] = [];
+  const otherCountries = HIGH_VALUE_COUNTRIES.filter((country) => country !== 'US');
+  const prioritizeUsStates = US_STATE_SENSITIVE_CALCULATOR_IDS.has(config.id);
+  const prioritizedCountries = canadaPriorityIds.has(config.id)
+    ? ['CA', ...otherCountries.filter((country) => country !== 'CA')]
+    : australiaPriorityIds.has(config.id)
+      ? ['AU', ...otherCountries.filter((country) => country !== 'AU')]
+      : ukPriorityIds.has(config.id)
+        ? ['UK', ...otherCountries.filter((country) => country !== 'UK')]
+        : singaporePriorityIds.has(config.id)
+          ? ['SG', ...otherCountries.filter((country) => country !== 'SG')]
+          : indiaPriorityIds.has(config.id)
+            ? ['IN', ...otherCountries.filter((country) => country !== 'IN')]
+        : otherCountries;
 
   // Expanded 2026 geo-layering: priority US states + high-CPC English markets (AU/CA/UK/NZ/IE/SG) + future non-English (DE/NL/NO)
   US_STATES.forEach((state) => variants.push({ country: 'US', state }));
-  HIGH_VALUE_COUNTRIES
-    .filter((country) => country !== 'US')
+  prioritizedCountries
     .forEach((country) =>
       variants.push({
         country,
@@ -116,7 +221,7 @@ export function getGeoVariants(config: CalculatorConfig): { country?: string; st
       }),
     );
 
-  return variants.slice(0, 2500);
+  return variants.slice(0, prioritizeUsStates ? getGeoVariantCap(config) : 2500);
 }
 
 export const calculators: CalculatorConfig[] = [
@@ -129,7 +234,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'rate', label: 'Interest rate', prefix: '%', step: 0.25, values: [4.5, 4.75, 5, 4.25, 5.25, 4, 5.5, 5.75, 6, 3.75, 6.25, 6.5, 7] },
       { key: 'termYears', label: 'Term', step: 5, values: [25, 30, 35, 20, 40, 15] },
     ],
-    maxVariants: 600,
+    maxVariants: 1200,
     seoTemplate: {
       title: 'Mortgage Repayment Calculator - {{principal}} at {{rate}} over {{termYears}} years | Plain Figures',
       description: 'Monthly payment, total interest, and worked mortgage maths for {{principal}} at {{rate}} over {{termYears}} years.',
@@ -288,7 +393,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'gross', label: 'Gross salary', prefix: '$', step: 10000, values: [50000, 60000, 75000, 85000, 100000, 120000, 150000, 200000, 30000, 250000, 400000] },
       { key: 'payPeriod', label: 'Pay period', values: ['annual', 'monthly', 'weekly', 'bonus'] },
     ],
-    maxVariants: 330,
+    maxVariants: 700,
     seoTemplate: {
       title: 'Salary Take-Home Calculator - {{gross}} {{country}} gross pay | Plain Figures',
       description: 'Gross-to-net pay estimate for {{gross}} in {{country}} on a {{payPeriod}} basis.',
@@ -597,7 +702,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'region', label: 'Tax Region', values: ['England', 'Scotland'] },
       { key: 'otherDeductions', label: 'Other monthly deductions (£)', prefix: '£', step: 100, values: [0, 100, 200, 500, 1000] },
     ],
-    maxVariants: 2250,
+    maxVariants: 3400,
     seoTemplate: {
       title: '{{salary}} Salary After Tax & NI - UK {{taxYear}} Take-Home Pay Calculator | Plain Figures',
       description: 'Formula-first UK take-home pay for {{salary}} in {{taxYear}}, with {{pensionPercent}} pension, {{studentLoanPlan}}, {{region}} rates, and {{otherDeductions}} monthly deductions.',
@@ -616,7 +721,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'inflationRate', label: 'Inflation rate', prefix: '%', step: 1, values: [1, 2, 3, 5] },
       { key: 'timeHorizonYears', label: 'Time horizon years', step: 5, values: [5, 10, 20, 30, 40] },
     ],
-    maxVariants: 2100,
+    maxVariants: 3200,
     seoTemplate: {
       title: 'Project Your Net Worth in {{timeHorizonYears}} Years - {{monthlySavings}} a month at {{expectedReturnRate}} return | Plain Figures',
       description: 'Net-worth projection using {{currentNetWorth}} starting wealth, {{monthlySavings}} monthly saving, {{expectedReturnRate}} returns, {{inflationRate}} inflation, and {{timeHorizonYears}} years.',
@@ -667,7 +772,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'years', label: 'Years', step: 5, values: [1, 5, 10, 20, 40] },
       { key: 'compoundingFrequency', label: 'Compounding frequency', values: ['monthly', 'quarterly', 'annual'] },
     ],
-    maxVariants: 2800,
+    maxVariants: 2000,
     seoTemplate: {
       title: '{{initialAmount}} + {{monthlyContribution}} a month at {{annualReturn}} - Future Value in {{years}} Years | Plain Figures',
       description: 'Future value of {{initialAmount}} plus {{monthlyContribution}} monthly at {{annualReturn}} for {{years}} years with {{compoundingFrequency}} compounding.',
@@ -750,7 +855,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'monthlySaveAmount', label: 'Monthly save amount', prefix: '£', step: 100, values: [100, 250, 500, 750, 1000, 1250, 1500, 2000] },
       { key: 'interestRate', label: 'Interest rate', prefix: '%', step: 0.25, values: [0, 0.5, 1, 2, 3, 4, 5] },
     ],
-    maxVariants: 2800,
+    maxVariants: 1800,
     seoTemplate: {
       title: 'Build {{monthsOfCoverage}} Months Emergency Fund - Save {{monthlySaveAmount}} a Month at {{interestRate}} | Plain Figures',
       description: 'Work out how fast you can build a {{monthsOfCoverage}}-month emergency fund using {{monthlyExpenses}} monthly expenses, {{currentSavings}} current savings, {{monthlySaveAmount}} monthly saving, and {{interestRate}} interest.',
@@ -1151,7 +1256,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'addonPercentIncrease', label: 'Add-on percent increase', prefix: '%', step: 5, values: numberRange(5, 40, 5) },
       { key: 'coverageAmount', label: 'Coverage amount', prefix: '$', step: 100000, values: [50000, 100000, 200000, 300000, 400000, 500000] },
     ],
-    maxVariants: 2100,
+    maxVariants: 3200,
     seoTemplate: {
       title: 'Add Flood/Earthquake Coverage to {{homeValue}} Home Insurance - Cost 2026 | Plain Figures',
       description: 'Model home-insurance add-on costs for a {{homeValue}} home using {{locationRiskLevel}} risk, {{basePremiumAnnual}} base premium, {{addonPercentIncrease}} premium uplift, and {{coverageAmount}} extra cover.',
@@ -1234,7 +1339,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'rentIncrease', label: 'Rent increase', prefix: '%', step: 1, values: [2, 3, 4, 5] },
       { key: 'yearsLiving', label: 'Years living', step: 3, values: [3, 5, 7, 10, 12, 15] },
     ],
-    maxVariants: 2500,
+    maxVariants: 3800,
     seoTemplate: {
       title: 'Rent {{monthlyRent}}/mo vs Buy {{homePrice}} Home - 2026 Comparison | Plain Figures',
       description: 'Compare renting and buying for {{monthlyRent}} monthly rent versus a {{homePrice}} home using {{downPaymentPercent}} down, {{mortgageRate}} mortgage rates, {{propertyTaxRate}} property tax, {{homeAppreciation}} appreciation, and {{yearsLiving}} years.',
@@ -1298,7 +1403,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'creditScoreImpact', label: 'Credit score impact', values: ['poor', 'fair', 'good', 'excellent'] },
       { key: 'locationRisk', label: 'Location risk', values: ['low', 'medium', 'high'] },
     ],
-    maxVariants: 2000,
+    maxVariants: 3200,
     seoTemplate: {
       title: 'Save on Car Insurance - Quote Comparison for {{driverAge}}-Year-Old Driver 2026 | Plain Figures',
       description: 'Compare car-insurance cost assumptions for a {{driverAge}}-year-old driver with {{vehicleValue}} vehicle value, {{annualMiles}} annual miles, {{coverageLevel}} cover, {{claimsLast5Years}} claims, {{creditScoreImpact}} credit, and {{locationRisk}} location risk.',
@@ -1439,7 +1544,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'propertyTaxRate', label: 'Annual Property Tax Rate %', prefix: '%', step: 0.25, values: numberRange(0.5, 2.5, 0.25) },
       { key: 'homeInsuranceAnnual', label: 'Annual Home Insurance Estimate', prefix: '$', step: 200, values: numberRange(800, 3000, 200) },
     ],
-    maxVariants: 2200,
+    maxVariants: 3600,
     seoTemplate: {
       title: 'How Much House Can I Afford on {{annualIncome}} Salary? – 2026 Calculator | Plain Figures',
       description: 'Estimate how much house you can afford in 2026 using {{annualIncome}} income, {{monthlyDebtPayments}} monthly debts, {{downPayment}} down payment, {{interestRate}} mortgage rates, {{propertyTaxRate}} property tax, and {{homeInsuranceAnnual}} insurance.',
@@ -1478,7 +1583,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'targetAge', label: 'Target Age', step: 1, values: numberRange(23, 100, 1) },
       { key: 'inflationRate', label: 'Inflation Rate %', prefix: '%', step: 0.5, values: numberRange(2, 4, 0.5) },
     ],
-    maxVariants: 2000,
+    maxVariants: 3200,
     seoTemplate: {
       title: 'How to Save $1 Million – Monthly Savings Needed at {{annualReturn}}% Return 2026 | Plain Figures',
       description: 'Model the path to $1 million with {{currentSavings}} saved, {{monthlyContribution}} monthly contributions, {{annualReturn}} returns, age {{currentAge}} to {{targetAge}}, and {{inflationRate}} inflation.',
@@ -1767,6 +1872,602 @@ export const calculators: CalculatorConfig[] = [
       return totalAllocated <= Number(params.monthlyTakeHome);
     },
   },
+  {
+    id: 'reverse-mortgage-payout',
+    categorySlug: 'retirement',
+    name: 'Reverse Mortgage Payout & Monthly Income Estimator 2026',
+    params: [
+      { key: 'homeValue', label: 'Current Home Value ($/£)', prefix: '$', step: 50000, values: [200000, 300000, 425000, 550000, 700000, 850000, 1000000, 1200000] },
+      { key: 'borrowerAge', label: 'Youngest Borrower Age', step: 5, values: [62, 65, 68, 72, 76, 80, 85, 90, 95] },
+      { key: 'interestRate', label: 'Expected Interest Rate %', prefix: '%', step: 0.5, values: [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5] },
+      { key: 'payoutOption', label: 'Payout Option', values: ['Tenure Monthly', 'Lump Sum', 'Line of Credit', 'Modified Tenure'] },
+      { key: 'closingCostsPercent', label: 'Closing Costs % of Value', prefix: '%', step: 0.5, values: [1, 1.5, 2, 2.5, 3, 4, 5] },
+      { key: 'homeAppreciation', label: 'Annual Home Appreciation %', prefix: '%', step: 1, values: [1, 2, 3, 4, 5, 6] },
+    ],
+    maxVariants: 2100,
+    seoTemplate: {
+      title: 'Reverse Mortgage Monthly Payout on {{homeValue}} Home - Age {{borrowerAge}} 2026 | Plain Figures',
+      description: 'Estimate reverse-mortgage payout value on a {{homeValue}} home at age {{borrowerAge}} using {{interestRate}} rates, {{payoutOption}} payouts, {{closingCostsPercent}} closing costs, and {{homeAppreciation}} home appreciation assumptions.',
+      h1: 'Reverse Mortgage Monthly Payout on {{homeValue}} Home - Age {{borrowerAge}}',
+    },
+    formula: 'PL \\approx H \\times f(a,r) - H \\times c',
+  },
+  {
+    id: 'passive-income-reinvestment',
+    categorySlug: 'investing',
+    name: 'Passive Income with Reinvestment & Compounding Calculator 2026',
+    params: [
+      { key: 'initialPassiveMonthly', label: 'Initial passive monthly income', prefix: '$', step: 250, values: [0, 100, 250, 500, 750, 1000, 1500, 2000] },
+      { key: 'monthlyReinvestment', label: 'Monthly reinvestment', prefix: '$', step: 100, values: [50, 100, 250, 500, 750, 1000] },
+      { key: 'annualYield', label: 'Annual yield', prefix: '%', step: 0.5, values: [3, 3.5, 4, 5, 6, 7, 8] },
+      { key: 'compoundingFrequency', label: 'Compounding frequency', values: ['monthly', 'quarterly', 'annual'] },
+      { key: 'years', label: 'Years', step: 5, values: [5, 8, 10, 12, 15, 20, 25] },
+      { key: 'targetPassiveMonthly', label: 'Target passive monthly income', prefix: '$', step: 1000, values: [1000, 2000, 3000, 5000, 8000, 12000, 15000] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'Grow {{initialPassiveMonthly}}/mo Passive Income with Reinvestment - {{years}} Year Projection 2026 | Plain Figures',
+      description: 'Project passive-income growth using {{initialPassiveMonthly}} monthly income, {{monthlyReinvestment}} reinvested each month, {{annualYield}} yield, {{compoundingFrequency}} compounding, and a {{years}} year horizon toward {{targetPassiveMonthly}} monthly.',
+      h1: 'Grow {{initialPassiveMonthly}}/mo Passive Income with Reinvestment',
+    },
+    formula: 'I_t \\approx (I_0 + PMT\\frac{(1+r/n)^{nt}-1}{r/n}) \\times y / 12',
+    isValidVariant: (params) => Number(params.targetPassiveMonthly) >= Number(params.initialPassiveMonthly),
+  },
+  {
+    id: 'credit-score-rebuild-path',
+    categorySlug: 'credit',
+    name: 'Credit Score Rebuild Path & Timeline Calculator 2026',
+    params: [
+      { key: 'startingScore', label: 'Starting score', step: 50, values: [400, 450, 500, 550, 600, 650, 700] },
+      { key: 'targetScore', label: 'Target score', step: 25, values: [500, 550, 600, 650, 700, 750, 800] },
+      { key: 'monthlyPaydownPercent', label: 'Monthly paydown percent', prefix: '%', step: 10, values: [10, 20, 30, 40, 50, 75, 100] },
+      { key: 'derogatoryRemovalMonths', label: 'Derogatory removal months', step: 12, values: [0, 12, 24, 36, 48, 60, 72, 84] },
+      { key: 'newPositiveAccounts', label: 'New positive accounts', step: 1, values: [0, 1, 2, 3, 4, 5] },
+      { key: 'utilizationDropTarget', label: 'Utilization drop target', prefix: '%', step: 5, values: [0, 5, 10, 15, 20, 25, 30] },
+    ],
+    maxVariants: 1800,
+    seoTemplate: {
+      title: 'Rebuild Credit from {{startingScore}} to {{targetScore}} - Path & Timeline 2026 | Plain Figures',
+      description: 'Estimate a credit rebuild path from {{startingScore}} to {{targetScore}} using {{monthlyPaydownPercent}} monthly paydown, {{derogatoryRemovalMonths}} months to derogatory removal, {{newPositiveAccounts}} new positive accounts, and a {{utilizationDropTarget}} utilization target.',
+      h1: 'Rebuild Credit from {{startingScore}} to {{targetScore}}',
+    },
+    formula: '\\Delta S \\approx p + u + a + d',
+    isValidVariant: (params) => Number(params.targetScore) > Number(params.startingScore),
+  },
+  {
+    id: 'tiered-emergency-fund',
+    categorySlug: 'savings',
+    name: 'Tiered Emergency Fund Goal Calculator 2026',
+    params: [
+      { key: 'monthlyExpenses', label: 'Monthly expenses', prefix: '$', step: 500, values: [1500, 2000, 2500, 3000, 4000, 5000, 7000, 9000, 12000] },
+      { key: 'tierLevel', label: 'Goal tier', values: ['Basic (3 mo)', 'Enhanced (6 mo)', 'Premium (9-12 mo)'] },
+      { key: 'currentSavings', label: 'Current savings', prefix: '$', step: 5000, values: [0, 1000, 3000, 5000, 10000, 20000, 40000, 60000, 80000] },
+      { key: 'monthlySave', label: 'Monthly save amount', prefix: '$', step: 500, values: [100, 250, 500, 750, 1000, 1500, 2000, 3000, 4000] },
+      { key: 'highYieldRate', label: 'High-yield savings rate', prefix: '%', step: 0.5, values: [4, 4.25, 4.5, 5, 5.25, 5.5] },
+    ],
+    maxVariants: 1900,
+    seoTemplate: {
+      title: '{{tierLevel}} Emergency Fund Goal for {{monthlyExpenses}}/mo Expenses - Timeline 2026 | Plain Figures',
+      description: 'Estimate an emergency-fund timeline using {{monthlyExpenses}} monthly expenses, the {{tierLevel}} target, {{currentSavings}} current savings, {{monthlySave}} monthly saving, and {{highYieldRate}} high-yield interest.',
+      h1: '{{tierLevel}} Emergency Fund Goal for {{monthlyExpenses}}/mo Expenses',
+    },
+    formula: 'Goal = E \\times m_{tier}',
+  },
+  {
+    id: 'zero-based-budget-sinking-funds',
+    categorySlug: 'budget',
+    name: 'Zero-Based Budget with Sinking Funds Calculator 2026',
+    params: [
+      { key: 'monthlyTakeHome', label: 'Monthly take-home', prefix: '$', step: 1000, values: [2000, 3000, 4500, 6000, 8000, 10000, 13000, 16000] },
+      { key: 'fixedExpenses', label: 'Fixed expenses', prefix: '$', step: 500, values: [800, 1200, 1800, 2500, 3200, 4000, 5000, 6000] },
+      { key: 'variableExpenses', label: 'Variable expenses', prefix: '$', step: 500, values: [500, 800, 1200, 1800, 2500, 3200, 4000, 5000] },
+      { key: 'sinkingFundGoals', label: 'Sinking fund goals', prefix: '$', step: 1000, values: [500, 1000, 2500, 5000, 7500, 10000] },
+      { key: 'debtMinimums', label: 'Debt minimums', prefix: '$', step: 500, values: [0, 100, 250, 500, 1000, 1500, 2000] },
+      { key: 'extraToDebtOrSavings', label: 'Extra to debt or savings', prefix: '$', step: 500, values: [100, 250, 500, 1000, 1500, 2000, 3000] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'Zero-Based Budget + Sinking Funds on {{monthlyTakeHome}}/mo - Cover Irregular Expenses 2026 | Plain Figures',
+      description: 'Build a zero-based budget using {{monthlyTakeHome}} income, {{fixedExpenses}} fixed costs, {{variableExpenses}} variable spending, {{sinkingFundGoals}} sinking-fund goals, {{debtMinimums}} debt minimums, and {{extraToDebtOrSavings}} extra cash allocation.',
+      h1: 'Zero-Based Budget + Sinking Funds on {{monthlyTakeHome}}/mo',
+    },
+    formula: 'T = F + V + SF + D + X',
+    isValidVariant: (params) => {
+      const totalAllocated =
+        Number(params.fixedExpenses) +
+        Number(params.variableExpenses) +
+        Number(params.debtMinimums) +
+        Number(params.extraToDebtOrSavings);
+
+      return totalAllocated <= Number(params.monthlyTakeHome);
+    },
+  },
+  {
+    id: 'ca-mortgage-affordability-stress-test',
+    categorySlug: 'mortgages',
+    name: 'Canadian Mortgage Affordability & Stress Test Calculator 2026',
+    params: [
+      { key: 'annualIncome', label: 'Annual Household Income (CAD)', prefix: '$', step: 10000, values: [40000, 60000, 80000, 100000, 125000, 150000, 200000, 250000] },
+      { key: 'monthlyDebtPayments', label: 'Monthly Debt Payments (excl. mortgage)', prefix: '$', step: 500, values: [0, 250, 500, 1000, 1500, 2000, 2500, 3000] },
+      { key: 'downPayment', label: 'Down Payment Amount (CAD)', prefix: '$', step: 25000, values: [0, 5000, 10000, 20000, 35000, 50000, 100000, 150000, 200000] },
+      { key: 'qualifyingRate', label: 'Stress Test / Qualifying Rate %', prefix: '%', step: 0.5, values: [5.25, 5.5, 6, 6.5, 7, 7.5, 8] },
+      { key: 'amortizationYears', label: 'Amortization Period (Years)', step: 5, values: [15, 20, 25, 30] },
+      { key: 'propertyTaxesAnnual', label: 'Annual Property Taxes (CAD)', prefix: '$', step: 1000, values: [2000, 3000, 4000, 5000, 6500, 8000, 10000] },
+      { key: 'heatingCostsMonthly', label: 'Monthly Heating Costs (CAD)', prefix: '$', step: 50, values: [50, 75, 100, 150, 200, 250, 300] },
+    ],
+    maxVariants: 2200,
+    seoTemplate: {
+      title: 'How Much Mortgage Can I Afford in Canada? Stress Test on {{annualIncome}} Income - 2026 | Plain Figures',
+      description: 'Estimate Canadian mortgage affordability using {{annualIncome}} household income, {{monthlyDebtPayments}} debts, {{downPayment}} down payment, {{qualifyingRate}} stress-test rate, {{amortizationYears}}-year amortization, {{propertyTaxesAnnual}} taxes, and {{heatingCostsMonthly}} heating costs.',
+      h1: 'How Much Mortgage Can I Afford in Canada? Stress Test on {{annualIncome}} Income',
+    },
+    formula: 'M_{max} \\approx \\frac{(I-D) \\times ratio}{factor(r,n)}',
+  },
+  {
+    id: 'ca-rrsp-vs-tfsa-optimizer',
+    categorySlug: 'retirement',
+    name: 'RRSP vs TFSA Contribution Optimizer Calculator 2026',
+    params: [
+      { key: 'currentTaxBracket', label: 'Current Marginal Tax Rate %', prefix: '%', step: 5, values: [15, 20, 25, 30, 35, 40, 45, 50, 53] },
+      { key: 'expectedRetirementBracket', label: 'Expected Retirement Marginal Tax Rate %', prefix: '%', step: 5, values: [15, 20, 25, 30, 35, 40, 45, 50, 53] },
+      { key: 'annualContribution', label: 'Annual Contribution Amount (CAD)', prefix: '$', step: 2500, values: [1000, 2500, 5000, 7500, 10000, 15000, 20000, 25000, 30000] },
+      { key: 'yearsToRetirement', label: 'Years Until Retirement', step: 5, values: [5, 10, 15, 20, 25, 30, 35] },
+      { key: 'investmentReturn', label: 'Expected Annual Return %', prefix: '%', step: 1, values: [4, 5, 6, 7, 8, 9] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'RRSP vs TFSA: Which is Better for {{annualContribution}}/yr Contribution in 2026? | Plain Figures',
+      description: 'Compare RRSP and TFSA outcomes using a {{annualContribution}} annual contribution, {{currentTaxBracket}} current tax rate, {{expectedRetirementBracket}} retirement tax rate, {{yearsToRetirement}} years to retirement, and {{investmentReturn}} annual return.',
+      h1: 'RRSP vs TFSA: Which is Better for {{annualContribution}}/yr Contribution?',
+    },
+    formula: 'FV \\approx C\\frac{(1+r)^t-1}{r}',
+  },
+  {
+    id: 'ca-income-tax-take-home',
+    categorySlug: 'tax',
+    name: 'Canadian Income Tax & Take-Home Pay Calculator 2026',
+    params: [
+      { key: 'grossSalary', label: 'Annual Gross Salary (CAD)', prefix: '$', step: 10000, values: [30000, 40000, 50000, 65000, 80000, 100000, 125000, 150000, 200000, 250000] },
+      { key: 'province', label: 'Province/Territory', values: ['ON', 'QC', 'BC', 'AB', 'MB', 'SK', 'NS', 'NB', 'NL', 'PE', 'YT', 'NT', 'NU'] },
+      { key: 'rrspContribution', label: 'RRSP Contribution (CAD)', prefix: '$', step: 2500, values: [0, 1000, 2500, 5000, 10000, 15000, 20000, 25000, 30000] },
+      { key: 'otherDeductions', label: 'Other Deductions (union, childcare, etc.)', prefix: '$', step: 500, values: [0, 500, 1000, 2000, 3000, 4000, 5000] },
+      { key: 'payFrequency', label: 'Pay Frequency', values: ['Annual', 'Monthly', 'Bi-weekly', 'Weekly'] },
+    ],
+    maxVariants: 2200,
+    seoTemplate: {
+      title: '{{grossSalary}} Salary After Tax in {{province}} Canada - 2026 Take-Home Pay | Plain Figures',
+      description: 'Estimate Canadian take-home pay for {{grossSalary}} in {{province}} using {{rrspContribution}} RRSP contributions, {{otherDeductions}} other deductions, and {{payFrequency}} pay frequency.',
+      h1: '{{grossSalary}} Salary After Tax in {{province}} Canada',
+    },
+    formula: '\\text{Net pay} = \\text{gross} - \\text{federal tax} - \\text{provincial tax} - \\text{CPP} - \\text{EI} - \\text{deductions}',
+  },
+  {
+    id: 'ca-cpp-oas-estimator',
+    categorySlug: 'retirement',
+    name: 'CPP & OAS Retirement Income Estimator 2026',
+    params: [
+      { key: 'birthYear', label: 'Birth Year', step: 10, values: [1950, 1955, 1960, 1965, 1970, 1980, 1990, 2000, 2005] },
+      { key: 'averageEarnings', label: 'Average Annual Pensionable Earnings (CAD)', prefix: '$', step: 10000, values: [20000, 30000, 40000, 50000, 60000, 70000, 80000] },
+      { key: 'yearsContributed', label: 'Years Contributed to CPP', step: 5, values: [10, 15, 20, 25, 30, 35, 40, 47] },
+      { key: 'claimingAgeCPP', label: 'CPP Claiming Age', step: 5, values: [60, 65, 70] },
+      { key: 'oasClaimingAge', label: 'OAS Claiming Age', step: 5, values: [65, 70] },
+    ],
+    maxVariants: 1800,
+    seoTemplate: {
+      title: 'Estimate CPP & OAS Income - Born {{birthYear}}, Claim at {{claimingAgeCPP}} - 2026 Canada | Plain Figures',
+      description: 'Estimate CPP and OAS income in Canada using birth year {{birthYear}}, {{averageEarnings}} average pensionable earnings, {{yearsContributed}} years of CPP contributions, CPP claimed at {{claimingAgeCPP}}, and OAS at {{oasClaimingAge}}.',
+      h1: 'Estimate CPP & OAS Income - Born {{birthYear}}, Claim at {{claimingAgeCPP}}',
+    },
+    formula: 'Benefit \\approx APE \\times years \\times age\\ adjustment',
+    isValidVariant: (params) => Number(params.oasClaimingAge) >= 65,
+  },
+  {
+    id: 'ca-cmhc-home-affordability',
+    categorySlug: 'mortgages',
+    name: 'CMHC-Insured Home Affordability Calculator 2026',
+    params: [
+      { key: 'annualIncome', label: 'Annual Household Income (CAD)', prefix: '$', step: 10000, values: [40000, 60000, 80000, 100000, 125000, 150000, 175000, 200000] },
+      { key: 'downPayment', label: 'Down Payment (CAD)', prefix: '$', step: 10000, values: [0, 2500, 5000, 10000, 20000, 35000, 50000, 75000, 100000] },
+      { key: 'mortgageRate', label: 'Mortgage Rate %', prefix: '%', step: 0.5, values: [4, 4.5, 5, 5.5, 6, 6.5, 7] },
+      { key: 'amortizationYears', label: 'Amortization Period (Years)', step: 5, values: [25, 30] },
+      { key: 'propertyTaxesAnnual', label: 'Annual Property Taxes (CAD)', prefix: '$', step: 1000, values: [2000, 3000, 4000, 5000, 6500, 8000] },
+      { key: 'heatingCostsMonthly', label: 'Monthly Heating Costs (CAD)', prefix: '$', step: 50, values: [50, 75, 100, 150, 200, 250, 300] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'CMHC-Insured Home Affordability on {{annualIncome}} Income - 2026 Canada | Plain Figures',
+      description: 'Estimate CMHC-insured home affordability using {{annualIncome}} income, {{downPayment}} down payment, {{mortgageRate}} mortgage rate, {{amortizationYears}}-year amortization, {{propertyTaxesAnnual}} taxes, and {{heatingCostsMonthly}} heating costs.',
+      h1: 'CMHC-Insured Home Affordability on {{annualIncome}} Income',
+    },
+    formula: 'P_{max} \\approx M_{qualifying} + DP',
+  },
+  {
+    id: 'au-superannuation-retirement-projection',
+    categorySlug: 'retirement',
+    name: 'Superannuation Retirement Balance Projector 2026',
+    params: [
+      { key: 'currentSuperBalance', label: 'Current Super Balance (AUD)', prefix: '$', step: 25000, values: [0, 10000, 25000, 50000, 100000, 200000, 350000, 500000] },
+      { key: 'annualContribution', label: 'Annual Concessional Contribution (AUD)', prefix: '$', step: 2500, values: [5000, 7500, 10000, 12500, 15000, 20000, 25000, 30000] },
+      { key: 'age', label: 'Current Age', step: 5, values: [25, 30, 35, 40, 45, 50, 55, 60, 65] },
+      { key: 'expectedReturn', label: 'Expected Annual Return %', prefix: '%', step: 0.5, values: [4, 4.5, 5, 6, 7, 8, 9] },
+      { key: 'retirementAge', label: 'Planned Retirement Age', step: 2, values: [60, 62, 65, 67, 70] },
+      { key: 'insuranceFeesAnnual', label: 'Annual Insurance/Fees in Super (AUD)', prefix: '$', step: 250, values: [200, 400, 600, 800, 1000, 1250, 1500] },
+    ],
+    maxVariants: 2100,
+    seoTemplate: {
+      title: 'Project Super Balance at Retirement - Age {{age}}, {{currentSuperBalance}} Current - 2026 Australia | Plain Figures',
+      description: 'Project Australian superannuation at retirement using {{currentSuperBalance}} current balance, {{annualContribution}} annual contributions, age {{age}}, {{expectedReturn}} returns, retirement at {{retirementAge}}, and {{insuranceFeesAnnual}} annual super fees.',
+      h1: 'Project Super Balance at Retirement - Age {{age}}, {{currentSuperBalance}} Current',
+    },
+    formula: 'FV = B(1+r)^t + C\\frac{(1+r)^t-1}{r} - F\\frac{(1+r)^t-1}{r}',
+    isValidVariant: (params) => Number(params.retirementAge) > Number(params.age),
+  },
+  {
+    id: 'au-mortgage-offset-savings',
+    categorySlug: 'mortgages',
+    name: 'Mortgage Offset Account Savings Calculator 2026',
+    params: [
+      { key: 'mortgageBalance', label: 'Current Mortgage Balance (AUD)', prefix: '$', step: 50000, values: [200000, 300000, 400000, 500000, 600000, 700000, 800000] },
+      { key: 'interestRate', label: 'Mortgage Interest Rate %', prefix: '%', step: 0.5, values: [4.5, 5, 5.5, 6, 6.5, 7, 7.5] },
+      { key: 'offsetBalance', label: 'Offset Account Balance (AUD)', prefix: '$', step: 25000, values: [10000, 25000, 50000, 75000, 100000, 150000, 200000] },
+      { key: 'monthlyOffsetDeposit', label: 'Monthly Deposit to Offset (AUD)', prefix: '$', step: 500, values: [500, 750, 1000, 1500, 2000, 2500, 3000] },
+      { key: 'remainingTermYears', label: 'Remaining Mortgage Term (Years)', step: 5, values: [10, 15, 20, 25, 30] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'Mortgage Offset Savings on {{mortgageBalance}} Loan - {{offsetBalance}} Balance 2026 Australia | Plain Figures',
+      description: 'Estimate Australian offset-account savings using {{mortgageBalance}} mortgage balance, {{interestRate}} interest, {{offsetBalance}} in the offset account, {{monthlyOffsetDeposit}} monthly offset deposits, and {{remainingTermYears}} years remaining.',
+      h1: 'Mortgage Offset Savings on {{mortgageBalance}} Loan - {{offsetBalance}} Balance',
+    },
+    formula: 'I_{saved} \\approx (B-O)r - Br',
+    isValidVariant: (params) => Number(params.offsetBalance) < Number(params.mortgageBalance),
+  },
+  {
+    id: 'au-income-tax-take-home',
+    categorySlug: 'tax',
+    name: 'Australian Income Tax & Take-Home Pay Calculator 2026',
+    params: [
+      { key: 'grossSalary', label: 'Annual Gross Salary (AUD)', prefix: '$', step: 10000, values: [40000, 50000, 65000, 80000, 100000, 125000, 150000, 200000, 250000] },
+      { key: 'taxResident', label: 'Tax Residency Status', values: ['Resident', 'Non-Resident'] },
+      { key: 'superContribution', label: 'Concessional Super Contribution (AUD)', prefix: '$', step: 2500, values: [0, 2500, 5000, 10000, 15000, 20000, 25000, 27500] },
+      { key: 'otherDeductions', label: 'Other Tax Deductions (work-related, etc.)', prefix: '$', step: 1000, values: [0, 500, 1000, 2500, 5000, 7500, 10000] },
+      { key: 'payFrequency', label: 'Pay Frequency', values: ['Annual', 'Monthly', 'Fortnightly', 'Weekly'] },
+    ],
+    maxVariants: 2200,
+    seoTemplate: {
+      title: '{{grossSalary}} Salary After Tax Australia - 2026 Take-Home Pay | Plain Figures',
+      description: 'Estimate Australian take-home pay for {{grossSalary}} using {{taxResident}} tax residency, {{superContribution}} concessional super contributions, {{otherDeductions}} deductions, and {{payFrequency}} pay frequency.',
+      h1: '{{grossSalary}} Salary After Tax Australia',
+    },
+    formula: '\\text{Net pay} = \\text{gross} - \\text{income tax} - \\text{Medicare levy} - \\text{deductions}',
+  },
+  {
+    id: 'au-first-home-buyer-affordability',
+    categorySlug: 'mortgages',
+    name: 'First-Home Buyer Affordability & Grant Calculator 2026',
+    params: [
+      { key: 'annualIncome', label: 'Annual Household Income (AUD)', prefix: '$', step: 10000, values: [50000, 65000, 80000, 100000, 125000, 150000, 175000, 200000] },
+      { key: 'downPayment', label: 'Deposit / Savings (AUD)', prefix: '$', step: 10000, values: [10000, 20000, 30000, 50000, 75000, 100000, 125000, 150000] },
+      { key: 'state', label: 'State/Territory', values: ['NSW', 'VIC', 'QLD', 'SA', 'WA', 'TAS', 'ACT', 'NT'] },
+      { key: 'propertyPrice', label: 'Target Property Price (AUD)', prefix: '$', step: 100000, values: [300000, 400000, 500000, 650000, 800000, 900000, 1000000] },
+      { key: 'stampDutyExemption', label: 'Eligible for Stamp Duty Concession?', values: ['Yes', 'No'] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'First-Home Buyer Affordability in {{state}} - {{annualIncome}} Income + Grants 2026 | Plain Figures',
+      description: 'Estimate first-home buyer affordability in {{state}} using {{annualIncome}} household income, {{downPayment}} deposit, {{propertyPrice}} target property price, and {{stampDutyExemption}} stamp-duty concession eligibility.',
+      h1: 'First-Home Buyer Affordability in {{state}}',
+    },
+    formula: 'P_{max} \\approx borrowing\\ capacity + deposit + grants',
+    isValidVariant: (params) => Number(params.propertyPrice) > Number(params.downPayment),
+  },
+  {
+    id: 'au-negative-gearing-return',
+    categorySlug: 'investing',
+    name: 'Negative Gearing Investment Property Return Calculator 2026',
+    params: [
+      { key: 'propertyPurchasePrice', label: 'Property Purchase Price (AUD)', prefix: '$', step: 100000, values: [300000, 400000, 500000, 650000, 800000, 1000000, 1200000] },
+      { key: 'depositPercent', label: 'Deposit %', prefix: '%', step: 5, values: [10, 15, 20, 25, 30, 35, 40] },
+      { key: 'rentalIncomeAnnual', label: 'Annual Rental Income (AUD)', prefix: '$', step: 5000, values: [15000, 20000, 25000, 30000, 40000, 50000, 60000] },
+      { key: 'interestRate', label: 'Loan Interest Rate %', prefix: '%', step: 0.5, values: [4.5, 5, 5.5, 6, 6.5, 7, 7.5] },
+      { key: 'annualExpenses', label: 'Annual Property Expenses (maintenance, rates, etc.)', prefix: '$', step: 2500, values: [5000, 7500, 10000, 12500, 15000, 17500, 20000] },
+      { key: 'marginalTaxRate', label: 'Marginal Tax Rate %', prefix: '%', step: 5, values: [19, 24, 29, 34, 39, 45] },
+    ],
+    maxVariants: 2100,
+    seoTemplate: {
+      title: 'Negative Gearing Return on {{propertyPurchasePrice}} Investment Property - 2026 Australia | Plain Figures',
+      description: 'Estimate negative-gearing outcomes using {{propertyPurchasePrice}} purchase price, {{depositPercent}} deposit, {{rentalIncomeAnnual}} rental income, {{interestRate}} loan rate, {{annualExpenses}} annual expenses, and {{marginalTaxRate}} marginal tax rate.',
+      h1: 'Negative Gearing Return on {{propertyPurchasePrice}} Investment Property',
+    },
+    formula: 'R = rent - expenses - interest + loss \\times tax\\ rate',
+  },
+  {
+    id: 'uk-mortgage-affordability-stress-test',
+    categorySlug: 'mortgages',
+    name: 'UK Mortgage Affordability & Stress Test Calculator 2026',
+    params: [
+      { key: 'annualIncome', label: 'Annual Household Income (£)', prefix: '£', step: 10000, values: [25000, 40000, 50000, 65000, 80000, 100000, 125000, 150000, 200000] },
+      { key: 'monthlyOutgoings', label: 'Monthly Outgoings / Debts (£)', prefix: '£', step: 500, values: [500, 800, 1200, 1600, 2200, 2800, 3400, 4000] },
+      { key: 'depositAmount', label: 'Deposit Amount (£)', prefix: '£', step: 10000, values: [10000, 20000, 30000, 50000, 75000, 100000, 125000, 150000] },
+      { key: 'stressTestRate', label: 'Stress Test Rate % (usually +3%)', prefix: '%', step: 0.5, values: [5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9] },
+      { key: 'termYears', label: 'Mortgage Term (Years)', step: 5, values: [15, 20, 25, 30, 35, 40] },
+      { key: 'propertyValueEstimate', label: 'Estimated Property Value (£)', prefix: '£', step: 100000, values: [100000, 200000, 300000, 450000, 600000, 800000] },
+    ],
+    maxVariants: 2200,
+    seoTemplate: {
+      title: 'How Much Mortgage Can I Afford in the UK? Stress Test on {{annualIncome}} Income - 2026 | Plain Figures',
+      description: 'Estimate UK mortgage affordability using {{annualIncome}} household income, {{monthlyOutgoings}} monthly outgoings, {{depositAmount}} deposit, {{stressTestRate}} stress-test rate, {{termYears}}-year term, and {{propertyValueEstimate}} estimated property value.',
+      h1: 'How Much Mortgage Can I Afford in the UK? Stress Test on {{annualIncome}} Income',
+    },
+    formula: 'B_{max} \\approx (I - O) \\times multiple',
+  },
+  {
+    id: 'uk-pension-tax-relief-optimizer',
+    categorySlug: 'retirement',
+    name: 'UK Pension Contribution & Tax Relief Optimizer 2026',
+    params: [
+      { key: 'grossSalary', label: 'Gross Annual Salary (£)', prefix: '£', step: 10000, values: [20000, 30000, 40000, 50000, 65000, 80000, 100000, 125000, 150000] },
+      { key: 'currentTaxBand', label: 'Current Tax Band', values: ['Basic (20%)', 'Higher (40%)', 'Additional (45%)'] },
+      { key: 'annualContribution', label: 'Annual Pension Contribution (£)', prefix: '£', step: 2500, values: [1000, 2500, 5000, 10000, 15000, 20000, 30000, 45000, 60000] },
+      { key: 'yearsToRetirement', label: 'Years Until Retirement', step: 5, values: [5, 10, 15, 20, 25, 30, 35] },
+      { key: 'expectedReturn', label: 'Expected Annual Return %', prefix: '%', step: 0.5, values: [3, 4, 5, 6, 7, 8] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'Optimise Pension Contributions & Tax Relief on {{grossSalary}} Salary - 2026 UK | Plain Figures',
+      description: 'Model UK pension tax relief using {{grossSalary}} salary, {{currentTaxBand}} tax band, {{annualContribution}} annual pension contribution, {{yearsToRetirement}} years to retirement, and {{expectedReturn}} expected return.',
+      h1: 'Optimise Pension Contributions & Tax Relief on {{grossSalary}} Salary',
+    },
+    formula: 'FV \\approx C\\frac{(1+r)^t-1}{r} + relief',
+  },
+  {
+    id: 'uk-income-tax-ni-take-home',
+    categorySlug: 'tax',
+    name: 'UK Income Tax & NI Take-Home Calculator 2026/27',
+    params: [
+      { key: 'grossSalary', label: 'Annual Gross Salary (£)', prefix: '£', step: 10000, values: [20000, 30000, 40000, 50000, 65000, 80000, 100000, 125000, 150000, 200000] },
+      { key: 'taxYear', label: 'Tax Year', values: ['2026/27'] },
+      { key: 'pensionContribution', label: 'Annual Pension Contribution (£)', prefix: '£', step: 2500, values: [0, 1000, 2500, 5000, 10000, 15000, 20000, 30000, 40000] },
+      { key: 'studentLoanPlan', label: 'Student Loan Plan', values: ['None', 'Plan 1', 'Plan 2', 'Plan 4', 'Plan 5', 'Postgraduate'] },
+      { key: 'payFrequency', label: 'Pay Frequency', values: ['Annual', 'Monthly', 'Weekly'] },
+    ],
+    maxVariants: 2200,
+    seoTemplate: {
+      title: '{{grossSalary}} Salary After Tax & NI - UK 2026/27 Take-Home Pay Calculator | Plain Figures',
+      description: 'Estimate UK take-home pay for {{grossSalary}} in tax year {{taxYear}} using {{pensionContribution}} pension contributions, {{studentLoanPlan}} student loan plan, and {{payFrequency}} pay frequency.',
+      h1: '{{grossSalary}} Salary After Tax & NI - UK 2026/27 Take-Home Pay Calculator',
+    },
+    formula: '\\text{Net pay} = \\text{gross} - \\text{income tax} - \\text{NI} - \\text{pension} - \\text{loan}',
+  },
+  {
+    id: 'uk-isa-vs-pension-comparison',
+    categorySlug: 'investing',
+    name: 'ISA vs Pension Contribution Comparison Calculator 2026',
+    params: [
+      { key: 'annualAmount', label: 'Annual Investment Amount (£)', prefix: '£', step: 2500, values: [1000, 2500, 5000, 7500, 10000, 15000, 20000, 30000, 40000] },
+      { key: 'currentTaxRate', label: 'Current Marginal Tax Rate %', prefix: '%', step: 5, values: [20, 25, 30, 35, 40, 45] },
+      { key: 'retirementTaxRate', label: 'Expected Retirement Tax Rate %', prefix: '%', step: 5, values: [0, 5, 10, 15, 20, 25, 30, 40, 45] },
+      { key: 'yearsInvested', label: 'Years Until Withdrawal', step: 5, values: [5, 10, 15, 20, 25, 30] },
+      { key: 'investmentReturn', label: 'Expected Annual Return %', prefix: '%', step: 1, values: [3, 4, 5, 6, 7, 8, 9] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'ISA vs Pension: Which is Better for {{annualAmount}}/yr in 2026 UK? | Plain Figures',
+      description: 'Compare ISA and pension outcomes using {{annualAmount}} annual investing, {{currentTaxRate}} current tax rate, {{retirementTaxRate}} retirement tax rate, {{yearsInvested}} years invested, and {{investmentReturn}} annual return.',
+      h1: 'ISA vs Pension: Which is Better for {{annualAmount}}/yr?',
+    },
+    formula: 'FV \\approx C\\frac{(1+r)^t-1}{r}',
+  },
+  {
+    id: 'uk-stamp-duty-first-time-buyer',
+    categorySlug: 'real-estate',
+    name: 'UK Stamp Duty & First-Time Buyer Relief Calculator 2026',
+    params: [
+      { key: 'propertyPrice', label: 'Property Purchase Price (£)', prefix: '£', step: 100000, values: [100000, 200000, 300000, 450000, 600000, 800000, 1000000, 1500000] },
+      { key: 'firstTimeBuyer', label: 'First-Time Buyer?', values: ['Yes', 'No'] },
+      { key: 'additionalProperty', label: 'Additional Property / Second Home?', values: ['Yes', 'No'] },
+      { key: 'nonUkResident', label: 'Non-UK Resident Buyer?', values: ['Yes', 'No'] },
+      { key: 'companyPurchase', label: 'Purchased by Company?', values: ['Yes', 'No'] },
+    ],
+    maxVariants: 1800,
+    seoTemplate: {
+      title: 'Stamp Duty on {{propertyPrice}} Property - First-Time Buyer Relief 2026 UK | Plain Figures',
+      description: 'Estimate UK stamp duty using {{propertyPrice}} purchase price, {{firstTimeBuyer}} first-time buyer status, {{additionalProperty}} additional-property status, {{nonUkResident}} non-UK residency, and {{companyPurchase}} company purchase status.',
+      h1: 'Stamp Duty on {{propertyPrice}} Property - First-Time Buyer Relief',
+    },
+    formula: 'SDLT = \\sum band\\ amount \\times rate',
+  },
+  {
+    id: 'sg-cpf-retirement-projection',
+    categorySlug: 'retirement',
+    name: 'CPF Retirement & Withdrawal Projection Calculator 2026',
+    params: [
+      { key: 'currentCPFBalance', label: 'Current CPF Balance (SGD)', prefix: '$', step: 25000, values: [0, 10000, 25000, 50000, 100000, 200000, 350000, 500000] },
+      { key: 'monthlySalary', label: 'Monthly Salary (SGD)', prefix: '$', step: 2500, values: [3000, 5000, 7000, 9000, 12000, 15000, 20000] },
+      { key: 'age', label: 'Current Age', step: 5, values: [25, 30, 35, 40, 45, 50, 55, 60, 65] },
+      { key: 'expectedReturnOA', label: 'Expected OA Return %', prefix: '%', step: 0.5, values: [2.5, 3, 3.5, 4, 4.5, 5] },
+      { key: 'retirementAge', label: 'Planned Withdrawal Age', step: 2, values: [55, 57, 60, 62, 65] },
+    ],
+    maxVariants: 2100,
+    seoTemplate: {
+      title: 'CPF Projection at Retirement - Age {{age}}, {{currentCPFBalance}} Current - 2026 Singapore | Plain Figures',
+      description: 'Project CPF balances in Singapore using {{currentCPFBalance}} current CPF savings, {{monthlySalary}} monthly salary, age {{age}}, {{expectedReturnOA}} expected OA return, and withdrawal at age {{retirementAge}}.',
+      h1: 'CPF Projection at Retirement - Age {{age}}, {{currentCPFBalance}} Current',
+    },
+    formula: 'FV = B(1+r)^t + C\\frac{(1+r)^t-1}{r}',
+    isValidVariant: (params) => Number(params.retirementAge) > Number(params.age),
+  },
+  {
+    id: 'sg-hdb-loan-affordability',
+    categorySlug: 'mortgages',
+    name: 'HDB Loan Affordability & MSR/TDSR Calculator 2026',
+    params: [
+      { key: 'monthlyIncome', label: 'Monthly Household Income (SGD)', prefix: '$', step: 2500, values: [3000, 5000, 7000, 9000, 12000, 15000, 20000] },
+      { key: 'existingCommitments', label: 'Existing Monthly Commitments (SGD)', prefix: '$', step: 500, values: [0, 250, 500, 1000, 1500, 2000, 2500, 3000] },
+      { key: 'downPayment', label: 'Down Payment / Cash (SGD)', prefix: '$', step: 25000, values: [10000, 25000, 50000, 75000, 100000, 150000, 200000] },
+      { key: 'loanTenureYears', label: 'Loan Tenure (Years)', step: 5, values: [20, 25, 30] },
+      { key: 'interestRate', label: 'HDB / Bank Loan Rate %', prefix: '%', step: 0.5, values: [2, 2.5, 3, 3.5, 4, 4.5] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'HDB Loan Affordability on {{monthlyIncome}}/mo Income - MSR/TDSR 2026 Singapore | Plain Figures',
+      description: 'Estimate Singapore HDB affordability using {{monthlyIncome}} monthly household income, {{existingCommitments}} existing commitments, {{downPayment}} down payment, {{loanTenureYears}}-year tenure, and {{interestRate}} loan rate.',
+      h1: 'HDB Loan Affordability on {{monthlyIncome}}/mo Income',
+    },
+    formula: 'L_{max} \\approx \\frac{(I-C)\\times ratio}{factor(r,n)}',
+  },
+  {
+    id: 'sg-income-tax-take-home',
+    categorySlug: 'tax',
+    name: 'Singapore Income Tax & Take-Home Pay Calculator 2026',
+    params: [
+      { key: 'grossSalaryAnnual', label: 'Annual Gross Salary (SGD)', prefix: '$', step: 10000, values: [40000, 50000, 65000, 80000, 100000, 125000, 150000, 200000, 250000, 300000] },
+      { key: 'residentStatus', label: 'Tax Residency', values: ['Resident', 'Non-Resident'] },
+      { key: 'cpfContribution', label: 'CPF Relief / Deduction (SGD)', prefix: '$', step: 2500, values: [0, 1000, 2500, 5000, 10000, 15000, 20000] },
+      { key: 'otherReliefs', label: 'Other Tax Reliefs (parent, course fees, etc.)', prefix: '$', step: 2500, values: [0, 500, 1000, 2500, 5000, 7500, 10000] },
+      { key: 'payFrequency', label: 'Pay Frequency', values: ['Annual', 'Monthly'] },
+    ],
+    maxVariants: 2200,
+    seoTemplate: {
+      title: '{{grossSalaryAnnual}} Salary After Tax Singapore - 2026 Take-Home Pay | Plain Figures',
+      description: 'Estimate Singapore take-home pay for {{grossSalaryAnnual}} using {{residentStatus}} tax residency, {{cpfContribution}} CPF relief, {{otherReliefs}} other reliefs, and {{payFrequency}} pay frequency.',
+      h1: '{{grossSalaryAnnual}} Salary After Tax Singapore',
+    },
+    formula: '\\text{Net pay} = \\text{gross} - \\text{income tax} - \\text{CPF relief adjustments}',
+  },
+  {
+    id: 'sg-srs-vs-cpf-top-up',
+    categorySlug: 'retirement',
+    name: 'SRS vs CPF Top-Up & Tax Relief Optimizer 2026',
+    params: [
+      { key: 'taxableIncome', label: 'Taxable Income (SGD)', prefix: '$', step: 10000, values: [40000, 50000, 65000, 80000, 100000, 125000, 150000, 175000, 200000] },
+      { key: 'currentTaxBracket', label: 'Current Tax Rate %', prefix: '%', step: 4, values: [0, 4, 8, 12, 16, 20, 24] },
+      { key: 'annualTopUp', label: 'Annual Top-Up Amount (SGD)', prefix: '$', step: 2500, values: [1000, 2500, 5000, 7500, 10000, 12500, 15500] },
+      { key: 'yearsToRetirement', label: 'Years Until Withdrawal', step: 5, values: [5, 10, 15, 20, 25, 30] },
+      { key: 'investmentReturn', label: 'Expected Annual Return %', prefix: '%', step: 0.5, values: [3, 4, 5, 6, 7, 8] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'SRS vs CPF Top-Up Tax Relief on {{taxableIncome}} Income - 2026 Singapore | Plain Figures',
+      description: 'Compare SRS and CPF top-up outcomes using {{taxableIncome}} taxable income, {{currentTaxBracket}} current tax rate, {{annualTopUp}} annual top-up amount, {{yearsToRetirement}} years to retirement, and {{investmentReturn}} expected return.',
+      h1: 'SRS vs CPF Top-Up Tax Relief on {{taxableIncome}} Income',
+    },
+    formula: 'FV \\approx C\\frac{(1+r)^t-1}{r} + tax\\ relief',
+  },
+  {
+    id: 'sg-buyer-stamp-duty-absd',
+    categorySlug: 'real-estate',
+    name: 'Buyer Stamp Duty & ABSD Calculator 2026',
+    params: [
+      { key: 'propertyPrice', label: 'Property Purchase Price (SGD)', prefix: '$', step: 250000, values: [500000, 750000, 1000000, 1500000, 2000000, 2500000, 3000000] },
+      { key: 'buyerStatus', label: 'Buyer Citizenship/PR Status', values: ['Singapore Citizen', 'PR', 'Foreigner'] },
+      { key: 'numberOfProperties', label: 'Number of Properties Owned (incl. this one)', step: 1, values: [0, 1, 2, 3, 4] },
+      { key: 'firstProperty', label: 'First Residential Property?', values: ['Yes', 'No'] },
+    ],
+    maxVariants: 1800,
+    seoTemplate: {
+      title: 'Buyer Stamp Duty & ABSD on {{propertyPrice}} Property - 2026 Singapore | Plain Figures',
+      description: 'Estimate Singapore buyer stamp duty and ABSD using {{propertyPrice}} purchase price, {{buyerStatus}} buyer status, {{numberOfProperties}} properties owned, and {{firstProperty}} first-property status.',
+      h1: 'Buyer Stamp Duty & ABSD on {{propertyPrice}} Property',
+    },
+    formula: 'BSD + ABSD = \\sum band\\ amount \\times rate + surcharge',
+  },
+  {
+    id: 'in-home-loan-eligibility-emi',
+    categorySlug: 'mortgages',
+    name: 'Home Loan Eligibility & EMI Calculator India 2026',
+    params: [
+      { key: 'grossMonthlyIncome', label: 'Gross Monthly Income (₹)', prefix: '₹', step: 25000, values: [25000, 40000, 60000, 80000, 100000, 150000, 200000, 250000, 300000] },
+      { key: 'monthlyObligations', label: 'Existing Monthly Obligations (₹)', prefix: '₹', step: 10000, values: [0, 5000, 10000, 20000, 40000, 60000, 80000, 100000] },
+      { key: 'age', label: 'Current Age', step: 5, values: [21, 25, 30, 35, 40, 45, 50, 55, 60] },
+      { key: 'loanTenureYears', label: 'Loan Tenure (Years)', step: 5, values: [10, 15, 20, 25, 30] },
+      { key: 'interestRate', label: 'Home Loan Interest Rate %', prefix: '%', step: 0.5, values: [7.5, 8, 8.5, 9, 9.5, 10, 10.5] },
+      { key: 'cityTier', label: 'City Tier (for LTV)', values: ['Metro', 'Tier-1', 'Tier-2', 'Tier-3'] },
+    ],
+    maxVariants: 2200,
+    seoTemplate: {
+      title: 'Home Loan Eligibility on {{grossMonthlyIncome}}/mo Income - EMI & LTV 2026 India | Plain Figures',
+      description: 'Estimate Indian home-loan eligibility using {{grossMonthlyIncome}} monthly income, {{monthlyObligations}} monthly obligations, age {{age}}, {{loanTenureYears}}-year tenure, {{interestRate}} interest, and {{cityTier}} city tier.',
+      h1: 'Home Loan Eligibility on {{grossMonthlyIncome}}/mo Income',
+    },
+    formula: 'L_{max} \\approx (I-O) \\times FOIR \\times factor(n,r)',
+  },
+  {
+    id: 'in-ppf-epf-retirement-projection',
+    categorySlug: 'retirement',
+    name: 'PPF & EPF Retirement Corpus Projection Calculator 2026',
+    params: [
+      { key: 'currentAge', label: 'Current Age', step: 5, values: [25, 30, 35, 40, 45, 50, 55, 58] },
+      { key: 'monthlyContributionPPF', label: 'Monthly PPF Contribution (₹)', prefix: '₹', step: 2500, values: [500, 1000, 2500, 5000, 7500, 10000, 12500, 15000] },
+      { key: 'monthlyEPFBasic', label: 'Monthly EPF Basic Salary (₹)', prefix: '₹', step: 2500, values: [5000, 7500, 10000, 12500, 15000] },
+      { key: 'retirementAge', label: 'Retirement Age', step: 1, values: [58, 59, 60] },
+      { key: 'expectedPPFReturn', label: 'PPF Interest Rate % (fixed)', prefix: '%', values: [7.1] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'PPF + EPF Corpus at Retirement - Age {{currentAge}} - 2026 India | Plain Figures',
+      description: 'Project Indian retirement corpus using age {{currentAge}}, {{monthlyContributionPPF}} monthly PPF contributions, {{monthlyEPFBasic}} monthly EPF basic salary, retirement at {{retirementAge}}, and {{expectedPPFReturn}} PPF returns.',
+      h1: 'PPF + EPF Corpus at Retirement - Age {{currentAge}}',
+    },
+    formula: 'FV = PPF_{fv} + EPF_{fv}',
+    isValidVariant: (params) => Number(params.retirementAge) > Number(params.currentAge),
+  },
+  {
+    id: 'in-income-tax-take-home',
+    categorySlug: 'tax',
+    name: 'Income Tax Take-Home Pay Calculator India 2026 (New Regime)',
+    params: [
+      { key: 'annualGrossSalary', label: 'Annual Gross Salary (₹)', prefix: '₹', step: 250000, values: [300000, 500000, 750000, 1000000, 1500000, 2000000, 2500000, 3000000] },
+      { key: 'standardDeduction', label: 'Standard Deduction Claimed (₹)', prefix: '₹', values: [50000, 75000] },
+      { key: 'otherIncome', label: 'Other Taxable Income (₹)', prefix: '₹', step: 100000, values: [0, 50000, 100000, 200000, 300000, 400000, 500000] },
+      { key: 'payFrequency', label: 'Pay Frequency', values: ['Annual', 'Monthly'] },
+      { key: 'regime', label: 'Tax Regime', values: ['New', 'Old'] },
+    ],
+    maxVariants: 2200,
+    seoTemplate: {
+      title: '{{annualGrossSalary}} Salary After Tax India - New Regime 2026 Take-Home Pay | Plain Figures',
+      description: 'Estimate Indian take-home pay using {{annualGrossSalary}} salary, {{standardDeduction}} standard deduction, {{otherIncome}} other income, {{payFrequency}} pay frequency, and the {{regime}} tax regime.',
+      h1: '{{annualGrossSalary}} Salary After Tax India',
+    },
+    formula: '\\text{Net pay} = \\text{gross} + \\text{other income} - \\text{tax} - \\text{deductions}',
+  },
+  {
+    id: 'in-nps-vs-epf-comparison',
+    categorySlug: 'retirement',
+    name: 'NPS vs EPF Contribution & Tax Benefit Comparison 2026',
+    params: [
+      { key: 'monthlyContribution', label: 'Monthly Contribution (₹)', prefix: '₹', step: 5000, values: [5000, 10000, 15000, 20000, 30000, 40000, 50000] },
+      { key: 'currentAge', label: 'Current Age', step: 5, values: [25, 30, 35, 40, 45, 50, 55, 58] },
+      { key: 'expectedReturnNPS', label: 'Expected NPS Return %', prefix: '%', step: 1, values: [8, 9, 10, 11, 12] },
+      { key: 'expectedReturnEPF', label: 'EPF Interest Rate %', prefix: '%', values: [8.25] },
+      { key: 'yearsToRetirement', label: 'Years Until Retirement', step: 5, values: [5, 10, 15, 20, 25, 30, 35] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'NPS vs EPF: Which is Better for {{monthlyContribution}}/mo - 2026 India | Plain Figures',
+      description: 'Compare NPS and EPF using {{monthlyContribution}} monthly contributions, age {{currentAge}}, {{expectedReturnNPS}} expected NPS return, {{expectedReturnEPF}} EPF interest, and {{yearsToRetirement}} years to retirement.',
+      h1: 'NPS vs EPF: Which is Better for {{monthlyContribution}}/mo',
+    },
+    formula: 'FV = C\\frac{(1+r)^t-1}{r}',
+  },
+  {
+    id: 'in-stamp-duty-registration',
+    categorySlug: 'real-estate',
+    name: 'Stamp Duty & Registration Fees Calculator by State 2026',
+    params: [
+      { key: 'propertyValue', label: 'Property Value (₹)', prefix: '₹', step: 2000000, values: [2000000, 3000000, 5000000, 7500000, 10000000, 15000000, 20000000] },
+      { key: 'state', label: 'State', values: ['Maharashtra', 'Karnataka', 'Delhi', 'Tamil Nadu', 'Gujarat', 'Uttar Pradesh', 'West Bengal', 'Telangana', 'Haryana', 'Punjab'] },
+      { key: 'propertyType', label: 'Property Type', values: ['Ready', 'Under Construction', 'Resale'] },
+      { key: 'buyerGender', label: 'Buyer Gender (for concessions)', values: ['Male', 'Female', 'Joint'] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'Stamp Duty & Registration on {{propertyValue}} Property in {{state}} - 2026 India | Plain Figures',
+      description: 'Estimate Indian stamp duty and registration fees using {{propertyValue}} property value, {{state}} state rules, {{propertyType}} property type, and {{buyerGender}} buyer concessions.',
+      h1: 'Stamp Duty & Registration on {{propertyValue}} Property in {{state}}',
+    },
+    formula: 'Total = stamp\\ duty + registration\\ fee - concessions',
+  },
 ];
 
 const slugBuilders: Partial<Record<string, (params: ParamMap) => string>> = {
@@ -1892,6 +2593,66 @@ const slugBuilders: Partial<Record<string, (params: ParamMap) => string>> = {
     `emergency-fund-interest-${monthlyExpenses}-expenses-${monthsGoal}-months-${currentSavings}-saved-${monthlySave}-monthly-${savingsRate}-savings-${investmentRateIfHigherRisk}-investment`,
   'zero-based-budget-debt-snowball': ({ monthlyTakeHome, fixedExpenses, variableExpenses, debtBalances, minimumDebtPayments, extraToDebt }) =>
     `zero-based-budget-snowball-${monthlyTakeHome}-take-home-${fixedExpenses}-fixed-${variableExpenses}-variable-${debtBalances}-balances-${minimumDebtPayments}-minimum-${extraToDebt}-extra`,
+  'reverse-mortgage-payout': ({ homeValue, borrowerAge, interestRate, payoutOption, closingCostsPercent, homeAppreciation }) =>
+    `reverse-mortgage-payout-${homeValue}-home-${borrowerAge}-age-${interestRate}-rate-${normalizeSlugPart(payoutOption)}-${closingCostsPercent}-costs-${homeAppreciation}-appreciation`,
+  'passive-income-reinvestment': ({ initialPassiveMonthly, monthlyReinvestment, annualYield, compoundingFrequency, years, targetPassiveMonthly }) =>
+    `passive-income-reinvestment-${initialPassiveMonthly}-initial-${monthlyReinvestment}-reinvest-${annualYield}-yield-${normalizeSlugPart(compoundingFrequency)}-${years}-years-${targetPassiveMonthly}-target`,
+  'credit-score-rebuild-path': ({ startingScore, targetScore, monthlyPaydownPercent, derogatoryRemovalMonths, newPositiveAccounts, utilizationDropTarget }) =>
+    `credit-score-rebuild-${startingScore}-to-${targetScore}-${monthlyPaydownPercent}-paydown-${derogatoryRemovalMonths}-derogatory-${newPositiveAccounts}-accounts-${utilizationDropTarget}-utilization`,
+  'tiered-emergency-fund': ({ monthlyExpenses, tierLevel, currentSavings, monthlySave, highYieldRate }) =>
+    `tiered-emergency-fund-${monthlyExpenses}-expenses-${normalizeSlugPart(tierLevel)}-${currentSavings}-saved-${monthlySave}-monthly-${highYieldRate}-rate`,
+  'zero-based-budget-sinking-funds': ({ monthlyTakeHome, fixedExpenses, variableExpenses, sinkingFundGoals, debtMinimums, extraToDebtOrSavings }) =>
+    `zero-based-budget-sinking-funds-${monthlyTakeHome}-take-home-${fixedExpenses}-fixed-${variableExpenses}-variable-${sinkingFundGoals}-sinking-${debtMinimums}-debt-${extraToDebtOrSavings}-extra`,
+  'ca-mortgage-affordability-stress-test': ({ annualIncome, monthlyDebtPayments, downPayment, qualifyingRate, amortizationYears, propertyTaxesAnnual, heatingCostsMonthly }) =>
+    `ca-mortgage-affordability-${annualIncome}-income-${monthlyDebtPayments}-debts-${downPayment}-down-${qualifyingRate}-qualifying-${amortizationYears}-years-${propertyTaxesAnnual}-tax-${heatingCostsMonthly}-heat`,
+  'ca-rrsp-vs-tfsa-optimizer': ({ currentTaxBracket, expectedRetirementBracket, annualContribution, yearsToRetirement, investmentReturn }) =>
+    `ca-rrsp-vs-tfsa-${currentTaxBracket}-current-${expectedRetirementBracket}-retirement-${annualContribution}-contribution-${yearsToRetirement}-years-${investmentReturn}-return`,
+  'ca-income-tax-take-home': ({ grossSalary, province, rrspContribution, otherDeductions, payFrequency }) =>
+    `ca-take-home-${grossSalary}-salary-${normalizeSlugPart(province)}-${rrspContribution}-rrsp-${otherDeductions}-deductions-${normalizeSlugPart(payFrequency)}`,
+  'ca-cpp-oas-estimator': ({ birthYear, averageEarnings, yearsContributed, claimingAgeCPP, oasClaimingAge }) =>
+    `ca-cpp-oas-${birthYear}-birth-${averageEarnings}-earnings-${yearsContributed}-years-${claimingAgeCPP}-cpp-${oasClaimingAge}-oas`,
+  'ca-cmhc-home-affordability': ({ annualIncome, downPayment, mortgageRate, amortizationYears, propertyTaxesAnnual, heatingCostsMonthly }) =>
+    `ca-cmhc-affordability-${annualIncome}-income-${downPayment}-down-${mortgageRate}-rate-${amortizationYears}-years-${propertyTaxesAnnual}-tax-${heatingCostsMonthly}-heat`,
+  'au-superannuation-retirement-projection': ({ currentSuperBalance, annualContribution, age, expectedReturn, retirementAge, insuranceFeesAnnual }) =>
+    `au-super-projection-${currentSuperBalance}-balance-${annualContribution}-contribution-${age}-age-${expectedReturn}-return-${retirementAge}-retire-${insuranceFeesAnnual}-fees`,
+  'au-mortgage-offset-savings': ({ mortgageBalance, interestRate, offsetBalance, monthlyOffsetDeposit, remainingTermYears }) =>
+    `au-offset-savings-${mortgageBalance}-mortgage-${interestRate}-rate-${offsetBalance}-offset-${monthlyOffsetDeposit}-deposit-${remainingTermYears}-years`,
+  'au-income-tax-take-home': ({ grossSalary, taxResident, superContribution, otherDeductions, payFrequency }) =>
+    `au-take-home-${grossSalary}-salary-${normalizeSlugPart(taxResident)}-${superContribution}-super-${otherDeductions}-deductions-${normalizeSlugPart(payFrequency)}`,
+  'au-first-home-buyer-affordability': ({ annualIncome, downPayment, state, propertyPrice, stampDutyExemption }) =>
+    `au-first-home-${annualIncome}-income-${downPayment}-deposit-${normalizeSlugPart(state)}-${propertyPrice}-price-${normalizeSlugPart(stampDutyExemption)}`,
+  'au-negative-gearing-return': ({ propertyPurchasePrice, depositPercent, rentalIncomeAnnual, interestRate, annualExpenses, marginalTaxRate }) =>
+    `au-negative-gearing-${propertyPurchasePrice}-price-${depositPercent}-deposit-${rentalIncomeAnnual}-rent-${interestRate}-rate-${annualExpenses}-expenses-${marginalTaxRate}-tax`,
+  'uk-mortgage-affordability-stress-test': ({ annualIncome, monthlyOutgoings, depositAmount, stressTestRate, termYears, propertyValueEstimate }) =>
+    `uk-mortgage-affordability-${annualIncome}-income-${monthlyOutgoings}-outgoings-${depositAmount}-deposit-${stressTestRate}-stress-${termYears}-years-${propertyValueEstimate}-property`,
+  'uk-pension-tax-relief-optimizer': ({ grossSalary, currentTaxBand, annualContribution, yearsToRetirement, expectedReturn }) =>
+    `uk-pension-tax-relief-${grossSalary}-salary-${normalizeSlugPart(currentTaxBand)}-${annualContribution}-contribution-${yearsToRetirement}-years-${expectedReturn}-return`,
+  'uk-income-tax-ni-take-home': ({ grossSalary, taxYear, pensionContribution, studentLoanPlan, payFrequency }) =>
+    `uk-income-tax-ni-${grossSalary}-salary-${normalizeSlugPart(taxYear)}-${pensionContribution}-pension-${normalizeSlugPart(studentLoanPlan)}-${normalizeSlugPart(payFrequency)}`,
+  'uk-isa-vs-pension-comparison': ({ annualAmount, currentTaxRate, retirementTaxRate, yearsInvested, investmentReturn }) =>
+    `uk-isa-vs-pension-${annualAmount}-amount-${currentTaxRate}-current-${retirementTaxRate}-retirement-${yearsInvested}-years-${investmentReturn}-return`,
+  'uk-stamp-duty-first-time-buyer': ({ propertyPrice, firstTimeBuyer, additionalProperty, nonUkResident, companyPurchase }) =>
+    `uk-stamp-duty-${propertyPrice}-price-${normalizeSlugPart(firstTimeBuyer)}-${normalizeSlugPart(additionalProperty)}-${normalizeSlugPart(nonUkResident)}-${normalizeSlugPart(companyPurchase)}`,
+  'sg-cpf-retirement-projection': ({ currentCPFBalance, monthlySalary, age, expectedReturnOA, retirementAge }) =>
+    `sg-cpf-projection-${currentCPFBalance}-balance-${monthlySalary}-salary-${age}-age-${expectedReturnOA}-return-${retirementAge}-retirement`,
+  'sg-hdb-loan-affordability': ({ monthlyIncome, existingCommitments, downPayment, loanTenureYears, interestRate }) =>
+    `sg-hdb-affordability-${monthlyIncome}-income-${existingCommitments}-commitments-${downPayment}-down-${loanTenureYears}-years-${interestRate}-rate`,
+  'sg-income-tax-take-home': ({ grossSalaryAnnual, residentStatus, cpfContribution, otherReliefs, payFrequency }) =>
+    `sg-take-home-${grossSalaryAnnual}-salary-${normalizeSlugPart(residentStatus)}-${cpfContribution}-cpf-${otherReliefs}-reliefs-${normalizeSlugPart(payFrequency)}`,
+  'sg-srs-vs-cpf-top-up': ({ taxableIncome, currentTaxBracket, annualTopUp, yearsToRetirement, investmentReturn }) =>
+    `sg-srs-vs-cpf-${taxableIncome}-income-${currentTaxBracket}-tax-${annualTopUp}-topup-${yearsToRetirement}-years-${investmentReturn}-return`,
+  'sg-buyer-stamp-duty-absd': ({ propertyPrice, buyerStatus, numberOfProperties, firstProperty }) =>
+    `sg-bsd-absd-${propertyPrice}-price-${normalizeSlugPart(buyerStatus)}-${numberOfProperties}-properties-${normalizeSlugPart(firstProperty)}`,
+  'in-home-loan-eligibility-emi': ({ grossMonthlyIncome, monthlyObligations, age, loanTenureYears, interestRate, cityTier }) =>
+    `in-home-loan-${grossMonthlyIncome}-income-${monthlyObligations}-obligations-${age}-age-${loanTenureYears}-years-${interestRate}-rate-${normalizeSlugPart(cityTier)}`,
+  'in-ppf-epf-retirement-projection': ({ currentAge, monthlyContributionPPF, monthlyEPFBasic, retirementAge, expectedPPFReturn }) =>
+    `in-ppf-epf-${currentAge}-age-${monthlyContributionPPF}-ppf-${monthlyEPFBasic}-epf-${retirementAge}-retire-${expectedPPFReturn}-return`,
+  'in-income-tax-take-home': ({ annualGrossSalary, standardDeduction, otherIncome, payFrequency, regime }) =>
+    `in-take-home-${annualGrossSalary}-salary-${standardDeduction}-deduction-${otherIncome}-other-${normalizeSlugPart(payFrequency)}-${normalizeSlugPart(regime)}`,
+  'in-nps-vs-epf-comparison': ({ monthlyContribution, currentAge, expectedReturnNPS, expectedReturnEPF, yearsToRetirement }) =>
+    `in-nps-vs-epf-${monthlyContribution}-contribution-${currentAge}-age-${expectedReturnNPS}-nps-${expectedReturnEPF}-epf-${yearsToRetirement}-years`,
+  'in-stamp-duty-registration': ({ propertyValue, state, propertyType, buyerGender }) =>
+    `in-stamp-duty-${propertyValue}-value-${normalizeSlugPart(state)}-${normalizeSlugPart(propertyType)}-${normalizeSlugPart(buyerGender)}`,
 };
 
 function normalizeSlugPart(value: ParamValue): string {
@@ -1986,7 +2747,13 @@ function buildGeneratedEntries<T extends { categorySlug: string; slug: string }>
 
   if (geoVariants.length > 0) {
     // Expanded 2026 geo-layering: priority US states + high-CPC English markets (AU/CA/UK/NZ/IE/SG) + future non-English (DE/NL/NO)
-    const geoCap = Math.min(2200, Math.max(1600, Math.round(config.maxVariants * 0.85)));
+    const geoCap = Math.min(
+      getGeoVariantCap(config),
+      Math.max(
+        US_STATE_SENSITIVE_CALCULATOR_IDS.has(config.id) ? 2200 : 1600,
+        Math.round(config.maxVariants * (US_STATE_SENSITIVE_CALCULATOR_IDS.has(config.id) ? 0.95 : 0.85))
+      )
+    );
     const maxGeoCombinations = baseEntries.length * geoVariants.length;
     const geoTarget = Math.min(geoCap, maxGeoCombinations);
 
