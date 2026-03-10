@@ -1,7 +1,8 @@
-import { getAllProgrammaticPages } from '@/lib/calculators/generator';
+import { generateAllSlugs } from '@/lib/calculators/config';
 import { MetadataRoute } from 'next';
 
 export const revalidate = 86400;
+export const dynamic = 'force-static';
 
 const STATIC_PAGE_URLS = [
   'https://www.plainfigures.org',
@@ -132,8 +133,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 1,
   };
 
-  const programmatic = getAllProgrammaticPages().map((page) => ({
-    url: `https://www.plainfigures.org${page.url}`,
+  const programmatic = generateAllSlugs().map((page) => ({
+    url: `https://www.plainfigures.org/calculators/${page.categorySlug}/${page.slug}`,
     lastModified: now,
     changeFrequency: 'weekly' as const,
     priority: 0.7,
