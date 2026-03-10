@@ -92,6 +92,11 @@ export function getGeoVariants(config: CalculatorConfig): { country?: string; st
     'credit-utilization-optimizer',
     'emergency-fund-goal',
     'zero-based-budget-planner',
+    'reverse-mortgage-line-of-credit',
+    'passive-income-scaling',
+    'credit-rebuild-timeline',
+    'emergency-fund-with-interest',
+    'zero-based-budget-debt-snowball',
   ];
 
   if (!geoRelevantIds.includes(config.id)) {
@@ -1651,6 +1656,117 @@ export const calculators: CalculatorConfig[] = [
       return totalAllocated <= Number(params.monthlyTakeHome);
     },
   },
+  {
+    id: 'reverse-mortgage-line-of-credit',
+    categorySlug: 'retirement',
+    name: 'Reverse Mortgage Line of Credit Growth Calculator 2026',
+    params: [
+      { key: 'homeValue', label: 'Current Home Value ($/£)', prefix: '$', step: 50000, values: [250000, 350000, 500000, 650000, 800000, 1000000, 1200000] },
+      { key: 'borrowerAge', label: 'Youngest Borrower Age', step: 5, values: [62, 65, 68, 72, 76, 80, 85, 90, 95] },
+      { key: 'interestRate', label: 'Expected Interest Rate %', prefix: '%', step: 0.5, values: [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5] },
+      { key: 'initialLineAmount', label: 'Initial Line of Credit Amount', prefix: '$', step: 50000, values: [50000, 100000, 150000, 200000, 300000, 400000, 500000] },
+      { key: 'unusedGrowthRate', label: 'Annual Unused Line Growth %', prefix: '%', step: 1, values: [3, 3.5, 4, 4.5, 5, 6, 7] },
+      { key: 'expectedTenureYears', label: 'Expected Years in Home', step: 5, values: [5, 8, 10, 12, 15, 20, 25] },
+    ],
+    maxVariants: 2100,
+    seoTemplate: {
+      title: 'Reverse Mortgage Line of Credit Growth on {{homeValue}} Home - Age {{borrowerAge}} 2026 | Plain Figures',
+      description: 'Project reverse-mortgage line-of-credit growth for a {{homeValue}} home at age {{borrowerAge}} using {{interestRate}} rates, {{initialLineAmount}} initial line size, {{unusedGrowthRate}} unused-line growth, and {{expectedTenureYears}} years in the home.',
+      h1: 'Reverse Mortgage Line of Credit Growth on {{homeValue}} Home - Age {{borrowerAge}}',
+    },
+    formula: 'LOC_t \\approx L_0(1+g)^t - B_t(1+r)^t',
+  },
+  {
+    id: 'passive-income-scaling',
+    categorySlug: 'investing',
+    name: 'Passive Income Scaling & Multiple Streams Calculator 2026',
+    params: [
+      { key: 'currentPassiveMonthly', label: 'Current passive monthly income', prefix: '$', step: 500, values: [0, 100, 250, 500, 1000, 2000, 3000] },
+      { key: 'monthlyInvestmentPerStream', label: 'Monthly investment per stream', prefix: '$', step: 250, values: [50, 100, 250, 500, 750, 1000, 1500] },
+      { key: 'numberOfStreams', label: 'Number of streams', step: 1, values: numberRange(1, 8, 1) },
+      { key: 'averageStreamReturn', label: 'Average stream return', prefix: '%', step: 1, values: [4, 5, 6, 7, 8, 10, 12] },
+      { key: 'yearsToScale', label: 'Years to scale', step: 3, values: [3, 5, 8, 10, 12, 15, 20] },
+      { key: 'targetPassiveMonthly', label: 'Target passive monthly income', prefix: '$', step: 1000, values: [1000, 2000, 3000, 5000, 8000, 12000, 16000, 20000] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'Scale to {{targetPassiveMonthly}}/mo Passive Income with {{numberOfStreams}} Streams - 2026 Plan | Plain Figures',
+      description: 'Project passive-income scaling using {{currentPassiveMonthly}} current income, {{monthlyInvestmentPerStream}} invested per stream, {{numberOfStreams}} streams, {{averageStreamReturn}} returns, and {{yearsToScale}} years to reach {{targetPassiveMonthly}} monthly.',
+      h1: 'Scale to {{targetPassiveMonthly}}/mo Passive Income with {{numberOfStreams}} Streams',
+    },
+    formula: 'I_t \\approx n \\times \\left(PMT\\frac{(1+r)^t-1}{r}\\right) \\times y / 12',
+    isValidVariant: (params) => Number(params.targetPassiveMonthly) >= Number(params.currentPassiveMonthly),
+  },
+  {
+    id: 'credit-rebuild-timeline',
+    categorySlug: 'credit',
+    name: 'Credit Rebuild Timeline & Score Improvement Calculator 2026',
+    params: [
+      { key: 'currentScore', label: 'Current score', step: 50, values: [300, 350, 400, 450, 500, 550, 600, 650] },
+      { key: 'targetScore', label: 'Target score', step: 20, values: [500, 550, 600, 650, 700, 750, 800] },
+      { key: 'monthsToGoal', label: 'Months to goal', step: 3, values: [3, 6, 9, 12, 18, 24, 30, 36] },
+      { key: 'paydownPercentMonthly', label: 'Paydown percent monthly', prefix: '%', step: 10, values: [10, 20, 30, 40, 50, 75, 100] },
+      { key: 'newAccountsOpened', label: 'New accounts opened', step: 1, values: [0, 1, 2, 3] },
+      { key: 'derogatoryMarksAgeMonths', label: 'Derogatory marks age months', step: 12, values: [0, 12, 24, 36, 48, 60, 72, 84] },
+    ],
+    maxVariants: 1800,
+    seoTemplate: {
+      title: 'Rebuild Credit from {{currentScore}} to {{targetScore}} - Timeline & Steps 2026 | Plain Figures',
+      description: 'Estimate a credit rebuild path from {{currentScore}} to {{targetScore}} using {{monthsToGoal}} months, {{paydownPercentMonthly}} monthly paydown, {{newAccountsOpened}} new accounts, and derogatory marks aged {{derogatoryMarksAgeMonths}} months.',
+      h1: 'Rebuild Credit from {{currentScore}} to {{targetScore}}',
+    },
+    formula: '\\Delta S \\approx p \\times t - a - d',
+    isValidVariant: (params) => Number(params.targetScore) > Number(params.currentScore),
+  },
+  {
+    id: 'emergency-fund-with-interest',
+    categorySlug: 'savings',
+    name: 'Emergency Fund with Interest & Investment Calculator 2026',
+    params: [
+      { key: 'monthlyExpenses', label: 'Monthly expenses', prefix: '$', step: 500, values: [1500, 2000, 2500, 3000, 4000, 5000, 7000, 9000, 12000] },
+      { key: 'monthsGoal', label: 'Months goal', step: 1, values: numberRange(3, 12, 1) },
+      { key: 'currentSavings', label: 'Current savings', prefix: '$', step: 5000, values: [0, 1000, 3000, 5000, 10000, 15000, 25000, 40000, 60000] },
+      { key: 'monthlySave', label: 'Monthly save amount', prefix: '$', step: 500, values: [100, 250, 500, 750, 1000, 1500, 2000, 3000] },
+      { key: 'savingsRate', label: 'Savings rate', prefix: '%', step: 0.5, values: [3.5, 4, 4.5, 5, 5.5] },
+      { key: 'investmentRateIfHigherRisk', label: 'Higher-risk investment rate', prefix: '%', step: 1, values: [5, 6, 7, 8, 9] },
+    ],
+    maxVariants: 1900,
+    seoTemplate: {
+      title: 'Emergency Fund Goal: {{monthsGoal}} Months of {{monthlyExpenses}}/mo - With Interest 2026 | Plain Figures',
+      description: 'Compare emergency-fund growth using {{monthlyExpenses}} monthly expenses, a {{monthsGoal}}-month goal, {{currentSavings}} current savings, {{monthlySave}} monthly saving, {{savingsRate}} savings interest, and {{investmentRateIfHigherRisk}} higher-risk growth.',
+      h1: 'Emergency Fund Goal: {{monthsGoal}} Months of {{monthlyExpenses}}/mo - With Interest',
+    },
+    formula: 'FV = S_0(1+r)^t + PMT\\frac{(1+r)^t-1}{r}',
+  },
+  {
+    id: 'zero-based-budget-debt-snowball',
+    categorySlug: 'budget',
+    name: 'Zero-Based Budget with Debt Snowball Calculator 2026',
+    params: [
+      { key: 'monthlyTakeHome', label: 'Monthly take-home', prefix: '$', step: 1000, values: [2000, 3000, 4500, 6000, 8000, 10000, 12500, 15000] },
+      { key: 'fixedExpenses', label: 'Fixed expenses', prefix: '$', step: 500, values: [800, 1200, 1800, 2500, 3200, 4000, 5000] },
+      { key: 'variableExpenses', label: 'Variable expenses', prefix: '$', step: 500, values: [500, 800, 1200, 1800, 2400, 3000, 4000] },
+      { key: 'debtBalances', label: 'Total debt balances', prefix: '$', step: 5000, values: [1000, 5000, 10000, 20000, 30000, 40000, 50000] },
+      { key: 'minimumDebtPayments', label: 'Minimum debt payments', prefix: '$', step: 250, values: [50, 100, 250, 500, 750, 1000] },
+      { key: 'extraToDebt', label: 'Extra to debt', prefix: '$', step: 250, values: [100, 250, 500, 750, 1000, 1500, 2000] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'Zero-Based Budget + Debt Snowball on {{monthlyTakeHome}}/mo - Pay Off Debts 2026 | Plain Figures',
+      description: 'Allocate a zero-based budget with debt snowball using {{monthlyTakeHome}} take-home pay, {{fixedExpenses}} fixed costs, {{variableExpenses}} variable spending, {{debtBalances}} debt balances, {{minimumDebtPayments}} minimum debt payments, and {{extraToDebt}} extra debt payoff.',
+      h1: 'Zero-Based Budget + Debt Snowball on {{monthlyTakeHome}}/mo',
+    },
+    formula: 'T = F + V + D_{min} + D_{extra}',
+    isValidVariant: (params) => {
+      const totalAllocated =
+        Number(params.fixedExpenses) +
+        Number(params.variableExpenses) +
+        Number(params.minimumDebtPayments) +
+        Number(params.extraToDebt);
+
+      return totalAllocated <= Number(params.monthlyTakeHome);
+    },
+  },
 ];
 
 const slugBuilders: Partial<Record<string, (params: ParamMap) => string>> = {
@@ -1766,6 +1882,16 @@ const slugBuilders: Partial<Record<string, (params: ParamMap) => string>> = {
     `emergency-fund-goal-${monthlyExpenses}-expenses-${monthsCoverageGoal}-months-${currentSavings}-saved-${monthlySaveAmount}-monthly-${interestRate}-rate`,
   'zero-based-budget-planner': ({ monthlyTakeHome, fixedExpenses, variableExpenses, debtPayments, savingsGoal, funMoney }) =>
     `zero-based-budget-${monthlyTakeHome}-take-home-${fixedExpenses}-fixed-${variableExpenses}-variable-${debtPayments}-debt-${savingsGoal}-savings-${funMoney}-fun`,
+  'reverse-mortgage-line-of-credit': ({ homeValue, borrowerAge, interestRate, initialLineAmount, unusedGrowthRate, expectedTenureYears }) =>
+    `reverse-mortgage-loc-${homeValue}-home-${borrowerAge}-age-${interestRate}-rate-${initialLineAmount}-line-${unusedGrowthRate}-growth-${expectedTenureYears}-years`,
+  'passive-income-scaling': ({ currentPassiveMonthly, monthlyInvestmentPerStream, numberOfStreams, averageStreamReturn, yearsToScale, targetPassiveMonthly }) =>
+    `passive-income-scaling-${currentPassiveMonthly}-current-${monthlyInvestmentPerStream}-per-stream-${numberOfStreams}-streams-${averageStreamReturn}-return-${yearsToScale}-years-${targetPassiveMonthly}-target`,
+  'credit-rebuild-timeline': ({ currentScore, targetScore, monthsToGoal, paydownPercentMonthly, newAccountsOpened, derogatoryMarksAgeMonths }) =>
+    `credit-rebuild-${currentScore}-to-${targetScore}-${monthsToGoal}-months-${paydownPercentMonthly}-paydown-${newAccountsOpened}-accounts-${derogatoryMarksAgeMonths}-derogatory`,
+  'emergency-fund-with-interest': ({ monthlyExpenses, monthsGoal, currentSavings, monthlySave, savingsRate, investmentRateIfHigherRisk }) =>
+    `emergency-fund-interest-${monthlyExpenses}-expenses-${monthsGoal}-months-${currentSavings}-saved-${monthlySave}-monthly-${savingsRate}-savings-${investmentRateIfHigherRisk}-investment`,
+  'zero-based-budget-debt-snowball': ({ monthlyTakeHome, fixedExpenses, variableExpenses, debtBalances, minimumDebtPayments, extraToDebt }) =>
+    `zero-based-budget-snowball-${monthlyTakeHome}-take-home-${fixedExpenses}-fixed-${variableExpenses}-variable-${debtBalances}-balances-${minimumDebtPayments}-minimum-${extraToDebt}-extra`,
 };
 
 function normalizeSlugPart(value: ParamValue): string {
