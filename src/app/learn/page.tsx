@@ -1,5 +1,6 @@
 ﻿import Link from 'next/link';
 import type { Metadata } from 'next';
+import { PROGRAMMATIC_LEARN_TOPICS } from '@/lib/programmatic-learn-extensions';
 
 export const metadata: Metadata = {
   title: 'Learning Centre â€” How Financial Calculations Work â€” Plain Figures',
@@ -470,7 +471,7 @@ export default function LearnIndexPage() {
           How the maths works.
         </h1>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: '560px', fontWeight: 300, marginBottom: '1rem' }}>
-          Formula-first guides explaining the calculations behind each tool. No opinions, no advice â€” just the numbers and the logic behind them.
+          Formula-first guides explaining the calculations behind each tool. No opinions, no advice - just the numbers and the logic behind them.
         </p>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>
           Each guide links directly to the relevant calculator. Read the formula, then run your own numbers.
@@ -492,10 +493,34 @@ export default function LearnIndexPage() {
                   <span key={tag} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'var(--text-muted)', border: '1px solid var(--border)', borderRadius: '3px', padding: '0.12rem 0.45rem', letterSpacing: '0.04em' }}>{tag}</span>
                 ))}
               </div>
+              <div style={{ marginTop: '0.6rem', fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: '#2ec88a', letterSpacing: '0.04em' }}>
+                Opens: <span style={{ color: 'var(--text-secondary)' }}>{calcLabel}</span> <span style={{ color: 'var(--text-muted)' }}>· {calcHref}</span>
+              </div>
             </div>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.1rem', color: 'var(--text-muted)', flexShrink: 0 }}>â†’</div>
           </Link>
         ))}
+      </div>
+
+      <div style={{ marginBottom: '3rem', padding: '1.25rem 1.5rem', background: 'rgba(46,200,138,0.04)', border: '1px solid rgba(46,200,138,0.15)', borderRadius: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: '#2ec88a', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '0.45rem' }}>Search-Specific Explainers</div>
+            <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '620px' }}>
+              Narrow pages built for specific calculator-intent queries. These extensions reinforce the formula-first position and link directly into the relevant tools.
+            </div>
+          </div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)' }}>{PROGRAMMATIC_LEARN_TOPICS.length} extensions</div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '0.6rem' }}>
+          {PROGRAMMATIC_LEARN_TOPICS.map((topic) => (
+            <Link key={topic.slug} href={`/learn/${topic.slug}`} style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', padding: '0.85rem 0.95rem', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '6px', textDecoration: 'none' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.76rem', color: 'var(--text-primary)', lineHeight: 1.45 }}>{topic.title}</span>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.76rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>{topic.description}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: '#2ec88a' }}>{topic.calculatorLabel}</span>
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* SEO footer note */}
