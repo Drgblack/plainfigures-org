@@ -64,11 +64,11 @@ const CATEGORY_SUPPORT: Record<string, CategorySupport> = {
   'offset-mortgage': { hubHref: '/offset', guideSlugs: ['offset-mortgage', 'mortgage-overpayment'], relatedCategories: ['mortgage-repayment', 'mortgage-overpayment', 'mortgage-affordability'] },
   'mortgage-overpayment': { hubHref: '/overpayment', guideSlugs: ['mortgage-overpayment', 'offset-mortgage'], relatedCategories: ['mortgage-repayment', 'offset-mortgage', 'save-for-goal'] },
   'save-for-goal': { hubHref: '/save-goal', guideSlugs: ['save-for-goal', 'emergency-fund-how-much'], relatedCategories: ['savings-growth', 'compound-interest', 'retirement-savings'] },
-  'salary-take-home': { hubHref: '/take-home', guideSlugs: ['salary-take-home', 'salary-sacrifice'], relatedCategories: ['uk-tax-take-home', 'freelance-rate', 'mortgage-affordability'] },
+  'salary-take-home': { hubHref: '/take-home', guideSlugs: ['salary-take-home', 'salary-sacrifice'], relatedCategories: ['tax', 'freelance-rate', 'mortgage-affordability'] },
   'mortgage-affordability': { hubHref: '/affordability', guideSlugs: ['mortgage-affordability', 'mortgage-repayment'], relatedCategories: ['mortgage-repayment', 'offset-mortgage', 'salary-take-home'] },
   'tdee-calorie': { hubHref: '/tdee', guideSlugs: ['tdee'], relatedCategories: ['subscription-drain', 'lifestyle-inflation', 'financial-crisis'] },
   'subscription-drain': { hubHref: '/subscriptions', guideSlugs: ['subscription-drain', 'save-for-goal'], relatedCategories: ['save-for-goal', 'compound-interest', 'lifestyle-inflation'] },
-  'freelance-rate': { hubHref: '/freelance', guideSlugs: ['freelance-rate', 'salary-take-home'], relatedCategories: ['salary-take-home', 'uk-tax-take-home', 'mortgage-affordability'] },
+  'freelance-rate': { hubHref: '/freelance', guideSlugs: ['freelance-rate', 'salary-take-home'], relatedCategories: ['salary-take-home', 'tax', 'mortgage-affordability'] },
   'lifestyle-inflation': { hubHref: '/lifestyle-inflation', guideSlugs: ['lifestyle-inflation', 'save-for-goal'], relatedCategories: ['subscription-drain', 'financial-crisis', 'retirement-savings'] },
   'financial-crisis': { hubHref: '/crisis', guideSlugs: ['financial-crisis', 'emergency-fund-how-much'], relatedCategories: ['save-for-goal', 'subscription-drain', 'lifestyle-inflation'] },
   'business-interruption': { hubHref: '/bi', guideSlugs: ['business-interruption'], relatedCategories: ['coverage-gap', 'total-cost-risk', 'risk-heatmap'] },
@@ -81,8 +81,12 @@ const CATEGORY_SUPPORT: Record<string, CategorySupport> = {
   'ltv-cac': { hubHref: '/ltv-cac', guideSlugs: ['private-credit-playbook'], relatedCategories: ['freelance-rate', 'salary-take-home', 'loss-probability'] },
   'loss-probability': { hubHref: '/loss-probability', guideSlugs: ['financial-crisis', 'business-interruption'], relatedCategories: ['risk-heatmap', 'coverage-gap', 'total-cost-risk'] },
   'cyber-limit': { hubHref: '/cyber-limit', guideSlugs: ['cyber-resilient-agency'], relatedCategories: ['cyber-risk-exposure', 'coverage-gap', 'total-cost-risk'] },
-  'uk-tax-take-home': { hubHref: '/take-home', guideSlugs: ['salary-take-home', 'salary-sacrifice'], relatedCategories: ['salary-take-home', 'pension-contribution-scenarios', 'freelance-rate'] },
-  'pension-contribution-scenarios': { hubHref: '/retirement', guideSlugs: ['retirement-savings', 'retirement-employer-contributions'], relatedCategories: ['retirement-savings', 'uk-tax-take-home', 'save-for-goal'] },
+  tax: { hubHref: '/take-home', guideSlugs: ['salary-take-home', 'salary-sacrifice'], relatedCategories: ['salary-take-home', 'pension-contribution-scenarios', 'freelance-rate'] },
+  wealth: { hubHref: '/savings', guideSlugs: ['compound-interest', 'save-for-goal'], relatedCategories: ['investing', 'compound-interest', 'retirement-savings'] },
+  loans: { hubHref: '/loan', guideSlugs: ['loan-repayment', 'mortgage-repayment'], relatedCategories: ['loan-repayment', 'mortgage-repayment', 'salary-take-home'] },
+  investing: { hubHref: '/compound', guideSlugs: ['compound-interest', 'retirement-savings'], relatedCategories: ['compound-interest', 'wealth', 'retirement'] },
+  retirement: { hubHref: '/retirement', guideSlugs: ['retirement-savings', 'retirement-employer-contributions'], relatedCategories: ['retirement-savings', 'pension-contribution-scenarios', 'tax'] },
+  'pension-contribution-scenarios': { hubHref: '/retirement', guideSlugs: ['retirement-savings', 'retirement-employer-contributions'], relatedCategories: ['retirement-savings', 'tax', 'save-for-goal'] },
 };
 
 function formatNumber(value: number): string {

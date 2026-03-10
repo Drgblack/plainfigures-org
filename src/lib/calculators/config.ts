@@ -10,6 +10,7 @@ export interface CalculatorConfig {
     h1: string;
   };
   formula: string;
+  isValidVariant?: (params: Record<string, ParamValue>) => boolean;
 }
 
 export type ParamDefinition = {
@@ -22,6 +23,16 @@ export type ParamDefinition = {
 
 type ParamValue = number | string;
 type ParamMap = Record<string, ParamValue>;
+
+function numberRange(start: number, end: number, step: number): number[] {
+  const values: number[] = [];
+
+  for (let value = start; value <= end; value += step) {
+    values.push(Number(value.toFixed(10)));
+  }
+
+  return values;
+}
 
 export const calculators: CalculatorConfig[] = [
   {
@@ -51,7 +62,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'annualRate', label: 'Annual rate', prefix: '%', step: 0.5, values: [4.5, 5, 4, 6, 7] },
       { key: 'termYears', label: 'Term', step: 5, values: [10, 15, 20, 30] },
     ],
-    maxVariants: 230,
+    maxVariants: 180,
     seoTemplate: {
       title: 'Savings Growth Calculator - {{initialDeposit}} plus {{monthlyContribution}} a month | Plain Figures',
       description: 'Formula-first savings growth projections for {{initialDeposit}}, {{monthlyContribution}} monthly, {{annualRate}} return, and {{termYears}} years.',
@@ -69,7 +80,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'mortgageRate', label: 'Mortgage rate', prefix: '%', step: 0.5, values: [4.5, 5, 4, 5.5, 6] },
       { key: 'monthlyRent', label: 'Monthly rent', prefix: '$', step: 250, values: [2000, 1800, 2500, 3000, 1500] },
     ],
-    maxVariants: 210,
+    maxVariants: 160,
     seoTemplate: {
       title: 'Rent vs Buy Calculator - {{homePrice}} home with {{downPaymentPct}} down | Plain Figures',
       description: 'Compare rent and buy maths for a {{homePrice}} home, {{downPaymentPct}} deposit, {{mortgageRate}} mortgage, and {{monthlyRent}} rent.',
@@ -139,7 +150,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'rate', label: 'Rate', prefix: '%', step: 0.5, values: [4.5, 5, 4, 3.5] },
       { key: 'termYears', label: 'Term', step: 5, values: [20, 25, 30, 15] },
     ],
-    maxVariants: 250,
+    maxVariants: 200,
     seoTemplate: {
       title: 'Offset Mortgage Calculator - {{balance}} balance with {{savings}} savings | Plain Figures',
       description: 'Offset mortgage maths for {{balance}} balance, {{savings}} savings, {{rate}} rate, and {{termYears}} years remaining.',
@@ -157,7 +168,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'termYears', label: 'Term', step: 5, values: [25, 30, 20, 15] },
       { key: 'monthlyOverpayment', label: 'Monthly overpayment', prefix: '$', step: 100, values: [100, 200, 300, 500] },
     ],
-    maxVariants: 230,
+    maxVariants: 180,
     seoTemplate: {
       title: 'Mortgage Overpayment Calculator - {{monthlyOverpayment}} extra each month | Plain Figures',
       description: 'See term reduction and interest saved by overpaying {{monthlyOverpayment}} a month on {{balance}} at {{rate}}.',
@@ -210,7 +221,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'rate', label: 'Stress rate', prefix: '%', step: 0.5, values: [5.5, 6.5, 7.5, 8.5, 4.5] },
       { key: 'incomeMultiple', label: 'Income multiple', step: 0.5, values: [4, 4.5, 5] },
     ],
-    maxVariants: 170,
+    maxVariants: 100,
     seoTemplate: {
       title: 'Mortgage Affordability Calculator - {{income}} income and {{depositPct}} deposit | Plain Figures',
       description: 'Estimate borrowing power from {{income}}, {{depositPct}} deposit, {{rate}} stress rate, and {{incomeMultiple}} income multiple.',
@@ -229,7 +240,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'sex', label: 'Sex', values: ['male', 'female'] },
       { key: 'activity', label: 'Activity', values: ['moderate', 'active', 'light', 'sedentary', 'very-active'] },
     ],
-    maxVariants: 170,
+    maxVariants: 100,
     seoTemplate: {
       title: 'TDEE Calculator - {{weightKg}}kg, {{heightCm}}cm, age {{age}} | Plain Figures',
       description: 'Estimate TDEE for {{weightKg}}kg, {{heightCm}}cm, age {{age}}, {{sex}}, and {{activity}} activity.',
@@ -282,7 +293,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'spendGrowth', label: 'Spending growth', prefix: '%', step: 1, values: [2, 4, 6, 8, 10] },
       { key: 'years', label: 'Years', step: 5, values: [10, 15, 20, 25] },
     ],
-    maxVariants: 160,
+    maxVariants: 90,
     seoTemplate: {
       title: 'Lifestyle Inflation Tracker - {{startingSpend}} monthly spend | Plain Figures',
       description: 'Model lifestyle creep for {{startingSpend}} starting spend, {{annualIncomeGrowth}} income growth, and {{spendGrowth}} spend growth.',
@@ -300,7 +311,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'incomeDropPct', label: 'Income drop', prefix: '%', step: 10, values: [100, 75, 50, 25, 0] },
       { key: 'spendingCutPct', label: 'Spending cut', prefix: '%', step: 10, values: [0, 10, 20, 30] },
     ],
-    maxVariants: 160,
+    maxVariants: 90,
     seoTemplate: {
       title: 'Financial Crisis Simulator - {{savings}} savings and {{monthlyBurn}} burn | Plain Figures',
       description: 'Emergency runway maths for {{savings}} savings, {{monthlyBurn}} monthly burn, and {{incomeDropPct}} income shock.',
@@ -318,7 +329,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'indemnityMonths', label: 'Indemnity period', step: 6, values: [12, 18, 24, 36] },
       { key: 'icowMonths', label: 'ICOW months', step: 3, values: [3, 6, 9] },
     ],
-    maxVariants: 150,
+    maxVariants: 60,
     seoTemplate: {
       title: 'Business Interruption Sum Insured Calculator - {{grossProfit}} gross profit | Plain Figures',
       description: 'BI sum insured modelling for {{grossProfit}} gross profit, {{growthUpliftPct}} uplift, and {{indemnityMonths}} month indemnity.',
@@ -336,7 +347,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'discountRate', label: 'Discount rate', prefix: '%', step: 1, values: [4, 5, 3, 6] },
       { key: 'dependants', label: 'Dependants', step: 1, values: [1, 2, 3] },
     ],
-    maxVariants: 150,
+    maxVariants: 60,
     seoTemplate: {
       title: 'Human Life Value Calculator - {{annualIncome}} income over {{yearsProtected}} years | Plain Figures',
       description: 'Present-value life cover estimate for {{annualIncome}} income, {{yearsProtected}} protection years, and {{dependants}} dependants.',
@@ -354,7 +365,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'customerRecords', label: 'Records', step: 10000, values: [10000, 50000, 100000, 1000] },
       { key: 'industryRisk', label: 'Industry risk', values: ['medium', 'elevated', 'high', 'low'] },
     ],
-    maxVariants: 140,
+    maxVariants: 70,
     seoTemplate: {
       title: 'Cyber Risk Exposure Calculator - {{annualRevenue}} revenue and {{customerRecords}} records | Plain Figures',
       description: 'Cyber exposure model for {{annualRevenue}} revenue, {{employeeCount}} employees, {{customerRecords}} records, and {{industryRisk}} industry risk.',
@@ -373,7 +384,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'riskControlCosts', label: 'Control costs', prefix: '$', step: 25000, values: [45000, 80000, 15000] },
       { key: 'revenue', label: 'Revenue', prefix: '$', step: 5000000, values: [10000000, 25000000, 50000000, 5000000] },
     ],
-    maxVariants: 140,
+    maxVariants: 70,
     seoTemplate: {
       title: 'Total Cost of Risk Calculator - {{premiums}} premiums and {{retainedLosses}} losses | Plain Figures',
       description: 'TCOR modelling for {{premiums}} premiums, {{retainedLosses}} losses, {{adminCosts}} admin, and {{riskControlCosts}} control spend.',
@@ -391,7 +402,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'riskCount', label: 'Risks scored', step: 5, values: [10, 20, 30, 50] },
       { key: 'velocity', label: 'Risk velocity', values: ['medium', 'high', 'low', 'critical'] },
     ],
-    maxVariants: 115,
+    maxVariants: 45,
     seoTemplate: {
       title: 'Risk Heat Map Calculator - likelihood {{likelihood}} and impact {{impact}} | Plain Figures',
       description: 'Score risks by {{likelihood}} likelihood, {{impact}} impact, {{riskCount}} items, and {{velocity}} velocity.',
@@ -409,7 +420,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'marketShockPct', label: 'Market shock', prefix: '%', step: 5, values: [15, 20, 10, 25] },
       { key: 'diversificationCredit', label: 'Diversification credit', prefix: '%', step: 5, values: [20, 15, 25, 10] },
     ],
-    maxVariants: 115,
+    maxVariants: 45,
     seoTemplate: {
       title: 'SCR Estimator - premium risk {{premiumRisk}} and reserve risk {{reserveRisk}} | Plain Figures',
       description: 'Indicative Solvency II SCR modelling for premium risk {{premiumRisk}}, reserve risk {{reserveRisk}}, and {{marketShockPct}} market shock.',
@@ -427,7 +438,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'lossPct', label: 'Loss severity', prefix: '%', step: 10, values: [25, 50, 75, 100] },
       { key: 'horizon', label: 'Scenario horizon', values: ['current', 'renewal', 'stress', 'growth'] },
     ],
-    maxVariants: 115,
+    maxVariants: 45,
     seoTemplate: {
       title: 'Coverage Gap Analysis - {{assetValue}} assets and {{insuredLimit}} limit | Plain Figures',
       description: 'Coverage-gap modelling for {{assetValue}} assets, {{insuredLimit}} limit, and {{lossPct}} loss severity.',
@@ -445,7 +456,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'churnRatePct', label: 'Monthly churn', prefix: '%', step: 0.5, values: [2.5, 3.5, 1.5, 5] },
       { key: 'cacPerCustomer', label: 'CAC', prefix: '$', step: 250, values: [500, 850, 1250, 250] },
     ],
-    maxVariants: 170,
+    maxVariants: 100,
     seoTemplate: {
       title: 'LTV/CAC Calculator - {{arpu}} ARPU, {{grossMarginPct}} margin, {{churnRatePct}} churn | Plain Figures',
       description: 'Unit-economics model for {{arpu}} ARPU, {{grossMarginPct}} margin, {{churnRatePct}} churn, and {{cacPerCustomer}} CAC.',
@@ -463,7 +474,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'severity', label: 'Severity band', values: ['low', 'medium', 'high', 'critical'] },
       { key: 'controlStrength', label: 'Control strength', values: ['strong', 'moderate', 'weak', 'minimal'] },
     ],
-    maxVariants: 115,
+    maxVariants: 45,
     seoTemplate: {
       title: 'Loss Probability Modeler - {{exposureCount}} exposures at {{baseProbabilityPct}} | Plain Figures',
       description: 'Loss-event modelling for {{exposureCount}} exposures, {{baseProbabilityPct}} base probability, and {{severity}} severity.',
@@ -481,7 +492,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'retention', label: 'Retention', prefix: '$', step: 50000, values: [25000, 50000, 100000, 250000] },
       { key: 'sector', label: 'Sector', values: ['saas', 'healthcare', 'retail', 'professional-services'] },
     ],
-    maxVariants: 115,
+    maxVariants: 45,
     seoTemplate: {
       title: 'Cyber Insurance Limit Calculator - {{revenue}} revenue and {{records}} records | Plain Figures',
       description: 'Indicative cyber-limit range for {{revenue}} revenue, {{records}} records, {{retention}} retention, and {{sector}} sector risk.',
@@ -491,21 +502,236 @@ export const calculators: CalculatorConfig[] = [
   },
   {
     id: 'uk-tax-take-home',
-    categorySlug: 'uk-tax-take-home',
-    name: 'UK Tax Take-Home Calculator',
+    categorySlug: 'tax',
+    name: 'UK Tax & NI Take-Home Calculator 2026/27',
     params: [
-      { key: 'gross', label: 'Gross salary', prefix: '£', step: 10000, values: [30000, 45000, 60000, 80000, 100000, 125140, 150000, 200000] },
-      { key: 'pensionRate', label: 'Pension rate', prefix: '%', step: 2.5, values: [0, 5, 8, 10, 15, 20, 25, 30] },
-      { key: 'studentLoanPlan', label: 'Student loan plan', values: ['none', 'plan-1', 'plan-2', 'plan-5'] },
-      { key: 'bonusMode', label: 'Bonus treatment', values: ['salary-only', 'include-bonus'] },
+      { key: 'salary', label: 'Annual Gross Salary (£)', prefix: '£', step: 2500, values: numberRange(10000, 250000, 2500) },
+      { key: 'taxYear', label: 'Tax Year', values: ['2026/27'] },
+      { key: 'pensionPercent', label: 'Pension Contribution %', prefix: '%', step: 1, values: numberRange(0, 20, 1) },
+      { key: 'studentLoanPlan', label: 'Student Loan Plan', values: ['None', 'Plan 1', 'Plan 2', 'Plan 4', 'Plan 5', 'Postgraduate'] },
+      { key: 'region', label: 'Tax Region', values: ['England', 'Scotland'] },
+      { key: 'otherDeductions', label: 'Other monthly deductions (£)', prefix: '£', step: 100, values: [0, 100, 200, 500, 1000] },
     ],
-    maxVariants: 400,
+    maxVariants: 1200,
     seoTemplate: {
-      title: 'UK Tax Take-Home Calculator - £{{gross}} salary after tax | Plain Figures',
-      description: 'UK take-home pay for £{{gross}} salary, {{pensionRate}} pension, {{studentLoanPlan}} student loan, and {{bonusMode}} treatment.',
-      h1: 'UK Tax Take-Home Calculator - £{{gross}} salary after tax',
+      title: '{{salary}} Salary After Tax & NI - UK {{taxYear}} Take-Home Pay Calculator | Plain Figures',
+      description: 'Formula-first UK take-home pay for {{salary}} in {{taxYear}}, with {{pensionPercent}} pension, {{studentLoanPlan}}, {{region}} rates, and {{otherDeductions}} monthly deductions.',
+      h1: '{{salary}} Salary After Tax & NI - UK {{taxYear}} Take-Home Pay Calculator',
     },
-    formula: 'Net pay = gross − income tax − National Insurance − pension − student loan deductions',
+    formula: '\\text{Net pay} = \\text{gross} - \\text{income tax} - \\text{NI} - \\text{student loan} - \\text{other deductions}',
+  },
+  {
+    id: 'net-worth-growth',
+    categorySlug: 'wealth',
+    name: 'Net Worth & Wealth Growth Calculator',
+    params: [
+      { key: 'currentNetWorth', label: 'Current net worth', prefix: '$', step: 50000, values: [-50000, 0, 50000, 150000, 300000] },
+      { key: 'monthlySavings', label: 'Monthly savings', prefix: '$', step: 250, values: [250, 750, 1500, 3000, 5000] },
+      { key: 'expectedReturnRate', label: 'Expected return rate', prefix: '%', step: 1, values: [4, 5, 6, 7, 8, 10] },
+      { key: 'inflationRate', label: 'Inflation rate', prefix: '%', step: 1, values: [1, 2, 3, 5] },
+      { key: 'timeHorizonYears', label: 'Time horizon years', step: 5, values: [5, 10, 20, 30, 40] },
+    ],
+    maxVariants: 1800,
+    seoTemplate: {
+      title: 'Project Your Net Worth in {{timeHorizonYears}} Years - {{monthlySavings}} a month at {{expectedReturnRate}} return | Plain Figures',
+      description: 'Net-worth projection using {{currentNetWorth}} starting wealth, {{monthlySavings}} monthly saving, {{expectedReturnRate}} returns, {{inflationRate}} inflation, and {{timeHorizonYears}} years.',
+      h1: 'Project Your Net Worth in {{timeHorizonYears}} Years',
+    },
+    formula: 'FV = NW_0(1+r)^t + PMT \\times \\frac{(1+r)^t - 1}{r}',
+  },
+  {
+    id: 'auto-loan',
+    categorySlug: 'loans',
+    name: 'Car Loan & PCP Calculator 2026',
+    params: [
+      { key: 'carPrice', label: 'Car price', prefix: '£', step: 4000, values: [8000, 15000, 22000, 30000, 45000, 60000] },
+      { key: 'depositPercent', label: 'Deposit percent', prefix: '%', step: 10, values: [0, 10, 20, 30, 40] },
+      { key: 'interestRate', label: 'Interest rate', prefix: '%', step: 1, values: [1.9, 3.9, 5.9, 7.9, 9.9, 12.9] },
+      { key: 'termYears', label: 'Term years', step: 1, values: [2, 3, 4, 5, 7] },
+      { key: 'balloonPercent', label: 'Balloon percent', prefix: '%', step: 10, values: [0, 20, 35] },
+      { key: 'includePCP', label: 'Include PCP', values: ['yes', 'no'] },
+    ],
+    maxVariants: 1400,
+    seoTemplate: {
+      title: '{{carPrice}} Car Loan Calculator - Monthly Payments & Total Cost | Plain Figures',
+      description: 'Car finance maths for {{carPrice}}, {{depositPercent}} deposit, {{interestRate}} APR, {{termYears}} years, {{balloonPercent}} balloon, and PCP {{includePCP}}.',
+      h1: '{{carPrice}} Car Loan Calculator - Monthly Payments & Total Cost',
+    },
+    formula: 'M = \\frac{(P-D-B)r}{1-(1+r)^{-n}}',
+    isValidVariant: (params) => {
+      const includePCP = params.includePCP === 'yes';
+      const balloonPercent = Number(params.balloonPercent);
+      const depositPercent = Number(params.depositPercent);
+      const termYears = Number(params.termYears);
+
+      if (!includePCP) {
+        return balloonPercent === 0;
+      }
+
+      return balloonPercent > 0 && termYears >= 3 && depositPercent + balloonPercent <= 70;
+    },
+  },
+  {
+    id: 'investment-growth',
+    categorySlug: 'investing',
+    name: 'Investment & Compound Growth Calculator',
+    params: [
+      { key: 'initialAmount', label: 'Initial amount', prefix: '£', step: 5000, values: [1000, 10000, 25000, 50000] },
+      { key: 'monthlyContribution', label: 'Monthly contribution', prefix: '£', step: 250, values: [0, 250, 500, 1000, 2500] },
+      { key: 'annualReturn', label: 'Annual return', prefix: '%', step: 1, values: [3, 5, 7, 9, 12, 15] },
+      { key: 'years', label: 'Years', step: 5, values: [1, 5, 10, 20, 40] },
+      { key: 'compoundingFrequency', label: 'Compounding frequency', values: ['monthly', 'quarterly', 'annual'] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: '{{initialAmount}} + {{monthlyContribution}} a month at {{annualReturn}} - Future Value in {{years}} Years | Plain Figures',
+      description: 'Future value of {{initialAmount}} plus {{monthlyContribution}} monthly at {{annualReturn}} for {{years}} years with {{compoundingFrequency}} compounding.',
+      h1: '{{initialAmount}} + {{monthlyContribution}} a Month at {{annualReturn}}',
+    },
+    formula: 'FV = P(1+\\frac{r}{n})^{nt} + PMT \\times \\frac{(1+\\frac{r}{n})^{nt}-1}{r/n}',
+  },
+  {
+    id: 'roth-vs-traditional',
+    categorySlug: 'retirement',
+    name: 'Roth vs Traditional IRA / 401(k) Calculator 2026',
+    params: [
+      { key: 'account', label: 'Account type', values: ['ira', '401k'] },
+      { key: 'currentAge', label: 'Current age', step: 10, values: [25, 35, 45, 55, 60] },
+      { key: 'retirementAge', label: 'Retirement age', step: 5, values: [60, 65, 67, 70, 75] },
+      { key: 'currentTaxBracket', label: 'Current tax bracket', prefix: '%', step: 10, values: [10, 12, 22, 24] },
+      { key: 'expectedRetirementBracket', label: 'Retirement tax bracket', prefix: '%', step: 10, values: [10, 12, 22] },
+      { key: 'annualContribution', label: 'Annual contribution', prefix: '$', step: 5000, values: [3000, 7500, 24500, 32500] },
+      { key: 'growthRate', label: 'Growth rate', prefix: '%', step: 1, values: [4, 6, 8] },
+      { key: 'yearsUntilRetirement', label: 'Years until retirement', step: 5, values: [5, 10, 15, 20, 30] },
+    ],
+    maxVariants: 1500,
+    seoTemplate: {
+      title: 'Roth vs Traditional {{account}} in 2026 - Should You Convert? Calculator | Plain Figures',
+      description: 'Compare Roth and Traditional {{account}} maths using age {{currentAge}}, retirement at {{retirementAge}}, {{annualContribution}} annual contributions, and {{growthRate}} growth.',
+      h1: 'Roth vs Traditional {{account}} in 2026',
+    },
+    formula: 'FV_{after\\ tax} = C \\times \\frac{(1+r)^t - 1}{r} \\times (1-\\tau)',
+    isValidVariant: (params) => {
+      const account = String(params.account);
+      const currentAge = Number(params.currentAge);
+      const retirementAge = Number(params.retirementAge);
+      const yearsUntilRetirement = Number(params.yearsUntilRetirement);
+      const annualContribution = Number(params.annualContribution);
+
+      if (retirementAge <= currentAge || retirementAge - currentAge !== yearsUntilRetirement) {
+        return false;
+      }
+
+      if (account === 'ira') {
+        const iraCap = currentAge >= 50 ? 8600 : 7500;
+        return annualContribution <= iraCap;
+      }
+
+      if (account === '401k') {
+        const catchUpCap = currentAge >= 60 && currentAge <= 63 ? 35750 : currentAge >= 50 ? 32500 : 24500;
+        return annualContribution <= catchUpCap;
+      }
+
+      return false;
+    },
+  },
+  {
+    id: 'side-hustle-profit',
+    categorySlug: 'business',
+    name: 'Side Hustle Profit & Self-Employment Tax Calculator 2026',
+    params: [
+      { key: 'monthlyIncome', label: 'Monthly Side Hustle Income (£/$)', step: 250, values: numberRange(500, 10000, 250) },
+      { key: 'businessExpenses', label: 'Monthly Business Expenses', step: 100, values: [0, 100, 250, 500, 1000, 2000, 5000] },
+      { key: 'country', label: 'Country (Tax Rules)', values: ['UK', 'US', 'Canada', 'Australia'] },
+      { key: 'deductions', label: 'Key Deductions', values: ['None', 'Home Office', 'Mileage', 'Equipment'] },
+      { key: 'taxBracket', label: 'Marginal Tax Rate % (estimate)', prefix: '%', step: 5, values: numberRange(10, 45, 5) },
+    ],
+    maxVariants: 1600,
+    seoTemplate: {
+      title: '{{monthlyIncome}} a Month Side Hustle Profit After Tax - 2026 Calculator | Plain Figures',
+      description: 'Estimate side-hustle profit after expenses, self-employment tax, and income tax using {{monthlyIncome}} monthly income, {{businessExpenses}} monthly expenses, {{country}} rules, {{deductions}}, and a {{taxBracket}} marginal rate.',
+      h1: '{{monthlyIncome}} a Month Side Hustle Profit After Tax',
+    },
+    formula: '\\text{Net} = \\text{gross} - \\text{expenses} - \\text{SE tax} - \\text{income tax}',
+  },
+  {
+    id: 'emergency-fund',
+    categorySlug: 'savings',
+    name: 'Emergency Fund Savings Goal Calculator 2026',
+    params: [
+      { key: 'monthlyExpenses', label: 'Monthly expenses', prefix: '£', step: 250, values: [1000, 1500, 2000, 2500, 3000, 4000, 5000, 6500, 8000, 10000] },
+      { key: 'monthsOfCoverage', label: 'Months of coverage', step: 1, values: numberRange(3, 12, 1) },
+      { key: 'currentSavings', label: 'Current savings', prefix: '£', step: 1000, values: [0, 1000, 3000, 5000, 10000, 15000, 20000, 30000, 40000, 50000] },
+      { key: 'monthlySaveAmount', label: 'Monthly save amount', prefix: '£', step: 100, values: [100, 250, 500, 750, 1000, 1250, 1500, 2000] },
+      { key: 'interestRate', label: 'Interest rate', prefix: '%', step: 0.25, values: [0, 0.5, 1, 2, 3, 4, 5] },
+    ],
+    maxVariants: 1800,
+    seoTemplate: {
+      title: 'Build {{monthsOfCoverage}} Months Emergency Fund - Save {{monthlySaveAmount}} a Month at {{interestRate}} | Plain Figures',
+      description: 'Work out how fast you can build a {{monthsOfCoverage}}-month emergency fund using {{monthlyExpenses}} monthly expenses, {{currentSavings}} current savings, {{monthlySaveAmount}} monthly saving, and {{interestRate}} interest.',
+      h1: 'Build {{monthsOfCoverage}} Months Emergency Fund',
+    },
+    formula: '\\text{Target fund} = \\text{monthly expenses} \\times \\text{months of coverage}',
+  },
+  {
+    id: 'crypto-allocation',
+    categorySlug: 'crypto-allocation',
+    name: 'Crypto Portfolio Allocation & Risk Calculator 2026',
+    params: [
+      { key: 'totalPortfolio', label: 'Total portfolio', prefix: '£', step: 5000, values: [5000, 10000, 25000, 50000, 100000, 250000, 500000] },
+      { key: 'cryptoPercent', label: 'Crypto allocation', prefix: '%', step: 5, values: numberRange(0, 50, 5) },
+      { key: 'bitcoinPercentOfCrypto', label: 'Bitcoin share of crypto', prefix: '%', step: 10, values: numberRange(30, 80, 10) },
+      { key: 'expectedCryptoReturn', label: 'Expected crypto return', prefix: '%', step: 5, values: numberRange(5, 40, 5) },
+      { key: 'volatilityFactor', label: 'Volatility factor', values: ['low', 'medium', 'high'] },
+      { key: 'rebalanceFrequency', label: 'Rebalance frequency', values: ['monthly', 'quarterly', 'yearly'] },
+    ],
+    maxVariants: 1400,
+    seoTemplate: {
+      title: '{{totalPortfolio}} Portfolio with {{cryptoPercent}} Crypto - Risk & Growth 2026 | Plain Figures',
+      description: 'Model crypto allocation risk and expected growth for a {{totalPortfolio}} portfolio with {{cryptoPercent}} in crypto, {{bitcoinPercentOfCrypto}} in bitcoin, {{expectedCryptoReturn}} expected crypto return, {{volatilityFactor}} volatility, and {{rebalanceFrequency}} rebalancing.',
+      h1: '{{totalPortfolio}} Portfolio with {{cryptoPercent}} Crypto',
+    },
+    formula: '\\text{Expected value} = P[(1-c)(1+r_b) + c(1+r_c)]',
+  },
+  {
+    id: 'divorce-finance',
+    categorySlug: 'life-events',
+    name: 'Divorce Financial Impact & Asset Split Calculator',
+    params: [
+      { key: 'combinedAssets', label: 'Combined assets', prefix: '£', step: 50000, values: [50000, 100000, 250000, 500000, 1000000, 1500000, 2000000] },
+      { key: 'debtTotal', label: 'Debt total', prefix: '£', step: 50000, values: [0, 25000, 50000, 100000, 250000, 500000] },
+      { key: 'incomeRatio', label: 'Income ratio for one spouse', prefix: '%', step: 5, values: numberRange(30, 70, 5) },
+      { key: 'children', label: 'Children', step: 1, values: numberRange(0, 5, 1) },
+      { key: 'alimonyMonths', label: 'Alimony months', step: 12, values: [0, 12, 24, 36, 60, 84, 120] },
+      { key: 'pensionSplitPercent', label: 'Pension split percent', prefix: '%', step: 10, values: [0, 10, 20, 30, 40, 50] },
+    ],
+    maxVariants: 1500,
+    seoTemplate: {
+      title: 'Divorce Asset Split Calculator - Your Share of {{combinedAssets}} | Plain Figures',
+      description: 'Illustrate divorce asset-split outcomes for {{combinedAssets}} assets, {{debtTotal}} debt, {{incomeRatio}} income ratio, {{children}} children, {{alimonyMonths}} alimony months, and a {{pensionSplitPercent}} pension split.',
+      h1: 'Divorce Asset Split Calculator - Your Share of {{combinedAssets}}',
+    },
+    formula: '\\text{Net marital estate} = \\text{assets} - \\text{debts}',
+  },
+  {
+    id: 'cost-of-living',
+    categorySlug: 'planning',
+    name: 'Cost of Living Comparison & Relocation Calculator 2026',
+    params: [
+      { key: 'currentCity', label: 'Current city', values: ['London', 'New York', 'Berlin', 'Sydney', 'Toronto', 'Paris', 'Singapore', 'Amsterdam', 'Dubai', 'Dublin', 'Los Angeles', 'Chicago', 'Melbourne', 'Vancouver', 'Manchester', 'Madrid', 'Hong Kong', 'Tokyo', 'San Francisco', 'Brisbane'] },
+      { key: 'targetCity', label: 'Target city', values: ['London', 'New York', 'Berlin', 'Sydney', 'Toronto', 'Paris', 'Singapore', 'Amsterdam', 'Dubai', 'Dublin', 'Los Angeles', 'Chicago', 'Melbourne', 'Vancouver', 'Manchester', 'Madrid', 'Hong Kong', 'Tokyo', 'San Francisco', 'Brisbane', 'Lisbon', 'Austin', 'Seattle', 'Munich', 'Auckland', 'Perth', 'Montreal', 'Boston', 'Copenhagen', 'Zurich'] },
+      { key: 'salary', label: 'Salary', prefix: '£', step: 10000, values: [30000, 40000, 50000, 65000, 80000, 100000, 150000, 200000] },
+      { key: 'familySize', label: 'Family size', step: 1, values: numberRange(1, 6, 1) },
+      { key: 'housingType', label: 'Housing type', values: ['Rent 1-bed', 'Rent 3-bed', 'Buy'] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'Cost of Living: {{currentCity}} vs {{targetCity}} - Salary Needed in 2026 | Plain Figures',
+      description: 'Compare cost of living between {{currentCity}} and {{targetCity}} using {{salary}} income, family size {{familySize}}, and {{housingType}} housing assumptions.',
+      h1: 'Cost of Living: {{currentCity}} vs {{targetCity}}',
+    },
+    formula: '\\text{Required salary} = \\text{base salary} \\times \\frac{\\text{target cost index}}{\\text{current cost index}}',
+    isValidVariant: (params) => String(params.currentCity) !== String(params.targetCity),
   },
   {
     id: 'pension-contribution-scenarios',
@@ -517,7 +743,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'employerPct', label: 'Employer contribution', prefix: '%', step: 2.5, values: [3, 5, 8, 10] },
       { key: 'years', label: 'Projection horizon', step: 5, values: [10, 15, 20, 25] },
     ],
-    maxVariants: 400,
+    maxVariants: 250,
     seoTemplate: {
       title: 'Pension Contribution Scenarios - {{salary}} salary with {{employeePct}} + {{employerPct}} | Plain Figures',
       description: 'Compare pension contribution scenarios for {{salary}} salary, {{employeePct}} employee, {{employerPct}} employer, and {{years}} years.',
@@ -541,7 +767,26 @@ const slugBuilders: Partial<Record<string, (params: ParamMap) => string>> = {
   'ltv-cac': ({ arpu, grossMarginPct, churnRatePct, cacPerCustomer }) => `ltv-cac-${arpu}-arpu-${grossMarginPct}-margin-${churnRatePct}-churn-${cacPerCustomer}-cac`,
   'cyber-risk-exposure': ({ annualRevenue, employeeCount, customerRecords, industryRisk }) => `cyber-risk-exposure-${annualRevenue}-revenue-${employeeCount}-employees-${customerRecords}-records-${industryRisk}-risk`,
   'total-cost-risk': ({ premiums, retainedLosses, adminCosts, riskControlCosts, revenue }) => `total-cost-risk-${premiums}-premiums-${retainedLosses}-losses-${adminCosts}-admin-${riskControlCosts}-control-${revenue}-revenue`,
-  'uk-tax-take-home': ({ gross, pensionRate, studentLoanPlan, bonusMode }) => `uk-tax-take-home-${gross}-salary-${pensionRate}-pension-${studentLoanPlan}-${bonusMode}`,
+  'uk-tax-take-home': ({ salary, taxYear, pensionPercent, studentLoanPlan, region, otherDeductions }) =>
+    `uk-tax-take-home-${salary}-salary-${taxYear}-${pensionPercent}-pension-${normalizeSlugPart(studentLoanPlan)}-${normalizeSlugPart(region)}-${otherDeductions}-deductions`,
+  'net-worth-growth': ({ currentNetWorth, monthlySavings, expectedReturnRate, inflationRate, timeHorizonYears }) =>
+    `net-worth-growth-${currentNetWorth}-net-worth-${monthlySavings}-monthly-${expectedReturnRate}-return-${inflationRate}-inflation-${timeHorizonYears}-years`,
+  'auto-loan': ({ carPrice, depositPercent, interestRate, termYears, balloonPercent, includePCP }) =>
+    `auto-loan-${carPrice}-price-${depositPercent}-deposit-${interestRate}-apr-${termYears}-years-${balloonPercent}-balloon-${normalizeSlugPart(includePCP)}`,
+  'investment-growth': ({ initialAmount, monthlyContribution, annualReturn, years, compoundingFrequency }) =>
+    `investment-growth-${initialAmount}-initial-${monthlyContribution}-monthly-${annualReturn}-return-${years}-years-${normalizeSlugPart(compoundingFrequency)}`,
+  'roth-vs-traditional': ({ account, currentAge, retirementAge, currentTaxBracket, expectedRetirementBracket, annualContribution, growthRate, yearsUntilRetirement }) =>
+    `roth-vs-traditional-${normalizeSlugPart(account)}-${currentAge}-age-${retirementAge}-retire-${currentTaxBracket}-current-${expectedRetirementBracket}-retirement-${annualContribution}-contribution-${growthRate}-growth-${yearsUntilRetirement}-years`,
+  'side-hustle-profit': ({ monthlyIncome, businessExpenses, country, deductions, taxBracket }) =>
+    `side-hustle-profit-${monthlyIncome}-income-${businessExpenses}-expenses-${normalizeSlugPart(country)}-${normalizeSlugPart(deductions)}-${taxBracket}-tax`,
+  'emergency-fund': ({ monthlyExpenses, monthsOfCoverage, currentSavings, monthlySaveAmount, interestRate }) =>
+    `emergency-fund-${monthlyExpenses}-expenses-${monthsOfCoverage}-months-${currentSavings}-saved-${monthlySaveAmount}-monthly-${interestRate}-rate`,
+  'crypto-allocation': ({ totalPortfolio, cryptoPercent, bitcoinPercentOfCrypto, expectedCryptoReturn, volatilityFactor, rebalanceFrequency }) =>
+    `crypto-allocation-${totalPortfolio}-portfolio-${cryptoPercent}-crypto-${bitcoinPercentOfCrypto}-bitcoin-${expectedCryptoReturn}-return-${normalizeSlugPart(volatilityFactor)}-${normalizeSlugPart(rebalanceFrequency)}`,
+  'divorce-finance': ({ combinedAssets, debtTotal, incomeRatio, children, alimonyMonths, pensionSplitPercent }) =>
+    `divorce-finance-${combinedAssets}-assets-${debtTotal}-debt-${incomeRatio}-income-${children}-children-${alimonyMonths}-alimony-${pensionSplitPercent}-pension`,
+  'cost-of-living': ({ currentCity, targetCity, salary, familySize, housingType }) =>
+    `cost-of-living-${normalizeSlugPart(currentCity)}-to-${normalizeSlugPart(targetCity)}-${salary}-salary-${familySize}-family-${normalizeSlugPart(housingType)}`,
   'pension-contribution-scenarios': ({ salary, employeePct, employerPct, years }) => `pension-contribution-scenarios-${salary}-salary-${employeePct}-employee-${employerPct}-employer-${years}-years`,
 };
 
@@ -573,7 +818,9 @@ function enumerateVariants(config: CalculatorConfig): { params: ParamMap; score:
 
   const visit = (index: number, current: ParamMap, score: number) => {
     if (index === config.params.length) {
-      results.push({ params: current, score });
+      if (!config.isValidVariant || config.isValidVariant(current)) {
+        results.push({ params: current, score });
+      }
       return;
     }
 

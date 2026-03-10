@@ -2,13 +2,17 @@
 
 import { useMemo, useState } from 'react';
 import {
+  calculateAutoLoan,
   calculateCompound,
+  calculateInvestmentGrowth,
   calculateLoan,
   calculateMortgage,
+  calculateNetWorthGrowth,
   calculateOffset,
   calculateOverpayment,
   calculateRentVsBuy,
   calculateRetirement,
+  calculateRothVsTraditional,
   calculateSaveGoal,
   calculateSavings,
 } from '@/lib/calculations';
@@ -26,7 +30,7 @@ import {
   calculateLTVCAC,
   calculateTCOR,
 } from '@/lib/insurance-calculations';
-import { calculateTakeHome, CountryCode } from '@/lib/tax-calculations';
+import { calculateTakeHome, calculateUkTaxTakeHome2026, CountryCode } from '@/lib/tax-calculations';
 import { CalculatorConfig, ParamDefinition } from '@/lib/calculators/config';
 import styles from './ProgrammaticCalculatorExplorer.module.css';
 
@@ -151,34 +155,6 @@ function formatParamValue(value: number | string, param: ParamDefinition): strin
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-function ukTakeHome(gross: number, pensionRate: number, studentLoanPlan: string, bonusMode: string) {
-  const bonus = bonusMode === 'include-bonus' ? gross * 0.1 : 0;
-  const grossWithBonus = gross + bonus;
-  const pension = grossWithBonus * (pensionRate / 100);
-  const taxableSalary = Math.max(0, grossWithBonus - pension);
-  const baseline = calculateTakeHome(taxableSalary, 'UK');
-  const loanThreshold = {
-    none: Infinity,
-    'plan-1': 26065,
-    'plan-2': 28470,
-    'plan-5': 25000,
-  }[studentLoanPlan] ?? Infinity;
-  const studentLoan = Number.isFinite(loanThreshold)
-    ? Math.max(0, taxableSalary - loanThreshold) * 0.09
-    : 0;
-  const netAnnual = baseline.netAnnual - studentLoan;
-  const totalDeductions = grossWithBonus - netAnnual;
-
-  return {
-    grossWithBonus,
-    pension,
-    studentLoan,
-    netAnnual,
-    netMonthly: netAnnual / 12,
-    deductionRate: grossWithBonus > 0 ? (totalDeductions / grossWithBonus) * 100 : 0,
-  };
-}
-
 function pensionProjection(salary: number, employeePct: number, employerPct: number, years: number) {
   const annualContribution = salary * ((employeePct + employerPct) / 100);
   let pot = 0;
@@ -254,6 +230,23 @@ function calculateExplorerResult(config: CalculatorConfig, params: ParamState): 
         ],
       };
     }
+    case 'investment-growth': {
+      const result = calculateInvestmentGrowth(
+        toNumber(params.initialAmount),
+        toNumber(params.monthlyContribution),
+        toNumber(params.annualReturn),
+        toNumber(params.years),
+        COMPOUND_FREQUENCY_MAP[String(params.compoundingFrequency)] ?? 12
+      );
+      return {
+        summary: `This version keeps the mechanics explicit: starting capital, regular monthly additions, compounding frequency, and a fixed annual return. That makes it easier to see how much of the end value comes from saving versus market growth.`,
+        metrics: [
+          { label: 'Future value', value: formatMoney(result.futureValue, currency), numeric: result.futureValue, tone: 'positive' },
+          { label: 'Total contributions', value: formatMoney(result.totalContributions, currency), numeric: result.totalContributions },
+          { label: 'Investment growth', value: formatMoney(result.totalGrowth, currency), numeric: result.totalGrowth, tone: 'positive' },
+        ],
+      };
+    }
     case 'loan-repayment': {
       const result = calculateLoan(toNumber(params.amount), toNumber(params.rate), toNumber(params.termMonths));
       return {
@@ -262,6 +255,23 @@ function calculateExplorerResult(config: CalculatorConfig, params: ParamState): 
           { label: 'Monthly payment', value: formatMoney(result.monthlyPayment, currency), numeric: result.monthlyPayment, tone: 'warning' },
           { label: 'Total interest', value: formatMoney(result.totalInterest, currency), numeric: result.totalInterest, tone: 'negative' },
           { label: 'Effective APR', value: formatPercent(result.apr), numeric: result.apr },
+        ],
+      };
+    }
+    case 'auto-loan': {
+      const result = calculateAutoLoan(
+        toNumber(params.carPrice),
+        toNumber(params.depositPercent),
+        toNumber(params.interestRate),
+        toNumber(params.termYears),
+        String(params.includePCP) === 'yes' ? toNumber(params.balloonPercent) : 0
+      );
+      return {
+        summary: `Car finance becomes easier to compare when deposit, APR, term, and residual value are all visible. PCP scenarios can make the monthly payment look lighter, but the balloon still remains part of the cost.`,
+        metrics: [
+          { label: 'Monthly payment', value: formatMoney(result.monthlyPayment, 'GBP'), numeric: result.monthlyPayment, tone: 'warning' },
+          { label: 'Total interest', value: formatMoney(result.totalInterest, 'GBP'), numeric: result.totalInterest, tone: 'negative' },
+          { label: 'Balloon / final payment', value: formatMoney(result.balloonPayment, 'GBP'), numeric: result.balloonPayment },
         ],
       };
     }
@@ -274,6 +284,24 @@ function calculateExplorerResult(config: CalculatorConfig, params: ParamState): 
           { label: 'Projected pot', value: formatMoney(result.projectedPot, currency), numeric: result.projectedPot, tone: 'positive' },
           { label: 'Total contributions', value: formatMoney(result.totalContributions, currency), numeric: result.totalContributions },
           { label: 'Growth', value: formatMoney(result.totalGrowth, currency), numeric: result.totalGrowth, tone: 'positive' },
+        ],
+      };
+    }
+    case 'roth-vs-traditional': {
+      const account = String(params.account).toUpperCase();
+      const result = calculateRothVsTraditional(
+        toNumber(params.annualContribution),
+        toNumber(params.growthRate),
+        toNumber(params.yearsUntilRetirement),
+        toNumber(params.currentTaxBracket),
+        toNumber(params.expectedRetirementBracket)
+      );
+      return {
+        summary: `The useful comparison here is after-tax retirement value, not just headline account balance. Roth keeps the future pot cleaner; Traditional creates an upfront tax benefit that may matter more if your retirement bracket is lower.`,
+        metrics: [
+          { label: `Roth ${account} value`, value: formatMoney(result.rothFutureValue, 'USD'), numeric: result.rothFutureValue, tone: result.advantage === 'roth' ? 'positive' : undefined },
+          { label: `Traditional ${account} after tax`, value: formatMoney(result.traditionalAfterTaxValue, 'USD'), numeric: result.traditionalAfterTaxValue, tone: result.advantage === 'traditional' ? 'positive' : undefined },
+          { label: 'Current-year tax saving', value: formatMoney(result.annualTaxSaving, 'USD'), numeric: result.annualTaxSaving, tone: 'warning', sub: `${formatPercent(toNumber(params.currentTaxBracket), 0)} marginal rate` },
         ],
       };
     }
@@ -465,6 +493,23 @@ function calculateExplorerResult(config: CalculatorConfig, params: ParamState): 
         ],
       };
     }
+    case 'net-worth-growth': {
+      const result = calculateNetWorthGrowth(
+        toNumber(params.currentNetWorth),
+        toNumber(params.monthlySavings),
+        toNumber(params.expectedReturnRate),
+        toNumber(params.inflationRate),
+        toNumber(params.timeHorizonYears)
+      );
+      return {
+        summary: `Net worth is a stock-plus-flow problem: where you start matters, but the monthly surplus and the real return assumption usually drive the long-run shape. Adding inflation keeps the nominal number anchored to purchasing power.`,
+        metrics: [
+          { label: 'Projected net worth', value: formatMoney(result.projectedNetWorth, currency), numeric: result.projectedNetWorth, tone: 'positive' },
+          { label: 'Inflation-adjusted value', value: formatMoney(result.inflationAdjustedValue, currency), numeric: result.inflationAdjustedValue },
+          { label: 'Growth above contributions', value: formatMoney(result.investmentGrowth, currency), numeric: result.investmentGrowth, tone: 'positive' },
+        ],
+      };
+    }
     case 'cyber-risk-exposure': {
       const result = calculateCyberRisk(
         toNumber(params.annualRevenue),
@@ -605,18 +650,19 @@ function calculateExplorerResult(config: CalculatorConfig, params: ParamState): 
       };
     }
     case 'uk-tax-take-home': {
-      const result = ukTakeHome(
-        toNumber(params.gross),
-        toNumber(params.pensionRate),
-        String(params.studentLoanPlan),
-        String(params.bonusMode)
-      );
+      const result = calculateUkTaxTakeHome2026({
+        salary: toNumber(params.salary),
+        pensionPercent: toNumber(params.pensionPercent),
+        studentLoanPlan: String(params.studentLoanPlan) as 'None' | 'Plan 1' | 'Plan 2' | 'Plan 4' | 'Plan 5' | 'Postgraduate',
+        region: String(params.region) as 'England' | 'Scotland',
+        otherDeductions: toNumber(params.otherDeductions),
+      });
       return {
-        summary: `This version adjusts the UK take-home estimate for employee pension deduction, student loan plan, and an optional bonus assumption. It is still illustrative, but it is closer to how salary packaging changes real cash pay.`,
+        summary: `This version uses the 2026/27 UK tax-year structure with region-specific income-tax bands, Class 1 employee NI, student-loan thresholds, pension contributions, and recurring monthly deductions. It is still illustrative, but it is much closer to a real payroll-style breakdown than a flat net-pay ratio.`,
         metrics: [
           { label: 'Net annual', value: formatMoney(result.netAnnual, 'GBP'), numeric: result.netAnnual, tone: 'positive' },
           { label: 'Net monthly', value: formatMoney(result.netMonthly, 'GBP'), numeric: result.netMonthly, tone: 'positive' },
-          { label: 'Pension withheld', value: formatMoney(result.pension, 'GBP'), numeric: result.pension, tone: 'warning' },
+          { label: 'Income tax + NI', value: formatMoney(result.incomeTax + result.nationalInsurance, 'GBP'), numeric: result.incomeTax + result.nationalInsurance, tone: 'warning' },
         ],
       };
     }

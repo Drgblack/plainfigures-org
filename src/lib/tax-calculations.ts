@@ -57,8 +57,137 @@ function calcUK(gross: number): TaxResult {
   };
 }
 
+export interface UkTaxTakeHome2026Input {
+  salary: number;
+  pensionPercent: number;
+  studentLoanPlan: 'None' | 'Plan 1' | 'Plan 2' | 'Plan 4' | 'Plan 5' | 'Postgraduate';
+  region: 'England' | 'Scotland';
+  otherDeductions: number;
+}
+
+export interface UkTaxTakeHome2026Result {
+  grossAnnual: number;
+  taxablePay: number;
+  pensionAnnual: number;
+  incomeTax: number;
+  nationalInsurance: number;
+  studentLoan: number;
+  otherDeductionsAnnual: number;
+  netAnnual: number;
+  netMonthly: number;
+  effectiveTaxRate: number;
+}
+
+function ukPersonalAllowance2026(salary: number): number {
+  if (salary <= 100000) {
+    return 12570;
+  }
+
+  return Math.max(0, 12570 - (salary - 100000) / 2);
+}
+
+function ukIncomeTaxEngland2026(taxableIncome: number): number {
+  if (taxableIncome <= 0) {
+    return 0;
+  }
+
+  const basicBand = 37700;
+  const higherBand = 125140 - 12570;
+
+  let tax = Math.min(taxableIncome, basicBand) * 0.2;
+  tax += Math.min(Math.max(0, taxableIncome - basicBand), higherBand - basicBand) * 0.4;
+  tax += Math.max(0, taxableIncome - higherBand) * 0.45;
+  return tax;
+}
+
+function ukIncomeTaxScotland2026(taxableIncome: number): number {
+  if (taxableIncome <= 0) {
+    return 0;
+  }
+
+  const bands: Array<[number, number]> = [
+    [2827, 0.19],
+    [11162, 0.2],
+    [17101, 0.21],
+    [31338, 0.42],
+    [50140, 0.45],
+    [Infinity, 0.48],
+  ];
+
+  let remaining = taxableIncome;
+  let tax = 0;
+
+  for (const [width, rate] of bands) {
+    const slice = Math.min(remaining, width);
+    if (slice <= 0) {
+      break;
+    }
+    tax += slice * rate;
+    remaining -= slice;
+  }
+
+  return tax;
+}
+
+export function calculateUkTaxTakeHome2026({
+  salary,
+  pensionPercent,
+  studentLoanPlan,
+  region,
+  otherDeductions,
+}: UkTaxTakeHome2026Input): UkTaxTakeHome2026Result {
+  const pensionAnnual = salary * (pensionPercent / 100);
+  const taxablePay = Math.max(0, salary - pensionAnnual);
+  const personalAllowance = ukPersonalAllowance2026(taxablePay);
+  const taxableIncome = Math.max(0, taxablePay - personalAllowance);
+  const incomeTax = region === 'Scotland'
+    ? ukIncomeTaxScotland2026(taxableIncome)
+    : ukIncomeTaxEngland2026(taxableIncome);
+
+  const primaryThreshold = 12570;
+  const upperEarningsLimit = 50270;
+  const nationalInsurance = taxablePay <= primaryThreshold
+    ? 0
+    : Math.min(taxablePay - primaryThreshold, upperEarningsLimit - primaryThreshold) * 0.08
+      + Math.max(0, taxablePay - upperEarningsLimit) * 0.02;
+
+  const loanThresholds: Record<UkTaxTakeHome2026Input['studentLoanPlan'], number> = {
+    None: Infinity,
+    'Plan 1': 26900,
+    'Plan 2': 29385,
+    'Plan 4': 33795,
+    'Plan 5': 25000,
+    Postgraduate: 21000,
+  };
+  const loanRates: Record<UkTaxTakeHome2026Input['studentLoanPlan'], number> = {
+    None: 0,
+    'Plan 1': 0.09,
+    'Plan 2': 0.09,
+    'Plan 4': 0.09,
+    'Plan 5': 0.09,
+    Postgraduate: 0.06,
+  };
+  const studentLoan = Math.max(0, taxablePay - loanThresholds[studentLoanPlan]) * loanRates[studentLoanPlan];
+  const otherDeductionsAnnual = otherDeductions * 12;
+  const totalDeductions = incomeTax + nationalInsurance + studentLoan + otherDeductionsAnnual + pensionAnnual;
+  const netAnnual = Math.max(0, salary - totalDeductions);
+
+  return {
+    grossAnnual: salary,
+    taxablePay,
+    pensionAnnual,
+    incomeTax,
+    nationalInsurance,
+    studentLoan,
+    otherDeductionsAnnual,
+    netAnnual,
+    netMonthly: netAnnual / 12,
+    effectiveTaxRate: salary > 0 ? (totalDeductions / salary) * 100 : 0,
+  };
+}
+
 // ── Germany ───────────────────────────────────────────────────────────────────
-function calcDE(gross: number, taxClass: number = 1): TaxResult {
+function calcDE(gross: number): TaxResult {
   // Approximate German progressive tax 2024
   let incomeTax = 0;
   const z1 = 11604, z2 = 17005, z3 = 66760, z4 = 277825;

@@ -127,6 +127,51 @@ export function calculateCompound(
   };
 }
 
+export interface InvestmentGrowthResult {
+  futureValue: number;
+  totalContributions: number;
+  totalGrowth: number;
+  yearlyBreakdown: { year: number; balance: number; contributions: number; growth: number }[];
+}
+
+export function calculateInvestmentGrowth(
+  initialAmount: number,
+  monthlyContribution: number,
+  annualReturn: number,
+  years: number,
+  compoundingFrequency: number
+): InvestmentGrowthResult {
+  const periods = compoundingFrequency * years;
+  const periodicRate = annualReturn / 100 / compoundingFrequency;
+  const contributionPerPeriod = monthlyContribution * (12 / compoundingFrequency);
+  const yearlyBreakdown = [];
+
+  let balance = initialAmount;
+  let totalContributions = initialAmount;
+
+  for (let period = 1; period <= periods; period += 1) {
+    balance = balance * (1 + periodicRate) + contributionPerPeriod;
+    totalContributions += contributionPerPeriod;
+
+    if (period % compoundingFrequency === 0) {
+      const year = period / compoundingFrequency;
+      yearlyBreakdown.push({
+        year,
+        balance,
+        contributions: totalContributions,
+        growth: balance - totalContributions,
+      });
+    }
+  }
+
+  return {
+    futureValue: balance,
+    totalContributions,
+    totalGrowth: balance - totalContributions,
+    yearlyBreakdown,
+  };
+}
+
 // ── Loan Repayment ────────────────────────────────────────────────────────────
 
 export interface LoanResult {
@@ -165,6 +210,51 @@ export function calculateLoan(
   }
 
   return { monthlyPayment, totalPayment, totalInterest, apr, schedule };
+}
+
+export interface AutoLoanResult {
+  depositAmount: number;
+  amountFinanced: number;
+  balloonPayment: number;
+  monthlyPayment: number;
+  totalPaid: number;
+  totalInterest: number;
+}
+
+export function calculateAutoLoan(
+  carPrice: number,
+  depositPercent: number,
+  annualRate: number,
+  termYears: number,
+  balloonPercent: number
+): AutoLoanResult {
+  const depositAmount = carPrice * (depositPercent / 100);
+  const balloonPayment = carPrice * (balloonPercent / 100);
+  const amountFinanced = Math.max(0, carPrice - depositAmount);
+  const n = termYears * 12;
+  const r = annualRate / 100 / 12;
+
+  let monthlyPayment = 0;
+  if (n > 0) {
+    if (r === 0) {
+      monthlyPayment = (amountFinanced - balloonPayment) / n;
+    } else {
+      const discountedBalloon = balloonPayment / Math.pow(1 + r, n);
+      monthlyPayment = ((amountFinanced - discountedBalloon) * r) / (1 - Math.pow(1 + r, -n));
+    }
+  }
+
+  const totalPaid = depositAmount + monthlyPayment * n + balloonPayment;
+  const totalInterest = totalPaid - carPrice;
+
+  return {
+    depositAmount,
+    amountFinanced,
+    balloonPayment,
+    monthlyPayment,
+    totalPaid,
+    totalInterest,
+  };
 }
 
 // ── Retirement / Pension ──────────────────────────────────────────────────────
@@ -214,6 +304,67 @@ export function calculateRetirement(
     totalGrowth: balance - totalContributions,
     monthlyIncomeFrom: (balance * 0.04) / 12,
     yearlyBreakdown,
+  };
+}
+
+export interface NetWorthGrowthResult {
+  projectedNetWorth: number;
+  totalContributions: number;
+  investmentGrowth: number;
+  inflationAdjustedValue: number;
+}
+
+export function calculateNetWorthGrowth(
+  currentNetWorth: number,
+  monthlySavings: number,
+  annualReturn: number,
+  inflationRate: number,
+  years: number
+): NetWorthGrowthResult {
+  const nominal = calculateInvestmentGrowth(currentNetWorth, monthlySavings, annualReturn, years, 12);
+  const inflationAdjustedValue = nominal.futureValue / Math.pow(1 + inflationRate / 100, years);
+
+  return {
+    projectedNetWorth: nominal.futureValue,
+    totalContributions: nominal.totalContributions,
+    investmentGrowth: nominal.totalGrowth,
+    inflationAdjustedValue,
+  };
+}
+
+export interface RothTraditionalResult {
+  rothFutureValue: number;
+  traditionalPretaxValue: number;
+  traditionalAfterTaxValue: number;
+  annualTaxSaving: number;
+  advantage: 'roth' | 'traditional' | 'tie';
+}
+
+export function calculateRothVsTraditional(
+  annualContribution: number,
+  annualGrowthRate: number,
+  years: number,
+  currentTaxBracket: number,
+  expectedRetirementBracket: number
+): RothTraditionalResult {
+  const roth = calculateInvestmentGrowth(0, annualContribution / 12, annualGrowthRate, years, 12);
+  const traditionalPretaxValue = roth.futureValue;
+  const traditionalAfterTaxValue = traditionalPretaxValue * (1 - expectedRetirementBracket / 100);
+  const annualTaxSaving = annualContribution * (currentTaxBracket / 100);
+
+  let advantage: RothTraditionalResult['advantage'] = 'tie';
+  if (roth.futureValue > traditionalAfterTaxValue) {
+    advantage = 'roth';
+  } else if (traditionalAfterTaxValue > roth.futureValue) {
+    advantage = 'traditional';
+  }
+
+  return {
+    rothFutureValue: roth.futureValue,
+    traditionalPretaxValue,
+    traditionalAfterTaxValue,
+    annualTaxSaving,
+    advantage,
   };
 }
 
@@ -271,20 +422,16 @@ export function calculateOffset(
   let cumOffInt = 0;
 
   for (let year = 1; year <= termYears; year++) {
-    let yearStdInt = 0;
-    let yearOffInt = 0;
-    for (let m = 0; m < 12; m++) {
-      const stdInterest = stdBal * r;
-      yearStdInt += stdInterest;
-      cumStdInt += stdInterest;
-      stdBal = Math.max(0, stdBal - (standardPayment - stdInterest));
+      for (let m = 0; m < 12; m++) {
+        const stdInterest = stdBal * r;
+        cumStdInt += stdInterest;
+        stdBal = Math.max(0, stdBal - (standardPayment - stdInterest));
 
-      const effBal = Math.max(0, offBal - offsetSavings);
-      const offInterest = effBal * r;
-      yearOffInt += offInterest;
-      cumOffInt += offInterest;
-      offBal = Math.max(0, offBal - (standardPayment - offInterest));
-    }
+        const effBal = Math.max(0, offBal - offsetSavings);
+        const offInterest = effBal * r;
+        cumOffInt += offInterest;
+        offBal = Math.max(0, offBal - (standardPayment - offInterest));
+      }
     yearlyComparison.push({ year, standardInterest: cumStdInt, offsetInterest: cumOffInt, saving: cumStdInt - cumOffInt });
   }
 
@@ -328,8 +475,6 @@ export function calculateOverpayment(
   let ovTotalInterest = 0;
   const yearlyComparison = [];
   let stdBal = mortgageBalance;
-  let ovBal = mortgageBalance;
-
   for (let m = 0; m < n; m++) {
     const interest = balance * r;
     ovTotalInterest += interest;

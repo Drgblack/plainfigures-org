@@ -1,7 +1,7 @@
 import { getAllProgrammaticPages } from '@/lib/calculators/generator';
 import { MetadataRoute } from 'next';
 
-const now = new Date();
+export const revalidate = 86400;
 
 const STATIC_PAGE_URLS = [
   'https://www.plainfigures.org',
@@ -103,7 +103,12 @@ const LEARN_EXTENSION_URLS = [
   'https://www.plainfigures.org/learn/freelance-day-rate-from-salary',
 ];
 
-function createEntries(urls: string[], changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'], priority: number): MetadataRoute.Sitemap {
+function createEntries(
+  urls: string[],
+  changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'],
+  priority: number,
+  now: Date
+): MetadataRoute.Sitemap {
   return urls.map((url) => ({
     url,
     lastModified: now,
@@ -113,12 +118,13 @@ function createEntries(urls: string[], changeFrequency: MetadataRoute.Sitemap[nu
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date();
   const staticPages = [
-    ...createEntries(STATIC_PAGE_URLS, 'monthly', 0.6),
-    ...createEntries(CALCULATOR_HUB_URLS, 'weekly', 0.9),
-    ...createEntries(PRO_TOOL_URLS, 'monthly', 0.85),
-    ...createEntries(LEARN_GUIDE_URLS, 'monthly', 0.75),
-    ...createEntries(LEARN_EXTENSION_URLS, 'monthly', 0.72),
+    ...createEntries(STATIC_PAGE_URLS, 'monthly', 0.6, now),
+    ...createEntries(CALCULATOR_HUB_URLS, 'weekly', 0.9, now),
+    ...createEntries(PRO_TOOL_URLS, 'monthly', 0.85, now),
+    ...createEntries(LEARN_GUIDE_URLS, 'monthly', 0.75, now),
+    ...createEntries(LEARN_EXTENSION_URLS, 'monthly', 0.72, now),
   ];
 
   staticPages[0] = {
