@@ -3,7 +3,7 @@ import { generateSitemapChunkEntries } from '@/lib/calculators/config';
 export const revalidate = 86400;
 export const dynamic = 'force-dynamic';
 
-const PROGRAMMATIC_CHUNK_SIZE = 40000;
+const PROGRAMMATIC_CHUNK_SIZE = 5000;
 
 function xml(content: string): Response {
   return new Response(content, {
