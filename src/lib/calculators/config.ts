@@ -1222,6 +1222,108 @@ export const calculators: CalculatorConfig[] = [
     formula: 'P = f(a,v,m,c,r)',
   },
   {
+    id: 'rent-vs-buy-apartment',
+    categorySlug: 'rent-buy-apartment',
+    name: 'Rent vs Buy Apartment/Condo Calculator 2026',
+    params: [
+      { key: 'monthlyRent', label: 'Current Monthly Rent ($/£)', prefix: '$', step: 400, values: [800, 1200, 1600, 2200, 2800, 3400, 4000] },
+      { key: 'purchasePrice', label: 'Apartment/Condo Purchase Price', prefix: '$', step: 50000, values: [150000, 220000, 300000, 400000, 500000, 600000] },
+      { key: 'downPaymentPercent', label: 'Down Payment %', prefix: '%', step: 5, values: [5, 10, 15, 20, 25, 30] },
+      { key: 'mortgageRate', label: 'Mortgage Rate %', prefix: '%', step: 1, values: [4, 4.5, 5, 5.5, 6.5, 8] },
+      { key: 'hoaMonthly', label: 'Monthly HOA/Condo Fees', prefix: '$', step: 100, values: [0, 100, 200, 300, 450, 600] },
+      { key: 'yearsStaying', label: 'Years You Plan to Stay', step: 2, values: [3, 5, 7, 10, 12, 15] },
+      { key: 'appreciationRate', label: 'Annual Home Appreciation %', prefix: '%', step: 1, values: [1, 2, 3, 4, 5, 6] },
+    ],
+    maxVariants: 1800,
+    seoTemplate: {
+      title: 'Rent {{monthlyRent}}/mo vs Buy {{purchasePrice}} Apartment - 2026 Break-Even Analysis | Plain Figures',
+      description: 'Compare renting and buying an apartment for {{monthlyRent}} monthly rent versus {{purchasePrice}} purchase price using {{downPaymentPercent}} down, {{mortgageRate}} mortgage rates, {{hoaMonthly}} HOA fees, {{yearsStaying}} years staying, and {{appreciationRate}} appreciation.',
+      h1: 'Rent {{monthlyRent}}/mo vs Buy {{purchasePrice}} Apartment',
+    },
+    formula: '\\Delta C = C_{rent} - C_{buy}',
+  },
+  {
+    id: 'term-vs-whole-life',
+    categorySlug: 'term-whole-life-insurance',
+    name: 'Term Life vs Whole Life Insurance Calculator 2026',
+    params: [
+      { key: 'age', label: 'Age', step: 10, values: [25, 35, 45, 55, 65] },
+      { key: 'coverageAmount', label: 'Coverage amount', prefix: '$', step: 100000, values: [100000, 250000, 500000, 750000, 1000000] },
+      { key: 'termYears', label: 'Term years', step: 5, values: [10, 15, 20, 30] },
+      { key: 'healthRating', label: 'Health rating', values: ['Excellent', 'Good', 'Fair', 'Poor'] },
+      { key: 'smoker', label: 'Smoker', values: ['yes', 'no'] },
+      { key: 'wholeLifeCashValueGrowth', label: 'Whole life cash value growth', prefix: '%', step: 0.5, values: [3, 3.5, 4, 4.5, 5, 5.5, 6] },
+    ],
+    maxVariants: 1500,
+    seoTemplate: {
+      title: 'Term vs Whole Life Insurance: {{coverageAmount}} Coverage at Age {{age}} - 2026 | Plain Figures',
+      description: 'Compare term and whole-life cost assumptions using age {{age}}, {{coverageAmount}} cover, {{termYears}} term, {{healthRating}} health, smoker {{smoker}}, and {{wholeLifeCashValueGrowth}} cash-value growth.',
+      h1: 'Term vs Whole Life Insurance: {{coverageAmount}} Coverage at Age {{age}}',
+    },
+    formula: 'C_{whole} = P_t \\times f',
+  },
+  {
+    id: 'auto-loan-refinance',
+    categorySlug: 'auto-loan-refinance',
+    name: 'Auto Loan Refinance Savings Calculator 2026',
+    params: [
+      { key: 'remainingBalance', label: 'Remaining balance', prefix: '$', step: 5000, values: [5000, 10000, 15000, 20000, 30000, 40000] },
+      { key: 'currentRate', label: 'Current rate', prefix: '%', step: 1, values: [4, 5, 6, 7, 9, 12] },
+      { key: 'remainingMonths', label: 'Remaining months', step: 12, values: [12, 24, 36, 48, 60, 72] },
+      { key: 'newRate', label: 'New rate', prefix: '%', step: 1, values: [3, 4, 5, 6, 7, 8, 9] },
+      { key: 'newTermMonths', label: 'New term months', step: 12, values: [36, 48, 60, 72, 84] },
+      { key: 'refinanceFee', label: 'Refinance fee', prefix: '$', step: 200, values: [0, 100, 300, 500, 700, 1000] },
+    ],
+    maxVariants: 1600,
+    seoTemplate: {
+      title: 'Refinance {{remainingBalance}} Auto Loan - Monthly Savings at {{newRate}} 2026 | Plain Figures',
+      description: 'Estimate auto-loan refinance savings using {{remainingBalance}} remaining balance, {{currentRate}} current rate, {{remainingMonths}} months left, {{newRate}} new rate, {{newTermMonths}} new term, and {{refinanceFee}} fees.',
+      h1: 'Refinance {{remainingBalance}} Auto Loan',
+    },
+    formula: 'S = (M_c - M_n) - F',
+    isValidVariant: (params) => Number(params.newRate) < Number(params.currentRate),
+  },
+  {
+    id: 'home-warranty-vs-repair',
+    categorySlug: 'home-warranty-insurance',
+    name: 'Home Warranty vs Repair Cost Calculator 2026',
+    params: [
+      { key: 'homeAgeYears', label: 'Home age years', step: 5, values: [5, 10, 15, 20, 30, 40] },
+      { key: 'annualWarrantyCost', label: 'Annual warranty cost', prefix: '$', step: 200, values: [400, 600, 800, 1000, 1200] },
+      { key: 'expectedRepairsAnnual', label: 'Expected repairs annual', prefix: '$', step: 500, values: [500, 1000, 2000, 3000, 4000, 5000] },
+      { key: 'coverageLevel', label: 'Coverage level', values: ['Basic', 'Mid', 'Premium'] },
+      { key: 'repairInflation', label: 'Repair inflation', prefix: '%', step: 1, values: [3, 4, 5, 6, 7] },
+      { key: 'years', label: 'Years', step: 1, values: [3, 5, 7, 10] },
+    ],
+    maxVariants: 1400,
+    seoTemplate: {
+      title: 'Home Warranty Worth It? {{annualWarrantyCost}}/yr vs Repairs - 2026 Estimate | Plain Figures',
+      description: 'Compare home-warranty costs against self-funding repairs using {{homeAgeYears}}-year-old home assumptions, {{annualWarrantyCost}} annual warranty cost, {{expectedRepairsAnnual}} annual repairs, {{coverageLevel}} cover, {{repairInflation}} inflation, and {{years}} years.',
+      h1: 'Home Warranty Worth It? {{annualWarrantyCost}}/yr vs Repairs',
+    },
+    formula: 'C = W - R',
+  },
+  {
+    id: 'credit-card-rewards-comparison',
+    categorySlug: 'credit-card-rewards',
+    name: 'Credit Card Rewards vs Cash Back vs 0% APR Calculator 2026',
+    params: [
+      { key: 'annualSpend', label: 'Annual spend', prefix: '$', step: 10000, values: [10000, 20000, 30000, 40000, 60000, 80000] },
+      { key: 'rewardsType', label: 'Rewards type', values: ['Cash Back %', 'Points/Miles Value', '0% APR Months'] },
+      { key: 'rewardsRate', label: 'Rewards rate', prefix: '%', step: 1, values: [1, 1.5, 2, 3, 4, 5] },
+      { key: 'annualFee', label: 'Annual fee', prefix: '$', step: 100, values: [0, 95, 150, 250, 395, 550] },
+      { key: 'promoMonths', label: 'Promo months', step: 3, values: [0, 6, 9, 12, 15, 18, 21] },
+      { key: 'categoryBonusSpend', label: 'Category bonus spend', prefix: '$', step: 5000, values: [0, 1000, 5000, 10000, 15000, 20000] },
+    ],
+    maxVariants: 1500,
+    seoTemplate: {
+      title: 'Best Card: Rewards vs Cash Back vs 0% APR on {{annualSpend}}/yr Spend 2026 | Plain Figures',
+      description: 'Compare card-value models for {{annualSpend}} annual spend using {{rewardsType}}, {{rewardsRate}} rewards, {{annualFee}} annual fees, {{promoMonths}} promo months, and {{categoryBonusSpend}} bonus-category spend.',
+      h1: 'Best Card: Rewards vs Cash Back vs 0% APR',
+    },
+    formula: 'V = R - F + A',
+  },
+  {
     id: 'pension-contribution-scenarios',
     categorySlug: 'pension-contribution-scenarios',
     name: 'Pension Contribution Scenarios',
@@ -1323,6 +1425,16 @@ const slugBuilders: Partial<Record<string, (params: ParamMap) => string>> = {
     `home-equity-loan-vs-heloc-${homeValue}-home-${equityPercent}-equity-${amountNeeded}-amount-${fixedLoanRate}-fixed-${helocVariableRate}-heloc-${drawPeriodYears}-draw-${repayPeriodYears}-repay`,
   'car-insurance-comparison': ({ driverAge, vehicleValue, annualMiles, coverageLevel, claimsLast5Years, creditScoreImpact, locationRisk }) =>
     `car-insurance-comparison-${driverAge}-age-${vehicleValue}-value-${annualMiles}-miles-${normalizeSlugPart(coverageLevel)}-${claimsLast5Years}-claims-${normalizeSlugPart(creditScoreImpact)}-${normalizeSlugPart(locationRisk)}`,
+  'rent-vs-buy-apartment': ({ monthlyRent, purchasePrice, downPaymentPercent, mortgageRate, hoaMonthly, yearsStaying, appreciationRate }) =>
+    `rent-vs-buy-apartment-${monthlyRent}-rent-${purchasePrice}-price-${downPaymentPercent}-down-${mortgageRate}-mortgage-${hoaMonthly}-hoa-${yearsStaying}-years-${appreciationRate}-appreciation`,
+  'term-vs-whole-life': ({ age, coverageAmount, termYears, healthRating, smoker, wholeLifeCashValueGrowth }) =>
+    `term-vs-whole-life-${age}-age-${coverageAmount}-coverage-${termYears}-term-${normalizeSlugPart(healthRating)}-${normalizeSlugPart(smoker)}-${wholeLifeCashValueGrowth}-growth`,
+  'auto-loan-refinance': ({ remainingBalance, currentRate, remainingMonths, newRate, newTermMonths, refinanceFee }) =>
+    `auto-loan-refinance-${remainingBalance}-balance-${currentRate}-current-${remainingMonths}-remaining-${newRate}-new-${newTermMonths}-term-${refinanceFee}-fee`,
+  'home-warranty-vs-repair': ({ homeAgeYears, annualWarrantyCost, expectedRepairsAnnual, coverageLevel, repairInflation, years }) =>
+    `home-warranty-vs-repair-${homeAgeYears}-age-${annualWarrantyCost}-warranty-${expectedRepairsAnnual}-repairs-${normalizeSlugPart(coverageLevel)}-${repairInflation}-inflation-${years}-years`,
+  'credit-card-rewards-comparison': ({ annualSpend, rewardsType, rewardsRate, annualFee, promoMonths, categoryBonusSpend }) =>
+    `credit-card-rewards-comparison-${annualSpend}-spend-${normalizeSlugPart(rewardsType)}-${rewardsRate}-rate-${annualFee}-fee-${promoMonths}-promo-${categoryBonusSpend}-bonus`,
   'pension-contribution-scenarios': ({ salary, employeePct, employerPct, years }) => `pension-contribution-scenarios-${salary}-salary-${employeePct}-employee-${employerPct}-employer-${years}-years`,
 };
 
