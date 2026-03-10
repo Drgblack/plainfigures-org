@@ -36,7 +36,7 @@ function numberRange(start: number, end: number, step: number): number[] {
 
 export const HIGH_VALUE_COUNTRIES = [
   'US', 'UK', 'CA', 'AU',
-  'NZ', 'IE', 'SG', 'ZA', 'IN',
+  'NZ', 'IE', 'SG', 'ZA', 'IN', 'BR',
   'DE', 'NL', 'NO',
 ];
 
@@ -48,6 +48,16 @@ export const US_STATES = [
   'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY',
   'DC',
 ];
+
+export const UK_NATIONS = ['England', 'Scotland', 'Wales', 'Northern Ireland'];
+
+export const CANADA_PROVINCES = ['ON', 'QC', 'BC', 'AB', 'MB', 'SK', 'NS', 'NB', 'NL', 'PE', 'YT', 'NT', 'NU'];
+
+export const AUSTRALIA_STATES = ['NSW', 'VIC', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT'];
+
+export const SG_BUYER_STATUSES = ['Citizen', 'PR', 'Foreigner'];
+
+export const SG_HDB_FLAT_TYPES = ['2-room', '3-room', '4-room', '5-room', 'Executive'];
 
 const NON_ENGLISH_LANGUAGE_HINTS: Record<string, string> = {
   DE: 'de',
@@ -65,6 +75,7 @@ const COUNTRY_NAME_MAP: Record<string, string> = {
   SG: 'Singapore',
   ZA: 'South Africa',
   IN: 'India',
+  BR: 'Brazil',
   DE: 'Germany',
   NL: 'Netherlands',
   NO: 'Norway',
@@ -78,6 +89,369 @@ export const US_STATE_MARKET_CONTEXT = {
   highCostHousing: ['CA', 'CO', 'DC', 'HI', 'MA', 'NJ', 'NY', 'WA'],
 } as const;
 
+export const UK_REGION_DATA: Record<string, {
+  incomeTaxBands?: { rate: number; min: number; max?: number }[] | null;
+  sdltBands?: { rate: number; min: number; max?: number }[] | null;
+  hasSeparateTax?: boolean;
+}> = {
+  England: {
+    incomeTaxBands: [
+      { rate: 20, min: 12570, max: 50270 },
+      { rate: 40, min: 50270, max: 125140 },
+      { rate: 45, min: 125140 },
+    ],
+    sdltBands: [
+      { rate: 0, min: 0, max: 250000 },
+      { rate: 5, min: 250000, max: 925000 },
+      { rate: 10, min: 925000, max: 1500000 },
+      { rate: 12, min: 1500000 },
+    ],
+    hasSeparateTax: false,
+  },
+  Scotland: {
+    incomeTaxBands: [
+      { rate: 19, min: 12570, max: 14876 },
+      { rate: 20, min: 14876, max: 26561 },
+      { rate: 21, min: 26561, max: 43662 },
+      { rate: 42, min: 43662, max: 75000 },
+      { rate: 47, min: 75000 },
+    ],
+    sdltBands: null,
+    hasSeparateTax: true,
+  },
+  Wales: {
+    incomeTaxBands: [
+      { rate: 20, min: 12570, max: 50270 },
+      { rate: 40, min: 50270, max: 125140 },
+      { rate: 45, min: 125140 },
+    ],
+    sdltBands: [
+      { rate: 0, min: 0, max: 225000 },
+      { rate: 6, min: 225000, max: 400000 },
+      { rate: 7.5, min: 400000, max: 750000 },
+      { rate: 10, min: 750000, max: 1500000 },
+      { rate: 12, min: 1500000 },
+    ],
+    hasSeparateTax: false,
+  },
+  'Northern Ireland': {
+    incomeTaxBands: [
+      { rate: 20, min: 12570, max: 50270 },
+      { rate: 40, min: 50270, max: 125140 },
+      { rate: 45, min: 125140 },
+    ],
+    sdltBands: [
+      { rate: 0, min: 0, max: 250000 },
+      { rate: 5, min: 250000, max: 925000 },
+      { rate: 10, min: 925000, max: 1500000 },
+      { rate: 12, min: 1500000 },
+    ],
+    hasSeparateTax: false,
+  },
+} as const;
+
+export const CANADA_PROVINCE_DATA: Record<string, {
+  provincialTaxRates?: { rate: number; min: number; max?: number }[];
+  salesTaxCombined?: number;
+  avgPropertyTaxRate?: number;
+}> = {
+  ON: {
+    provincialTaxRates: [
+      { rate: 5.05, min: 0, max: 51446 },
+      { rate: 9.15, min: 51446, max: 102894 },
+      { rate: 11.16, min: 102894, max: 150000 },
+      { rate: 12.16, min: 150000, max: 220000 },
+      { rate: 13.16, min: 220000 },
+    ],
+    salesTaxCombined: 13,
+    avgPropertyTaxRate: 0.68,
+  },
+  QC: {
+    provincialTaxRates: [
+      { rate: 14, min: 0, max: 53255 },
+      { rate: 19, min: 53255, max: 106495 },
+      { rate: 24, min: 106495, max: 129590 },
+      { rate: 25.75, min: 129590 },
+    ],
+    salesTaxCombined: 14.975,
+    avgPropertyTaxRate: 0.92,
+  },
+  BC: {
+    provincialTaxRates: [
+      { rate: 5.06, min: 0, max: 49279 },
+      { rate: 7.7, min: 49279, max: 98560 },
+      { rate: 10.5, min: 98560, max: 113158 },
+      { rate: 12.29, min: 113158, max: 137407 },
+      { rate: 14.7, min: 137407, max: 186306 },
+      { rate: 16.8, min: 186306, max: 259829 },
+      { rate: 20.5, min: 259829 },
+    ],
+    salesTaxCombined: 12,
+    avgPropertyTaxRate: 0.55,
+  },
+  AB: {
+    provincialTaxRates: [
+      { rate: 10, min: 0, max: 148269 },
+      { rate: 12, min: 148269, max: 177922 },
+      { rate: 13, min: 177922, max: 237230 },
+      { rate: 14, min: 237230, max: 355845 },
+      { rate: 15, min: 355845 },
+    ],
+    salesTaxCombined: 5,
+    avgPropertyTaxRate: 0.62,
+  },
+  MB: {
+    provincialTaxRates: [
+      { rate: 10.8, min: 0, max: 47000 },
+      { rate: 12.75, min: 47000, max: 100000 },
+      { rate: 17.4, min: 100000 },
+    ],
+    salesTaxCombined: 12,
+    avgPropertyTaxRate: 1.24,
+  },
+  SK: {
+    provincialTaxRates: [
+      { rate: 10.5, min: 0, max: 53463 },
+      { rate: 12.5, min: 53463, max: 152750 },
+      { rate: 14.5, min: 152750 },
+    ],
+    salesTaxCombined: 11,
+    avgPropertyTaxRate: 1.07,
+  },
+  NS: {
+    provincialTaxRates: [
+      { rate: 8.79, min: 0, max: 29590 },
+      { rate: 14.95, min: 29590, max: 59180 },
+      { rate: 16.67, min: 59180, max: 93000 },
+      { rate: 17.5, min: 93000, max: 150000 },
+      { rate: 21, min: 150000 },
+    ],
+    salesTaxCombined: 15,
+    avgPropertyTaxRate: 1.11,
+  },
+  NB: {
+    provincialTaxRates: [
+      { rate: 9.4, min: 0, max: 49958 },
+      { rate: 14, min: 49958, max: 99916 },
+      { rate: 16, min: 99916, max: 185064 },
+      { rate: 19.5, min: 185064 },
+    ],
+    salesTaxCombined: 15,
+    avgPropertyTaxRate: 1.43,
+  },
+  NL: {
+    provincialTaxRates: [
+      { rate: 8.7, min: 0, max: 43198 },
+      { rate: 14.5, min: 43198, max: 86395 },
+      { rate: 15.8, min: 86395, max: 154244 },
+      { rate: 17.8, min: 154244, max: 215943 },
+      { rate: 19.8, min: 215943 },
+    ],
+    salesTaxCombined: 15,
+    avgPropertyTaxRate: 0.76,
+  },
+  PE: {
+    provincialTaxRates: [
+      { rate: 9.65, min: 0, max: 32656 },
+      { rate: 13.63, min: 32656, max: 64313 },
+      { rate: 16.65, min: 64313 },
+    ],
+    salesTaxCombined: 15,
+    avgPropertyTaxRate: 1.37,
+  },
+  YT: {
+    provincialTaxRates: [
+      { rate: 6.4, min: 0, max: 55867 },
+      { rate: 9, min: 55867, max: 111733 },
+      { rate: 10.9, min: 111733, max: 173205 },
+      { rate: 12.8, min: 173205, max: 500000 },
+      { rate: 15, min: 500000 },
+    ],
+    salesTaxCombined: 5,
+    avgPropertyTaxRate: 0.58,
+  },
+  NT: {
+    provincialTaxRates: [
+      { rate: 5.9, min: 0, max: 50597 },
+      { rate: 8.6, min: 50597, max: 101198 },
+      { rate: 12.2, min: 101198, max: 164525 },
+      { rate: 14.05, min: 164525 },
+    ],
+    salesTaxCombined: 5,
+    avgPropertyTaxRate: 0.77,
+  },
+  NU: {
+    provincialTaxRates: [
+      { rate: 4, min: 0, max: 54707 },
+      { rate: 7, min: 54707, max: 109413 },
+      { rate: 9, min: 109413, max: 177881 },
+      { rate: 11.5, min: 177881 },
+    ],
+    salesTaxCombined: 5,
+    avgPropertyTaxRate: 0.64,
+  },
+} as const;
+
+export const AU_STATE_DATA: Record<string, {
+  stampDutyBands?: { rate: number; min: number; max?: number }[];
+  landTaxThreshold?: number;
+  payrollTaxRate?: number;
+}> = {
+  NSW: {
+    stampDutyBands: [
+      { rate: 1.25, min: 0, max: 17000 },
+      { rate: 1.5, min: 17000, max: 36000 },
+      { rate: 1.75, min: 36000, max: 97000 },
+      { rate: 3.5, min: 97000, max: 364000 },
+      { rate: 4.5, min: 364000, max: 1212000 },
+      { rate: 5.5, min: 1212000 },
+    ],
+    landTaxThreshold: 1000000,
+    payrollTaxRate: 4.85,
+  },
+  VIC: {
+    stampDutyBands: [
+      { rate: 1.4, min: 0, max: 25000 },
+      { rate: 2.4, min: 25000, max: 130000 },
+      { rate: 6, min: 130000, max: 960000 },
+      { rate: 5.5, min: 960000, max: 2000000 },
+      { rate: 6.5, min: 2000000 },
+    ],
+    landTaxThreshold: 300000,
+    payrollTaxRate: 4.85,
+  },
+  QLD: {
+    stampDutyBands: [
+      { rate: 1.5, min: 0, max: 5000 },
+      { rate: 3.5, min: 5000, max: 75000 },
+      { rate: 4.5, min: 75000, max: 540000 },
+      { rate: 5.75, min: 540000, max: 1000000 },
+      { rate: 7, min: 1000000 },
+    ],
+    landTaxThreshold: 600000,
+    payrollTaxRate: 4.75,
+  },
+  WA: {
+    stampDutyBands: [
+      { rate: 1.9, min: 0, max: 120000 },
+      { rate: 2.85, min: 120000, max: 150000 },
+      { rate: 3.8, min: 150000, max: 360000 },
+      { rate: 4.75, min: 360000, max: 725000 },
+      { rate: 5.15, min: 725000 },
+    ],
+    landTaxThreshold: 420000,
+    payrollTaxRate: 5.5,
+  },
+  SA: {
+    stampDutyBands: [
+      { rate: 1, min: 0, max: 12000 },
+      { rate: 2, min: 12000, max: 30000 },
+      { rate: 3, min: 30000, max: 50000 },
+      { rate: 3.5, min: 50000, max: 100000 },
+      { rate: 4, min: 100000, max: 200000 },
+      { rate: 4.25, min: 200000, max: 250000 },
+      { rate: 4.75, min: 250000, max: 500000 },
+      { rate: 5.5, min: 500000 },
+    ],
+    landTaxThreshold: 732000,
+    payrollTaxRate: 4.95,
+  },
+  TAS: {
+    stampDutyBands: [
+      { rate: 1.75, min: 0, max: 3000 },
+      { rate: 2.25, min: 3000, max: 25000 },
+      { rate: 3.5, min: 25000, max: 75000 },
+      { rate: 4, min: 75000, max: 200000 },
+      { rate: 4.25, min: 200000, max: 375000 },
+      { rate: 4.75, min: 375000, max: 725000 },
+      { rate: 5, min: 725000 },
+    ],
+    landTaxThreshold: 125000,
+    payrollTaxRate: 4,
+  },
+  ACT: {
+    stampDutyBands: [
+      { rate: 0.4, min: 0, max: 200000 },
+      { rate: 2.2, min: 200000, max: 300000 },
+      { rate: 3.4, min: 300000, max: 500000 },
+      { rate: 4.32, min: 500000, max: 750000 },
+      { rate: 5.9, min: 750000, max: 1455000 },
+      { rate: 7, min: 1455000 },
+    ],
+    landTaxThreshold: 0,
+    payrollTaxRate: 6.85,
+  },
+  NT: {
+    stampDutyBands: [
+      { rate: 1.95, min: 0, max: 525000 },
+      { rate: 4.95, min: 525000, max: 3000000 },
+      { rate: 5.45, min: 3000000 },
+    ],
+    landTaxThreshold: 500000,
+    payrollTaxRate: 5.5,
+  },
+} as const;
+
+export const SG_NUANCE_DATA: Record<string, {
+  cpfContributionRateEmployee?: number;
+  cpfContributionRateEmployer?: number;
+  absdRate?: number;
+  hdbFlatTypes?: string[];
+}> = {
+  Citizen: {
+    cpfContributionRateEmployee: 20,
+    cpfContributionRateEmployer: 17,
+    absdRate: 0,
+    hdbFlatTypes: ['2-room', '3-room', '4-room', '5-room', 'Executive'],
+  },
+  PR: {
+    cpfContributionRateEmployee: 20,
+    cpfContributionRateEmployer: 17,
+    absdRate: 5,
+    hdbFlatTypes: ['2-room', '3-room', '4-room', '5-room'],
+  },
+  Foreigner: {
+    cpfContributionRateEmployee: 0,
+    cpfContributionRateEmployer: 0,
+    absdRate: 60,
+    hdbFlatTypes: [],
+  },
+} as const;
+
+export const US_STATE_DATA: Record<string, {
+  incomeTaxBrackets?: { rate: number; min: number; max?: number }[];
+  avgPropertyTaxRate?: number;
+  stateSalesTax?: number;
+  carInsuranceIndex?: number;
+  costOfLivingMultiplier?: number;
+}> = {
+  AL: { incomeTaxBrackets: [{ rate: 2, min: 0, max: 500 }, { rate: 4, min: 500, max: 3000 }, { rate: 5, min: 3000 }], avgPropertyTaxRate: 0.41, stateSalesTax: 4, carInsuranceIndex: 0.96, costOfLivingMultiplier: 0.89 },
+  AZ: { incomeTaxBrackets: [{ rate: 2.5, min: 0 }], avgPropertyTaxRate: 0.51, stateSalesTax: 5.6, carInsuranceIndex: 1.08, costOfLivingMultiplier: 1.02 },
+  CA: { incomeTaxBrackets: [{ rate: 1, min: 0, max: 10756 }, { rate: 2, min: 10756, max: 25499 }, { rate: 4, min: 25499, max: 40245 }, { rate: 6, min: 40245, max: 55866 }, { rate: 8, min: 55866, max: 70606 }, { rate: 9.3, min: 70606, max: 360659 }, { rate: 10.3, min: 360659, max: 432787 }, { rate: 11.3, min: 432787, max: 721314 }, { rate: 12.3, min: 721314 }], avgPropertyTaxRate: 0.76, stateSalesTax: 7.25, carInsuranceIndex: 1.45, costOfLivingMultiplier: 1.38 },
+  CO: { incomeTaxBrackets: [{ rate: 4.4, min: 0 }], avgPropertyTaxRate: 0.49, stateSalesTax: 2.9, carInsuranceIndex: 1.01, costOfLivingMultiplier: 1.12 },
+  FL: { incomeTaxBrackets: [], avgPropertyTaxRate: 0.71, stateSalesTax: 6, carInsuranceIndex: 1.38, costOfLivingMultiplier: 1.01 },
+  GA: { incomeTaxBrackets: [{ rate: 5.39, min: 0 }], avgPropertyTaxRate: 0.81, stateSalesTax: 4, carInsuranceIndex: 1.05, costOfLivingMultiplier: 0.95 },
+  IL: { incomeTaxBrackets: [{ rate: 4.95, min: 0 }], avgPropertyTaxRate: 1.95, stateSalesTax: 6.25, carInsuranceIndex: 1.07, costOfLivingMultiplier: 0.96 },
+  IN: { incomeTaxBrackets: [{ rate: 3.05, min: 0 }], avgPropertyTaxRate: 0.83, stateSalesTax: 7, carInsuranceIndex: 0.94, costOfLivingMultiplier: 0.89 },
+  LA: { incomeTaxBrackets: [{ rate: 1.85, min: 0, max: 12500 }, { rate: 3.5, min: 12500, max: 50000 }, { rate: 4.25, min: 50000 }], avgPropertyTaxRate: 0.55, stateSalesTax: 5, carInsuranceIndex: 1.42, costOfLivingMultiplier: 0.92 },
+  MA: { incomeTaxBrackets: [{ rate: 5, min: 0 }, { rate: 9, min: 1000000 }], avgPropertyTaxRate: 1.04, stateSalesTax: 6.25, carInsuranceIndex: 1.11, costOfLivingMultiplier: 1.31 },
+  MD: { incomeTaxBrackets: [{ rate: 2, min: 0, max: 1000 }, { rate: 3, min: 1000, max: 2000 }, { rate: 4, min: 2000, max: 3000 }, { rate: 4.75, min: 3000, max: 100000 }, { rate: 5, min: 100000, max: 125000 }, { rate: 5.25, min: 125000, max: 150000 }, { rate: 5.5, min: 150000, max: 250000 }, { rate: 5.75, min: 250000 }], avgPropertyTaxRate: 1.02, stateSalesTax: 6, carInsuranceIndex: 1.09, costOfLivingMultiplier: 1.11 },
+  MI: { incomeTaxBrackets: [{ rate: 4.25, min: 0 }], avgPropertyTaxRate: 1.32, stateSalesTax: 6, carInsuranceIndex: 1.64, costOfLivingMultiplier: 0.91 },
+  MN: { incomeTaxBrackets: [{ rate: 5.35, min: 0, max: 31690 }, { rate: 6.8, min: 31690, max: 104090 }, { rate: 7.85, min: 104090, max: 193240 }, { rate: 9.85, min: 193240 }], avgPropertyTaxRate: 1.12, stateSalesTax: 6.875, carInsuranceIndex: 1.03, costOfLivingMultiplier: 1.01 },
+  MO: { incomeTaxBrackets: [{ rate: 4.8, min: 0 }], avgPropertyTaxRate: 0.88, stateSalesTax: 4.225, carInsuranceIndex: 0.98, costOfLivingMultiplier: 0.88 },
+  NC: { incomeTaxBrackets: [{ rate: 4.25, min: 0 }], avgPropertyTaxRate: 0.73, stateSalesTax: 4.75, carInsuranceIndex: 1.02, costOfLivingMultiplier: 0.95 },
+  NJ: { incomeTaxBrackets: [{ rate: 1.4, min: 0, max: 20000 }, { rate: 1.75, min: 20000, max: 35000 }, { rate: 3.5, min: 35000, max: 40000 }, { rate: 5.525, min: 40000, max: 75000 }, { rate: 6.37, min: 75000, max: 500000 }, { rate: 8.97, min: 500000, max: 1000000 }, { rate: 10.75, min: 1000000 }], avgPropertyTaxRate: 2.08, stateSalesTax: 6.625, carInsuranceIndex: 1.24, costOfLivingMultiplier: 1.22 },
+  NY: { incomeTaxBrackets: [{ rate: 4, min: 0, max: 8500 }, { rate: 4.5, min: 8500, max: 11700 }, { rate: 5.25, min: 11700, max: 13900 }, { rate: 5.5, min: 13900, max: 21400 }, { rate: 6, min: 21400, max: 80650 }, { rate: 6.85, min: 80650, max: 215400 }, { rate: 9.65, min: 215400, max: 1077550 }, { rate: 10.3, min: 1077550, max: 5000000 }, { rate: 10.9, min: 5000000 }], avgPropertyTaxRate: 1.54, stateSalesTax: 4, carInsuranceIndex: 1.33, costOfLivingMultiplier: 1.32 },
+  OH: { incomeTaxBrackets: [{ rate: 0, min: 0, max: 26050 }, { rate: 2.75, min: 26050, max: 100000 }, { rate: 3.5, min: 100000 }], avgPropertyTaxRate: 1.41, stateSalesTax: 5.75, carInsuranceIndex: 0.92, costOfLivingMultiplier: 0.9 },
+  PA: { incomeTaxBrackets: [{ rate: 3.07, min: 0 }], avgPropertyTaxRate: 1.35, stateSalesTax: 6, carInsuranceIndex: 1.0, costOfLivingMultiplier: 0.97 },
+  SC: { incomeTaxBrackets: [{ rate: 0, min: 0, max: 3460 }, { rate: 3, min: 3460, max: 17330 }, { rate: 6.2, min: 17330 }], avgPropertyTaxRate: 0.53, stateSalesTax: 6, carInsuranceIndex: 1.18, costOfLivingMultiplier: 0.91 },
+  TN: { incomeTaxBrackets: [], avgPropertyTaxRate: 0.64, stateSalesTax: 7, carInsuranceIndex: 0.99, costOfLivingMultiplier: 0.91 },
+  TX: { incomeTaxBrackets: [], avgPropertyTaxRate: 1.68, stateSalesTax: 6.25, carInsuranceIndex: 1.12, costOfLivingMultiplier: 0.93 },
+  VA: { incomeTaxBrackets: [{ rate: 2, min: 0, max: 3000 }, { rate: 3, min: 3000, max: 5000 }, { rate: 5, min: 5000, max: 17000 }, { rate: 5.75, min: 17000 }], avgPropertyTaxRate: 0.8, stateSalesTax: 5.3, carInsuranceIndex: 0.91, costOfLivingMultiplier: 1.05 },
+  WA: { incomeTaxBrackets: [], avgPropertyTaxRate: 0.84, stateSalesTax: 6.5, carInsuranceIndex: 1.02, costOfLivingMultiplier: 1.16 },
+  WI: { incomeTaxBrackets: [{ rate: 3.5, min: 0, max: 14820 }, { rate: 4.4, min: 14820, max: 29640 }, { rate: 5.3, min: 29640, max: 325600 }, { rate: 7.65, min: 325600 }], avgPropertyTaxRate: 1.68, stateSalesTax: 5, carInsuranceIndex: 0.9, costOfLivingMultiplier: 0.94 },
+} as const;
+
 const US_STATE_SENSITIVE_CALCULATOR_IDS = new Set([
   'salary-take-home',
   'cost-of-living',
@@ -88,13 +462,315 @@ const US_STATE_SENSITIVE_CALCULATOR_IDS = new Set([
   'rent-vs-buy-home',
   'net-worth-growth',
   'investment-future-value',
+  'balance-transfer-savings',
+  'emergency-fund-goal',
 ]);
 
 function getGeoVariantCap(config: CalculatorConfig): number {
   return US_STATE_SENSITIVE_CALCULATOR_IDS.has(config.id) ? 3000 : 2500;
 }
 
-export function getGeoVariants(config: CalculatorConfig): { country?: string; state?: string; languageHint?: string }[] {
+const CANADA_PROVINCE_SENSITIVE_CALCULATOR_IDS = new Set([
+  'ca-mortgage-affordability-stress-test',
+  'ca-income-tax-take-home',
+  'cost-of-living',
+  'rent-vs-buy-home',
+  'car-insurance-comparison',
+]);
+
+const AUSTRALIA_STATE_SENSITIVE_CALCULATOR_IDS = new Set([
+  'au-superannuation-retirement-projection',
+  'au-mortgage-offset-savings',
+  'au-income-tax-take-home',
+  'au-negative-gearing-return',
+]);
+
+const AUSTRALIA_STATE_ENHANCED_CALCULATOR_IDS = new Set([
+  'au-superannuation-retirement-projection',
+  'au-mortgage-offset-savings',
+  'au-income-tax-take-home',
+  'au-first-home-buyer-affordability',
+  'au-negative-gearing-return',
+]);
+
+const SINGAPORE_BUYER_STATUS_VARIANT_IDS = new Set([
+  'sg-cpf-retirement-projection',
+  'sg-hdb-loan-affordability',
+  'sg-income-tax-take-home',
+  'sg-srs-vs-cpf-top-up',
+]);
+
+const SINGAPORE_NUANCE_ENHANCED_CALCULATOR_IDS = new Set([
+  'sg-cpf-retirement-projection',
+  'sg-hdb-loan-affordability',
+  'sg-income-tax-take-home',
+  'sg-srs-vs-cpf-top-up',
+  'sg-buyer-stamp-duty-absd',
+]);
+
+function estimateStateIncomeTaxRate(state: string, annualIncome: number): number {
+  const brackets = US_STATE_DATA[state]?.incomeTaxBrackets ?? [];
+  if (brackets.length === 0 || annualIncome <= 0) {
+    return 0;
+  }
+
+  let tax = 0;
+
+  for (const bracket of brackets) {
+    const upperBound = bracket.max ?? annualIncome;
+    if (annualIncome <= bracket.min) {
+      continue;
+    }
+
+    const taxableAmount = Math.min(annualIncome, upperBound) - bracket.min;
+    if (taxableAmount > 0) {
+      tax += taxableAmount * (bracket.rate / 100);
+    }
+
+    if (annualIncome <= upperBound) {
+      break;
+    }
+  }
+
+  return Number(((tax / annualIncome) * 100).toFixed(2));
+}
+
+export function getStateEnhancedParams(
+  config: CalculatorConfig,
+  geo: { country?: string; state?: string },
+  baseParams: ParamMap
+): ParamMap {
+  if (geo.country !== 'US' || !geo.state || !US_STATE_SENSITIVE_CALCULATOR_IDS.has(config.id)) {
+    return {};
+  }
+
+  const stateData = US_STATE_DATA[geo.state];
+  if (!stateData) {
+    return { state: geo.state };
+  }
+
+  const incomeSource =
+    typeof baseParams.gross === 'number' ? baseParams.gross :
+      typeof baseParams.annualIncome === 'number' ? baseParams.annualIncome :
+        typeof baseParams.salary === 'number' ? baseParams.salary :
+          typeof baseParams.initialInvestment === 'number' ? baseParams.initialInvestment * 0.04 :
+            typeof baseParams.currentNetWorth === 'number' ? baseParams.currentNetWorth * 0.03 :
+              0;
+
+  const stateIncomeTaxRate = estimateStateIncomeTaxRate(geo.state, Number(incomeSource));
+
+  return {
+    state: geo.state,
+    stateIncomeTaxRate,
+    avgPropertyTaxRate: stateData.avgPropertyTaxRate ?? 0,
+    stateSalesTax: stateData.stateSalesTax ?? 0,
+    carInsuranceIndex: stateData.carInsuranceIndex ?? 1,
+    costOfLivingMultiplier: stateData.costOfLivingMultiplier ?? 1,
+  };
+}
+
+function estimateProgressiveRate(
+  bands: { rate: number; min: number; max?: number }[] | null | undefined,
+  taxableAmount: number
+): number {
+  if (!bands || taxableAmount <= 0) {
+    return 0;
+  }
+
+  let tax = 0;
+
+  for (const band of bands) {
+    const upperBound = band.max ?? taxableAmount;
+    if (taxableAmount <= band.min) {
+      continue;
+    }
+
+    const taxedSlice = Math.min(taxableAmount, upperBound) - band.min;
+    if (taxedSlice > 0) {
+      tax += taxedSlice * (band.rate / 100);
+    }
+
+    if (taxableAmount <= upperBound) {
+      break;
+    }
+  }
+
+  return Number(((tax / taxableAmount) * 100).toFixed(2));
+}
+
+function estimatePropertyTransactionRate(
+  bands: { rate: number; min: number; max?: number }[] | null | undefined,
+  propertyPrice: number
+): number {
+  if (!bands || propertyPrice <= 0) {
+    return 0;
+  }
+
+  let duty = 0;
+
+  for (const band of bands) {
+    const upperBound = band.max ?? propertyPrice;
+    if (propertyPrice <= band.min) {
+      continue;
+    }
+
+    const taxedSlice = Math.min(propertyPrice, upperBound) - band.min;
+    if (taxedSlice > 0) {
+      duty += taxedSlice * (band.rate / 100);
+    }
+
+    if (propertyPrice <= upperBound) {
+      break;
+    }
+  }
+
+  return Number(((duty / propertyPrice) * 100).toFixed(2));
+}
+
+export function getUkNationEnhancedParams(
+  config: CalculatorConfig,
+  geo: { country?: string; region?: string },
+  baseParams: ParamMap
+): ParamMap {
+  if ((geo.country !== 'UK' && geo.country !== 'GB') || !geo.region) {
+    return {};
+  }
+
+  const regionData = UK_REGION_DATA[geo.region];
+  if (!regionData) {
+    return { region: geo.region };
+  }
+
+  const incomeSource =
+    typeof baseParams.grossSalary === 'number' ? baseParams.grossSalary :
+      typeof baseParams.annualIncome === 'number' ? baseParams.annualIncome :
+        typeof baseParams.salary === 'number' ? baseParams.salary :
+          typeof baseParams.gross === 'number' ? baseParams.gross :
+            0;
+
+  const propertyPrice =
+    typeof baseParams.propertyPrice === 'number' ? baseParams.propertyPrice :
+      typeof baseParams.propertyValueEstimate === 'number' ? baseParams.propertyValueEstimate :
+        0;
+
+  const estimatedUkIncomeTaxRate = estimateProgressiveRate(regionData.incomeTaxBands, Number(incomeSource));
+  const estimatedUkPropertyTransferRate = estimatePropertyTransactionRate(regionData.sdltBands, Number(propertyPrice));
+
+  return {
+    region: geo.region,
+    regionName: geo.region,
+    estimatedUkIncomeTaxRate,
+    estimatedUkPropertyTransferRate,
+    hasSeparateUkTax: regionData.hasSeparateTax ? 'yes' : 'no',
+    propertyTransferSystem: geo.region === 'Wales' ? 'LTT' : geo.region === 'Scotland' ? 'LBTT' : 'SDLT',
+  };
+}
+
+export function getCanadaProvinceEnhancedParams(
+  config: CalculatorConfig,
+  geo: { country?: string; province?: string },
+  baseParams: ParamMap
+): ParamMap {
+  if (geo.country !== 'CA' || !geo.province || !CANADA_PROVINCE_SENSITIVE_CALCULATOR_IDS.has(config.id)) {
+    return {};
+  }
+
+  const provinceData = CANADA_PROVINCE_DATA[geo.province];
+  if (!provinceData) {
+    return { province: geo.province };
+  }
+
+  const incomeSource =
+    typeof baseParams.grossSalary === 'number' ? baseParams.grossSalary :
+      typeof baseParams.annualIncome === 'number' ? baseParams.annualIncome :
+        typeof baseParams.salary === 'number' ? baseParams.salary :
+          typeof baseParams.gross === 'number' ? baseParams.gross :
+            0;
+
+  const estimatedProvincialTaxRate = estimateProgressiveRate(
+    provinceData.provincialTaxRates,
+    Number(incomeSource)
+  );
+
+  return {
+    province: geo.province,
+    provinceName: geo.province,
+    estimatedProvincialTaxRate,
+    salesTaxCombined: provinceData.salesTaxCombined ?? 0,
+    avgPropertyTaxRate: provinceData.avgPropertyTaxRate ?? 0,
+  };
+}
+
+export function getAustraliaStateEnhancedParams(
+  config: CalculatorConfig,
+  geo: { country?: string; state?: string },
+  baseParams: ParamMap
+): ParamMap {
+  const resolvedState =
+    geo.country === 'AU' && geo.state ? geo.state :
+      (AUSTRALIA_STATE_ENHANCED_CALCULATOR_IDS.has(config.id) && typeof baseParams.state === 'string' ? baseParams.state : undefined);
+
+  if (!resolvedState || !AUSTRALIA_STATE_ENHANCED_CALCULATOR_IDS.has(config.id)) {
+    return {};
+  }
+
+  const stateData = AU_STATE_DATA[resolvedState];
+  if (!stateData) {
+    return { state: resolvedState };
+  }
+
+  const propertyValue =
+    typeof baseParams.propertyPrice === 'number' ? baseParams.propertyPrice :
+      typeof baseParams.propertyPurchasePrice === 'number' ? baseParams.propertyPurchasePrice :
+        typeof baseParams.mortgageBalance === 'number' ? baseParams.mortgageBalance :
+          0;
+
+  const estimatedAuStampDutyRate = estimatePropertyTransactionRate(
+    stateData.stampDutyBands,
+    Number(propertyValue)
+  );
+
+  return {
+    state: resolvedState,
+    stateName: resolvedState,
+    estimatedAuStampDutyRate,
+    landTaxThreshold: stateData.landTaxThreshold ?? 0,
+    payrollTaxRate: stateData.payrollTaxRate ?? 0,
+  };
+}
+
+export function getSingaporeNuanceEnhancedParams(
+  config: CalculatorConfig,
+  geo: { country?: string; buyerStatus?: string; flatType?: string },
+  baseParams: ParamMap
+): ParamMap {
+  const resolvedBuyerStatus =
+    geo.country === 'SG' && geo.buyerStatus ? geo.buyerStatus :
+      (SINGAPORE_NUANCE_ENHANCED_CALCULATOR_IDS.has(config.id) && typeof baseParams.buyerStatus === 'string' ? baseParams.buyerStatus : undefined);
+  const resolvedFlatType =
+    geo.country === 'SG' && geo.flatType ? geo.flatType :
+      (config.id === 'sg-hdb-loan-affordability' && typeof baseParams.flatType === 'string' ? baseParams.flatType : undefined);
+
+  if (!resolvedBuyerStatus || !SINGAPORE_NUANCE_ENHANCED_CALCULATOR_IDS.has(config.id)) {
+    return {};
+  }
+
+  const nuanceData = SG_NUANCE_DATA[resolvedBuyerStatus];
+  if (!nuanceData) {
+    return { buyerStatus: resolvedBuyerStatus, ...(resolvedFlatType ? { flatType: resolvedFlatType } : {}) };
+  }
+
+  return {
+    buyerStatus: resolvedBuyerStatus,
+    buyerStatusName: resolvedBuyerStatus,
+    ...(resolvedFlatType ? { flatType: resolvedFlatType, flatTypeName: resolvedFlatType } : {}),
+    cpfContributionRateEmployee: nuanceData.cpfContributionRateEmployee ?? 0,
+    cpfContributionRateEmployer: nuanceData.cpfContributionRateEmployer ?? 0,
+    absdRate: nuanceData.absdRate ?? 0,
+  };
+}
+
+export function getGeoVariants(config: CalculatorConfig): { country?: string; state?: string; region?: string; province?: string; buyerStatus?: string; flatType?: string; languageHint?: string }[] {
   const geoRelevantIds = [
     'uk-tax-take-home',
     'salary-take-home',
@@ -152,6 +828,11 @@ export function getGeoVariants(config: CalculatorConfig): { country?: string; st
     'in-income-tax-take-home',
     'in-nps-vs-epf-comparison',
     'in-stamp-duty-registration',
+    'br-salario-liquido-clt-pj',
+    'br-irpf-2026',
+    'br-fgts-modalidades-saldo',
+    'br-inss-aposentadoria-beneficio',
+    'br-financiamento-imobiliario-sac-price',
     'how-much-house-can-i-afford',
     'investment-future-value',
     'net-worth-growth',
@@ -191,14 +872,22 @@ export function getGeoVariants(config: CalculatorConfig): { country?: string; st
     'in-nps-vs-epf-comparison',
     'in-stamp-duty-registration',
   ]);
+  const brazilPriorityIds = new Set([
+    'br-salario-liquido-clt-pj',
+    'br-irpf-2026',
+    'br-fgts-modalidades-saldo',
+    'br-inss-aposentadoria-beneficio',
+    'br-financiamento-imobiliario-sac-price',
+  ]);
 
   if (!geoRelevantIds.includes(config.id)) {
-    return [{ country: undefined, state: undefined, languageHint: undefined }];
+    return [{ country: undefined, state: undefined, region: undefined, province: undefined, buyerStatus: undefined, flatType: undefined, languageHint: undefined }];
   }
 
-  const variants: { country?: string; state?: string; languageHint?: string }[] = [];
+  const variants: { country?: string; state?: string; region?: string; province?: string; buyerStatus?: string; flatType?: string; languageHint?: string }[] = [];
   const otherCountries = HIGH_VALUE_COUNTRIES.filter((country) => country !== 'US');
   const prioritizeUsStates = US_STATE_SENSITIVE_CALCULATOR_IDS.has(config.id);
+  const prioritizeAuStates = AUSTRALIA_STATE_SENSITIVE_CALCULATOR_IDS.has(config.id);
   const prioritizedCountries = canadaPriorityIds.has(config.id)
     ? ['CA', ...otherCountries.filter((country) => country !== 'CA')]
     : australiaPriorityIds.has(config.id)
@@ -209,10 +898,32 @@ export function getGeoVariants(config: CalculatorConfig): { country?: string; st
           ? ['SG', ...otherCountries.filter((country) => country !== 'SG')]
           : indiaPriorityIds.has(config.id)
             ? ['IN', ...otherCountries.filter((country) => country !== 'IN')]
-        : otherCountries;
+            : brazilPriorityIds.has(config.id)
+              ? ['BR', ...otherCountries.filter((country) => country !== 'BR')]
+              : otherCountries;
 
   // Expanded 2026 geo-layering: priority US states + high-CPC English markets (AU/CA/UK/NZ/IE/SG) + future non-English (DE/NL/NO)
   US_STATES.forEach((state) => variants.push({ country: 'US', state }));
+  if (CANADA_PROVINCE_SENSITIVE_CALCULATOR_IDS.has(config.id)) {
+    CANADA_PROVINCES.forEach((province) => variants.push({ country: 'CA', province }));
+  }
+  if (AUSTRALIA_STATE_SENSITIVE_CALCULATOR_IDS.has(config.id)) {
+    AUSTRALIA_STATES.forEach((state) => variants.push({ country: 'AU', state }));
+  }
+  if (ukPriorityIds.has(config.id)) {
+    UK_NATIONS.forEach((region) => variants.push({ country: 'UK', region }));
+  }
+  if (SINGAPORE_BUYER_STATUS_VARIANT_IDS.has(config.id)) {
+    SG_BUYER_STATUSES.forEach((buyerStatus) => {
+      if (config.id === 'sg-hdb-loan-affordability') {
+        const allowedFlatTypes = SG_NUANCE_DATA[buyerStatus]?.hdbFlatTypes ?? [];
+        allowedFlatTypes.forEach((flatType) => variants.push({ country: 'SG', buyerStatus, flatType }));
+        return;
+      }
+
+      variants.push({ country: 'SG', buyerStatus });
+    });
+  }
   prioritizedCountries
     .forEach((country) =>
       variants.push({
@@ -221,7 +932,7 @@ export function getGeoVariants(config: CalculatorConfig): { country?: string; st
       }),
     );
 
-  return variants.slice(0, prioritizeUsStates ? getGeoVariantCap(config) : 2500);
+  return variants.slice(0, prioritizeUsStates ? getGeoVariantCap(config) : prioritizeAuStates ? 2500 : 2500);
 }
 
 export const calculators: CalculatorConfig[] = [
@@ -234,7 +945,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'rate', label: 'Interest rate', prefix: '%', step: 0.25, values: [4.5, 4.75, 5, 4.25, 5.25, 4, 5.5, 5.75, 6, 3.75, 6.25, 6.5, 7] },
       { key: 'termYears', label: 'Term', step: 5, values: [25, 30, 35, 20, 40, 15] },
     ],
-    maxVariants: 1200,
+    maxVariants: 2400,
     seoTemplate: {
       title: 'Mortgage Repayment Calculator - {{principal}} at {{rate}} over {{termYears}} years | Plain Figures',
       description: 'Monthly payment, total interest, and worked mortgage maths for {{principal}} at {{rate}} over {{termYears}} years.',
@@ -393,7 +1104,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'gross', label: 'Gross salary', prefix: '$', step: 10000, values: [50000, 60000, 75000, 85000, 100000, 120000, 150000, 200000, 30000, 250000, 400000] },
       { key: 'payPeriod', label: 'Pay period', values: ['annual', 'monthly', 'weekly', 'bonus'] },
     ],
-    maxVariants: 700,
+    maxVariants: 1400,
     seoTemplate: {
       title: 'Salary Take-Home Calculator - {{gross}} {{country}} gross pay | Plain Figures',
       description: 'Gross-to-net pay estimate for {{gross}} in {{country}} on a {{payPeriod}} basis.',
@@ -721,7 +1432,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'inflationRate', label: 'Inflation rate', prefix: '%', step: 1, values: [1, 2, 3, 5] },
       { key: 'timeHorizonYears', label: 'Time horizon years', step: 5, values: [5, 10, 20, 30, 40] },
     ],
-    maxVariants: 3200,
+    maxVariants: 4800,
     seoTemplate: {
       title: 'Project Your Net Worth in {{timeHorizonYears}} Years - {{monthlySavings}} a month at {{expectedReturnRate}} return | Plain Figures',
       description: 'Net-worth projection using {{currentNetWorth}} starting wealth, {{monthlySavings}} monthly saving, {{expectedReturnRate}} returns, {{inflationRate}} inflation, and {{timeHorizonYears}} years.',
@@ -914,7 +1625,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'familySize', label: 'Family size', step: 1, values: numberRange(1, 6, 1) },
       { key: 'housingType', label: 'Housing type', values: ['Rent 1-bed', 'Rent 3-bed', 'Buy'] },
     ],
-    maxVariants: 2800,
+    maxVariants: 5600,
     seoTemplate: {
       title: 'Cost of Living: {{currentCity}} vs {{targetCity}} - Salary Needed in 2026 | Plain Figures',
       description: 'Compare cost of living between {{currentCity}} and {{targetCity}} using {{salary}} income, family size {{familySize}}, and {{housingType}} housing assumptions.',
@@ -1116,7 +1827,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'growthRate', label: 'Growth rate', prefix: '%', step: 1, values: numberRange(3, 8, 1) },
       { key: 'yearsToTransfer', label: 'Years to transfer', step: 5, values: [5, 10, 15, 20, 25, 30] },
     ],
-    maxVariants: 2200,
+    maxVariants: 4200,
     seoTemplate: {
       title: '{{totalWealth}} Wealth Transfer to {{beneficiaries}} Heirs - Tax-Efficient 2026 | Plain Figures',
       description: 'Illustrate multi-generational wealth transfer using {{totalWealth}} wealth, {{annualGifting}} annual gifting, {{beneficiaries}} beneficiaries, {{taxJurisdiction}} rules, {{growthRate}} growth, and {{yearsToTransfer}} years.',
@@ -1237,7 +1948,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'cancelNow', label: 'Cancel now', values: ['yes', 'no'] },
       { key: 'annualReviewFrequency', label: 'Annual review frequency', step: 1, values: [1, 2, 3, 4] },
     ],
-    maxVariants: 2000,
+    maxVariants: 3600,
     seoTemplate: {
       title: 'Cancel Unused Subscriptions - Save Money in 2026 | Plain Figures',
       description: 'Estimate annual subscription savings using {{monthlySubscriptionsCount}} subscriptions, {{averageMonthlyCostPerSub}} average cost, {{unusedPercent}} unused services, cancel-now {{cancelNow}}, and {{annualReviewFrequency}} reviews per year.',
@@ -1256,7 +1967,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'addonPercentIncrease', label: 'Add-on percent increase', prefix: '%', step: 5, values: numberRange(5, 40, 5) },
       { key: 'coverageAmount', label: 'Coverage amount', prefix: '$', step: 100000, values: [50000, 100000, 200000, 300000, 400000, 500000] },
     ],
-    maxVariants: 3200,
+    maxVariants: 4800,
     seoTemplate: {
       title: 'Add Flood/Earthquake Coverage to {{homeValue}} Home Insurance - Cost 2026 | Plain Figures',
       description: 'Model home-insurance add-on costs for a {{homeValue}} home using {{locationRiskLevel}} risk, {{basePremiumAnnual}} base premium, {{addonPercentIncrease}} premium uplift, and {{coverageAmount}} extra cover.',
@@ -1276,7 +1987,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'promoAPR', label: 'Promo APR', prefix: '%', step: 1, values: [0, 0.99, 1.99, 3.99, 6.99, 9.99] },
       { key: 'promoMonths', label: 'Promo months', step: 3, values: [6, 9, 12, 15, 18, 21] },
     ],
-    maxVariants: 1600,
+    maxVariants: 2600,
     seoTemplate: {
       title: 'Transfer {{currentBalance}} Balance - Save on Interest with 0% Promo 2026 | Plain Figures',
       description: 'Estimate balance-transfer savings for {{currentBalance}} at {{currentAPR}} APR using a {{promoAPR}} promo APR, {{promoMonths}} promo months, and {{transferFeePercent}} transfer fees.',
@@ -1339,7 +2050,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'rentIncrease', label: 'Rent increase', prefix: '%', step: 1, values: [2, 3, 4, 5] },
       { key: 'yearsLiving', label: 'Years living', step: 3, values: [3, 5, 7, 10, 12, 15] },
     ],
-    maxVariants: 3800,
+    maxVariants: 7000,
     seoTemplate: {
       title: 'Rent {{monthlyRent}}/mo vs Buy {{homePrice}} Home - 2026 Comparison | Plain Figures',
       description: 'Compare renting and buying for {{monthlyRent}} monthly rent versus a {{homePrice}} home using {{downPaymentPercent}} down, {{mortgageRate}} mortgage rates, {{propertyTaxRate}} property tax, {{homeAppreciation}} appreciation, and {{yearsLiving}} years.',
@@ -1381,7 +2092,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'drawPeriodYears', label: 'Draw period years', step: 1, values: [5, 7, 10] },
       { key: 'repayPeriodYears', label: 'Repay period years', step: 5, values: [10, 15, 20] },
     ],
-    maxVariants: 2200,
+    maxVariants: 4400,
     seoTemplate: {
       title: 'Home Equity Loan vs HELOC: {{amountNeeded}} Borrowed - Costs 2026 | Plain Figures',
       description: 'Compare home-equity loan and HELOC costs for {{amountNeeded}} on a {{homeValue}} home with {{equityPercent}} equity, {{fixedLoanRate}} fixed rates, {{helocVariableRate}} HELOC rates, and {{repayPeriodYears}} repayment.',
@@ -1403,7 +2114,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'creditScoreImpact', label: 'Credit score impact', values: ['poor', 'fair', 'good', 'excellent'] },
       { key: 'locationRisk', label: 'Location risk', values: ['low', 'medium', 'high'] },
     ],
-    maxVariants: 3200,
+    maxVariants: 7600,
     seoTemplate: {
       title: 'Save on Car Insurance - Quote Comparison for {{driverAge}}-Year-Old Driver 2026 | Plain Figures',
       description: 'Compare car-insurance cost assumptions for a {{driverAge}}-year-old driver with {{vehicleValue}} vehicle value, {{annualMiles}} annual miles, {{coverageLevel}} cover, {{claimsLast5Years}} claims, {{creditScoreImpact}} credit, and {{locationRisk}} location risk.',
@@ -1544,7 +2255,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'propertyTaxRate', label: 'Annual Property Tax Rate %', prefix: '%', step: 0.25, values: numberRange(0.5, 2.5, 0.25) },
       { key: 'homeInsuranceAnnual', label: 'Annual Home Insurance Estimate', prefix: '$', step: 200, values: numberRange(800, 3000, 200) },
     ],
-    maxVariants: 3600,
+    maxVariants: 5400,
     seoTemplate: {
       title: 'How Much House Can I Afford on {{annualIncome}} Salary? – 2026 Calculator | Plain Figures',
       description: 'Estimate how much house you can afford in 2026 using {{annualIncome}} income, {{monthlyDebtPayments}} monthly debts, {{downPayment}} down payment, {{interestRate}} mortgage rates, {{propertyTaxRate}} property tax, and {{homeInsuranceAnnual}} insurance.',
@@ -1628,7 +2339,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'years', label: 'Years', step: 1, values: numberRange(5, 40, 1) },
       { key: 'compounding', label: 'Compounding', values: ['monthly', 'quarterly', 'annual'] },
     ],
-    maxVariants: 2000,
+    maxVariants: 3600,
     seoTemplate: {
       title: '{{initialInvestment}} + {{monthlyContribution}}/mo at {{annualReturn}}% – Future Value in {{years}} Years | Plain Figures',
       description: 'Calculate future value for {{initialInvestment}} invested with {{monthlyContribution}} monthly contributions, {{annualReturn}} returns, {{years}} years, and {{compounding}} compounding.',
@@ -1668,7 +2379,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'yearsToGoal', label: 'Years to goal', step: 5, values: [5, 8, 10, 15, 20, 25, 30] },
       { key: 'targetMonthlyPassive', label: 'Target monthly passive income', prefix: '$', step: 500, values: [500, 1000, 2000, 3000, 5000, 7500, 10000] },
     ],
-    maxVariants: 2000,
+    maxVariants: 3600,
     seoTemplate: {
       title: 'Build {{targetMonthlyPassive}}/mo Passive Income - Monthly Investment Needed 2026 | Plain Figures',
       description: 'Project the path to {{targetMonthlyPassive}} monthly passive income using {{currentMonthlyPassive}} current passive income, {{monthlyInvestment}} monthly investing, {{annualReturn}} returns, {{dividendYield}} yield, and {{yearsToGoal}} years.',
@@ -1689,7 +2400,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'numberOfCards', label: 'Number of cards', step: 2, values: [1, 2, 3, 5, 8, 12, 15] },
       { key: 'scoreChangeEstimate', label: 'Estimated score change', step: 10, values: [0, 10, 20, 30, 40, 50, 75, 100] },
     ],
-    maxVariants: 1800,
+    maxVariants: 3600,
     seoTemplate: {
       title: 'Optimize Credit Utilization from {{currentBalance}} Balance to {{targetUtilization}}% - Score Impact 2026 | Plain Figures',
       description: 'Estimate credit-utilization improvements using {{totalCreditLimit}} total limits, {{currentBalance}} current balances, {{newBalanceAfterPaydown}} balance after paydown, {{targetUtilization}} target utilization, {{numberOfCards}} cards, and {{scoreChangeEstimate}} estimated score change.',
@@ -1723,7 +2434,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'monthlySaveAmount', label: 'Monthly save amount', prefix: '$', step: 250, values: [100, 250, 500, 750, 1000, 1250, 1500, 2000] },
       { key: 'interestRate', label: 'Interest rate', prefix: '%', step: 0.5, values: [3, 3.5, 4, 4.5, 5, 5.5] },
     ],
-    maxVariants: 1900,
+    maxVariants: 3200,
     seoTemplate: {
       title: 'Build {{monthsCoverageGoal}} Months Emergency Fund ({{monthlyExpenses}}/mo Expenses) - Timeline 2026 | Plain Figures',
       description: 'Estimate the time to build a {{monthsCoverageGoal}}-month emergency fund using {{monthlyExpenses}} monthly expenses, {{currentSavings}} current savings, {{monthlySaveAmount}} monthly saving, and {{interestRate}} interest.',
@@ -1995,7 +2706,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'propertyTaxesAnnual', label: 'Annual Property Taxes (CAD)', prefix: '$', step: 1000, values: [2000, 3000, 4000, 5000, 6500, 8000, 10000] },
       { key: 'heatingCostsMonthly', label: 'Monthly Heating Costs (CAD)', prefix: '$', step: 50, values: [50, 75, 100, 150, 200, 250, 300] },
     ],
-    maxVariants: 2200,
+    maxVariants: 4200,
     seoTemplate: {
       title: 'How Much Mortgage Can I Afford in Canada? Stress Test on {{annualIncome}} Income - 2026 | Plain Figures',
       description: 'Estimate Canadian mortgage affordability using {{annualIncome}} household income, {{monthlyDebtPayments}} debts, {{downPayment}} down payment, {{qualifyingRate}} stress-test rate, {{amortizationYears}}-year amortization, {{propertyTaxesAnnual}} taxes, and {{heatingCostsMonthly}} heating costs.',
@@ -2033,7 +2744,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'otherDeductions', label: 'Other Deductions (union, childcare, etc.)', prefix: '$', step: 500, values: [0, 500, 1000, 2000, 3000, 4000, 5000] },
       { key: 'payFrequency', label: 'Pay Frequency', values: ['Annual', 'Monthly', 'Bi-weekly', 'Weekly'] },
     ],
-    maxVariants: 2200,
+    maxVariants: 4400,
     seoTemplate: {
       title: '{{grossSalary}} Salary After Tax in {{province}} Canada - 2026 Take-Home Pay | Plain Figures',
       description: 'Estimate Canadian take-home pay for {{grossSalary}} in {{province}} using {{rrspContribution}} RRSP contributions, {{otherDeductions}} other deductions, and {{payFrequency}} pay frequency.',
@@ -2093,7 +2804,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'retirementAge', label: 'Planned Retirement Age', step: 2, values: [60, 62, 65, 67, 70] },
       { key: 'insuranceFeesAnnual', label: 'Annual Insurance/Fees in Super (AUD)', prefix: '$', step: 250, values: [200, 400, 600, 800, 1000, 1250, 1500] },
     ],
-    maxVariants: 2100,
+    maxVariants: 4200,
     seoTemplate: {
       title: 'Project Super Balance at Retirement - Age {{age}}, {{currentSuperBalance}} Current - 2026 Australia | Plain Figures',
       description: 'Project Australian superannuation at retirement using {{currentSuperBalance}} current balance, {{annualContribution}} annual contributions, age {{age}}, {{expectedReturn}} returns, retirement at {{retirementAge}}, and {{insuranceFeesAnnual}} annual super fees.',
@@ -2113,7 +2824,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'monthlyOffsetDeposit', label: 'Monthly Deposit to Offset (AUD)', prefix: '$', step: 500, values: [500, 750, 1000, 1500, 2000, 2500, 3000] },
       { key: 'remainingTermYears', label: 'Remaining Mortgage Term (Years)', step: 5, values: [10, 15, 20, 25, 30] },
     ],
-    maxVariants: 2000,
+    maxVariants: 4000,
     seoTemplate: {
       title: 'Mortgage Offset Savings on {{mortgageBalance}} Loan - {{offsetBalance}} Balance 2026 Australia | Plain Figures',
       description: 'Estimate Australian offset-account savings using {{mortgageBalance}} mortgage balance, {{interestRate}} interest, {{offsetBalance}} in the offset account, {{monthlyOffsetDeposit}} monthly offset deposits, and {{remainingTermYears}} years remaining.',
@@ -2133,7 +2844,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'otherDeductions', label: 'Other Tax Deductions (work-related, etc.)', prefix: '$', step: 1000, values: [0, 500, 1000, 2500, 5000, 7500, 10000] },
       { key: 'payFrequency', label: 'Pay Frequency', values: ['Annual', 'Monthly', 'Fortnightly', 'Weekly'] },
     ],
-    maxVariants: 2200,
+    maxVariants: 4400,
     seoTemplate: {
       title: '{{grossSalary}} Salary After Tax Australia - 2026 Take-Home Pay | Plain Figures',
       description: 'Estimate Australian take-home pay for {{grossSalary}} using {{taxResident}} tax residency, {{superContribution}} concessional super contributions, {{otherDeductions}} deductions, and {{payFrequency}} pay frequency.',
@@ -2152,7 +2863,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'propertyPrice', label: 'Target Property Price (AUD)', prefix: '$', step: 100000, values: [300000, 400000, 500000, 650000, 800000, 900000, 1000000] },
       { key: 'stampDutyExemption', label: 'Eligible for Stamp Duty Concession?', values: ['Yes', 'No'] },
     ],
-    maxVariants: 2000,
+    maxVariants: 3800,
     seoTemplate: {
       title: 'First-Home Buyer Affordability in {{state}} - {{annualIncome}} Income + Grants 2026 | Plain Figures',
       description: 'Estimate first-home buyer affordability in {{state}} using {{annualIncome}} household income, {{downPayment}} deposit, {{propertyPrice}} target property price, and {{stampDutyExemption}} stamp-duty concession eligibility.',
@@ -2173,7 +2884,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'annualExpenses', label: 'Annual Property Expenses (maintenance, rates, etc.)', prefix: '$', step: 2500, values: [5000, 7500, 10000, 12500, 15000, 17500, 20000] },
       { key: 'marginalTaxRate', label: 'Marginal Tax Rate %', prefix: '%', step: 5, values: [19, 24, 29, 34, 39, 45] },
     ],
-    maxVariants: 2100,
+    maxVariants: 4200,
     seoTemplate: {
       title: 'Negative Gearing Return on {{propertyPurchasePrice}} Investment Property - 2026 Australia | Plain Figures',
       description: 'Estimate negative-gearing outcomes using {{propertyPurchasePrice}} purchase price, {{depositPercent}} deposit, {{rentalIncomeAnnual}} rental income, {{interestRate}} loan rate, {{annualExpenses}} annual expenses, and {{marginalTaxRate}} marginal tax rate.',
@@ -2193,7 +2904,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'termYears', label: 'Mortgage Term (Years)', step: 5, values: [15, 20, 25, 30, 35, 40] },
       { key: 'propertyValueEstimate', label: 'Estimated Property Value (£)', prefix: '£', step: 100000, values: [100000, 200000, 300000, 450000, 600000, 800000] },
     ],
-    maxVariants: 2200,
+    maxVariants: 4200,
     seoTemplate: {
       title: 'How Much Mortgage Can I Afford in the UK? Stress Test on {{annualIncome}} Income - 2026 | Plain Figures',
       description: 'Estimate UK mortgage affordability using {{annualIncome}} household income, {{monthlyOutgoings}} monthly outgoings, {{depositAmount}} deposit, {{stressTestRate}} stress-test rate, {{termYears}}-year term, and {{propertyValueEstimate}} estimated property value.',
@@ -2212,7 +2923,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'yearsToRetirement', label: 'Years Until Retirement', step: 5, values: [5, 10, 15, 20, 25, 30, 35] },
       { key: 'expectedReturn', label: 'Expected Annual Return %', prefix: '%', step: 0.5, values: [3, 4, 5, 6, 7, 8] },
     ],
-    maxVariants: 2000,
+    maxVariants: 3600,
     seoTemplate: {
       title: 'Optimise Pension Contributions & Tax Relief on {{grossSalary}} Salary - 2026 UK | Plain Figures',
       description: 'Model UK pension tax relief using {{grossSalary}} salary, {{currentTaxBand}} tax band, {{annualContribution}} annual pension contribution, {{yearsToRetirement}} years to retirement, and {{expectedReturn}} expected return.',
@@ -2231,7 +2942,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'studentLoanPlan', label: 'Student Loan Plan', values: ['None', 'Plan 1', 'Plan 2', 'Plan 4', 'Plan 5', 'Postgraduate'] },
       { key: 'payFrequency', label: 'Pay Frequency', values: ['Annual', 'Monthly', 'Weekly'] },
     ],
-    maxVariants: 2200,
+    maxVariants: 4400,
     seoTemplate: {
       title: '{{grossSalary}} Salary After Tax & NI - UK 2026/27 Take-Home Pay Calculator | Plain Figures',
       description: 'Estimate UK take-home pay for {{grossSalary}} in tax year {{taxYear}} using {{pensionContribution}} pension contributions, {{studentLoanPlan}} student loan plan, and {{payFrequency}} pay frequency.',
@@ -2250,7 +2961,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'yearsInvested', label: 'Years Until Withdrawal', step: 5, values: [5, 10, 15, 20, 25, 30] },
       { key: 'investmentReturn', label: 'Expected Annual Return %', prefix: '%', step: 1, values: [3, 4, 5, 6, 7, 8, 9] },
     ],
-    maxVariants: 2000,
+    maxVariants: 3600,
     seoTemplate: {
       title: 'ISA vs Pension: Which is Better for {{annualAmount}}/yr in 2026 UK? | Plain Figures',
       description: 'Compare ISA and pension outcomes using {{annualAmount}} annual investing, {{currentTaxRate}} current tax rate, {{retirementTaxRate}} retirement tax rate, {{yearsInvested}} years invested, and {{investmentReturn}} annual return.',
@@ -2269,7 +2980,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'nonUkResident', label: 'Non-UK Resident Buyer?', values: ['Yes', 'No'] },
       { key: 'companyPurchase', label: 'Purchased by Company?', values: ['Yes', 'No'] },
     ],
-    maxVariants: 1800,
+    maxVariants: 3600,
     seoTemplate: {
       title: 'Stamp Duty on {{propertyPrice}} Property - First-Time Buyer Relief 2026 UK | Plain Figures',
       description: 'Estimate UK stamp duty using {{propertyPrice}} purchase price, {{firstTimeBuyer}} first-time buyer status, {{additionalProperty}} additional-property status, {{nonUkResident}} non-UK residency, and {{companyPurchase}} company purchase status.',
@@ -2285,14 +2996,15 @@ export const calculators: CalculatorConfig[] = [
       { key: 'currentCPFBalance', label: 'Current CPF Balance (SGD)', prefix: '$', step: 25000, values: [0, 10000, 25000, 50000, 100000, 200000, 350000, 500000] },
       { key: 'monthlySalary', label: 'Monthly Salary (SGD)', prefix: '$', step: 2500, values: [3000, 5000, 7000, 9000, 12000, 15000, 20000] },
       { key: 'age', label: 'Current Age', step: 5, values: [25, 30, 35, 40, 45, 50, 55, 60, 65] },
+      { key: 'buyerStatus', label: 'Buyer status', values: ['Citizen'] },
       { key: 'expectedReturnOA', label: 'Expected OA Return %', prefix: '%', step: 0.5, values: [2.5, 3, 3.5, 4, 4.5, 5] },
       { key: 'retirementAge', label: 'Planned Withdrawal Age', step: 2, values: [55, 57, 60, 62, 65] },
     ],
-    maxVariants: 2100,
+    maxVariants: 4200,
     seoTemplate: {
-      title: 'CPF Projection at Retirement - Age {{age}}, {{currentCPFBalance}} Current - 2026 Singapore | Plain Figures',
-      description: 'Project CPF balances in Singapore using {{currentCPFBalance}} current CPF savings, {{monthlySalary}} monthly salary, age {{age}}, {{expectedReturnOA}} expected OA return, and withdrawal at age {{retirementAge}}.',
-      h1: 'CPF Projection at Retirement - Age {{age}}, {{currentCPFBalance}} Current',
+      title: '{{buyerStatus}} CPF Projection at Retirement - Age {{age}}, {{currentCPFBalance}} Current - 2026 Singapore | Plain Figures',
+      description: 'Project CPF balances in Singapore using {{buyerStatus}} status, {{currentCPFBalance}} current CPF savings, {{monthlySalary}} monthly salary, age {{age}}, {{expectedReturnOA}} expected OA return, and withdrawal at age {{retirementAge}}.',
+      h1: '{{buyerStatus}} CPF Projection at Retirement - Age {{age}}, {{currentCPFBalance}} Current',
     },
     formula: 'FV = B(1+r)^t + C\\frac{(1+r)^t-1}{r}',
     isValidVariant: (params) => Number(params.retirementAge) > Number(params.age),
@@ -2304,15 +3016,17 @@ export const calculators: CalculatorConfig[] = [
     params: [
       { key: 'monthlyIncome', label: 'Monthly Household Income (SGD)', prefix: '$', step: 2500, values: [3000, 5000, 7000, 9000, 12000, 15000, 20000] },
       { key: 'existingCommitments', label: 'Existing Monthly Commitments (SGD)', prefix: '$', step: 500, values: [0, 250, 500, 1000, 1500, 2000, 2500, 3000] },
+      { key: 'buyerStatus', label: 'Buyer status', values: ['Citizen'] },
+      { key: 'flatType', label: 'HDB flat type', values: ['4-room'] },
       { key: 'downPayment', label: 'Down Payment / Cash (SGD)', prefix: '$', step: 25000, values: [10000, 25000, 50000, 75000, 100000, 150000, 200000] },
       { key: 'loanTenureYears', label: 'Loan Tenure (Years)', step: 5, values: [20, 25, 30] },
       { key: 'interestRate', label: 'HDB / Bank Loan Rate %', prefix: '%', step: 0.5, values: [2, 2.5, 3, 3.5, 4, 4.5] },
     ],
-    maxVariants: 2000,
+    maxVariants: 4200,
     seoTemplate: {
-      title: 'HDB Loan Affordability on {{monthlyIncome}}/mo Income - MSR/TDSR 2026 Singapore | Plain Figures',
-      description: 'Estimate Singapore HDB affordability using {{monthlyIncome}} monthly household income, {{existingCommitments}} existing commitments, {{downPayment}} down payment, {{loanTenureYears}}-year tenure, and {{interestRate}} loan rate.',
-      h1: 'HDB Loan Affordability on {{monthlyIncome}}/mo Income',
+      title: '{{flatType}} HDB {{buyerStatus}} Loan Affordability on {{monthlyIncome}}/mo Income - MSR/TDSR 2026 Singapore | Plain Figures',
+      description: 'Estimate Singapore HDB affordability using {{flatType}} HDB assumptions, {{buyerStatus}} status, {{monthlyIncome}} monthly household income, {{existingCommitments}} existing commitments, {{downPayment}} down payment, {{loanTenureYears}}-year tenure, and {{interestRate}} loan rate.',
+      h1: '{{flatType}} HDB {{buyerStatus}} Loan Affordability on {{monthlyIncome}}/mo Income',
     },
     formula: 'L_{max} \\approx \\frac{(I-C)\\times ratio}{factor(r,n)}',
   },
@@ -2323,15 +3037,16 @@ export const calculators: CalculatorConfig[] = [
     params: [
       { key: 'grossSalaryAnnual', label: 'Annual Gross Salary (SGD)', prefix: '$', step: 10000, values: [40000, 50000, 65000, 80000, 100000, 125000, 150000, 200000, 250000, 300000] },
       { key: 'residentStatus', label: 'Tax Residency', values: ['Resident', 'Non-Resident'] },
+      { key: 'buyerStatus', label: 'Buyer status', values: ['Citizen'] },
       { key: 'cpfContribution', label: 'CPF Relief / Deduction (SGD)', prefix: '$', step: 2500, values: [0, 1000, 2500, 5000, 10000, 15000, 20000] },
       { key: 'otherReliefs', label: 'Other Tax Reliefs (parent, course fees, etc.)', prefix: '$', step: 2500, values: [0, 500, 1000, 2500, 5000, 7500, 10000] },
       { key: 'payFrequency', label: 'Pay Frequency', values: ['Annual', 'Monthly'] },
     ],
-    maxVariants: 2200,
+    maxVariants: 4400,
     seoTemplate: {
-      title: '{{grossSalaryAnnual}} Salary After Tax Singapore - 2026 Take-Home Pay | Plain Figures',
-      description: 'Estimate Singapore take-home pay for {{grossSalaryAnnual}} using {{residentStatus}} tax residency, {{cpfContribution}} CPF relief, {{otherReliefs}} other reliefs, and {{payFrequency}} pay frequency.',
-      h1: '{{grossSalaryAnnual}} Salary After Tax Singapore',
+      title: '{{buyerStatus}} {{grossSalaryAnnual}} Salary After Tax Singapore - 2026 Take-Home Pay | Plain Figures',
+      description: 'Estimate Singapore take-home pay for {{grossSalaryAnnual}} using {{buyerStatus}} status, {{residentStatus}} tax residency, {{cpfContribution}} CPF relief, {{otherReliefs}} other reliefs, and {{payFrequency}} pay frequency.',
+      h1: '{{buyerStatus}} {{grossSalaryAnnual}} Salary After Tax Singapore',
     },
     formula: '\\text{Net pay} = \\text{gross} - \\text{income tax} - \\text{CPF relief adjustments}',
   },
@@ -2342,15 +3057,16 @@ export const calculators: CalculatorConfig[] = [
     params: [
       { key: 'taxableIncome', label: 'Taxable Income (SGD)', prefix: '$', step: 10000, values: [40000, 50000, 65000, 80000, 100000, 125000, 150000, 175000, 200000] },
       { key: 'currentTaxBracket', label: 'Current Tax Rate %', prefix: '%', step: 4, values: [0, 4, 8, 12, 16, 20, 24] },
+      { key: 'buyerStatus', label: 'Buyer status', values: ['Citizen'] },
       { key: 'annualTopUp', label: 'Annual Top-Up Amount (SGD)', prefix: '$', step: 2500, values: [1000, 2500, 5000, 7500, 10000, 12500, 15500] },
       { key: 'yearsToRetirement', label: 'Years Until Withdrawal', step: 5, values: [5, 10, 15, 20, 25, 30] },
       { key: 'investmentReturn', label: 'Expected Annual Return %', prefix: '%', step: 0.5, values: [3, 4, 5, 6, 7, 8] },
     ],
-    maxVariants: 2000,
+    maxVariants: 4000,
     seoTemplate: {
-      title: 'SRS vs CPF Top-Up Tax Relief on {{taxableIncome}} Income - 2026 Singapore | Plain Figures',
-      description: 'Compare SRS and CPF top-up outcomes using {{taxableIncome}} taxable income, {{currentTaxBracket}} current tax rate, {{annualTopUp}} annual top-up amount, {{yearsToRetirement}} years to retirement, and {{investmentReturn}} expected return.',
-      h1: 'SRS vs CPF Top-Up Tax Relief on {{taxableIncome}} Income',
+      title: '{{buyerStatus}} SRS vs CPF Top-Up Tax Relief on {{taxableIncome}} Income - 2026 Singapore | Plain Figures',
+      description: 'Compare SRS and CPF top-up outcomes using {{buyerStatus}} status, {{taxableIncome}} taxable income, {{currentTaxBracket}} current tax rate, {{annualTopUp}} annual top-up amount, {{yearsToRetirement}} years to retirement, and {{investmentReturn}} expected return.',
+      h1: '{{buyerStatus}} SRS vs CPF Top-Up Tax Relief on {{taxableIncome}} Income',
     },
     formula: 'FV \\approx C\\frac{(1+r)^t-1}{r} + tax\\ relief',
   },
@@ -2364,7 +3080,7 @@ export const calculators: CalculatorConfig[] = [
       { key: 'numberOfProperties', label: 'Number of Properties Owned (incl. this one)', step: 1, values: [0, 1, 2, 3, 4] },
       { key: 'firstProperty', label: 'First Residential Property?', values: ['Yes', 'No'] },
     ],
-    maxVariants: 1800,
+    maxVariants: 3600,
     seoTemplate: {
       title: 'Buyer Stamp Duty & ABSD on {{propertyPrice}} Property - 2026 Singapore | Plain Figures',
       description: 'Estimate Singapore buyer stamp duty and ABSD using {{propertyPrice}} purchase price, {{buyerStatus}} buyer status, {{numberOfProperties}} properties owned, and {{firstProperty}} first-property status.',
@@ -2467,6 +3183,99 @@ export const calculators: CalculatorConfig[] = [
       h1: 'Stamp Duty & Registration on {{propertyValue}} Property in {{state}}',
     },
     formula: 'Total = stamp\\ duty + registration\\ fee - concessions',
+  },
+  {
+    id: 'br-salario-liquido-clt-pj',
+    categorySlug: 'tax',
+    name: 'Calculadora Salário Líquido CLT & PJ Brasil 2026',
+    params: [
+      { key: 'salarioBrutoMensal', label: 'Salário Bruto Mensal (R$)', prefix: 'R$', step: 2000, values: [1412, 2000, 3000, 5000, 8000, 12000, 20000, 30000, 40000, 50000] },
+      { key: 'tipoContratacao', label: 'Tipo de Contratação', values: ['CLT', 'PJ (Simples Nacional)', 'PJ (Lucro Presumido)'] },
+      { key: 'dependentes', label: 'Número de Dependentes', step: 1, values: [0, 1, 2, 3, 4, 5] },
+      { key: 'descontosPlanoSaude', label: 'Desconto Plano de Saúde (R$)', prefix: 'R$', step: 300, values: [0, 100, 300, 500, 800, 1200, 1500] },
+      { key: 'outrosDescontos', label: 'Outros Descontos (R$)', prefix: 'R$', step: 500, values: [0, 100, 300, 500, 1000, 1500, 2000] },
+    ],
+    maxVariants: 2200,
+    seoTemplate: {
+      title: 'Salário Líquido R${{salarioBrutoMensal}} CLT ou PJ - Calculadora Brasil 2026 | Plain Figures',
+      description: 'Calcule o salário líquido no Brasil com {{salarioBrutoMensal}} mensais, contratação {{tipoContratacao}}, {{dependentes}} dependentes, {{descontosPlanoSaude}} de plano de saúde e {{outrosDescontos}} em outros descontos.',
+      h1: 'Salário Líquido R${{salarioBrutoMensal}} CLT ou PJ',
+    },
+    formula: 'L = B - INSS - IRRF - D',
+  },
+  {
+    id: 'br-irpf-2026',
+    categorySlug: 'tax',
+    name: 'Calculadora IRPF 2026 Brasil',
+    params: [
+      { key: 'rendaBrutaAnual', label: 'Renda Bruta Anual (R$)', prefix: 'R$', step: 30000, values: [30000, 50000, 80000, 120000, 180000, 250000, 350000, 450000, 600000] },
+      { key: 'deducoesLegais', label: 'Deduções Legais (Dependentes, Saúde, Educação) (R$)', prefix: 'R$', step: 10000, values: [0, 2000, 5000, 10000, 20000, 40000, 60000] },
+      { key: 'tipoDeclaracao', label: 'Tipo de Declaração', values: ['Simplificada', 'Completa'] },
+      { key: 'fontePrincipal', label: 'Fonte Principal de Renda', values: ['CLT', 'Autônomo', 'Aposentadoria', 'Investimentos'] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'IRPF 2026: Imposto a Pagar ou Restituir - Renda R${{rendaBrutaAnual}} Brasil | Plain Figures',
+      description: 'Simule IRPF 2026 com {{rendaBrutaAnual}} de renda bruta anual, {{deducoesLegais}} em deduções, declaração {{tipoDeclaracao}} e renda principal de {{fontePrincipal}}.',
+      h1: 'IRPF 2026: Imposto a Pagar ou Restituir',
+    },
+    formula: 'IRPF = base\\ tributável \\times alíquota - parcela\\ a\\ deduzir',
+  },
+  {
+    id: 'br-fgts-modalidades-saldo',
+    categorySlug: 'savings',
+    name: 'Calculadora FGTS Modalidades & Saldo Projetado 2026',
+    params: [
+      { key: 'saldoAtual', label: 'Saldo Atual FGTS (R$)', prefix: 'R$', step: 25000, values: [0, 5000, 10000, 25000, 50000, 100000, 200000, 300000] },
+      { key: 'depositoMensal', label: 'Depósito Mensal FGTS (R$)', prefix: 'R$', step: 1000, values: [0, 200, 500, 1000, 2000, 4000, 6000, 8000] },
+      { key: 'anosProjetados', label: 'Anos Projetados', step: 2, values: [1, 3, 5, 8, 10, 15, 20] },
+      { key: 'modalidadePretendida', label: 'Modalidade de Saque', values: ['Saque Aniversário', 'Rescisão sem Justa Causa', 'Casa Própria', 'Doença Grave'] },
+    ],
+    maxVariants: 1800,
+    seoTemplate: {
+      title: 'FGTS Saldo Projetado em {{anosProjetados}} Anos - Modalidade {{modalidadePretendida}} 2026 Brasil | Plain Figures',
+      description: 'Projete o saldo do FGTS com {{saldoAtual}} de saldo atual, {{depositoMensal}} de depósito mensal, horizonte de {{anosProjetados}} anos e modalidade {{modalidadePretendida}}.',
+      h1: 'FGTS Saldo Projetado em {{anosProjetados}} Anos',
+    },
+    formula: 'FV = S(1+r)^t + D\\frac{(1+r)^t-1}{r}',
+  },
+  {
+    id: 'br-inss-aposentadoria-beneficio',
+    categorySlug: 'retirement',
+    name: 'Calculadora INSS Aposentadoria & Benefício 2026',
+    params: [
+      { key: 'idadeAtual', label: 'Idade Atual', step: 5, values: [30, 35, 40, 45, 50, 55, 60, 65] },
+      { key: 'tempoContribuicaoMeses', label: 'Tempo de Contribuição (Meses)', step: 60, values: [60, 120, 180, 240, 300, 360, 420, 480] },
+      { key: 'salarioMedioContribuicao', label: 'Salário Médio de Contribuição (R$)', prefix: 'R$', step: 1000, values: [1412, 2000, 3000, 4000, 5000, 6000, 7000, 7780] },
+      { key: 'tipoBeneficio', label: 'Tipo de Aposentadoria', values: ['Aposentadoria por Idade', 'Por Tempo de Contribuição', 'Por Pontos'] },
+    ],
+    maxVariants: 2000,
+    seoTemplate: {
+      title: 'Benefício INSS Estimado - Idade {{idadeAtual}}, {{tempoContribuicaoMeses}} Meses Contribuídos - 2026 Brasil | Plain Figures',
+      description: 'Estime o benefício do INSS com idade {{idadeAtual}}, {{tempoContribuicaoMeses}} meses de contribuição, salário médio de {{salarioMedioContribuicao}} e benefício {{tipoBeneficio}}.',
+      h1: 'Benefício INSS Estimado',
+    },
+    formula: 'B \\approx salário\\ médio \\times fator',
+  },
+  {
+    id: 'br-financiamento-imobiliario-sac-price',
+    categorySlug: 'mortgages',
+    name: 'Calculadora Financiamento Imobiliário SAC vs Tabela Price 2026',
+    params: [
+      { key: 'valorImovel', label: 'Valor do Imóvel (R$)', prefix: 'R$', step: 300000, values: [200000, 300000, 500000, 800000, 1200000, 1800000, 2500000] },
+      { key: 'entrada', label: 'Entrada (R$)', prefix: 'R$', step: 50000, values: [20000, 50000, 100000, 200000, 300000, 400000, 500000] },
+      { key: 'prazoAnos', label: 'Prazo (Anos)', step: 5, values: [10, 15, 20, 25, 30, 35] },
+      { key: 'taxaJurosAnual', label: 'Taxa de Juros Anual %', prefix: '%', step: 0.5, values: [7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11.5] },
+      { key: 'sistemaAmortizacao', label: 'Sistema de Amortização', values: ['SAC', 'Price'] },
+    ],
+    maxVariants: 2200,
+    seoTemplate: {
+      title: 'Financiamento Imobiliário R${{valorImovel}} - SAC vs Price 2026 Brasil | Plain Figures',
+      description: 'Compare financiamento imobiliário de {{valorImovel}} com entrada de {{entrada}}, prazo de {{prazoAnos}} anos, juros de {{taxaJurosAnual}} e sistema {{sistemaAmortizacao}}.',
+      h1: 'Financiamento Imobiliário R${{valorImovel}} - SAC vs Price',
+    },
+    formula: 'PMT = P\\frac{r(1+r)^n}{(1+r)^n-1}',
+    isValidVariant: (params) => Number(params.entrada) < Number(params.valorImovel),
   },
 ];
 
@@ -2653,6 +3462,16 @@ const slugBuilders: Partial<Record<string, (params: ParamMap) => string>> = {
     `in-nps-vs-epf-${monthlyContribution}-contribution-${currentAge}-age-${expectedReturnNPS}-nps-${expectedReturnEPF}-epf-${yearsToRetirement}-years`,
   'in-stamp-duty-registration': ({ propertyValue, state, propertyType, buyerGender }) =>
     `in-stamp-duty-${propertyValue}-value-${normalizeSlugPart(state)}-${normalizeSlugPart(propertyType)}-${normalizeSlugPart(buyerGender)}`,
+  'br-salario-liquido-clt-pj': ({ salarioBrutoMensal, tipoContratacao, dependentes, descontosPlanoSaude, outrosDescontos }) =>
+    `br-salario-liquido-${salarioBrutoMensal}-bruto-${normalizeSlugPart(tipoContratacao)}-${dependentes}-dependentes-${descontosPlanoSaude}-saude-${outrosDescontos}-descontos`,
+  'br-irpf-2026': ({ rendaBrutaAnual, deducoesLegais, tipoDeclaracao, fontePrincipal }) =>
+    `br-irpf-2026-${rendaBrutaAnual}-renda-${deducoesLegais}-deducoes-${normalizeSlugPart(tipoDeclaracao)}-${normalizeSlugPart(fontePrincipal)}`,
+  'br-fgts-modalidades-saldo': ({ saldoAtual, depositoMensal, anosProjetados, modalidadePretendida }) =>
+    `br-fgts-${saldoAtual}-saldo-${depositoMensal}-deposito-${anosProjetados}-anos-${normalizeSlugPart(modalidadePretendida)}`,
+  'br-inss-aposentadoria-beneficio': ({ idadeAtual, tempoContribuicaoMeses, salarioMedioContribuicao, tipoBeneficio }) =>
+    `br-inss-${idadeAtual}-idade-${tempoContribuicaoMeses}-meses-${salarioMedioContribuicao}-salario-${normalizeSlugPart(tipoBeneficio)}`,
+  'br-financiamento-imobiliario-sac-price': ({ valorImovel, entrada, prazoAnos, taxaJurosAnual, sistemaAmortizacao }) =>
+    `br-financiamento-${valorImovel}-imovel-${entrada}-entrada-${prazoAnos}-anos-${taxaJurosAnual}-juros-${normalizeSlugPart(sistemaAmortizacao)}`,
 };
 
 function normalizeSlugPart(value: ParamValue): string {
@@ -2742,7 +3561,7 @@ function buildGeneratedEntries<T extends { categorySlug: string; slug: string }>
     .filter((variant): variant is GeneratedSlug => Boolean(variant))
     .slice(0, config.maxVariants);
 
-  const geoVariants = getGeoVariants(config).filter((variant) => variant.country || variant.state);
+  const geoVariants = getGeoVariants(config).filter((variant) => variant.country || variant.state || variant.region || variant.province || variant.buyerStatus || variant.flatType);
   const allEntries = [...baseEntries];
 
   if (geoVariants.length > 0) {
@@ -2760,15 +3579,49 @@ function buildGeneratedEntries<T extends { categorySlug: string; slug: string }>
     for (let index = 0; index < geoTarget; index += 1) {
       const baseEntry = baseEntries[index % baseEntries.length];
       const geo = geoVariants[Math.floor(index / baseEntries.length) % geoVariants.length];
-      const suffix = geo.state ? geo.state.toLowerCase() : geo.country?.toLowerCase();
+      const suffix = geo.state
+        ? geo.state.toLowerCase()
+        : geo.region
+          ? normalizeSlugPart(geo.region)
+          : geo.province
+            ? normalizeSlugPart(geo.province)
+            : geo.flatType && geo.buyerStatus
+              ? `${normalizeSlugPart(geo.flatType)}-${normalizeSlugPart(geo.buyerStatus)}`
+              : geo.flatType
+                ? normalizeSlugPart(geo.flatType)
+                : geo.buyerStatus
+                  ? normalizeSlugPart(geo.buyerStatus)
+                  : geo.country?.toLowerCase();
       const countryName = geo.country ? COUNTRY_NAME_MAP[geo.country] ?? geo.country : undefined;
       const stateName = geo.state;
+      const regionName = geo.region;
+      const provinceName = geo.province;
+      const buyerStatusName = geo.buyerStatus;
+      const flatTypeName = geo.flatType;
+      const stateEnhancedParams = getStateEnhancedParams(config, geo, baseEntry.params);
+      const australiaStateEnhancedParams = getAustraliaStateEnhancedParams(config, geo, baseEntry.params);
+      const ukNationEnhancedParams = getUkNationEnhancedParams(config, geo, baseEntry.params);
+      const canadaProvinceEnhancedParams = getCanadaProvinceEnhancedParams(config, geo, baseEntry.params);
+      const singaporeNuanceEnhancedParams = getSingaporeNuanceEnhancedParams(config, geo, baseEntry.params);
       const geoParams: ParamMap = {
         ...(geo.country ? { country: geo.country } : {}),
         ...(geo.state ? { state: geo.state } : {}),
+        ...(geo.region ? { region: geo.region } : {}),
+        ...(geo.province ? { province: geo.province } : {}),
+        ...(geo.buyerStatus ? { buyerStatus: geo.buyerStatus } : {}),
+        ...(geo.flatType ? { flatType: geo.flatType } : {}),
         ...(geo.languageHint ? { languageHint: geo.languageHint } : {}),
         ...(countryName ? { countryName } : {}),
         ...(stateName ? { stateName } : {}),
+        ...(regionName ? { regionName } : {}),
+        ...(provinceName ? { provinceName } : {}),
+        ...(buyerStatusName ? { buyerStatusName } : {}),
+        ...(flatTypeName ? { flatTypeName } : {}),
+        ...stateEnhancedParams,
+        ...australiaStateEnhancedParams,
+        ...ukNationEnhancedParams,
+        ...canadaProvinceEnhancedParams,
+        ...singaporeNuanceEnhancedParams,
       };
 
       if (!suffix) {
