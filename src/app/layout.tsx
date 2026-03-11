@@ -124,8 +124,7 @@ const themeScript = `
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GB">
-      <head>/client_data/a94ee732bd655739457a79c94415999f/script.js"
-
+      <head>
         {/* Google AdSense — verification + future ads */}
         <script
           async

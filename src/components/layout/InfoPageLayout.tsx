@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import Breadcrumbs from '@/components/seo/Breadcrumbs';
+import { buildInfoBreadcrumbs } from '@/lib/seo/relatedLinks';
 
 interface InfoPageLayoutProps {
   eyebrow: string;
@@ -11,7 +13,9 @@ interface InfoPageLayoutProps {
 export default function InfoPageLayout({ eyebrow, title, description, children }: InfoPageLayoutProps) {
   return (
     <div style={{ maxWidth: '820px', margin: '0 auto', padding: '3rem 2rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em', marginBottom: '2.5rem' }}>
+      <Breadcrumbs items={buildInfoBreadcrumbs(title)} />
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em', marginBottom: '1.25rem' }}>
         <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>PLAIN FIGURES</Link>
         <span>/</span>
         <span style={{ color: 'var(--accent)' }}>{eyebrow.toUpperCase()}</span>

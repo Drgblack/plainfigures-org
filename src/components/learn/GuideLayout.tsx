@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import Breadcrumbs from '@/components/seo/Breadcrumbs';
+import { buildGuideBreadcrumbs } from '@/lib/seo/relatedLinks';
 
 interface GuideLayoutProps {
   number?: string;
@@ -12,25 +14,15 @@ interface GuideLayoutProps {
 export default function GuideLayout({ number, title, readTime, keywords, children }: GuideLayoutProps) {
   return (
     <div style={{ maxWidth: '780px', margin: '0 auto', padding: '3rem 2rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.08em', marginBottom: '2.5rem' }}>
-        <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>PLAIN FIGURES</Link>
-        <span>/</span>
-        <Link href="/learn" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>LEARNING CENTRE</Link>
-        {number && (
-          <>
-            <span>/</span>
-            <span style={{ color: 'var(--accent)' }}>{number}</span>
-          </>
-        )}
-      </div>
+      <Breadcrumbs items={buildGuideBreadcrumbs(title)} />
 
       <div style={{ marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.85rem', flexWrap: 'wrap' }}>
-          {number && (
+          {number ? (
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--accent)', letterSpacing: '0.08em', border: '1px solid var(--accent)', borderRadius: '3px', padding: '0.18rem 0.45rem' }}>
               {number}
             </span>
-          )}
+          ) : null}
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', letterSpacing: '0.1em', border: '1px solid var(--border)', borderRadius: '3px', padding: '0.18rem 0.45rem' }}>
             {readTime} read
           </span>
@@ -38,15 +30,15 @@ export default function GuideLayout({ number, title, readTime, keywords, childre
         <h1 style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(1.55rem, 3.4vw, 2.35rem)', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.2, marginBottom: keywords && keywords.length ? '1rem' : 0 }}>
           {title}
         </h1>
-        {keywords && keywords.length > 0 && (
+        {keywords && keywords.length > 0 ? (
           <div style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap' }}>
-            {keywords.slice(0, 6).map(keyword => (
+            {keywords.slice(0, 6).map((keyword) => (
               <span key={keyword} style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'var(--text-muted)', border: '1px solid var(--border)', borderRadius: '3px', padding: '0.12rem 0.4rem' }}>
                 {keyword}
               </span>
             ))}
           </div>
-        )}
+        ) : null}
       </div>
 
       <div className="guide-content">
@@ -55,7 +47,7 @@ export default function GuideLayout({ number, title, readTime, keywords, childre
 
       <div style={{ marginTop: '2rem', padding: '1rem 1.25rem', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: '6px' }}>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.55rem' }}>
-          Attribution & Review
+          Attribution and Review
         </div>
         <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.7, fontWeight: 300 }}>
           Published by the Plain Figures editorial team. Review focuses on whether the formula, assumptions, and date-sensitive references still match what the page claims to calculate.

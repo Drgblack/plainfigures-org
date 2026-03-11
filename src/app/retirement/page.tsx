@@ -15,6 +15,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Retirement Savings Calculator — Plain Figures',
   description: 'Project your pension pot at retirement, accounting for inflation, employer contributions, and investment growth.',
+  alternates: { canonical: 'https://plainfigures.org/retirement' },
 };
 
 export default function RetirementPage() {

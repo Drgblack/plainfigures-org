@@ -14,6 +14,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Salary Take-Home Calculator — UK, Germany, USA, France, Netherlands, Australia — Plain Figures',
   description: 'Calculate your net take-home pay after tax and national insurance in the UK, Germany, USA, France, Netherlands, and Australia.',
+  alternates: { canonical: 'https://plainfigures.org/take-home' },
 };
 export default function Page() {
   return (

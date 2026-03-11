@@ -15,6 +15,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Loan Repayment Calculator — Plain Figures',
   description: 'Calculate monthly repayments, total interest, and the true APR on any personal loan or credit agreement.',
+  alternates: { canonical: 'https://plainfigures.org/loan' },
 };
 
 export default function LoanPage() {
@@ -28,6 +29,8 @@ export default function LoanPage() {
       title="Loan Repayment Calculator"
       description="Calculate monthly repayments and the full cost of any personal loan, car finance, or credit agreement. See the true APR and year-by-year breakdown."
       toolHref="/loan"
+      learnHref="/learn/loan-repayment"
+      learnLabel="Read how repayment and APR calculations work"
     >
       <LoanCalc />
     </CalcPageWrapper>

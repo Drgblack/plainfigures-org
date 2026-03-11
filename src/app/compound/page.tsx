@@ -15,6 +15,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Compound Interest Calculator — Plain Figures',
   description: 'See exactly how compound interest works at different frequencies — monthly, quarterly, annually, daily.',
+  alternates: { canonical: 'https://plainfigures.org/compound' },
 };
 
 export default function CompoundPage() {

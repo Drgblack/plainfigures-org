@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { renderToString } from 'katex';
 import 'katex/dist/katex.min.css';
@@ -10,9 +9,13 @@ import {
   CalculatorConfig,
   findGeneratedSlug,
   generateStaticProgrammaticPaths,
-  getRepresentativeGeneratedSlug,
 } from '@/lib/calculators/config';
 import { generateUniquePageContent } from '@/lib/calculators/generator';
+import {
+  buildProgrammaticRelatedCalculatorLinks,
+  buildProgrammaticRelatedGuideLinks,
+  getProgrammaticHubHref,
+} from '@/lib/seo/relatedLinks';
 import styles from './page.module.css';
 
 export const revalidate = 86400;
@@ -32,12 +35,6 @@ type Variant = {
   params: Record<string, number | string>;
 };
 
-type CategorySupport = {
-  hubHref: string;
-  guideSlugs: string[];
-  relatedCategories: string[];
-};
-
 const CONFIG_BY_CATEGORY = new Map(calculators.map((config) => [config.categorySlug, config]));
 
 const PROFESSIONAL_CATEGORIES = new Set([
@@ -52,41 +49,6 @@ const PROFESSIONAL_CATEGORIES = new Set([
   'loss-probability',
   'cyber-limit',
 ]);
-
-const CATEGORY_SUPPORT: Record<string, CategorySupport> = {
-  'mortgage-repayment': { hubHref: '/mortgage', guideSlugs: ['mortgage-repayment', 'mortgage-affordability'], relatedCategories: ['offset-mortgage', 'mortgage-overpayment', 'mortgage-affordability'] },
-  'savings-growth': { hubHref: '/savings', guideSlugs: ['compound-interest', 'save-for-goal'], relatedCategories: ['compound-interest', 'save-for-goal', 'retirement-savings'] },
-  'rent-vs-buy': { hubHref: '/rent-vs-buy', guideSlugs: ['rent-vs-buy', 'mortgage-repayment'], relatedCategories: ['mortgage-repayment', 'mortgage-affordability', 'offset-mortgage'] },
-  'compound-interest': { hubHref: '/compound', guideSlugs: ['compound-interest', 'retirement-savings'], relatedCategories: ['savings-growth', 'retirement-savings', 'save-for-goal'] },
-  'loan-repayment': { hubHref: '/loan', guideSlugs: ['loan-repayment', 'salary-take-home'], relatedCategories: ['mortgage-repayment', 'salary-take-home', 'save-for-goal'] },
-  'retirement-savings': { hubHref: '/retirement', guideSlugs: ['retirement-savings', 'retirement-employer-contributions'], relatedCategories: ['compound-interest', 'save-for-goal', 'pension-contribution-scenarios'] },
-  'offset-mortgage': { hubHref: '/offset', guideSlugs: ['offset-mortgage', 'mortgage-overpayment'], relatedCategories: ['mortgage-repayment', 'mortgage-overpayment', 'mortgage-affordability'] },
-  'mortgage-overpayment': { hubHref: '/overpayment', guideSlugs: ['mortgage-overpayment', 'offset-mortgage'], relatedCategories: ['mortgage-repayment', 'offset-mortgage', 'save-for-goal'] },
-  'save-for-goal': { hubHref: '/save-goal', guideSlugs: ['save-for-goal', 'emergency-fund-how-much'], relatedCategories: ['savings-growth', 'compound-interest', 'retirement-savings'] },
-  'salary-take-home': { hubHref: '/take-home', guideSlugs: ['salary-take-home', 'salary-sacrifice'], relatedCategories: ['tax', 'freelance-rate', 'mortgage-affordability'] },
-  'mortgage-affordability': { hubHref: '/affordability', guideSlugs: ['mortgage-affordability', 'mortgage-repayment'], relatedCategories: ['mortgage-repayment', 'offset-mortgage', 'salary-take-home'] },
-  'tdee-calorie': { hubHref: '/tdee', guideSlugs: ['tdee'], relatedCategories: ['subscription-drain', 'lifestyle-inflation', 'financial-crisis'] },
-  'subscription-drain': { hubHref: '/subscriptions', guideSlugs: ['subscription-drain', 'save-for-goal'], relatedCategories: ['save-for-goal', 'compound-interest', 'lifestyle-inflation'] },
-  'freelance-rate': { hubHref: '/freelance', guideSlugs: ['freelance-rate', 'salary-take-home'], relatedCategories: ['salary-take-home', 'tax', 'mortgage-affordability'] },
-  'lifestyle-inflation': { hubHref: '/lifestyle-inflation', guideSlugs: ['lifestyle-inflation', 'save-for-goal'], relatedCategories: ['subscription-drain', 'financial-crisis', 'retirement-savings'] },
-  'financial-crisis': { hubHref: '/crisis', guideSlugs: ['financial-crisis', 'emergency-fund-how-much'], relatedCategories: ['save-for-goal', 'subscription-drain', 'lifestyle-inflation'] },
-  'business-interruption': { hubHref: '/bi', guideSlugs: ['business-interruption'], relatedCategories: ['coverage-gap', 'total-cost-risk', 'risk-heatmap'] },
-  'human-life-value': { hubHref: '/hlv', guideSlugs: ['retirement-savings', 'inheritance-tax'], relatedCategories: ['mortgage-affordability', 'retirement-savings', 'salary-take-home'] },
-  'cyber-risk-exposure': { hubHref: '/cyber', guideSlugs: ['cyber-resilient-agency'], relatedCategories: ['cyber-limit', 'coverage-gap', 'total-cost-risk'] },
-  'total-cost-risk': { hubHref: '/tcor', guideSlugs: ['business-interruption', 'cyber-resilient-agency'], relatedCategories: ['business-interruption', 'coverage-gap', 'risk-heatmap'] },
-  'risk-heatmap': { hubHref: '/risk-heatmap', guideSlugs: ['business-interruption'], relatedCategories: ['coverage-gap', 'total-cost-risk', 'loss-probability'] },
-  'scr-estimator': { hubHref: '/scr', guideSlugs: ['regtech-compliance-automation'], relatedCategories: ['total-cost-risk', 'coverage-gap', 'risk-heatmap'] },
-  'coverage-gap': { hubHref: '/coverage-gap', guideSlugs: ['business-interruption', 'cyber-resilient-agency'], relatedCategories: ['business-interruption', 'total-cost-risk', 'cyber-limit'] },
-  'ltv-cac': { hubHref: '/ltv-cac', guideSlugs: ['private-credit-playbook'], relatedCategories: ['freelance-rate', 'salary-take-home', 'loss-probability'] },
-  'loss-probability': { hubHref: '/loss-probability', guideSlugs: ['financial-crisis', 'business-interruption'], relatedCategories: ['risk-heatmap', 'coverage-gap', 'total-cost-risk'] },
-  'cyber-limit': { hubHref: '/cyber-limit', guideSlugs: ['cyber-resilient-agency'], relatedCategories: ['cyber-risk-exposure', 'coverage-gap', 'total-cost-risk'] },
-  tax: { hubHref: '/take-home', guideSlugs: ['salary-take-home', 'salary-sacrifice'], relatedCategories: ['salary-take-home', 'pension-contribution-scenarios', 'freelance-rate'] },
-  wealth: { hubHref: '/savings', guideSlugs: ['compound-interest', 'save-for-goal'], relatedCategories: ['investing', 'compound-interest', 'retirement-savings'] },
-  loans: { hubHref: '/loan', guideSlugs: ['loan-repayment', 'mortgage-repayment'], relatedCategories: ['loan-repayment', 'mortgage-repayment', 'salary-take-home'] },
-  investing: { hubHref: '/compound', guideSlugs: ['compound-interest', 'retirement-savings'], relatedCategories: ['compound-interest', 'wealth', 'retirement'] },
-  retirement: { hubHref: '/retirement', guideSlugs: ['retirement-savings', 'retirement-employer-contributions'], relatedCategories: ['retirement-savings', 'pension-contribution-scenarios', 'tax'] },
-  'pension-contribution-scenarios': { hubHref: '/retirement', guideSlugs: ['retirement-savings', 'retirement-employer-contributions'], relatedCategories: ['retirement-savings', 'tax', 'save-for-goal'] },
-};
 
 function formatNumber(value: number): string {
   return new Intl.NumberFormat('en-GB', {
@@ -133,45 +95,6 @@ function resolveVariant(category: string, expression: string): { config: Calcula
 
 function categoryCode(config: CalculatorConfig): string {
   return config.categorySlug.replace(/-/g, ' ').toUpperCase();
-}
-
-function categorySupport(categorySlug: string): CategorySupport {
-  return CATEGORY_SUPPORT[categorySlug] ?? {
-    hubHref: '/learn',
-    guideSlugs: [],
-    relatedCategories: [],
-  };
-}
-
-function buildRelatedCalculatorLinks(categorySlug: string) {
-  const support = categorySupport(categorySlug);
-
-  return support.relatedCategories
-    .map((relatedCategory) => {
-      const variant = getRepresentativeGeneratedSlug(relatedCategory);
-      const config = CONFIG_BY_CATEGORY.get(relatedCategory);
-
-      if (!variant || !config) {
-        return null;
-      }
-
-      return {
-        href: `/calculators/${variant.categorySlug}/${variant.slug}`,
-        label: config.name,
-      };
-    })
-    .filter((link): link is { href: string; label: string } => Boolean(link))
-    .slice(0, 4);
-}
-
-function buildRelatedGuideLinks(categorySlug: string) {
-  return categorySupport(categorySlug).guideSlugs.map((slug) => ({
-    href: `/learn/${slug}`,
-    label: slug
-      .split('-')
-      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-      .join(' '),
-  }));
 }
 
 function formulaMarkup(formula: string) {
@@ -240,13 +163,19 @@ export default async function ProgrammaticCalculatorPage({ params }: PageProps) 
   }
 
   const { config, variant } = resolved;
-  const support = categorySupport(category);
+  const hubHref = getProgrammaticHubHref(category);
   const heading = renderTemplate(config.seoTemplate.h1, variant.params, config);
   const description = renderTemplate(config.seoTemplate.description, variant.params, config);
   const content = generateUniquePageContent(variant.params, config);
-  const relatedCalculatorLinks = buildRelatedCalculatorLinks(category);
-  const relatedGuideLinks = buildRelatedGuideLinks(category);
+  const relatedCalculatorLinks = buildProgrammaticRelatedCalculatorLinks(category);
+  const relatedGuideLinks = buildProgrammaticRelatedGuideLinks(category);
   const formulaHtml = formulaMarkup(config.formula);
+  const primaryGuide = relatedGuideLinks[0];
+  const breadcrumbItems = [
+    { href: '/', label: 'Home' },
+    { href: hubHref, label: config.name.replace(/ Calculator 2026$/, '') },
+    { label: heading },
+  ];
 
   return (
     <>
@@ -256,9 +185,12 @@ export default async function ProgrammaticCalculatorPage({ params }: PageProps) 
         title={heading}
         description={description}
         professional={PROFESSIONAL_CATEGORIES.has(category)}
-        toolHref={support.hubHref}
-        learnHref={relatedGuideLinks[0]?.href}
-        learnLabel={relatedGuideLinks[0] ? `Read: ${relatedGuideLinks[0].label}` : undefined}
+        toolHref={hubHref}
+        breadcrumbItems={breadcrumbItems}
+        relatedCalculatorLinks={relatedCalculatorLinks}
+        relatedGuideLinks={relatedGuideLinks}
+        learnHref={primaryGuide?.href}
+        learnLabel={primaryGuide?.label}
         rateContext="Formula-first page. Numbers and worked assumptions for illustration only, not financial, tax, nutrition, insurance, or legal advice."
       >
         <div className={styles.page}>
@@ -279,7 +211,7 @@ export default async function ProgrammaticCalculatorPage({ params }: PageProps) 
               <div className={styles.formulaLabel}>Formula Used</div>
               <div className={styles.formulaMarkup} dangerouslySetInnerHTML={{ __html: formulaHtml }} />
               <p className={styles.paragraph}>
-                The page title, summary text, and FAQ all reflect the exact inputs in this slug. That keeps the page specific to the query rather than recycling generic calculator copy across thousands of URLs.
+                The page title, introduction, and FAQ all reflect the exact values in this slug. That keeps the indexed page specific to the query instead of recycling one generic calculator description across thousands of URLs.
               </p>
             </div>
           </section>
@@ -314,30 +246,13 @@ export default async function ProgrammaticCalculatorPage({ params }: PageProps) 
             </div>
 
             <div className={styles.card}>
-              <div className={styles.detailLabel}>Internal Links</div>
-              <div className={styles.linkGroup}>
-                <div className={styles.linkLabel}>Related guides</div>
-                <div className={styles.linkList}>
-                  {relatedGuideLinks.map((link) => (
-                    <Link key={link.href} href={link.href} className={styles.link}>
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-              <div className={styles.linkGroup}>
-                <div className={styles.linkLabel}>Other calculators</div>
-                <div className={styles.linkList}>
-                  {relatedCalculatorLinks.map((link) => (
-                    <Link key={link.href} href={link.href} className={styles.link}>
-                      {link.label}
-                    </Link>
-                  ))}
-                  <Link href={support.hubHref} className={styles.link}>
-                    Browse {config.name}
-                  </Link>
-                </div>
-              </div>
+              <div className={styles.detailLabel}>Cluster Position</div>
+              <p className={styles.paragraph}>
+                This URL sits one click beneath the main {config.name.replace(/ Calculator 2026$/, '')} hub so nearby examples, the core calculator, and supporting guides remain shallow and crawlable.
+              </p>
+              <p className={styles.paragraph}>
+                Use the calculator hub for broader scenarios, then follow the related guides for the formula and assumption context behind this exact example page.
+              </p>
             </div>
           </section>
 

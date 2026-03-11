@@ -15,6 +15,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Savings Growth Calculator — Plain Figures',
   description: 'See how compound interest grows your savings over time with regular contributions.',
+  alternates: { canonical: 'https://plainfigures.org/savings' },
 };
 
 export default function SavingsPage() {
@@ -28,6 +29,8 @@ export default function SavingsPage() {
       title="Savings Growth Calculator"
       description="See how compound interest works over time. Add an initial deposit, set a monthly contribution, and watch your balance grow."
       toolHref="/savings"
+      learnHref="/learn/compound-interest"
+      learnLabel="Read how compounding changes savings growth"
       rateContext="Best easy-access savings rates: ~5% (Feb 2026). Review when rates change."
     >
       <SavingsCalc />

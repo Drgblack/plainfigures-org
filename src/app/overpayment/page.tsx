@@ -15,6 +15,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Mortgage Overpayment Calculator — Plain Figures',
   description: 'Calculate how much interest and time you save by making extra monthly mortgage payments.',
+  alternates: { canonical: 'https://plainfigures.org/overpayment' },
 };
 
 export default function OverpaymentPage() {
@@ -28,6 +29,8 @@ export default function OverpaymentPage() {
       title="Mortgage Overpayment Calculator"
       description="See the exact impact of paying a little extra each month — how much interest you save, and how many years come off your mortgage term."
       toolHref="/overpayment"
+      learnHref="/learn/mortgage-overpayment"
+      learnLabel="Read how overpayments cut interest and term"
     >
       <OverpaymentCalc />
     </CalcPageWrapper>
