@@ -250,9 +250,44 @@ const HUBS: Record<string, ClusterHubConfig> = {
         description: 'Anchor sum-insured logic and indemnity-period assumptions before comparing broader coverage gaps.',
       },
       {
+        href: '/learn/human-life-value',
+        label: 'Read the human life value guide',
+        description: 'Keep income-replacement and protection-gap framing inside the same coverage workflow.',
+      },
+      {
         href: '/learn/cyber-resilient-agency',
         label: 'Read the cyber-resilience guide',
         description: 'Connect cyber exposure, control quality, and incident-cost framing to the calculator outputs.',
+      },
+      {
+        href: '/learn/cyber-insurance-limit',
+        label: 'Read the cyber limit adequacy guide',
+        description: 'Support limit selection with a dedicated explainer on what adequate cyber cover is trying to capture.',
+      },
+      {
+        href: '/learn/coverage-gap-analysis',
+        label: 'Read the coverage gap analysis guide',
+        description: 'Keep policy-limit comparison logic close to the calculators that surface under-insurance risk.',
+      },
+      {
+        href: '/learn/total-cost-of-risk',
+        label: 'Read the total cost of risk guide',
+        description: 'Connect premiums, retained losses, and control spend back to the broader risk programme economics.',
+      },
+      {
+        href: '/learn/risk-heatmap-explained',
+        label: 'Read the risk heat map guide',
+        description: 'Support register design, prioritisation, and mitigation sequencing with a dedicated explainer.',
+      },
+      {
+        href: '/learn/loss-event-probability',
+        label: 'Read the loss probability guide',
+        description: 'Bring scenario-weighted expected-loss thinking into the same organiser page as the register tools.',
+      },
+      {
+        href: '/learn/solvency-capital-requirement',
+        label: 'Read the solvency capital requirement guide',
+        description: 'Retain capital and solvency framing when operational risk questions move beyond simple scoring.',
       },
       {
         href: '/learn/regtech-compliance-automation',

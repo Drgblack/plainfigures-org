@@ -48,6 +48,14 @@ const GUIDE_LABELS: Record<string, string> = {
   '/learn/private-credit-playbook': 'Private Credit Playbook: Diversifying Beyond Equities',
   '/learn/parametric-insurance-weather': 'Parametric Insurance: Instant-Payout Weather Triggers',
   '/learn/tdee': 'TDEE and Calorie Needs: How the Calculation Works',
+  '/learn/human-life-value': 'Human Life Value: How Income Replacement Maths Works',
+  '/learn/total-cost-of-risk': 'Total Cost of Risk: What TCOR Actually Measures',
+  '/learn/risk-heatmap-explained': 'Risk Heat Maps: Likelihood, Impact, and Their Limits',
+  '/learn/solvency-capital-requirement': 'Solvency Capital Requirement: Standard Formula Basics',
+  '/learn/coverage-gap-analysis': 'Coverage Gap Analysis: Comparing Limits to Real Exposure',
+  '/learn/loss-event-probability': 'Loss Event Probability: Expected Loss and Scenario Weighting',
+  '/learn/cyber-insurance-limit': 'Cyber Insurance Limits: How Adequacy Is Estimated',
+  '/learn/ltv-cac-explained': 'LTV to CAC: How Customer Economics Are Actually Calculated',
 };
 
 const CLUSTERS: Record<string, ClusterConfig> = {
@@ -112,10 +120,18 @@ const CLUSTERS: Record<string, ClusterConfig> = {
     calculatorHrefs: ['/bi', '/coverage-gap', '/tcor', '/risk-heatmap', '/cyber', '/cyber-limit', '/loss-probability', '/scr', '/hlv', '/ltv-cac'],
     guideLinks: [
       { href: '/learn/business-interruption', label: GUIDE_LABELS['/learn/business-interruption'], description: 'Work through BI sum-insured logic and indemnity-period sizing.' },
+      { href: '/learn/human-life-value', label: GUIDE_LABELS['/learn/human-life-value'], description: 'Keep protection-gap and income-replacement framing attached to the broader coverage cluster.' },
       { href: '/learn/cyber-resilient-agency', label: GUIDE_LABELS['/learn/cyber-resilient-agency'], description: 'Connect breach exposure to control investment and coverage planning.' },
+      { href: '/learn/cyber-insurance-limit', label: GUIDE_LABELS['/learn/cyber-insurance-limit'], description: 'Keep cyber-limit adequacy and the supporting exposure logic inside the same protection path.' },
+      { href: '/learn/coverage-gap-analysis', label: GUIDE_LABELS['/learn/coverage-gap-analysis'], description: 'Compare policy limits to actual exposures before relying on headline sums insured.' },
+      { href: '/learn/total-cost-of-risk', label: GUIDE_LABELS['/learn/total-cost-of-risk'], description: 'Tie retained losses, premiums, and control spending back to the rest of the risk toolset.' },
+      { href: '/learn/risk-heatmap-explained', label: GUIDE_LABELS['/learn/risk-heatmap-explained'], description: 'Support register scoring and prioritisation with a clearer explainer on likelihood and impact.' },
+      { href: '/learn/loss-event-probability', label: GUIDE_LABELS['/learn/loss-event-probability'], description: 'Keep expected-loss and scenario-weighting logic close to register and coverage work.' },
+      { href: '/learn/solvency-capital-requirement', label: GUIDE_LABELS['/learn/solvency-capital-requirement'], description: 'Add capital framing where retained risk needs to be translated into solvency language.' },
       { href: '/learn/regtech-compliance-automation', label: GUIDE_LABELS['/learn/regtech-compliance-automation'], description: 'Model compliance cost, efficiency, and automation ROI.' },
       { href: '/learn/private-credit-playbook', label: GUIDE_LABELS['/learn/private-credit-playbook'], description: 'Use adjacent portfolio-risk content to support deeper professional research.' },
       { href: '/learn/parametric-insurance-weather', label: GUIDE_LABELS['/learn/parametric-insurance-weather'], description: 'Add trigger-based cover design and basis-risk framing to the professional risk cluster.' },
+      { href: '/learn/ltv-cac-explained', label: GUIDE_LABELS['/learn/ltv-cac-explained'], description: 'Retain one economics explainer where risk work overlaps with acquisition cost and portfolio value models.' },
     ],
     hubLinks: [
       { href: '/risk-management-and-coverage', label: 'Open the risk management and coverage hub', description: 'Group exposure, coverage, limit, and capital tools within one professional cluster.' },
@@ -163,6 +179,7 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       'These pages support housing and wealth-transfer decisions that sit between personal finance calculators and higher-stakes planning topics. The cluster groups property yield, tax, and estate explainers so they are not left as isolated articles.',
     calculatorHrefs: ['/rent-vs-buy', '/mortgage', '/take-home', '/retirement', '/savings'],
     guideLinks: [
+      { href: '/learn/rent-vs-buy', label: GUIDE_LABELS['/learn/rent-vs-buy'], description: 'Keep the tenure decision explainer inside the same housing, property, and wealth-transfer cluster.' },
       { href: '/learn/buy-to-let-yield', label: 'Buy-to-Let Yield: Gross, Net, and Cash-on-Cash Return', description: 'Keep property-return definitions close to the broader housing and savings cluster.' },
       { href: '/learn/capital-gains-tax', label: 'Capital Gains Tax: How the Calculation Works (2025/26)', description: 'Tie disposal and gain mechanics back to the main tax-aware calculator paths.' },
       { href: '/learn/inheritance-tax', label: 'Inheritance Tax: Nil-Rate Band, Taper Relief, and How It Is Calculated', description: 'Keep estate tax and gifting rules within reach of retirement and long-term wealth pages.' },
