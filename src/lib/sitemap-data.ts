@@ -12,12 +12,11 @@ export const STATIC_PAGE_URLS = [
   'https://www.plainfigures.org/privacy',
   'https://www.plainfigures.org/terms',
   'https://www.plainfigures.org/disclaimer',
-  'https://www.plainfigures.org/contact',
-  'https://www.plainfigures.org/cookies',
   'https://www.plainfigures.org/learn',
   'https://www.plainfigures.org/mortgage-calculators',
   'https://www.plainfigures.org/overpayment-and-offset',
   'https://www.plainfigures.org/savings-and-compound-interest',
+  'https://www.plainfigures.org/income-tax-and-borrowing',
 ];
 
 export const CALCULATOR_HUB_URLS = [

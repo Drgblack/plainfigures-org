@@ -156,6 +156,57 @@ const HUBS: Record<string, ClusterHubConfig> = {
       },
     ],
   },
+  'income-tax-and-borrowing': {
+    slug: 'income-tax-and-borrowing',
+    title: 'Income, Tax, and Borrowing Hub',
+    eyebrow: 'Income Hub',
+    description:
+      'A focused hub for salary take-home, freelance rate, loan repayment, and affordability pages, plus the guides that explain how gross-to-net and borrowing maths connect.',
+    intro:
+      'This hub is for users working backwards from income into decisions. It connects pay after tax, freelance pricing, debt cost, and borrowing capacity so the same commercial journey stays within a shallow internal-link path.',
+    summary:
+      'Start with take-home pay when gross income is the known input, move to freelance rate if you need to reverse-engineer pricing, then use loan and affordability pages when the question shifts into repayment or borrowing capacity.',
+    calculatorHrefs: ['/take-home', '/freelance', '/loan', '/affordability', '/retirement'],
+    guideLinks: [
+      {
+        href: '/learn/salary-take-home',
+        label: 'Read how salary take-home is calculated',
+        description: 'Break down gross pay into tax, social contributions, and net income across the main salary markets on the site.',
+      },
+      {
+        href: '/learn/salary-sacrifice',
+        label: 'Read the salary sacrifice guide',
+        description: 'Use the guide when pension and benefit deductions change the net-pay path.',
+      },
+      {
+        href: '/learn/freelance-rate',
+        label: 'Read the freelance rate guide',
+        description: 'Convert a target salary into a workable day rate once billable time and overheads are visible.',
+      },
+      {
+        href: '/learn/loan-repayment',
+        label: 'Read the loan repayment guide',
+        description: 'Compare APR, repayment schedules, and total borrowing cost before committing to consumer debt.',
+      },
+      {
+        href: '/learn/student-loan-repayment',
+        label: 'Read the student loan repayment guide',
+        description: 'Keep graduate deductions in the income model when take-home and affordability are both sensitive to plan type.',
+      },
+    ],
+    relatedHubs: [
+      {
+        href: '/mortgage-calculators',
+        label: 'Open the mortgage calculators hub',
+        description: 'Move into repayment and housing comparisons once income has been translated into borrowing power.',
+      },
+      {
+        href: '/savings-and-compound-interest',
+        label: 'Open the savings and compound hub',
+        description: 'Shift from income into saving, emergency-fund sizing, and long-term compounding without leaving the main finance architecture.',
+      },
+    ],
+  },
 };
 
 function toolLink(href: string): SeoLink | null {

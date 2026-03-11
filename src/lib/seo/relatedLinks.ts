@@ -95,7 +95,9 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/freelance-rate', label: GUIDE_LABELS['/learn/freelance-rate'], description: 'Convert target income into billable day-rate requirements.' },
       { href: '/learn/loan-repayment', label: GUIDE_LABELS['/learn/loan-repayment'], description: 'Understand repayment schedules, APR, and total borrowing cost.' },
     ],
-    hubLinks: [],
+    hubLinks: [
+      { href: '/income-tax-and-borrowing', label: 'Open the income, tax, and borrowing hub', description: 'Keep salary, freelance, loan, and affordability pages grouped within one commercial cluster.' },
+    ],
   },
   risk: {
     title: 'Risk and Coverage Cluster',

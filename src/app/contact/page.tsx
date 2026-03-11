@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
+import { buildStaticMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildStaticMetadata({
   title: 'Contact — Plain Figures',
   description: 'Contact Plain Figures for site issues, technical questions, or feedback. We do not provide financial advice.',
-};
+  path: '/contact',
+  noindex: true,
+});
 
 export default function ContactPage() {
   return (

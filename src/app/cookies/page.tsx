@@ -1,7 +1,5 @@
 'use client';
 
-import type { Metadata } from 'next';
-
 export default function CookiesPage() {
   return (
     <div style={{ maxWidth: '720px', margin: '0 auto', padding: '3rem 1.5rem' }}>
