@@ -161,7 +161,7 @@ export default function LearnIndexPage() {
               links={cluster.hubs}
             />
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.65rem' }}>
-              {cluster.guides.slice(0, 4).map((guide) => (
+              {cluster.guides.map((guide) => (
                 <Link key={guide.href} href={guide.href} style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', padding: '0.75rem 0.9rem', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: '6px', textDecoration: 'none' }}>
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.74rem', color: 'var(--text-primary)' }}>{guide.label}</span>
                   {guide.description ? (

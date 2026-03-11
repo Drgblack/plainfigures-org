@@ -78,6 +78,7 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/retirement-savings', label: GUIDE_LABELS['/learn/retirement-savings'], description: 'See how recurring contributions and inflation affect long-term projections.' },
       { href: '/learn/emergency-fund-how-much', label: GUIDE_LABELS['/learn/emergency-fund-how-much'], description: 'Set a buffer size that matches expenses and income stability.' },
       { href: '/learn/subscription-drain', label: GUIDE_LABELS['/learn/subscription-drain'], description: 'Reframe recurring spending as cumulative cost and foregone growth.' },
+      { href: '/learn/retirement-employer-contributions', label: 'Retirement Savings: Employer Contributions and Inflation Impact', description: 'Keep matched contributions and real-value retirement framing inside the main savings cluster.' },
     ],
     hubLinks: [
       { href: '/savings-and-compound-interest', label: 'Open the savings and compound hub', description: 'Group growth, goal, retirement, and emergency-fund pages under one savings path.' },
@@ -94,6 +95,7 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/salary-sacrifice', label: GUIDE_LABELS['/learn/salary-sacrifice'], description: 'See when pension and benefit salary sacrifice changes take-home outcomes.' },
       { href: '/learn/freelance-rate', label: GUIDE_LABELS['/learn/freelance-rate'], description: 'Convert target income into billable day-rate requirements.' },
       { href: '/learn/loan-repayment', label: GUIDE_LABELS['/learn/loan-repayment'], description: 'Understand repayment schedules, APR, and total borrowing cost.' },
+      { href: '/learn/student-loan-repayment', label: GUIDE_LABELS['/learn/student-loan-repayment'], description: 'Keep graduate repayment deductions in the same income-to-borrowing path as salary and loan pages.' },
     ],
     hubLinks: [
       { href: '/income-tax-and-borrowing', label: 'Open the income, tax, and borrowing hub', description: 'Keep salary, freelance, loan, and affordability pages grouped within one commercial cluster.' },
@@ -109,6 +111,7 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/cyber-resilient-agency', label: GUIDE_LABELS['/learn/cyber-resilient-agency'], description: 'Connect breach exposure to control investment and coverage planning.' },
       { href: '/learn/regtech-compliance-automation', label: GUIDE_LABELS['/learn/regtech-compliance-automation'], description: 'Model compliance cost, efficiency, and automation ROI.' },
       { href: '/learn/private-credit-playbook', label: GUIDE_LABELS['/learn/private-credit-playbook'], description: 'Use adjacent portfolio-risk content to support deeper professional research.' },
+      { href: '/learn/parametric-insurance-weather', label: GUIDE_LABELS['/learn/parametric-insurance-weather'], description: 'Add trigger-based cover design and basis-risk framing to the professional risk cluster.' },
     ],
     hubLinks: [
       { href: '/risk-management-and-coverage', label: 'Open the risk management and coverage hub', description: 'Group exposure, coverage, limit, and capital tools within one professional cluster.' },
@@ -123,9 +126,27 @@ const CLUSTERS: Record<string, ClusterConfig> = {
     guideLinks: [
       { href: '/learn/tdee', label: GUIDE_LABELS['/learn/tdee'], description: 'Understand the BMR and activity formulas behind calorie estimates.' },
       { href: '/learn/subscription-drain', label: GUIDE_LABELS['/learn/subscription-drain'], description: 'Compare recurring lifestyle costs with longer-term opportunity cost.' },
+      { href: '/learn/financial-crisis-simulator', label: 'Financial Crisis Simulator: How Long Will Savings Last?', description: 'Keep the scenario-based runway explainer alongside the broader lifestyle and resilience support pages.' },
     ],
     hubLinks: [
       { href: '/lifestyle-and-runway', label: 'Open the lifestyle and runway hub', description: 'Group recurring-cost, runway, and lifestyle-pressure pages in one support cluster.' },
+    ],
+  },
+  advisory: {
+    title: 'Advisory Strategy and Automation Cluster',
+    intro:
+      'These guides support the professional side of the site where workflow automation, client analytics, and advisory economics matter more than a single calculator output. The cluster keeps those pages discoverable without forcing them into the risk register bucket.',
+    calculatorHrefs: ['/ltv-cac', '/loss-probability', '/cyber', '/tcor'],
+    guideLinks: [
+      { href: '/learn/agentic-advisor', label: 'The Agentic Advisor: AI-Driven Digital Co-Workers', description: 'Connect AI workflow delegation to measurable advisory-unit economics.' },
+      { href: '/learn/automation-audit-2026', label: 'Automation Audit: Tasks to Delegate to AI in 2026', description: 'Map operational tasks into automation candidates and payback logic.' },
+      { href: '/learn/predictive-analytics-portfolio', label: 'Beyond Chatbots: Predictive Analytics for Portfolio Reviews', description: 'Keep model-driven portfolio review thinking inside the professional strategy cluster.' },
+      { href: '/learn/digital-client-experience-phygital', label: 'Digital Client Experience: Phygital Engagement Platforms', description: 'Tie service-delivery economics and adoption risk back to the adjacent commercial tools.' },
+      { href: '/learn/inheritance-pivot-heirs', label: 'Inheritance Pivot: Onboarding Heirs as Clients', description: 'Keep client-transition and conversion economics grouped with advisory growth explainers.' },
+      { href: '/learn/multigenerational-asset-retention', label: 'Multi-Generational Bridge: Retaining Assets Across Generations', description: 'Support longer-horizon retention and wealth-transfer economics within the same strategy cluster.' },
+    ],
+    hubLinks: [
+      { href: '/advisory-analytics-and-automation', label: 'Open the advisory analytics and automation hub', description: 'Group advisory workflow, analytics, and growth explainers in one organiser page.' },
     ],
   },
   property: {
@@ -459,6 +480,17 @@ export function getLearnHubClusters() {
         .map((tool) => ({ href: tool.href, label: tool.title, description: tool.description })),
       guides: CLUSTERS.markets.guideLinks,
       hubs: CLUSTERS.markets.hubLinks,
+    },
+    {
+      key: 'advisory',
+      title: CLUSTERS.advisory.title,
+      intro: CLUSTERS.advisory.intro,
+      calculators: CLUSTERS.advisory.calculatorHrefs
+        .map((href) => getToolByHref(href))
+        .filter((tool): tool is NonNullable<ReturnType<typeof getToolByHref>> => Boolean(tool))
+        .map((tool) => ({ href: tool.href, label: tool.title, description: tool.description })),
+      guides: CLUSTERS.advisory.guideLinks,
+      hubs: CLUSTERS.advisory.hubLinks,
     },
   ];
 }
