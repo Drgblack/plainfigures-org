@@ -41,7 +41,14 @@ export default function CrawlAuditPage() {
 
       <section style={{ marginBottom: '2.5rem' }}>
         <h2>Weak Calculator Coverage</h2>
-        <p>These calculators are missing either a dedicated explainer or a cluster-hub path. They are the first candidates for stronger internal linking in the next pass.</p>
+        <p>
+          These calculators are missing either a dedicated explainer or a cluster-hub path. They are the first candidates for stronger internal linking in the next pass.
+          For the broader prioritisation queue after these are fixed, use{' '}
+          <Link href="/seo-opportunities" style={{ color: 'var(--accent)' }}>
+            SEO Opportunities
+          </Link>
+          .
+        </p>
         <div style={{ display: 'grid', gap: '0.65rem' }}>
           {audit.weakCalculators.map((tool) => (
             <div key={tool.href} style={{ padding: '0.9rem 1rem', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px' }}>

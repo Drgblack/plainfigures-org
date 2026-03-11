@@ -125,6 +125,7 @@ export function getCrawlAuditSnapshot() {
       { href: '/programmatic-report', reason: 'Internal reporting surface for rollout and monitoring.' },
       { href: '/programmatic-report.json', reason: 'Machine-readable reporting endpoint.' },
       { href: '/crawl-audit', reason: 'Internal crawl-health report for site maintenance, not search acquisition.' },
+      { href: '/seo-opportunities', reason: 'Internal prioritisation report for the next SEO work queue.' },
     ],
   };
 }
