@@ -110,7 +110,10 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/regtech-compliance-automation', label: GUIDE_LABELS['/learn/regtech-compliance-automation'], description: 'Model compliance cost, efficiency, and automation ROI.' },
       { href: '/learn/private-credit-playbook', label: GUIDE_LABELS['/learn/private-credit-playbook'], description: 'Use adjacent portfolio-risk content to support deeper professional research.' },
     ],
-    hubLinks: [],
+    hubLinks: [
+      { href: '/risk-management-and-coverage', label: 'Open the risk management and coverage hub', description: 'Group exposure, coverage, limit, and capital tools within one professional cluster.' },
+      { href: '/advisory-analytics-and-automation', label: 'Open the advisory analytics and automation hub', description: 'Keep adjacent professional guides and commercial tools connected in one organiser page.' },
+    ],
   },
   wellbeing: {
     title: 'Energy and Lifestyle Cluster',
@@ -121,7 +124,9 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/tdee', label: GUIDE_LABELS['/learn/tdee'], description: 'Understand the BMR and activity formulas behind calorie estimates.' },
       { href: '/learn/subscription-drain', label: GUIDE_LABELS['/learn/subscription-drain'], description: 'Compare recurring lifestyle costs with longer-term opportunity cost.' },
     ],
-    hubLinks: [],
+    hubLinks: [
+      { href: '/lifestyle-and-runway', label: 'Open the lifestyle and runway hub', description: 'Group recurring-cost, runway, and lifestyle-pressure pages in one support cluster.' },
+    ],
   },
 };
 

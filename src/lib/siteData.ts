@@ -255,6 +255,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Estimate breach costs, risk score, and recommended cover limit based on security controls.',
     tags: ['Ransomware', 'Data Breach', 'Risk Score'],
     professional: true,
+    learnHref: '/learn/cyber-resilient-agency',
     relatedHrefs: ['/cyber-limit', '/risk-heatmap', '/coverage-gap'],
   },
   {

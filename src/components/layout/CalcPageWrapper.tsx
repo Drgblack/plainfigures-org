@@ -3,10 +3,12 @@ import Link from 'next/link';
 import Breadcrumbs from '@/components/seo/Breadcrumbs';
 import RelatedCalculators from '@/components/seo/RelatedCalculators';
 import RelatedGuides from '@/components/seo/RelatedGuides';
+import { getToolByHref } from '@/lib/siteData';
 import type { BreadcrumbItem, SeoLink } from '@/lib/seo/relatedLinks';
 import {
   buildCalculatorBreadcrumbs,
   getCalculatorLinksForTool,
+  getGuideLabel,
   getClusterHubLinks,
   getClusterSummary,
   getGuideLinksForTool,
@@ -46,11 +48,14 @@ export default function CalcPageWrapper({
   children,
 }: CalcPageWrapperProps) {
   const accent = professional ? '#d4a843' : 'var(--accent)';
+  const tool = toolHref ? getToolByHref(toolHref) : undefined;
   const breadcrumbs = breadcrumbItems ?? buildCalculatorBreadcrumbs(title, toolHref);
   const clusterSummary = toolHref ? getClusterSummary(toolHref) : null;
   const calculators = relatedCalculatorLinks ?? (toolHref ? getCalculatorLinksForTool(toolHref) : []);
   const guides = relatedGuideLinks ?? (toolHref ? getGuideLinksForTool(toolHref) : []);
   const hubLinks = toolHref ? getClusterHubLinks(toolHref) : [];
+  const resolvedLearnHref = learnHref ?? tool?.learnHref;
+  const resolvedLearnLabel = learnLabel ?? (resolvedLearnHref ? getGuideLabel(resolvedLearnHref) : undefined);
 
   return (
     <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '2.5rem 2rem' }}>
@@ -83,10 +88,10 @@ export default function CalcPageWrapper({
             ) : null}
           </div>
 
-          {learnHref ? (
-            <Link href={learnHref} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.9rem', background: 'rgba(46,200,138,0.06)', border: '1px solid rgba(46,200,138,0.2)', borderRadius: '4px', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#2ec88a', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
+          {resolvedLearnHref ? (
+            <Link href={resolvedLearnHref} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.9rem', background: 'rgba(46,200,138,0.06)', border: '1px solid rgba(46,200,138,0.2)', borderRadius: '4px', fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: '#2ec88a', textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
               <span style={{ fontSize: '0.7rem', opacity: 0.8 }}>Guide</span>
-              {learnLabel ?? 'How this calculator works'}
+              {resolvedLearnLabel ?? 'How this calculator works'}
             </Link>
           ) : null}
         </div>

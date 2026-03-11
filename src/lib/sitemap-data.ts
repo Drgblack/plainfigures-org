@@ -17,6 +17,9 @@ export const STATIC_PAGE_URLS = [
   'https://www.plainfigures.org/overpayment-and-offset',
   'https://www.plainfigures.org/savings-and-compound-interest',
   'https://www.plainfigures.org/income-tax-and-borrowing',
+  'https://www.plainfigures.org/risk-management-and-coverage',
+  'https://www.plainfigures.org/advisory-analytics-and-automation',
+  'https://www.plainfigures.org/lifestyle-and-runway',
 ];
 
 export const CALCULATOR_HUB_URLS = [

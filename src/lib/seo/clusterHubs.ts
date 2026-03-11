@@ -50,6 +50,11 @@ const HUBS: Record<string, ClusterHubConfig> = {
         label: 'Read the loan repayment explainer',
         description: 'Compare mortgage-style amortisation with shorter-term borrowing and APR logic.',
       },
+      {
+        href: '/learn/lisa-help-to-buy',
+        label: 'Read the LISA vs Help to Buy ISA guide',
+        description: 'Keep deposit-bonus and first-time buyer saving rules close to the housing calculator path.',
+      },
     ],
     relatedHubs: [
       {
@@ -142,6 +147,21 @@ const HUBS: Record<string, ClusterHubConfig> = {
         label: 'Read the emergency fund guide',
         description: 'Size the buffer that supports the rest of the savings plan without relying on rules of thumb.',
       },
+      {
+        href: '/learn/pension-drawdown',
+        label: 'Read the pension drawdown guide',
+        description: 'Connect retirement-pot growth to sustainable withdrawal decisions later in the journey.',
+      },
+      {
+        href: '/learn/retirement-employer-contributions',
+        label: 'Read the employer contribution guide',
+        description: 'Show how matched contributions and inflation alter long-horizon savings projections.',
+      },
+      {
+        href: '/learn/dividend-vs-growth',
+        label: 'Read the dividend vs growth guide',
+        description: 'Compare income-style and total-return style investing within the same long-term compounding cluster.',
+      },
     ],
     relatedHubs: [
       {
@@ -193,6 +213,11 @@ const HUBS: Record<string, ClusterHubConfig> = {
         label: 'Read the student loan repayment guide',
         description: 'Keep graduate deductions in the income model when take-home and affordability are both sensitive to plan type.',
       },
+      {
+        href: '/learn/capital-gains-tax',
+        label: 'Read the capital gains tax guide',
+        description: 'Keep current-year tax mechanics close to salary and net-income journeys where disposal proceeds matter.',
+      },
     ],
     relatedHubs: [
       {
@@ -204,6 +229,164 @@ const HUBS: Record<string, ClusterHubConfig> = {
         href: '/savings-and-compound-interest',
         label: 'Open the savings and compound hub',
         description: 'Shift from income into saving, emergency-fund sizing, and long-term compounding without leaving the main finance architecture.',
+      },
+    ],
+  },
+  'risk-management-and-coverage': {
+    slug: 'risk-management-and-coverage',
+    title: 'Risk Management and Coverage Hub',
+    eyebrow: 'Risk Hub',
+    description:
+      'A professional hub for exposure sizing, coverage adequacy, cyber limits, capital, and risk-register workflows, with direct links into the calculators and explainers that support each step.',
+    intro:
+      'This hub groups the core professional risk pages by job: identify the exposure, map it to limits, compare retained cost, and pressure-test controls. It is meant to keep the strongest commercial and operational pages within a shallow crawl path.',
+    summary:
+      'Start with exposure or register tools when the problem is measurement, move into coverage-gap or cyber-limit pages when the question is adequacy, and use TCOR or SCR when the work shifts into aggregate cost or capital framing.',
+    calculatorHrefs: ['/cyber', '/cyber-limit', '/coverage-gap', '/risk-heatmap', '/tcor', '/scr', '/hlv', '/loss-probability'],
+    guideLinks: [
+      {
+        href: '/learn/business-interruption',
+        label: 'Read the business interruption guide',
+        description: 'Anchor sum-insured logic and indemnity-period assumptions before comparing broader coverage gaps.',
+      },
+      {
+        href: '/learn/cyber-resilient-agency',
+        label: 'Read the cyber-resilience guide',
+        description: 'Connect cyber exposure, control quality, and incident-cost framing to the calculator outputs.',
+      },
+      {
+        href: '/learn/regtech-compliance-automation',
+        label: 'Read the RegTech automation guide',
+        description: 'Keep compliance-cost and control-efficiency thinking close to the operational risk toolset.',
+      },
+      {
+        href: '/learn/parametric-insurance-weather',
+        label: 'Read the parametric insurance guide',
+        description: 'Broaden the protection cluster with trigger design and basis-risk framing where alternative structures matter.',
+      },
+      {
+        href: '/learn/private-credit-playbook',
+        label: 'Read the private credit guide',
+        description: 'Keep portfolio-risk and yield-construction context linked from the broader professional research cluster.',
+      },
+    ],
+    relatedHubs: [
+      {
+        href: '/advisory-analytics-and-automation',
+        label: 'Open the advisory analytics and automation hub',
+        description: 'Move into adjacent professional guides covering automation, client workflows, and growth economics.',
+      },
+      {
+        href: '/income-tax-and-borrowing',
+        label: 'Open the income, tax, and borrowing hub',
+        description: 'Return to the main personal-finance commercial cluster when risk work overlaps with borrowing or cash-flow decisions.',
+      },
+    ],
+  },
+  'advisory-analytics-and-automation': {
+    slug: 'advisory-analytics-and-automation',
+    title: 'Advisory Analytics and Automation Hub',
+    eyebrow: 'Professional Strategy Hub',
+    description:
+      'A hub for advisory automation, predictive analytics, client-experience, and commercial-efficiency guides that support the professional side of Plain Figures.',
+    intro:
+      'This organiser page exists for the weaker professional guides that do not fit neatly inside pure protection or tax clusters. It keeps operational, automation, and client-economics content linked to the nearby tools instead of leaving those guides semi-orphaned.',
+    summary:
+      'Use this hub when the question is workflow efficiency, client economics, analytics, or automation rather than a single risk metric. It complements the harder coverage tools without diluting them.',
+    calculatorHrefs: ['/ltv-cac', '/loss-probability', '/cyber', '/tcor'],
+    guideLinks: [
+      {
+        href: '/learn/agentic-advisor',
+        label: 'Read the agentic advisor guide',
+        description: 'Frame AI task delegation as a measurable workflow and ROI problem rather than a generic trend story.',
+      },
+      {
+        href: '/learn/automation-audit-2026',
+        label: 'Read the automation audit guide',
+        description: 'Map advisory tasks into automation candidates and payback logic for current-year operations.',
+      },
+      {
+        href: '/learn/predictive-analytics-portfolio',
+        label: 'Read the predictive analytics guide',
+        description: 'Keep churn, scoring, and portfolio-review model logic attached to the professional toolset.',
+      },
+      {
+        href: '/learn/digital-client-experience-phygital',
+        label: 'Read the digital client experience guide',
+        description: 'Connect adoption, NPS, and service-delivery economics to the broader advisory cluster.',
+      },
+      {
+        href: '/learn/inheritance-pivot-heirs',
+        label: 'Read the inheritance pivot guide',
+        description: 'Keep wealth-transfer client economics and onboarding logic attached to the adjacent commercial tools.',
+      },
+      {
+        href: '/learn/multigenerational-asset-retention',
+        label: 'Read the multi-generational asset retention guide',
+        description: 'Support longer-horizon client-value modelling with a dedicated wealth-retention explainer.',
+      },
+    ],
+    relatedHubs: [
+      {
+        href: '/risk-management-and-coverage',
+        label: 'Open the risk management and coverage hub',
+        description: 'Move back into exposure, limits, and coverage workflows when the operational question becomes a risk question.',
+      },
+      {
+        href: '/savings-and-compound-interest',
+        label: 'Open the savings and compound hub',
+        description: 'Return to the main personal-wealth cluster when professional research overlaps with retirement or investment framing.',
+      },
+    ],
+  },
+  'lifestyle-and-runway': {
+    slug: 'lifestyle-and-runway',
+    title: 'Lifestyle and Runway Hub',
+    eyebrow: 'Cashflow Hub',
+    description:
+      'A compact hub for recurring-cost, lifestyle inflation, financial-runway, and TDEE-adjacent pages that support day-to-day budgeting and resilience questions.',
+    intro:
+      'This hub keeps smaller but still useful support topics from drifting into isolation. It groups recurring spend, runway resilience, and lifestyle-pressure pages so users can move through those decisions without falling back to the homepage directory.',
+    summary:
+      'Use it when the problem is not a mortgage or investment decision but a question about recurring costs, emergency endurance, or whether current habits are crowding out future flexibility.',
+    calculatorHrefs: ['/subscriptions', '/lifestyle-inflation', '/crisis', '/tdee'],
+    guideLinks: [
+      {
+        href: '/learn/subscription-drain',
+        label: 'Read the subscription drain guide',
+        description: 'See how recurring monthly spend turns into long-run direct cost and opportunity cost.',
+      },
+      {
+        href: '/learn/lifestyle-inflation',
+        label: 'Read the lifestyle inflation guide',
+        description: 'Compare current spending against earlier baselines and surface the long-run wealth trade-off.',
+      },
+      {
+        href: '/learn/financial-crisis',
+        label: 'Read the financial runway guide',
+        description: 'Work through cash burn, emergency reserves, and survival timelines under income stress.',
+      },
+      {
+        href: '/learn/financial-crisis-simulator',
+        label: 'Read the savings-last guide',
+        description: 'Keep the specific survival-timeline explainer close to the main crisis calculator journey.',
+      },
+      {
+        href: '/learn/tdee',
+        label: 'Read the TDEE guide',
+        description: 'Retain the explanatory calorie-estimation page within the same lightweight support cluster.',
+      },
+    ],
+    relatedHubs: [
+      {
+        href: '/savings-and-compound-interest',
+        label: 'Open the savings and compound hub',
+        description: 'Move into goal saving, compounding, and emergency-fund planning once the recurring-cost question becomes a savings question.',
+      },
+      {
+        href: '/income-tax-and-borrowing',
+        label: 'Open the income, tax, and borrowing hub',
+        description: 'Return to take-home and affordability pages when lifestyle pressure is really an income-allocation problem.',
       },
     ],
   },
