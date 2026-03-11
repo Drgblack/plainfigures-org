@@ -72,6 +72,10 @@ function countWords(text: string): number {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
+function toolSupportsGuide(tool: (typeof ALL_TOOLS)[number], href: string): boolean {
+  return tool.learnHref === href || (tool.supportGuideHrefs?.includes(href) ?? false);
+}
+
 function getGuideSupportRows(): GuideSupport[] {
   const learnHubGuideCounts = new Map<string, number>();
   const clusterHubGuideCounts = new Map<string, number>();
@@ -91,7 +95,7 @@ function getGuideSupportRows(): GuideSupport[] {
   return LEARN_GUIDE_URLS
     .map(pathFromAbsoluteUrl)
     .map((href) => {
-      const toolLinks = ALL_TOOLS.filter((tool) => tool.learnHref === href).length;
+      const toolLinks = ALL_TOOLS.filter((tool) => toolSupportsGuide(tool, href)).length;
       const learnHubLinks = learnHubGuideCounts.get(href) ?? 0;
       const clusterHubLinks = clusterHubGuideCounts.get(href) ?? 0;
 

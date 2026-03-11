@@ -308,10 +308,19 @@ export function getCalculatorLinksForTool(toolHref: string, limit = 4): SeoLink[
 }
 
 export function getGuideLinksForTool(toolHref: string, limit = 4): SeoLink[] {
+  const tool = getToolByHref(toolHref);
   const clusterKey = TOOL_TO_CLUSTER.get(toolHref);
   const cluster = clusterKey ? CLUSTERS[clusterKey] : null;
+  const supportLinks = (tool?.supportGuideHrefs ?? []).map((href) => ({
+    href,
+    label: `Read ${getGuideLabel(href)}`,
+  }));
+  const clusterLinks = cluster?.guideLinks ?? [];
+  const dedupedLinks = [...supportLinks, ...clusterLinks].filter(
+    (link, index, allLinks) => allLinks.findIndex((candidate) => candidate.href === link.href) === index,
+  );
 
-  return (cluster?.guideLinks ?? []).slice(0, limit);
+  return dedupedLinks.slice(0, limit);
 }
 
 export function getClusterSummary(toolHref: string): { title: string; intro: string } | null {

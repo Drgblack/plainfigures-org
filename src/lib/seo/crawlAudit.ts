@@ -41,6 +41,10 @@ function pathFromAbsoluteUrl(url: string): string {
   return new URL(url).pathname;
 }
 
+function toolSupportsGuide(tool: (typeof ALL_TOOLS)[number], href: string): boolean {
+  return tool.learnHref === href || (tool.supportGuideHrefs?.includes(href) ?? false);
+}
+
 export function getCrawlAuditSnapshot() {
   const learnHubGuideCounts = new Map<string, number>();
   const clusterHubGuideCounts = new Map<string, number>();
@@ -82,7 +86,7 @@ export function getCrawlAuditSnapshot() {
 
   const weakGuides: WeakGuide[] = staticGuidePaths
     .map((href) => {
-      const toolLinks = ALL_TOOLS.filter((tool) => tool.learnHref === href).length;
+      const toolLinks = ALL_TOOLS.filter((tool) => toolSupportsGuide(tool, href)).length;
       const learnHubLinks = learnHubGuideCounts.get(href) ?? 0;
       const clusterHubLinks = clusterHubGuideCounts.get(href) ?? 0;
       const score = toolLinks + learnHubLinks + clusterHubLinks;

@@ -14,6 +14,7 @@ export interface ToolMeta {
   tags: string[];
   professional?: boolean;
   learnHref?: string;
+  supportGuideHrefs?: string[];
   relatedHrefs?: string[];
   // Static sparkline path (viewBox 0 0 60 20)
   sparkline?: string;
@@ -57,6 +58,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Long-term financial outcome of renting against buying.',
     tags: ['Net Worth', 'Break-even', 'Opportunity Cost'],
     learnHref: '/learn/rent-vs-buy',
+    supportGuideHrefs: ['/learn/buy-to-let-yield'],
     relatedHrefs: ['/mortgage', '/affordability', '/savings'],
     sparkline: 'M0,16 L15,15 L30,10 L45,8 L60,5 M0,18 L15,18 L30,16 L45,14 L60,12',
     preview: [
@@ -70,6 +72,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'How compounding frequency affects your effective annual rate.',
     tags: ['EAR', 'Daily / Monthly / Annual'],
     learnHref: '/learn/compound-interest',
+    supportGuideHrefs: ['/learn/currency-exchange-fees', '/learn/tax-loss-harvesting', '/learn/market-forecasts-rate-cuts'],
     relatedHrefs: ['/savings', '/retirement'],
     sparkline: 'M0,19 C15,17 25,13 35,8 C45,3 52,1 60,0',
     preview: [
@@ -83,6 +86,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Monthly repayments and true APR on any loan or credit agreement.',
     tags: ['APR', 'Personal Loan', 'Car Finance'],
     learnHref: '/learn/loan-repayment',
+    supportGuideHrefs: ['/learn/student-loan-repayment'],
     relatedHrefs: ['/mortgage', '/subscriptions'],
     sparkline: 'M0,2 C10,4 20,8 30,12 C40,16 50,18 60,19',
     preview: [
@@ -96,6 +100,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Project your pension pot, including employer contributions and inflation.',
     tags: ['Pension', 'Inflation-adjusted', '4% Rule'],
     learnHref: '/learn/retirement-savings',
+    supportGuideHrefs: ['/learn/retirement-employer-contributions', '/learn/pension-drawdown', '/learn/inheritance-tax'],
     relatedHrefs: ['/savings', '/compound', '/take-home'],
     sparkline: 'M0,20 C5,19 15,17 25,13 C35,8 45,4 60,1',
     preview: [
@@ -148,6 +153,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Net pay after tax — UK, Germany, USA, France, Netherlands, Australia.',
     tags: ['Tax', 'Net Salary', '6 Countries'],
     learnHref: '/learn/salary-take-home',
+    supportGuideHrefs: ['/learn/salary-sacrifice'],
     relatedHrefs: ['/freelance', '/lifestyle-inflation', '/retirement'],
     sparkline: 'M0,20 L15,14 L30,12 L45,10 L60,8',
     preview: [
@@ -226,6 +232,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'How long your savings last if you lose your job or costs double.',
     tags: ['Emergency Fund', 'Job Loss', 'Survival Runway'],
     learnHref: '/learn/financial-crisis',
+    supportGuideHrefs: ['/learn/emergency-fund-how-much', '/learn/financial-crisis-simulator'],
     relatedHrefs: ['/savings', '/subscriptions'],
     sparkline: 'M0,2 C10,3 20,6 30,11 C40,15 50,18 60,20',
     preview: [
@@ -264,6 +271,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     tags: ['TCOR Rate', 'Retained Losses', 'Scenarios'],
     professional: true,
     learnHref: '/learn/total-cost-of-risk',
+    supportGuideHrefs: ['/learn/parametric-insurance-weather'],
     relatedHrefs: ['/coverage-gap', '/risk-heatmap', '/loss-probability'],
   },
   {
@@ -280,6 +288,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     tags: ['SCR', 'Solvency II', 'Capital'],
     professional: true,
     learnHref: '/learn/solvency-capital-requirement',
+    supportGuideHrefs: ['/learn/regtech-compliance-automation'],
     relatedHrefs: ['/risk-heatmap', '/tcor'],
   },
   {
@@ -296,6 +305,13 @@ export const ALL_TOOLS: ToolMeta[] = [
     tags: ['LTV:CAC', 'Payback', 'Churn'],
     professional: true,
     learnHref: '/learn/ltv-cac-explained',
+    supportGuideHrefs: [
+      '/learn/agentic-advisor',
+      '/learn/automation-audit-2026',
+      '/learn/digital-client-experience-phygital',
+      '/learn/inheritance-pivot-heirs',
+      '/learn/multigenerational-asset-retention',
+    ],
     relatedHrefs: ['/freelance'],
   },
   {
@@ -304,6 +320,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     tags: ['PML', 'Triangular', 'Exceedance'],
     professional: true,
     learnHref: '/learn/loss-event-probability',
+    supportGuideHrefs: ['/learn/predictive-analytics-portfolio'],
     relatedHrefs: ['/risk-heatmap', '/tcor', '/coverage-gap'],
   },
   {
