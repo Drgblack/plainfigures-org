@@ -502,6 +502,30 @@ export default function LearnIndexPage() {
         ))}
       </div>
 
+      <div style={{ marginBottom: '3rem', padding: '1.25rem 1.5rem', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '8px' }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '0.8rem' }}>
+          Trust & Standards
+        </div>
+        <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1rem' }}>
+          Supporting documents that explain how Plain Figures handles formulas, source freshness, editorial boundaries, and review.
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.6rem' }}>
+          {[
+            { href: '/methodology', label: 'Methodology' },
+            { href: '/formula-library', label: 'Formula Library' },
+            { href: '/data-sources', label: 'Data Sources' },
+            { href: '/how-we-update-tax-rates', label: 'How We Update Tax Rates' },
+            { href: '/editorial-policy', label: 'Editorial Policy' },
+            { href: '/authors-and-review', label: 'Authors and Review' },
+          ].map((item) => (
+            <Link key={item.href} href={item.href} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', padding: '0.8rem 0.95rem', textDecoration: 'none', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '6px' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.76rem', color: 'var(--text-primary)' }}>{item.label}</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--text-muted)' }}>→</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       <div style={{ marginBottom: '3rem', padding: '1.25rem 1.5rem', background: 'rgba(46,200,138,0.04)', border: '1px solid rgba(46,200,138,0.15)', borderRadius: '8px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
           <div>

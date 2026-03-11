@@ -1,32 +1,7 @@
-export interface ProgrammaticLearnSection {
-  heading: string;
-  paragraphs: string[];
-}
+import { SEO_BATCH_TOPICS } from '@/lib/programmatic-learn-batches';
+import type { ProgrammaticLearnTopic } from '@/lib/programmatic-learn-types';
 
-export interface ProgrammaticLearnFaq {
-  question: string;
-  answer: string;
-}
-
-export interface ProgrammaticLearnTopic {
-  slug: string;
-  title: string;
-  description: string;
-  readTime: string;
-  categorySlug: string;
-  calculatorHref: string;
-  calculatorLabel: string;
-  keywords: string[];
-  formulaLabel: string;
-  formulaExpression: string;
-  variables: string[];
-  relatedGuides: { href: string; label: string }[];
-  sections: ProgrammaticLearnSection[];
-  faq: ProgrammaticLearnFaq[];
-  disclaimer: string;
-}
-
-export const PROGRAMMATIC_LEARN_TOPICS: ProgrammaticLearnTopic[] = [
+const BASE_PROGRAMMATIC_LEARN_TOPICS: ProgrammaticLearnTopic[] = [
   {
     slug: 'mortgage-payment-examples',
     title: 'Mortgage Payment Examples: How Rate, Term, and Principal Change the Number',
@@ -591,6 +566,11 @@ export const PROGRAMMATIC_LEARN_TOPICS: ProgrammaticLearnTopic[] = [
     ],
     disclaimer: 'Illustration only. Freelance day-rate maths does not replace market pricing judgment, tax advice, or contract-specific commercial review.',
   },
+];
+
+export const PROGRAMMATIC_LEARN_TOPICS: ProgrammaticLearnTopic[] = [
+  ...BASE_PROGRAMMATIC_LEARN_TOPICS,
+  ...SEO_BATCH_TOPICS,
 ];
 
 export function getProgrammaticLearnTopic(slug: string): ProgrammaticLearnTopic | null {

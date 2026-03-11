@@ -66,6 +66,20 @@ export default function GuideLayout({ title, description, readTime, relatedCalc,
         </div>
       </div>
 
+      <div style={{ marginTop: '1.5rem', padding: '1rem 1.25rem', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: '6px' }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.55rem' }}>
+          Attribution & Review
+        </div>
+        <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.7, fontWeight: 300 }}>
+          Published by the Plain Figures editorial team. Review on this site focuses on formula accuracy, assumption clarity, and threshold freshness where current-year rules matter.
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.55rem', marginTop: '0.8rem' }}>
+          <Link href="/methodology" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-secondary)', textDecoration: 'none', border: '1px solid var(--border)', borderRadius: '4px', padding: '0.35rem 0.6rem' }}>Methodology</Link>
+          <Link href="/authors-and-review" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-secondary)', textDecoration: 'none', border: '1px solid var(--border)', borderRadius: '4px', padding: '0.35rem 0.6rem' }}>Authors and Review</Link>
+          <Link href="/editorial-policy" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-secondary)', textDecoration: 'none', border: '1px solid var(--border)', borderRadius: '4px', padding: '0.35rem 0.6rem' }}>Editorial Policy</Link>
+        </div>
+      </div>
+
       {/* Related guides */}
       {relatedGuides && relatedGuides.length > 0 && (
         <div style={{ marginTop: '2.5rem', paddingTop: '2rem', borderTop: '1px solid var(--border)' }}>

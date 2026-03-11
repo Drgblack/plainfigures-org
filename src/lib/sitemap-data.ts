@@ -1,6 +1,14 @@
+import { PROGRAMMATIC_LEARN_TOPICS } from '@/lib/programmatic-learn-extensions';
+
 export const STATIC_PAGE_URLS = [
   'https://www.plainfigures.org',
   'https://www.plainfigures.org/about',
+  'https://www.plainfigures.org/methodology',
+  'https://www.plainfigures.org/formula-library',
+  'https://www.plainfigures.org/data-sources',
+  'https://www.plainfigures.org/how-we-update-tax-rates',
+  'https://www.plainfigures.org/editorial-policy',
+  'https://www.plainfigures.org/authors-and-review',
   'https://www.plainfigures.org/privacy',
   'https://www.plainfigures.org/terms',
   'https://www.plainfigures.org/disclaimer',
@@ -84,19 +92,9 @@ export const LEARN_GUIDE_URLS = [
   'https://www.plainfigures.org/learn/dividend-vs-growth',
 ];
 
-export const LEARN_EXTENSION_URLS = [
-  'https://www.plainfigures.org/learn/mortgage-payment-examples',
-  'https://www.plainfigures.org/learn/mortgage-rate-vs-term',
-  'https://www.plainfigures.org/learn/compound-interest-by-frequency',
-  'https://www.plainfigures.org/learn/simple-vs-compound-interest',
-  'https://www.plainfigures.org/learn/loan-apr-vs-interest-rate',
-  'https://www.plainfigures.org/learn/retirement-pot-targets',
-  'https://www.plainfigures.org/learn/salary-bonus-take-home',
-  'https://www.plainfigures.org/learn/offset-vs-overpayment',
-  'https://www.plainfigures.org/learn/savings-goal-deadline',
-  'https://www.plainfigures.org/learn/subscription-opportunity-cost',
-  'https://www.plainfigures.org/learn/freelance-day-rate-from-salary',
-];
+export const LEARN_EXTENSION_URLS = PROGRAMMATIC_LEARN_TOPICS.map(
+  (topic) => `https://www.plainfigures.org/learn/${topic.slug}`,
+);
 
 export function getStaticSitemapUrls(): string[] {
   return [
@@ -107,4 +105,3 @@ export function getStaticSitemapUrls(): string[] {
     ...LEARN_EXTENSION_URLS,
   ];
 }
-

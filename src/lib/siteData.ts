@@ -42,6 +42,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     href: '/savings', code: '02', title: 'Savings Growth',
     description: 'How compound interest grows your savings with regular contributions.',
     tags: ['Compound Interest', 'Growth', 'Projections'],
+    learnHref: '/learn/savings-growth',
     relatedHrefs: ['/compound', '/retirement', '/save-goal'],
     sparkline: 'M0,18 C10,17 20,14 30,10 C40,6 50,3 60,1',
     rateContext: 'Best easy-access savings rates are currently around 5% (Feb 2026). Worth comparing.',
@@ -81,6 +82,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     href: '/loan', code: '05', title: 'Loan Repayment',
     description: 'Monthly repayments and true APR on any loan or credit agreement.',
     tags: ['APR', 'Personal Loan', 'Car Finance'],
+    learnHref: '/learn/loan-repayment',
     relatedHrefs: ['/mortgage', '/subscriptions'],
     sparkline: 'M0,2 C10,4 20,8 30,12 C40,16 50,18 60,19',
     preview: [
@@ -119,6 +121,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     href: '/overpayment', code: '08', title: 'Mortgage Overpayment',
     description: 'Interest saved and years removed by paying extra each month.',
     tags: ['Overpayment', 'Interest Saved', 'Early Payoff'],
+    learnHref: '/learn/mortgage-overpayment',
     relatedHrefs: ['/mortgage', '/offset'],
     sparkline: 'M0,2 C10,4 20,8 30,13 C40,16 50,18 60,19',
     preview: [
@@ -131,6 +134,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     href: '/save-goal', code: '09', title: 'Save for a Goal',
     description: 'How long to reach a target, or what monthly saving hits a deadline.',
     tags: ['Target', 'Deadline', 'Monthly Required'],
+    learnHref: '/learn/save-for-goal',
     relatedHrefs: ['/savings', '/subscriptions'],
     sparkline: 'M0,20 L20,14 L40,8 L60,2',
     preview: [
@@ -169,6 +173,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     href: '/tdee', code: '12', title: 'TDEE & Calorie Calculator',
     description: 'Total daily energy expenditure, BMR, BMI, and macro targets.',
     tags: ['Calories', 'BMI', 'Fitness'],
+    learnHref: '/learn/tdee',
     relatedHrefs: ['/subscriptions'],
     sparkline: 'M0,10 L10,9 L20,10 L30,8 L40,9 L50,11 L60,10',
     preview: [
@@ -181,6 +186,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     href: '/subscriptions', code: '13', title: 'Subscription Drain',
     description: 'True 10-year cost of subscriptions and investment opportunity cost.',
     tags: ['Subscriptions', '10-Year Cost', 'Opportunity Cost'],
+    learnHref: '/learn/subscription-drain',
     relatedHrefs: ['/lifestyle-inflation', '/save-goal'],
     sparkline: 'M0,18 C10,16 20,13 30,9 C40,5 50,3 60,2',
     preview: [
@@ -193,6 +199,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     href: '/freelance', code: '14', title: 'Freelance Rate Calculator',
     description: 'Work backwards from desired salary to minimum hourly and day rate.',
     tags: ['Day Rate', 'Freelance', 'Contractor'],
+    learnHref: '/learn/freelance-rate',
     relatedHrefs: ['/take-home', '/lifestyle-inflation'],
     sparkline: 'M0,20 L30,10 L60,2',
     preview: [
@@ -205,6 +212,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     href: '/lifestyle-inflation', code: '15', title: 'Lifestyle Inflation Tracker',
     description: 'Compare current vs entry-level spending and the 10-year opportunity cost.',
     tags: ['Lifestyle Creep', 'Spending', 'Opportunity Cost'],
+    learnHref: '/learn/lifestyle-inflation',
     relatedHrefs: ['/subscriptions', '/take-home'],
     sparkline: 'M0,15 C15,13 25,10 35,7 C45,4 55,2 60,1',
     preview: [
@@ -231,6 +239,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Calculate BI sum insured using gross profit, trend uplift, indemnity period, and ICOW.',
     tags: ['Gross Profit', 'ICOW', 'Indemnity Period'],
     professional: true,
+    learnHref: '/learn/business-interruption',
     relatedHrefs: ['/tcor', '/coverage-gap'],
   },
   {
@@ -238,6 +247,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Present value of future earnings, debts, and obligations to find the true insurance gap.',
     tags: ['HLV', 'Coverage Gap', 'Protection'],
     professional: true,
+    learnHref: '/learn/human-life-value',
     relatedHrefs: ['/cyber', '/coverage-gap'],
   },
   {
@@ -252,6 +262,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Aggregate premiums, retained losses, admin, and risk control costs. Four scenario comparison.',
     tags: ['TCOR Rate', 'Retained Losses', 'Scenarios'],
     professional: true,
+    learnHref: '/learn/total-cost-of-risk',
     relatedHrefs: ['/coverage-gap', '/risk-heatmap', '/loss-probability'],
   },
   {
@@ -259,6 +270,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Score risks by likelihood and impact. 5×5 heat map, editable register.',
     tags: ['Heat Map', 'Risk Register', 'Mitigation'],
     professional: true,
+    learnHref: '/learn/risk-heatmap-explained',
     relatedHrefs: ['/tcor', '/loss-probability', '/scr'],
   },
   {
@@ -266,6 +278,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Estimate Solvency Capital Requirement using standard formula principles.',
     tags: ['SCR', 'Solvency II', 'Capital'],
     professional: true,
+    learnHref: '/learn/solvency-capital-requirement',
     relatedHrefs: ['/risk-heatmap', '/tcor'],
   },
   {
@@ -273,6 +286,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Map policy limits against exposures across property, liability, BI, and cyber lines.',
     tags: ['Under-Insurance', 'Limits', 'Coinsurance'],
     professional: true,
+    learnHref: '/learn/coverage-gap-analysis',
     relatedHrefs: ['/bi', '/cyber-limit', '/tcor'],
   },
   {
@@ -280,6 +294,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Customer Lifetime Value, CAC ratio, and payback period. DCF-based LTV with scenario modelling.',
     tags: ['LTV:CAC', 'Payback', 'Churn'],
     professional: true,
+    learnHref: '/learn/ltv-cac-explained',
     relatedHrefs: ['/freelance'],
   },
   {
@@ -287,6 +302,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Expected annual loss from risk events using triangular distributions.',
     tags: ['PML', 'Triangular', 'Exceedance'],
     professional: true,
+    learnHref: '/learn/loss-event-probability',
     relatedHrefs: ['/risk-heatmap', '/tcor', '/coverage-gap'],
   },
   {
@@ -294,6 +310,7 @@ export const ALL_TOOLS: ToolMeta[] = [
     description: 'Estimate cyber limit adequacy from revenue, records, industry, and security controls.',
     tags: ['Cyber', 'Limit Adequacy', 'GDPR'],
     professional: true,
+    learnHref: '/learn/cyber-insurance-limit',
     relatedHrefs: ['/cyber', '/coverage-gap', '/risk-heatmap'],
   },
 ];
