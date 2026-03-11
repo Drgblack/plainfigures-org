@@ -833,6 +833,14 @@ export function getGeoVariants(config: CalculatorConfig): { country?: string; st
     'br-fgts-modalidades-saldo',
     'br-inss-aposentadoria-beneficio',
     'br-financiamento-imobiliario-sac-price',
+    'ie-income-tax-take-home',
+    'nz-income-tax-take-home',
+    'za-income-tax-take-home',
+    'ie-mortgage-affordability-stress-test',
+    'nz-mortgage-affordability-stress-test',
+    'za-home-loan-affordability',
+    'nz-kiwisaver-retirement-projection',
+    'ie-pension-tax-relief-optimizer',
     'how-much-house-can-i-afford',
     'investment-future-value',
     'net-worth-growth',
@@ -879,6 +887,20 @@ export function getGeoVariants(config: CalculatorConfig): { country?: string; st
     'br-inss-aposentadoria-beneficio',
     'br-financiamento-imobiliario-sac-price',
   ]);
+  const irelandPriorityIds = new Set([
+    'ie-income-tax-take-home',
+    'ie-mortgage-affordability-stress-test',
+    'ie-pension-tax-relief-optimizer',
+  ]);
+  const newZealandPriorityIds = new Set([
+    'nz-income-tax-take-home',
+    'nz-mortgage-affordability-stress-test',
+    'nz-kiwisaver-retirement-projection',
+  ]);
+  const southAfricaPriorityIds = new Set([
+    'za-income-tax-take-home',
+    'za-home-loan-affordability',
+  ]);
 
   if (!geoRelevantIds.includes(config.id)) {
     return [{ country: undefined, state: undefined, region: undefined, province: undefined, buyerStatus: undefined, flatType: undefined, languageHint: undefined }];
@@ -900,6 +922,12 @@ export function getGeoVariants(config: CalculatorConfig): { country?: string; st
             ? ['IN', ...otherCountries.filter((country) => country !== 'IN')]
             : brazilPriorityIds.has(config.id)
               ? ['BR', ...otherCountries.filter((country) => country !== 'BR')]
+              : irelandPriorityIds.has(config.id)
+                ? ['IE', ...otherCountries.filter((country) => country !== 'IE')]
+                : newZealandPriorityIds.has(config.id)
+                  ? ['NZ', ...otherCountries.filter((country) => country !== 'NZ')]
+                  : southAfricaPriorityIds.has(config.id)
+                    ? ['ZA', ...otherCountries.filter((country) => country !== 'ZA')]
               : otherCountries;
 
   // Expanded 2026 geo-layering: priority US states + high-CPC English markets (AU/CA/UK/NZ/IE/SG) + future non-English (DE/NL/NO)
@@ -3277,6 +3305,163 @@ export const calculators: CalculatorConfig[] = [
     formula: 'PMT = P\\frac{r(1+r)^n}{(1+r)^n-1}',
     isValidVariant: (params) => Number(params.entrada) < Number(params.valorImovel),
   },
+  {
+    id: 'ie-income-tax-take-home',
+    categorySlug: 'tax',
+    name: 'Ireland Income Tax & Take-Home Pay Calculator 2026',
+    params: [
+      { key: 'grossSalary', label: 'Annual Gross Salary (EUR)', prefix: 'EUR ', step: 10000, values: [30000, 40000, 50000, 65000, 80000, 100000, 125000, 150000, 200000, 250000] },
+      { key: 'taxStatus', label: 'Tax Status', values: ['Single', 'Married one income', 'Married two incomes', 'Single parent'] },
+      { key: 'pensionContribution', label: 'Pension Contribution (EUR)', prefix: 'EUR ', step: 2500, values: [0, 1000, 2500, 5000, 7500, 10000, 15000, 20000, 25000] },
+      { key: 'taxCredits', label: 'Extra Annual Tax Credits (EUR)', prefix: 'EUR ', step: 500, values: [0, 500, 1000, 1500, 2500, 4000, 6000] },
+      { key: 'payFrequency', label: 'Pay Frequency', values: ['Annual', 'Monthly', 'Fortnightly', 'Weekly'] },
+    ],
+    maxVariants: 4400,
+    seoTemplate: {
+      title: 'EUR {{grossSalary}} Salary After Tax in Ireland - 2026 Take-Home Pay | Plain Figures',
+      description: 'Estimate Irish take-home pay for EUR {{grossSalary}} using {{taxStatus}} tax status, EUR {{pensionContribution}} pension contributions, EUR {{taxCredits}} extra credits, and {{payFrequency}} pay frequency.',
+      h1: 'EUR {{grossSalary}} Salary After Tax in Ireland',
+    },
+    formula: '\\text{Net pay} = \\text{gross} - \\text{income tax} - \\text{USC} - \\text{PRSI} - \\text{deductions} + \\text{credits}',
+  },
+  {
+    id: 'nz-income-tax-take-home',
+    categorySlug: 'tax',
+    name: 'New Zealand Income Tax & Take-Home Pay Calculator 2026',
+    params: [
+      { key: 'grossSalary', label: 'Annual Gross Salary (NZD)', prefix: 'NZ$ ', step: 10000, values: [30000, 40000, 50000, 65000, 80000, 100000, 125000, 150000, 180000, 220000] },
+      { key: 'kiwiSaverRate', label: 'KiwiSaver Employee Contribution %', prefix: '%', step: 1, values: [0, 3, 4, 6, 8, 10] },
+      { key: 'studentLoan', label: 'Student Loan Repayments', values: ['No student loan', 'Has student loan'] },
+      { key: 'otherDeductions', label: 'Other Annual Deductions (NZD)', prefix: 'NZ$ ', step: 1000, values: [0, 500, 1000, 2500, 5000, 7500, 10000] },
+      { key: 'payFrequency', label: 'Pay Frequency', values: ['Annual', 'Monthly', 'Fortnightly', 'Weekly'] },
+    ],
+    maxVariants: 4400,
+    seoTemplate: {
+      title: 'NZ$ {{grossSalary}} Salary After Tax in New Zealand - 2026 Take-Home Pay | Plain Figures',
+      description: 'Estimate New Zealand take-home pay for NZ$ {{grossSalary}} using a {{kiwiSaverRate}} KiwiSaver rate, {{studentLoan}} status, NZ$ {{otherDeductions}} other deductions, and {{payFrequency}} pay frequency.',
+      h1: 'NZ$ {{grossSalary}} Salary After Tax in New Zealand',
+    },
+    formula: '\\text{Net pay} = \\text{gross} - \\text{PAYE} - \\text{ACC} - \\text{KiwiSaver} - \\text{deductions}',
+  },
+  {
+    id: 'za-income-tax-take-home',
+    categorySlug: 'tax',
+    name: 'South Africa Income Tax & Take-Home Pay Calculator 2026',
+    params: [
+      { key: 'grossSalary', label: 'Annual Gross Salary (ZAR)', prefix: 'R ', step: 50000, values: [180000, 240000, 300000, 420000, 600000, 800000, 1000000, 1250000, 1500000] },
+      { key: 'ageBand', label: 'Age Band', values: ['Under 65', '65 to 74', '75 and over'] },
+      { key: 'retirementContribution', label: 'Retirement Contribution (ZAR)', prefix: 'R ', step: 10000, values: [0, 12000, 24000, 36000, 60000, 90000, 120000] },
+      { key: 'medicalAidCreditsMonthly', label: 'Monthly Medical Aid Credits (ZAR)', prefix: 'R ', step: 500, values: [0, 364, 728, 1092, 1456, 1820] },
+      { key: 'payFrequency', label: 'Pay Frequency', values: ['Annual', 'Monthly', 'Fortnightly', 'Weekly'] },
+    ],
+    maxVariants: 4400,
+    seoTemplate: {
+      title: 'R{{grossSalary}} Salary After Tax in South Africa - 2026 Take-Home Pay | Plain Figures',
+      description: 'Estimate South African take-home pay for R{{grossSalary}} using {{ageBand}} tax tables, R{{retirementContribution}} retirement contributions, R{{medicalAidCreditsMonthly}} monthly medical-aid credits, and {{payFrequency}} pay frequency.',
+      h1: 'R{{grossSalary}} Salary After Tax in South Africa',
+    },
+    formula: '\\text{Net pay} = \\text{gross} - \\text{PAYE} - \\text{UIF} - \\text{retirement deductions} + \\text{medical credits}',
+  },
+  {
+    id: 'ie-mortgage-affordability-stress-test',
+    categorySlug: 'mortgages',
+    name: 'Ireland Mortgage Affordability & Stress Test Calculator 2026',
+    params: [
+      { key: 'annualIncome', label: 'Annual Household Income (EUR)', prefix: 'EUR ', step: 10000, values: [40000, 60000, 80000, 100000, 125000, 150000, 175000, 200000, 250000] },
+      { key: 'monthlyOutgoings', label: 'Monthly Outgoings / Debts (EUR)', prefix: 'EUR ', step: 500, values: [250, 500, 800, 1200, 1600, 2200, 3000, 4000] },
+      { key: 'depositAmount', label: 'Deposit Amount (EUR)', prefix: 'EUR ', step: 25000, values: [10000, 20000, 30000, 50000, 75000, 100000, 150000, 200000] },
+      { key: 'stressTestRate', label: 'Stress Test Rate %', prefix: '%', step: 0.5, values: [4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8] },
+      { key: 'termYears', label: 'Mortgage Term (Years)', step: 5, values: [20, 25, 30, 35] },
+      { key: 'propertyValueEstimate', label: 'Estimated Property Value (EUR)', prefix: 'EUR ', step: 100000, values: [200000, 300000, 400000, 500000, 650000, 800000, 1000000] },
+    ],
+    maxVariants: 4200,
+    seoTemplate: {
+      title: 'How Much Mortgage Can I Afford in Ireland? Stress Test on EUR {{annualIncome}} Income - 2026 | Plain Figures',
+      description: 'Estimate Irish mortgage affordability using EUR {{annualIncome}} household income, EUR {{monthlyOutgoings}} monthly outgoings, EUR {{depositAmount}} deposit, {{stressTestRate}} stress-test rate, {{termYears}}-year term, and EUR {{propertyValueEstimate}} target property value.',
+      h1: 'How Much Mortgage Can I Afford in Ireland? Stress Test on EUR {{annualIncome}} Income',
+    },
+    formula: 'B_{max} \\approx (I - O) \\times multiple',
+  },
+  {
+    id: 'nz-mortgage-affordability-stress-test',
+    categorySlug: 'mortgages',
+    name: 'New Zealand Mortgage Affordability & Stress Test Calculator 2026',
+    params: [
+      { key: 'annualIncome', label: 'Annual Household Income (NZD)', prefix: 'NZ$ ', step: 10000, values: [50000, 70000, 90000, 110000, 130000, 160000, 200000, 240000] },
+      { key: 'monthlyOutgoings', label: 'Monthly Outgoings / Debts (NZD)', prefix: 'NZ$ ', step: 500, values: [500, 800, 1200, 1600, 2200, 3000, 3800, 4500] },
+      { key: 'depositAmount', label: 'Deposit Amount (NZD)', prefix: 'NZ$ ', step: 25000, values: [20000, 40000, 60000, 80000, 120000, 160000, 200000, 250000] },
+      { key: 'stressTestRate', label: 'Stress Test Rate %', prefix: '%', step: 0.5, values: [5, 5.5, 6, 6.5, 7, 7.5, 8] },
+      { key: 'termYears', label: 'Mortgage Term (Years)', step: 5, values: [20, 25, 30, 35] },
+      { key: 'propertyValueEstimate', label: 'Estimated Property Value (NZD)', prefix: 'NZ$ ', step: 100000, values: [300000, 400000, 500000, 650000, 800000, 1000000, 1250000] },
+    ],
+    maxVariants: 4200,
+    seoTemplate: {
+      title: 'How Much Mortgage Can I Afford in New Zealand? Stress Test on NZ$ {{annualIncome}} Income - 2026 | Plain Figures',
+      description: 'Estimate New Zealand mortgage affordability using NZ$ {{annualIncome}} household income, NZ$ {{monthlyOutgoings}} monthly outgoings, NZ$ {{depositAmount}} deposit, {{stressTestRate}} stress-test rate, {{termYears}}-year term, and NZ$ {{propertyValueEstimate}} target property value.',
+      h1: 'How Much Mortgage Can I Afford in New Zealand? Stress Test on NZ$ {{annualIncome}} Income',
+    },
+    formula: 'B_{max} \\approx (I - O) \\times serviceability\\ multiple',
+  },
+  {
+    id: 'za-home-loan-affordability',
+    categorySlug: 'mortgages',
+    name: 'South Africa Home Loan Affordability Calculator 2026',
+    params: [
+      { key: 'annualIncome', label: 'Annual Household Income (ZAR)', prefix: 'R ', step: 50000, values: [180000, 240000, 360000, 480000, 600000, 800000, 1000000, 1500000] },
+      { key: 'monthlyDebtPayments', label: 'Monthly Debt Payments (ZAR)', prefix: 'R ', step: 1000, values: [0, 1000, 2500, 5000, 8000, 12000, 18000] },
+      { key: 'depositAmount', label: 'Deposit Amount (ZAR)', prefix: 'R ', step: 50000, values: [0, 25000, 50000, 100000, 150000, 250000, 400000] },
+      { key: 'interestRate', label: 'Home Loan Interest Rate %', prefix: '%', step: 0.5, values: [10, 10.5, 11, 11.5, 12, 12.5, 13] },
+      { key: 'termYears', label: 'Loan Term (Years)', step: 5, values: [15, 20, 25, 30] },
+      { key: 'propertyTaxesAnnual', label: 'Annual Rates and Levies (ZAR)', prefix: 'R ', step: 5000, values: [6000, 12000, 18000, 24000, 36000, 48000] },
+    ],
+    maxVariants: 4200,
+    seoTemplate: {
+      title: 'How Much Home Loan Can I Afford in South Africa? R{{annualIncome}} Income - 2026 | Plain Figures',
+      description: 'Estimate South African home-loan affordability using R{{annualIncome}} household income, R{{monthlyDebtPayments}} monthly debts, R{{depositAmount}} deposit, {{interestRate}} interest, {{termYears}}-year term, and R{{propertyTaxesAnnual}} annual rates and levies.',
+      h1: 'How Much Home Loan Can I Afford in South Africa? R{{annualIncome}} Income',
+    },
+    formula: 'B_{max} \\approx \\frac{(I-D) \\times ratio}{factor(r,n)}',
+  },
+  {
+    id: 'nz-kiwisaver-retirement-projection',
+    categorySlug: 'retirement',
+    name: 'KiwiSaver Retirement Projection Calculator 2026',
+    params: [
+      { key: 'currentBalance', label: 'Current KiwiSaver Balance (NZD)', prefix: 'NZ$ ', step: 25000, values: [0, 10000, 25000, 50000, 100000, 150000, 250000, 400000] },
+      { key: 'annualSalary', label: 'Annual Salary (NZD)', prefix: 'NZ$ ', step: 10000, values: [40000, 60000, 80000, 100000, 125000, 150000, 180000] },
+      { key: 'employeeContributionRate', label: 'Employee Contribution %', prefix: '%', step: 1, values: [3, 4, 6, 8, 10] },
+      { key: 'annualReturn', label: 'Expected Annual Return %', prefix: '%', step: 0.5, values: [4, 5, 6, 7, 8, 9] },
+      { key: 'currentAge', label: 'Current Age', step: 5, values: [25, 30, 35, 40, 45, 50, 55, 60] },
+      { key: 'retirementAge', label: 'Planned Retirement Age', step: 2, values: [60, 62, 65, 67, 70] },
+    ],
+    maxVariants: 4000,
+    seoTemplate: {
+      title: 'Project KiwiSaver Balance at Retirement - Age {{currentAge}}, NZ$ {{currentBalance}} Current - 2026 | Plain Figures',
+      description: 'Project KiwiSaver at retirement using NZ$ {{currentBalance}} current balance, NZ$ {{annualSalary}} salary, {{employeeContributionRate}} employee contributions, {{annualReturn}} returns, age {{currentAge}}, and retirement at {{retirementAge}}.',
+      h1: 'Project KiwiSaver Balance at Retirement - Age {{currentAge}}, NZ$ {{currentBalance}} Current',
+    },
+    formula: 'FV = B(1+r)^t + C\\frac{(1+r)^t-1}{r}',
+    isValidVariant: (params) => Number(params.retirementAge) > Number(params.currentAge),
+  },
+  {
+    id: 'ie-pension-tax-relief-optimizer',
+    categorySlug: 'retirement',
+    name: 'Ireland Pension Tax Relief Optimizer Calculator 2026',
+    params: [
+      { key: 'grossSalary', label: 'Annual Gross Salary (EUR)', prefix: 'EUR ', step: 10000, values: [30000, 40000, 50000, 65000, 80000, 100000, 125000, 150000, 200000] },
+      { key: 'marginalTaxRate', label: 'Marginal Tax Rate %', prefix: '%', step: 5, values: [20, 30, 40] },
+      { key: 'annualContribution', label: 'Annual Pension Contribution (EUR)', prefix: 'EUR ', step: 2500, values: [1000, 2500, 5000, 7500, 10000, 15000, 20000, 25000, 30000] },
+      { key: 'yearsToRetirement', label: 'Years to Retirement', step: 5, values: [5, 10, 15, 20, 25, 30, 35] },
+      { key: 'expectedReturn', label: 'Expected Annual Return %', prefix: '%', step: 1, values: [4, 5, 6, 7, 8, 9] },
+    ],
+    maxVariants: 4000,
+    seoTemplate: {
+      title: 'Ireland Pension Tax Relief on EUR {{annualContribution}}/yr Contribution - 2026 | Plain Figures',
+      description: 'Estimate Irish pension tax relief using EUR {{annualContribution}} annual contributions, EUR {{grossSalary}} salary, a {{marginalTaxRate}} marginal rate, {{yearsToRetirement}} years to retirement, and {{expectedReturn}} annual return.',
+      h1: 'Ireland Pension Tax Relief on EUR {{annualContribution}}/yr Contribution',
+    },
+    formula: 'FV \\approx C\\frac{(1+r)^t-1}{r};\\ tax\\ relief = C \\times rate',
+  },
 ];
 
 const slugBuilders: Partial<Record<string, (params: ParamMap) => string>> = {
@@ -3472,6 +3657,22 @@ const slugBuilders: Partial<Record<string, (params: ParamMap) => string>> = {
     `br-inss-${idadeAtual}-idade-${tempoContribuicaoMeses}-meses-${salarioMedioContribuicao}-salario-${normalizeSlugPart(tipoBeneficio)}`,
   'br-financiamento-imobiliario-sac-price': ({ valorImovel, entrada, prazoAnos, taxaJurosAnual, sistemaAmortizacao }) =>
     `br-financiamento-${valorImovel}-imovel-${entrada}-entrada-${prazoAnos}-anos-${taxaJurosAnual}-juros-${normalizeSlugPart(sistemaAmortizacao)}`,
+  'ie-income-tax-take-home': ({ grossSalary, taxStatus, pensionContribution, taxCredits, payFrequency }) =>
+    `ie-take-home-${grossSalary}-salary-${normalizeSlugPart(taxStatus)}-${pensionContribution}-pension-${taxCredits}-credits-${normalizeSlugPart(payFrequency)}`,
+  'nz-income-tax-take-home': ({ grossSalary, kiwiSaverRate, studentLoan, otherDeductions, payFrequency }) =>
+    `nz-take-home-${grossSalary}-salary-${kiwiSaverRate}-kiwisaver-${normalizeSlugPart(studentLoan)}-${otherDeductions}-deductions-${normalizeSlugPart(payFrequency)}`,
+  'za-income-tax-take-home': ({ grossSalary, ageBand, retirementContribution, medicalAidCreditsMonthly, payFrequency }) =>
+    `za-take-home-${grossSalary}-salary-${normalizeSlugPart(ageBand)}-${retirementContribution}-retirement-${medicalAidCreditsMonthly}-medical-${normalizeSlugPart(payFrequency)}`,
+  'ie-mortgage-affordability-stress-test': ({ annualIncome, monthlyOutgoings, depositAmount, stressTestRate, termYears, propertyValueEstimate }) =>
+    `ie-mortgage-affordability-${annualIncome}-income-${monthlyOutgoings}-outgoings-${depositAmount}-deposit-${stressTestRate}-stress-${termYears}-years-${propertyValueEstimate}-property`,
+  'nz-mortgage-affordability-stress-test': ({ annualIncome, monthlyOutgoings, depositAmount, stressTestRate, termYears, propertyValueEstimate }) =>
+    `nz-mortgage-affordability-${annualIncome}-income-${monthlyOutgoings}-outgoings-${depositAmount}-deposit-${stressTestRate}-stress-${termYears}-years-${propertyValueEstimate}-property`,
+  'za-home-loan-affordability': ({ annualIncome, monthlyDebtPayments, depositAmount, interestRate, termYears, propertyTaxesAnnual }) =>
+    `za-home-loan-${annualIncome}-income-${monthlyDebtPayments}-debts-${depositAmount}-deposit-${interestRate}-rate-${termYears}-years-${propertyTaxesAnnual}-rates`,
+  'nz-kiwisaver-retirement-projection': ({ currentBalance, annualSalary, employeeContributionRate, annualReturn, currentAge, retirementAge }) =>
+    `nz-kiwisaver-${currentBalance}-balance-${annualSalary}-salary-${employeeContributionRate}-employee-${annualReturn}-return-${currentAge}-age-${retirementAge}-retire`,
+  'ie-pension-tax-relief-optimizer': ({ grossSalary, marginalTaxRate, annualContribution, yearsToRetirement, expectedReturn }) =>
+    `ie-pension-tax-relief-${grossSalary}-salary-${marginalTaxRate}-rate-${annualContribution}-contribution-${yearsToRetirement}-years-${expectedReturn}-return`,
 };
 
 function normalizeSlugPart(value: ParamValue): string {
