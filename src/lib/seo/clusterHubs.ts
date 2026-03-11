@@ -390,6 +390,108 @@ const HUBS: Record<string, ClusterHubConfig> = {
       },
     ],
   },
+  'property-tax-and-estate-planning': {
+    slug: 'property-tax-and-estate-planning',
+    title: 'Property, Tax, and Estate Planning Hub',
+    eyebrow: 'Property and Estate Hub',
+    description:
+      'A supporting hub for buy-to-let yield, capital gains, inheritance tax, and first-time buyer saving rules, tied back to the main mortgage, savings, and retirement calculators.',
+    intro:
+      'This hub exists for the pages that sit between housing maths and longer-term wealth planning. It keeps property yield, tax, and estate explainers within the main site architecture instead of leaving them as isolated edge articles.',
+    summary:
+      'Use it when the question is not just monthly affordability but the return, tax treatment, or transfer consequences around property and longer-horizon assets.',
+    calculatorHrefs: ['/rent-vs-buy', '/mortgage', '/take-home', '/retirement', '/savings'],
+    guideLinks: [
+      {
+        href: '/learn/buy-to-let-yield',
+        label: 'Read the buy-to-let yield guide',
+        description: 'Keep gross, net, and cash-on-cash property return measures close to the housing decision path.',
+      },
+      {
+        href: '/learn/capital-gains-tax',
+        label: 'Read the capital gains tax guide',
+        description: 'Support asset-sale and net-proceeds questions with a direct tax explainer.',
+      },
+      {
+        href: '/learn/inheritance-tax',
+        label: 'Read the inheritance tax guide',
+        description: 'Keep estate thresholds, gifting timelines, and transfer-tax framing linked to retirement and wealth pages.',
+      },
+      {
+        href: '/learn/lisa-help-to-buy',
+        label: 'Read the LISA and Help to Buy ISA guide',
+        description: 'Tie first-time buyer bonus rules back to deposit-building and mortgage planning.',
+      },
+      {
+        href: '/learn/pension-drawdown',
+        label: 'Read the pension drawdown guide',
+        description: 'Retain the retirement-income explainer near estate and transfer questions that often follow.',
+      },
+    ],
+    relatedHubs: [
+      {
+        href: '/mortgage-calculators',
+        label: 'Open the mortgage calculators hub',
+        description: 'Return to the core housing calculators once the property tax or yield question is clear.',
+      },
+      {
+        href: '/income-tax-and-borrowing',
+        label: 'Open the income, tax, and borrowing hub',
+        description: 'Move back to salary, loan, and net-pay pages when the planning question becomes more cash-flow oriented.',
+      },
+    ],
+  },
+  'investing-markets-and-fx': {
+    slug: 'investing-markets-and-fx',
+    title: 'Investing, Markets, and FX Hub',
+    eyebrow: 'Investing Hub',
+    description:
+      'A hub for investing style, market-context, FX-cost, and after-tax market guides that support compound growth and retirement journeys.',
+    intro:
+      'This hub gives the more specialised market and investing explainers a real home in the crawl path. It keeps them tied to compound growth, retirement, and tax-aware decision pages rather than letting them sit as disconnected editorial edges.',
+    summary:
+      'Use it when the user is comparing investing styles, cross-border costs, or tax-aware market mechanics rather than simply asking for a savings projection.',
+    calculatorHrefs: ['/compound', '/savings', '/retirement', '/take-home', '/tcor'],
+    guideLinks: [
+      {
+        href: '/learn/currency-exchange-fees',
+        label: 'Read the currency exchange fees guide',
+        description: 'Keep FX spread and transfer-cost framing close to savings and international money questions.',
+      },
+      {
+        href: '/learn/dividend-vs-growth',
+        label: 'Read the dividend vs growth guide',
+        description: 'Support total-return comparisons inside the main compounding cluster.',
+      },
+      {
+        href: '/learn/market-forecasts-rate-cuts',
+        label: 'Read the market forecasts guide',
+        description: 'Provide scenario-oriented market context without treating the article as a prediction surface.',
+      },
+      {
+        href: '/learn/tax-loss-harvesting',
+        label: 'Read the tax-loss harvesting guide',
+        description: 'Keep after-tax portfolio mechanics linked to the broader investing and tax pathway.',
+      },
+      {
+        href: '/learn/private-credit-playbook',
+        label: 'Read the private credit guide',
+        description: 'Retain one higher-yield professional investing explainer inside the same long-term return hub.',
+      },
+    ],
+    relatedHubs: [
+      {
+        href: '/savings-and-compound-interest',
+        label: 'Open the savings and compound hub',
+        description: 'Return to the main savings calculators after using the specialist market explainers for context.',
+      },
+      {
+        href: '/advisory-analytics-and-automation',
+        label: 'Open the advisory analytics and automation hub',
+        description: 'Move into the adjacent professional strategy cluster when market research overlaps with commercial or advisory workflows.',
+      },
+    ],
+  },
 };
 
 function toolLink(href: string): SeoLink | null {

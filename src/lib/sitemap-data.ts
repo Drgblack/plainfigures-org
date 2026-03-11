@@ -20,6 +20,8 @@ export const STATIC_PAGE_URLS = [
   'https://www.plainfigures.org/risk-management-and-coverage',
   'https://www.plainfigures.org/advisory-analytics-and-automation',
   'https://www.plainfigures.org/lifestyle-and-runway',
+  'https://www.plainfigures.org/property-tax-and-estate-planning',
+  'https://www.plainfigures.org/investing-markets-and-fx',
 ];
 
 export const CALCULATOR_HUB_URLS = [

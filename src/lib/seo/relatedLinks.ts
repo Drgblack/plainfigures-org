@@ -128,6 +128,36 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/lifestyle-and-runway', label: 'Open the lifestyle and runway hub', description: 'Group recurring-cost, runway, and lifestyle-pressure pages in one support cluster.' },
     ],
   },
+  property: {
+    title: 'Property, Tax, and Estate Cluster',
+    intro:
+      'These pages support housing and wealth-transfer decisions that sit between personal finance calculators and higher-stakes planning topics. The cluster groups property yield, tax, and estate explainers so they are not left as isolated articles.',
+    calculatorHrefs: ['/rent-vs-buy', '/mortgage', '/take-home', '/retirement', '/savings'],
+    guideLinks: [
+      { href: '/learn/buy-to-let-yield', label: 'Buy-to-Let Yield: Gross, Net, and Cash-on-Cash Return', description: 'Keep property-return definitions close to the broader housing and savings cluster.' },
+      { href: '/learn/capital-gains-tax', label: 'Capital Gains Tax: How the Calculation Works (2025/26)', description: 'Tie disposal and gain mechanics back to the main tax-aware calculator paths.' },
+      { href: '/learn/inheritance-tax', label: 'Inheritance Tax: Nil-Rate Band, Taper Relief, and How It Is Calculated', description: 'Keep estate tax and gifting rules within reach of retirement and long-term wealth pages.' },
+      { href: '/learn/lisa-help-to-buy', label: 'LISA vs Help to Buy ISA: When the Government Bonus Actually Helps', description: 'Support first-time buyer and deposit-planning journeys with a clear savings-rule explainer.' },
+    ],
+    hubLinks: [
+      { href: '/property-tax-and-estate-planning', label: 'Open the property, tax, and estate hub', description: 'Group housing, tax, and wealth-transfer explainers under one supporting hub.' },
+    ],
+  },
+  markets: {
+    title: 'Markets, Investing, and Cross-Border Money Cluster',
+    intro:
+      'This cluster holds the more specialised investing, FX, and market-context explainers that support compound-growth and tax journeys without diluting the core calculator pages.',
+    calculatorHrefs: ['/compound', '/savings', '/retirement', '/take-home', '/tcor'],
+    guideLinks: [
+      { href: '/learn/currency-exchange-fees', label: 'Currency Exchange: The Real Cost of FX Fees and Spread', description: 'Keep cross-border payment costs close to savings and return comparisons.' },
+      { href: '/learn/dividend-vs-growth', label: 'Dividend Yield vs Growth Investing: Total Return Comparison', description: 'Connect income versus growth framing back to the main compounding cluster.' },
+      { href: '/learn/market-forecasts-rate-cuts', label: 'Market Forecasts: Impact of Rate Cuts and Geopolitics', description: 'Provide market-context support for users comparing scenarios rather than looking for predictions.' },
+      { href: '/learn/tax-loss-harvesting', label: 'Tax-Loss Harvesting Strategies for Volatile Markets', description: 'Keep after-tax portfolio mechanics attached to the broader tax and investing pathway.' },
+    ],
+    hubLinks: [
+      { href: '/investing-markets-and-fx', label: 'Open the investing, markets, and FX hub', description: 'Group the investing and cross-border explainers that support long-term return questions.' },
+    ],
+  },
 };
 
 const TOOL_TO_CLUSTER = new Map<string, string>([
@@ -407,6 +437,28 @@ export function getLearnHubClusters() {
         .map((tool) => ({ href: tool.href, label: tool.title, description: tool.description })),
       guides: CLUSTERS.wellbeing.guideLinks,
       hubs: CLUSTERS.wellbeing.hubLinks,
+    },
+    {
+      key: 'property',
+      title: CLUSTERS.property.title,
+      intro: CLUSTERS.property.intro,
+      calculators: CLUSTERS.property.calculatorHrefs
+        .map((href) => getToolByHref(href))
+        .filter((tool): tool is NonNullable<ReturnType<typeof getToolByHref>> => Boolean(tool))
+        .map((tool) => ({ href: tool.href, label: tool.title, description: tool.description })),
+      guides: CLUSTERS.property.guideLinks,
+      hubs: CLUSTERS.property.hubLinks,
+    },
+    {
+      key: 'markets',
+      title: CLUSTERS.markets.title,
+      intro: CLUSTERS.markets.intro,
+      calculators: CLUSTERS.markets.calculatorHrefs
+        .map((href) => getToolByHref(href))
+        .filter((tool): tool is NonNullable<ReturnType<typeof getToolByHref>> => Boolean(tool))
+        .map((tool) => ({ href: tool.href, label: tool.title, description: tool.description })),
+      guides: CLUSTERS.markets.guideLinks,
+      hubs: CLUSTERS.markets.hubLinks,
     },
   ];
 }
