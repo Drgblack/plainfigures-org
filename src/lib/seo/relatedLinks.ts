@@ -386,6 +386,28 @@ export function getLearnHubClusters() {
       guides: CLUSTERS.income.guideLinks,
       hubs: CLUSTERS.income.hubLinks,
     },
+    {
+      key: 'risk',
+      title: CLUSTERS.risk.title,
+      intro: CLUSTERS.risk.intro,
+      calculators: CLUSTERS.risk.calculatorHrefs
+        .map((href) => getToolByHref(href))
+        .filter((tool): tool is NonNullable<ReturnType<typeof getToolByHref>> => Boolean(tool))
+        .map((tool) => ({ href: tool.href, label: tool.title, description: tool.description })),
+      guides: CLUSTERS.risk.guideLinks,
+      hubs: CLUSTERS.risk.hubLinks,
+    },
+    {
+      key: 'wellbeing',
+      title: CLUSTERS.wellbeing.title,
+      intro: CLUSTERS.wellbeing.intro,
+      calculators: CLUSTERS.wellbeing.calculatorHrefs
+        .map((href) => getToolByHref(href))
+        .filter((tool): tool is NonNullable<ReturnType<typeof getToolByHref>> => Boolean(tool))
+        .map((tool) => ({ href: tool.href, label: tool.title, description: tool.description })),
+      guides: CLUSTERS.wellbeing.guideLinks,
+      hubs: CLUSTERS.wellbeing.hubLinks,
+    },
   ];
 }
 
