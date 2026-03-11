@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Parametric Insurance: Instant-Payout Weather Triggers | Plain Figures',
-  description:
-    'How parametric insurance works — trigger design, premium calculation, basis risk quantification, and what-if scenarios for advisors considering weather-indexed products.',
-};
+export const metadata: Metadata = buildGuideMetadata('Parametric Insurance: Instant-Payout Weather Triggers | Plain Figures', 'How parametric insurance works — trigger design, premium calculation, basis risk quantification, and what-if scenarios for advisors considering weather-indexed products.', 'parametric-insurance-weather');
 
 export default function ParametricInsuranceGuide() {
   return (

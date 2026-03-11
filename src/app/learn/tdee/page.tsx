@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'TDEE & Calorie Needs: How the Calculation Works — Plain Figures',
-  description: 'How Total Daily Energy Expenditure (TDEE) and Basal Metabolic Rate (BMR) are calculated. The Mifflin-St Jeor equation, activity multipliers, what-if scenarios, and what the numbers mean.',
-};
+export const metadata: Metadata = buildGuideMetadata('TDEE & Calorie Needs: How the Calculation Works — Plain Figures', 'How Total Daily Energy Expenditure (TDEE) and Basal Metabolic Rate (BMR) are calculated. The Mifflin-St Jeor equation, activity multipliers, what-if scenarios, and what the numbers mean.', 'tdee');
 
 export default function TDEEGuide() {
   return (

@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Financial Crisis Simulator: How Long Will Your Savings Last?',
-  description: 'Learn how to calculate how long savings last during a financial crisis. Covers burn rate, survival runway, and emergency fund sizing with real examples.',
-};
+export const metadata: Metadata = buildGuideMetadata('Financial Crisis Simulator: How Long Will Your Savings Last?', 'Learn how to calculate how long savings last during a financial crisis. Covers burn rate, survival runway, and emergency fund sizing with real examples.', 'financial-crisis-simulator');
 
 export default function Guide() {
   return (

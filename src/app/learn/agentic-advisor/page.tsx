@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'The Agentic Advisor: AI-Driven Digital Co-Workers | Plain Figures',
-  description:
-    'How agentic AI systems act as digital co-workers for financial advisors — task delegation, ROI modelling, workflow math, and what-if scenarios for 2026.',
-};
+export const metadata: Metadata = buildGuideMetadata('The Agentic Advisor: AI-Driven Digital Co-Workers | Plain Figures', 'How agentic AI systems act as digital co-workers for financial advisors — task delegation, ROI modelling, workflow math, and what-if scenarios for 2026.', 'agentic-advisor');
 
 export default function AgenticAdvisorGuide() {
   return (

@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Market Forecasts: Impact of Rate Cuts & Geopolitics on Portfolios | Plain Figures',
-  description:
-    'How interest rate cuts and geopolitical events mathematically affect portfolio values — duration risk, Gordon Growth Model equity sensitivity, scenario analysis, and what-if scenarios.',
-};
+export const metadata: Metadata = buildGuideMetadata('Market Forecasts: Impact of Rate Cuts & Geopolitics on Portfolios | Plain Figures', 'How interest rate cuts and geopolitical events mathematically affect portfolio values — duration risk, Gordon Growth Model equity sensitivity, scenario analysis, and what-if scenarios.', 'market-forecasts-rate-cuts');
 
 export default function MarketForecastsGuide() {
   return (

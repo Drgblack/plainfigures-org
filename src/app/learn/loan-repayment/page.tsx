@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Loan Repayment & True APR Explained — Plain Figures Learning Centre',
-  description: 'How loan repayments are calculated, what APR actually measures, how fees affect the true cost of borrowing, and why two loans with the same interest rate can have different APRs.',
-};
+export const metadata: Metadata = buildGuideMetadata('Loan Repayment & True APR Explained — Plain Figures Learning Centre', 'How loan repayments are calculated, what APR actually measures, how fees affect the true cost of borrowing, and why two loans with the same interest rate can have different APRs.', 'loan-repayment');
 
 export default function LoanRepaymentGuide() {
   return (

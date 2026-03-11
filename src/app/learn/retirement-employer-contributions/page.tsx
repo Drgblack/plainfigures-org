@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Retirement Savings: How Employer Contributions & Inflation Change Everything',
-  description: 'Understand how employer pension contributions and inflation affect retirement projections. Includes real contribution tables, inflation-adjusted returns, and what-if scenarios.',
-};
+export const metadata: Metadata = buildGuideMetadata('Retirement Savings: How Employer Contributions & Inflation Change Everything', 'Understand how employer pension contributions and inflation affect retirement projections. Includes real contribution tables, inflation-adjusted returns, and what-if scenarios.', 'retirement-employer-contributions');
 
 export default function Guide() {
   return (

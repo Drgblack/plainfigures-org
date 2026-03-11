@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Compound Interest: Frequency, Effective Annual Rate, and Real Returns',
-  description: 'A complete guide to compound interest: how compounding frequency affects your return, the difference between nominal and effective annual rate (EAR), and real-world investment examples.',
-};
+export const metadata: Metadata = buildGuideMetadata('Compound Interest: Frequency, Effective Annual Rate, and Real Returns', 'A complete guide to compound interest: how compounding frequency affects your return, the difference between nominal and effective annual rate (EAR), and real-world investment examples.', 'compound-interest');
 
 export default function Guide() {
   return (

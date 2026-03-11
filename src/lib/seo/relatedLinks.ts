@@ -16,6 +16,7 @@ type ClusterConfig = {
   intro: string;
   calculatorHrefs: string[];
   guideLinks: SeoLink[];
+  hubLinks: SeoLink[];
 };
 
 type ProgrammaticCategorySupport = {
@@ -61,6 +62,10 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/offset-mortgage', label: GUIDE_LABELS['/learn/offset-mortgage'], description: 'Compare offset savings against standard mortgage interest charges.' },
       { href: '/learn/mortgage-overpayment', label: GUIDE_LABELS['/learn/mortgage-overpayment'], description: 'Measure how extra payments reduce lifetime interest and term length.' },
     ],
+    hubLinks: [
+      { href: '/mortgage-calculators', label: 'Open the mortgage calculators hub', description: 'Move through repayment, affordability, and buy-versus-rent pages from one cluster page.' },
+      { href: '/overpayment-and-offset', label: 'Open the overpayment and offset hub', description: 'Compare spare-cash strategies once the base mortgage payment is clear.' },
+    ],
   },
   savings: {
     title: 'Savings and Compounding Cluster',
@@ -74,6 +79,10 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/emergency-fund-how-much', label: GUIDE_LABELS['/learn/emergency-fund-how-much'], description: 'Set a buffer size that matches expenses and income stability.' },
       { href: '/learn/subscription-drain', label: GUIDE_LABELS['/learn/subscription-drain'], description: 'Reframe recurring spending as cumulative cost and foregone growth.' },
     ],
+    hubLinks: [
+      { href: '/savings-and-compound-interest', label: 'Open the savings and compound hub', description: 'Group growth, goal, retirement, and emergency-fund pages under one savings path.' },
+      { href: '/overpayment-and-offset', label: 'Open the overpayment and offset hub', description: 'Use the adjacent mortgage strategy hub when a cash question becomes a borrowing question.' },
+    ],
   },
   income: {
     title: 'Income, Tax, and Borrowing Cluster',
@@ -86,6 +95,7 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/freelance-rate', label: GUIDE_LABELS['/learn/freelance-rate'], description: 'Convert target income into billable day-rate requirements.' },
       { href: '/learn/loan-repayment', label: GUIDE_LABELS['/learn/loan-repayment'], description: 'Understand repayment schedules, APR, and total borrowing cost.' },
     ],
+    hubLinks: [],
   },
   risk: {
     title: 'Risk and Coverage Cluster',
@@ -98,6 +108,7 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/regtech-compliance-automation', label: GUIDE_LABELS['/learn/regtech-compliance-automation'], description: 'Model compliance cost, efficiency, and automation ROI.' },
       { href: '/learn/private-credit-playbook', label: GUIDE_LABELS['/learn/private-credit-playbook'], description: 'Use adjacent portfolio-risk content to support deeper professional research.' },
     ],
+    hubLinks: [],
   },
   wellbeing: {
     title: 'Energy and Lifestyle Cluster',
@@ -108,6 +119,7 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/tdee', label: GUIDE_LABELS['/learn/tdee'], description: 'Understand the BMR and activity formulas behind calorie estimates.' },
       { href: '/learn/subscription-drain', label: GUIDE_LABELS['/learn/subscription-drain'], description: 'Compare recurring lifestyle costs with longer-term opportunity cost.' },
     ],
+    hubLinks: [],
   },
 };
 
@@ -245,6 +257,13 @@ export function getClusterSummary(toolHref: string): { title: string; intro: str
   };
 }
 
+export function getClusterHubLinks(toolHref: string, limit = 3): SeoLink[] {
+  const clusterKey = TOOL_TO_CLUSTER.get(toolHref);
+  const cluster = clusterKey ? CLUSTERS[clusterKey] : null;
+
+  return (cluster?.hubLinks ?? []).slice(0, limit);
+}
+
 export function buildProgrammaticRelatedCalculatorLinks(categorySlug: string, limit = 4): SeoLink[] {
   const support = PROGRAMMATIC_CATEGORY_SUPPORT[categorySlug];
 
@@ -336,6 +355,7 @@ export function getLearnHubClusters() {
         .filter((tool): tool is NonNullable<ReturnType<typeof getToolByHref>> => Boolean(tool))
         .map((tool) => ({ href: tool.href, label: tool.title, description: tool.description })),
       guides: CLUSTERS.mortgage.guideLinks,
+      hubs: CLUSTERS.mortgage.hubLinks,
     },
     {
       key: 'savings',
@@ -346,6 +366,7 @@ export function getLearnHubClusters() {
         .filter((tool): tool is NonNullable<ReturnType<typeof getToolByHref>> => Boolean(tool))
         .map((tool) => ({ href: tool.href, label: tool.title, description: tool.description })),
       guides: CLUSTERS.savings.guideLinks,
+      hubs: CLUSTERS.savings.hubLinks,
     },
     {
       key: 'income',
@@ -356,6 +377,7 @@ export function getLearnHubClusters() {
         .filter((tool): tool is NonNullable<ReturnType<typeof getToolByHref>> => Boolean(tool))
         .map((tool) => ({ href: tool.href, label: tool.title, description: tool.description })),
       guides: CLUSTERS.income.guideLinks,
+      hubs: CLUSTERS.income.hubLinks,
     },
   ];
 }

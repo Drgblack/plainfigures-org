@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Pension Drawdown: Sustainable Withdrawal Rates Explained',
-  description: 'Understand how to calculate a sustainable pension withdrawal rate. Covers the 4% rule, sequence of returns risk, and safe withdrawal strategies for UK retirees.',
-};
+export const metadata: Metadata = buildGuideMetadata('Pension Drawdown: Sustainable Withdrawal Rates Explained', 'Understand how to calculate a sustainable pension withdrawal rate. Covers the 4% rule, sequence of returns risk, and safe withdrawal strategies for UK retirees.', 'pension-drawdown');
 
 export default function Guide() {
   return (

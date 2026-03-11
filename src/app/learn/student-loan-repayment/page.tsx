@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Student Loan Repayment: Plan 1 vs Plan 2 vs Plan 5 Explained',
-  description: 'Understand how UK student loan repayments work across Plan 1, Plan 2, and Plan 5. Covers repayment thresholds, interest rates, and total cost comparisons for 2025/26.',
-};
+export const metadata: Metadata = buildGuideMetadata('Student Loan Repayment: Plan 1 vs Plan 2 vs Plan 5 Explained', 'Understand how UK student loan repayments work across Plan 1, Plan 2, and Plan 5. Covers repayment thresholds, interest rates, and total cost comparisons for 2025/26.', 'student-loan-repayment');
 
 export default function Guide() {
   return (

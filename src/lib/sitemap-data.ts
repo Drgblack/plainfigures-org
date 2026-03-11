@@ -15,6 +15,9 @@ export const STATIC_PAGE_URLS = [
   'https://www.plainfigures.org/contact',
   'https://www.plainfigures.org/cookies',
   'https://www.plainfigures.org/learn',
+  'https://www.plainfigures.org/mortgage-calculators',
+  'https://www.plainfigures.org/overpayment-and-offset',
+  'https://www.plainfigures.org/savings-and-compound-interest',
 ];
 
 export const CALCULATOR_HUB_URLS = [

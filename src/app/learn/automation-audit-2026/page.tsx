@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Automation Audit: Tasks to Delegate to AI in 2026 | Plain Figures',
-  description:
-    'A practical automation audit framework for financial advisors — task scoring matrix, time-value analysis, payback period formula, and what-if scenarios.',
-};
+export const metadata: Metadata = buildGuideMetadata('Automation Audit: Tasks to Delegate to AI in 2026 | Plain Figures', 'A practical automation audit framework for financial advisors — task scoring matrix, time-value analysis, payback period formula, and what-if scenarios.', 'automation-audit-2026');
 
 export default function AutomationAuditGuide() {
   return (

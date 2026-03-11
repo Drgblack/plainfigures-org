@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Capital Gains Tax: How the Calculation Works (2025/26)',
-  description: 'Understand how UK capital gains tax is calculated on shares, property, and other assets. Covers CGT rates, annual exempt amount, and reporting requirements for 2025/26.',
-};
+export const metadata: Metadata = buildGuideMetadata('Capital Gains Tax: How the Calculation Works (2025/26)', 'Understand how UK capital gains tax is calculated on shares, property, and other assets. Covers CGT rates, annual exempt amount, and reporting requirements for 2025/26.', 'capital-gains-tax');
 
 export default function Guide() {
   return (

@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Inheritance Tax: Thresholds, Nil-Rate Band, and Taper Relief Explained',
-  description: 'Understand how UK inheritance tax is calculated. Covers the nil-rate band, residence nil-rate band, taper relief on gifts, and 2025/26 IHT rates.',
-};
+export const metadata: Metadata = buildGuideMetadata('Inheritance Tax: Thresholds, Nil-Rate Band, and Taper Relief Explained', 'Understand how UK inheritance tax is calculated. Covers the nil-rate band, residence nil-rate band, taper relief on gifts, and 2025/26 IHT rates.', 'inheritance-tax');
 
 export default function Guide() {
   return (

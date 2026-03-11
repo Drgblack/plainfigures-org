@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Cyber-Resilient Agency: Protecting Client Data | Plain Figures',
-  description:
-    'How financial advisors quantify and manage cyber risk — FAIR model, ALE calculation, GDPR fine exposure formula, control investment ROI, and what-if scenarios.',
-};
+export const metadata: Metadata = buildGuideMetadata('Cyber-Resilient Agency: Protecting Client Data | Plain Figures', 'How financial advisors quantify and manage cyber risk — FAIR model, ALE calculation, GDPR fine exposure formula, control investment ROI, and what-if scenarios.', 'cyber-resilient-agency');
 
 export default function CyberResilientAgencyGuide() {
   return (

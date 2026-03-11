@@ -1,17 +1,16 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import Breadcrumbs from '@/components/seo/Breadcrumbs';
+import RelatedGuides from '@/components/seo/RelatedGuides';
 import { PROGRAMMATIC_LEARN_TOPICS } from '@/lib/programmatic-learn-extensions';
+import { buildHubMetadata } from '@/lib/seo/metadata';
 import { buildGuideBreadcrumbs, getLearnHubClusters } from '@/lib/seo/relatedLinks';
 
-export const metadata: Metadata = {
-  title: 'Learning Centre - How Financial Calculations Work - Plain Figures',
-  description:
-    'Formula-first guides that support Plain Figures calculators across mortgages, savings, salary, retirement, tax, and risk. No advice. Just the maths.',
-  alternates: {
-    canonical: 'https://plainfigures.org/learn',
-  },
-};
+export const metadata: Metadata = buildHubMetadata(
+  'Learning Centre - How Financial Calculations Work - Plain Figures',
+  'Formula-first guides that support Plain Figures calculators across mortgages, savings, salary, retirement, tax, and risk. No advice. Just the maths.',
+  '/learn',
+);
 
 type GuideItem = {
   href: string;
@@ -154,8 +153,13 @@ export default function LearnIndexPage() {
                   <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.74rem', color: 'var(--text-primary)' }}>{calculator.label}</span>
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.76rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{calculator.description}</span>
                 </Link>
-              ))}
-            </div>
+                ))}
+              </div>
+            <RelatedGuides
+              title="Sub-Hubs"
+              intro="Use these short organiser pages when you want the strongest pages in this cluster grouped by job rather than listed in a flat directory."
+              links={cluster.hubs}
+            />
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.65rem' }}>
               {cluster.guides.slice(0, 4).map((guide) => (
                 <Link key={guide.href} href={guide.href} style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', padding: '0.75rem 0.9rem', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: '6px', textDecoration: 'none' }}>

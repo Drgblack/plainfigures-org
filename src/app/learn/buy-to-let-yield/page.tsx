@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Buy-to-Let Yield: Gross vs Net vs Cash-on-Cash Return',
-  description: 'Understand the three types of buy-to-let yield: gross, net, and cash-on-cash. Includes a full cost breakdown and worked examples for UK landlords.',
-};
+export const metadata: Metadata = buildGuideMetadata('Buy-to-Let Yield: Gross vs Net vs Cash-on-Cash Return', 'Understand the three types of buy-to-let yield: gross, net, and cash-on-cash. Includes a full cost breakdown and worked examples for UK landlords.', 'buy-to-let-yield');
 
 export default function Guide() {
   return (

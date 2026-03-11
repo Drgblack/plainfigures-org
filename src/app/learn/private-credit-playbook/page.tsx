@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Private Credit Playbook: Diversifying Beyond Equities | Plain Figures',
-  description:
-    'How private credit yields are constructed, how illiquidity premium is calculated, allocation sizing with a liquidity adequacy test, and what-if scenarios for advisors.',
-};
+export const metadata: Metadata = buildGuideMetadata('Private Credit Playbook: Diversifying Beyond Equities | Plain Figures', 'How private credit yields are constructed, how illiquidity premium is calculated, allocation sizing with a liquidity adequacy test, and what-if scenarios for advisors.', 'private-credit-playbook');
 
 export default function PrivateCreditGuide() {
   return (

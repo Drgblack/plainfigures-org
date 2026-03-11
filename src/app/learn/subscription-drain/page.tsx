@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Subscription Drain: The True Long-Term Cost — Plain Figures Learning Centre',
-  description: 'How to calculate the real multi-year cost of recurring subscriptions — including annual price increases and the opportunity cost of investing the same amount instead.',
-};
+export const metadata: Metadata = buildGuideMetadata('Subscription Drain: The True Long-Term Cost — Plain Figures Learning Centre', 'How to calculate the real multi-year cost of recurring subscriptions — including annual price increases and the opportunity cost of investing the same amount instead.', 'subscription-drain');
 
 export default function SubscriptionDrainGuide() {
   return (

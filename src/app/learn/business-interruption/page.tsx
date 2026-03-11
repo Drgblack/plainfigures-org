@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Business Interruption Sum Insured: How It Is Calculated — Plain Figures Learning Centre',
-  description: 'How business interruption insurance sums insured are calculated on a gross profit basis. Indemnity period selection, under-insurance risk, and worked examples. Not insurance advice.',
-};
+export const metadata: Metadata = buildGuideMetadata('Business Interruption Sum Insured: How It Is Calculated — Plain Figures Learning Centre', 'How business interruption insurance sums insured are calculated on a gross profit basis. Indemnity period selection, under-insurance risk, and worked examples. Not insurance advice.', 'business-interruption');
 
 export default function BusinessInterruptionGuide() {
   return (

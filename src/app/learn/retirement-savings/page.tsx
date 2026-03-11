@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Retirement Savings: Employer Contributions, Inflation & Projections — Plain Figures',
-  description: 'How pension pot projections work — future value formula, real vs nominal returns, employer contributions, the 4% withdrawal rule, and how starting age affects outcomes.',
-};
+export const metadata: Metadata = buildGuideMetadata('Retirement Savings: Employer Contributions, Inflation & Projections — Plain Figures', 'How pension pot projections work — future value formula, real vs nominal returns, employer contributions, the 4% withdrawal rule, and how starting age affects outcomes.', 'retirement-savings');
 
 export default function RetirementGuide() {
   return (

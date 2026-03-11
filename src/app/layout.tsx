@@ -54,14 +54,6 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: 'https://plainfigures.org',
-    languages: {
-      'en-GB': 'https://plainfigures.org',
-      'en-US': 'https://plainfigures.org',
-      'de': 'https://plainfigures.org/?lang=de',
-      'fr': 'https://plainfigures.org/?lang=fr',
-      'es': 'https://plainfigures.org/?lang=es',
-      'zh': 'https://plainfigures.org/?lang=zh',
-    },
   },
   icons: {
     icon: [
@@ -88,15 +80,7 @@ const jsonLd = {
       'url': 'https://plainfigures.org',
       'name': 'Plain Figures',
       'description': 'Neutral financial calculators. No advice. No noise.',
-      'inLanguage': ['en-GB', 'en-US', 'de', 'fr', 'es', 'zh'],
-      'potentialAction': {
-        '@type': 'SearchAction',
-        'target': {
-          '@type': 'EntryPoint',
-          'urlTemplate': 'https://plainfigures.org/?q={search_term_string}',
-        },
-        'query-input': 'required name=search_term_string',
-      },
+      'inLanguage': 'en-GB',
     },
     {
       '@type': 'Organization',

@@ -7,6 +7,7 @@ import type { BreadcrumbItem, SeoLink } from '@/lib/seo/relatedLinks';
 import {
   buildCalculatorBreadcrumbs,
   getCalculatorLinksForTool,
+  getClusterHubLinks,
   getClusterSummary,
   getGuideLinksForTool,
 } from '@/lib/seo/relatedLinks';
@@ -49,6 +50,7 @@ export default function CalcPageWrapper({
   const clusterSummary = toolHref ? getClusterSummary(toolHref) : null;
   const calculators = relatedCalculatorLinks ?? (toolHref ? getCalculatorLinksForTool(toolHref) : []);
   const guides = relatedGuideLinks ?? (toolHref ? getGuideLinksForTool(toolHref) : []);
+  const hubLinks = toolHref ? getClusterHubLinks(toolHref) : [];
 
   return (
     <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '2.5rem 2rem' }}>
@@ -113,6 +115,11 @@ export default function CalcPageWrapper({
 
       {!hideClusterNavigation ? (
         <>
+          <RelatedGuides
+            title="Cluster Hubs"
+            intro="Use these organising pages when you want the main calculators and supporting guides for this topic grouped in one place."
+            links={hubLinks}
+          />
           <RelatedCalculators
             links={calculators}
             intro="Move sideways to closely related calculators without leaving the same topic cluster."

@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'How Mortgage Repayment Calculations Work — Plain Figures Learning Centre',
-  description: 'The amortisation formula explained — why early payments are mostly interest, how monthly payments are calculated, and how overpayments reduce the term.',
-};
+export const metadata: Metadata = buildGuideMetadata('How Mortgage Repayment Calculations Work — Plain Figures Learning Centre', 'The amortisation formula explained — why early payments are mostly interest, how monthly payments are calculated, and how overpayments reduce the term.', 'mortgage-repayment');
 
 export default function MortgageGuide() {
   return (

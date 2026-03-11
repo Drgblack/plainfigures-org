@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Tax-Loss Harvesting Strategies for Volatile Markets | Plain Figures',
-  description:
-    'How tax-loss harvesting works — after-tax alpha formula, German Abgeltungsteuer mechanics, harvest thresholds, replacement security selection, and what-if scenarios.',
-};
+export const metadata: Metadata = buildGuideMetadata('Tax-Loss Harvesting Strategies for Volatile Markets | Plain Figures', 'How tax-loss harvesting works — after-tax alpha formula, German Abgeltungsteuer mechanics, harvest thresholds, replacement security selection, and what-if scenarios.', 'tax-loss-harvesting');
 
 export default function TaxLossHarvestingGuide() {
   return (

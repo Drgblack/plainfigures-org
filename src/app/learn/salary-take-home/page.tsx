@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'How Salary Take-Home Is Calculated — UK, Germany, USA, France, Netherlands, Australia — Plain Figures',
-  description: 'Gross to net salary explained — income tax brackets, national insurance, social contributions, and effective tax rates in 6 countries.',
-};
+export const metadata: Metadata = buildGuideMetadata('How Salary Take-Home Is Calculated — UK, Germany, USA, France, Netherlands, Australia — Plain Figures', 'Gross to net salary explained — income tax brackets, national insurance, social contributions, and effective tax rates in 6 countries.', 'salary-take-home');
 
 export default function TakeHomeGuide() {
   return (

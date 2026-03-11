@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'How Mortgage Affordability Is Assessed: LTI, Stress Tests & Deposit Rules',
-  description: 'Understand exactly how lenders calculate mortgage affordability in 2025/26. Covers income multiples, stress testing, deposit requirements, and the factors that affect how much you can borrow.',
-};
+export const metadata: Metadata = buildGuideMetadata('How Mortgage Affordability Is Assessed: LTI, Stress Tests & Deposit Rules', 'Understand exactly how lenders calculate mortgage affordability in 2025/26. Covers income multiples, stress testing, deposit requirements, and the factors that affect how much you can borrow.', 'mortgage-affordability');
 
 export default function Guide() {
   return (

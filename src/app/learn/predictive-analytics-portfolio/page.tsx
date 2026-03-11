@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Beyond Chatbots: Predictive Analytics for Portfolio Reviews | Plain Figures',
-  description:
-    'How predictive analytics models work in portfolio review workflows — churn scoring, drift detection, model evaluation, and what-if scenarios for financial advisors.',
-};
+export const metadata: Metadata = buildGuideMetadata('Beyond Chatbots: Predictive Analytics for Portfolio Reviews | Plain Figures', 'How predictive analytics models work in portfolio review workflows — churn scoring, drift detection, model evaluation, and what-if scenarios for financial advisors.', 'predictive-analytics-portfolio');
 
 export default function PredictiveAnalyticsGuide() {
   return (

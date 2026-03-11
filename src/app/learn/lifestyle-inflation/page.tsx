@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Lifestyle Inflation: The Real Long-Term Cost — Plain Figures Learning Centre',
-  description: 'How lifestyle inflation (spending rising with income) compounds over time. The calculation behind the wealth gap between two identical incomes with different spending behaviours.',
-};
+export const metadata: Metadata = buildGuideMetadata('Lifestyle Inflation: The Real Long-Term Cost — Plain Figures Learning Centre', 'How lifestyle inflation (spending rising with income) compounds over time. The calculation behind the wealth gap between two identical incomes with different spending behaviours.', 'lifestyle-inflation');
 
 export default function LifestyleInflationGuide() {
   return (

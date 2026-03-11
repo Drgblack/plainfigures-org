@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'How to Calculate Your Financial Runway — Plain Figures Learning Centre',
-  description: 'The maths behind emergency fund sufficiency — monthly burn rate, runway calculation, the 3–6 month rule, and how expense cuts extend your runway.',
-};
+export const metadata: Metadata = buildGuideMetadata('How to Calculate Your Financial Runway — Plain Figures Learning Centre', 'The maths behind emergency fund sufficiency — monthly burn rate, runway calculation, the 3–6 month rule, and how expense cuts extend your runway.', 'financial-crisis');
 
 export default function FinancialCrisisGuide() {
   return (

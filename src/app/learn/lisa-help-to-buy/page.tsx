@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Help to Buy ISA and LISA: When the Bonus Actually Helps',
-  description: 'Compare the Lifetime ISA and Help to Buy ISA government bonuses for first-time buyers. Covers contribution limits, property price caps, withdrawal penalties, and worked examples.',
-};
+export const metadata: Metadata = buildGuideMetadata('Help to Buy ISA and LISA: When the Bonus Actually Helps', 'Compare the Lifetime ISA and Help to Buy ISA government bonuses for first-time buyers. Covers contribution limits, property price caps, withdrawal penalties, and worked examples.', 'lisa-help-to-buy');
 
 export default function Guide() {
   return (

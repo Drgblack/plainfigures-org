@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Freelance Day Rate: Working Backwards from Desired Salary — Plain Figures Learning Centre',
-  description: 'How to calculate the freelance or contractor day rate needed to match a target take-home salary — accounting for billable days, tax, National Insurance, and overheads. UK 2026.',
-};
+export const metadata: Metadata = buildGuideMetadata('Freelance Day Rate: Working Backwards from Desired Salary — Plain Figures Learning Centre', 'How to calculate the freelance or contractor day rate needed to match a target take-home salary — accounting for billable days, tax, National Insurance, and overheads. UK 2026.', 'freelance-rate');
 
 export default function FreelanceRateGuide() {
   return (

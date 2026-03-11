@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Currency Exchange: Real Cost of FX Fees and Spread Over Time',
-  description: 'Calculate the true cost of currency exchange fees, spread markup, and poor rates. Compares providers and shows how small margins compound over time for regular transfers.',
-};
+export const metadata: Metadata = buildGuideMetadata('Currency Exchange: Real Cost of FX Fees and Spread Over Time', 'Calculate the true cost of currency exchange fees, spread markup, and poor rates. Compares providers and shows how small margins compound over time for regular transfers.', 'currency-exchange-fees');
 
 export default function Guide() {
   return (

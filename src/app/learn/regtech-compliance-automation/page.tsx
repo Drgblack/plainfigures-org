@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'RegTech Essentials: Automating Compliance | Plain Figures',
-  description:
-    'How RegTech tools reduce compliance costs for financial advisors — KYC automation savings, MiFID II suitability workflows, fine exposure calculation, and what-if scenarios.',
-};
+export const metadata: Metadata = buildGuideMetadata('RegTech Essentials: Automating Compliance | Plain Figures', 'How RegTech tools reduce compliance costs for financial advisors — KYC automation savings, MiFID II suitability workflows, fine exposure calculation, and what-if scenarios.', 'regtech-compliance-automation');
 
 export default function RegtechComplianceGuide() {
   return (

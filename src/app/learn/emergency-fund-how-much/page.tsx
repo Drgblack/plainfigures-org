@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Emergency Fund: How Much Is Enough?',
-  description: 'Calculate the right emergency fund size for your situation. Covers the 3-6 month rule, variable income adjustments, and where to keep your buffer.',
-};
+export const metadata: Metadata = buildGuideMetadata('Emergency Fund: How Much Is Enough?', 'Calculate the right emergency fund size for your situation. Covers the 3-6 month rule, variable income adjustments, and where to keep your buffer.', 'emergency-fund-how-much');
 
 export default function Guide() {
   return (

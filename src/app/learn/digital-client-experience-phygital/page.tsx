@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Digital Client Experience: Phygital Engagement Platforms | Plain Figures',
-  description:
-    'How phygital client engagement works — NPS financial value formula, digital touchpoint ROI, churn rate by NPS segment, adoption failure modes, and what-if scenarios.',
-};
+export const metadata: Metadata = buildGuideMetadata('Digital Client Experience: Phygital Engagement Platforms | Plain Figures', 'How phygital client engagement works — NPS financial value formula, digital touchpoint ROI, churn rate by NPS segment, adoption failure modes, and what-if scenarios.', 'digital-client-experience-phygital');
 
 export default function DigitalClientExperienceGuide() {
   return (

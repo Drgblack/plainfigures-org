@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Save for a Goal: Time & Amount Calculations — Plain Figures Learning Centre',
-  description: 'How to calculate how long it takes to reach a savings target, or how much to save each month. The formula behind savings goals — with house deposit, emergency fund, and holiday examples.',
-};
+export const metadata: Metadata = buildGuideMetadata('Save for a Goal: Time & Amount Calculations — Plain Figures Learning Centre', 'How to calculate how long it takes to reach a savings target, or how much to save each month. The formula behind savings goals — with house deposit, emergency fund, and holiday examples.', 'save-for-goal');
 
 export default function SaveForGoalGuide() {
   return (

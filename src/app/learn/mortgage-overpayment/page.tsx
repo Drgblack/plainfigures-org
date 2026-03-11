@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Mortgage Overpayment: How Much Does It Save? — Plain Figures Learning Centre',
-  description: 'How extra mortgage payments reduce interest and shorten the term. The amortisation maths behind overpayments, what early vs late overpayments do differently, and break-even vs investing.',
-};
+export const metadata: Metadata = buildGuideMetadata('Mortgage Overpayment: How Much Does It Save? — Plain Figures Learning Centre', 'How extra mortgage payments reduce interest and shorten the term. The amortisation maths behind overpayments, what early vs late overpayments do differently, and break-even vs investing.', 'mortgage-overpayment');
 
 export default function MortgageOverpaymentGuide() {
   return (

@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Multi-Generational Bridge: Retaining Assets Across Generations | Plain Figures',
-  description:
-    'How financial advisors quantify and reduce AUM attrition at generational wealth transfers — the retention value equation, three-horizon engagement framework, and what-if scenarios.',
-};
+export const metadata: Metadata = buildGuideMetadata('Multi-Generational Bridge: Retaining Assets Across Generations | Plain Figures', 'How financial advisors quantify and reduce AUM attrition at generational wealth transfers — the retention value equation, three-horizon engagement framework, and what-if scenarios.', 'multigenerational-asset-retention');
 
 export default function MultigenerationalRetentionGuide() {
   return (

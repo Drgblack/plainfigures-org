@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Salary Sacrifice: Tax and National Insurance Savings Explained',
-  description: 'Understand how salary sacrifice works for pensions, cycle to work, and EV cars. Includes tax and NI saving calculations for 2025/26 UK employees.',
-};
+export const metadata: Metadata = buildGuideMetadata('Salary Sacrifice: Tax and National Insurance Savings Explained', 'Understand how salary sacrifice works for pensions, cycle to work, and EV cars. Includes tax and NI saving calculations for 2025/26 UK employees.', 'salary-sacrifice');
 
 export default function Guide() {
   return (

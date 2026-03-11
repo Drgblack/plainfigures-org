@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'How Offset Mortgages Reduce Interest — Calculation & Tax Efficiency — Plain Figures',
-  description: 'The maths behind offset mortgages — how savings reduce the effective balance, term reduction, interest saved, tax efficiency for higher-rate taxpayers, and when an offset makes sense.',
-};
+export const metadata: Metadata = buildGuideMetadata('How Offset Mortgages Reduce Interest — Calculation & Tax Efficiency — Plain Figures', 'The maths behind offset mortgages — how savings reduce the effective balance, term reduction, interest saved, tax efficiency for higher-rate taxpayers, and when an offset makes sense.', 'offset-mortgage');
 
 export default function OffsetGuide() {
   return (

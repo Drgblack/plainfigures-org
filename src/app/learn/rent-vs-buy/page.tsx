@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Rent vs Buy: The Key Numbers to Compare — Plain Figures Learning Centre',
-  description: 'What a fair financial comparison between renting and buying involves — opportunity cost, equity, the costs people forget, and the break-even point explained.',
-};
+export const metadata: Metadata = buildGuideMetadata('Rent vs Buy: The Key Numbers to Compare — Plain Figures Learning Centre', 'What a fair financial comparison between renting and buying involves — opportunity cost, equity, the costs people forget, and the break-even point explained.', 'rent-vs-buy');
 
 export default function RentVsBuyGuide() {
   return (

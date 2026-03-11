@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/learn/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Dividend Yield vs Growth Investing: Total Return Comparison',
-  description: 'Compare dividend yield and growth investing strategies using total return calculations. Covers dividend reinvestment, capital growth, tax efficiency, and which approach suits different goals.',
-};
+export const metadata: Metadata = buildGuideMetadata('Dividend Yield vs Growth Investing: Total Return Comparison', 'Compare dividend yield and growth investing strategies using total return calculations. Covers dividend reinvestment, capital growth, tax efficiency, and which approach suits different goals.', 'dividend-vs-growth');
 
 export default function Guide() {
   return (

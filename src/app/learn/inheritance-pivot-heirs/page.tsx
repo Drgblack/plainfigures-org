@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import GuideLayout from '@/components/layout/GuideLayout';
+import { buildGuideMetadata } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Inheritance Pivot: Onboarding Heirs as Clients | Plain Figures',
-  description:
-    'How to convert heirs into long-term advisory clients — LTV calculation, heir profiling, regulatory onboarding requirements, and what-if scenarios for wealth transfer events.',
-};
+export const metadata: Metadata = buildGuideMetadata('Inheritance Pivot: Onboarding Heirs as Clients | Plain Figures', 'How to convert heirs into long-term advisory clients — LTV calculation, heir profiling, regulatory onboarding requirements, and what-if scenarios for wealth transfer events.', 'inheritance-pivot-heirs');
 
 export default function InheritancePivotGuide() {
   return (
