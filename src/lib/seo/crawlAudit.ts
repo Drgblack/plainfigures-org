@@ -130,6 +130,8 @@ export function getCrawlAuditSnapshot() {
       { href: '/programmatic-report.json', reason: 'Machine-readable reporting endpoint.' },
       { href: '/crawl-audit', reason: 'Internal crawl-health report for site maintenance, not search acquisition.' },
       { href: '/seo-opportunities', reason: 'Internal prioritisation report for the next SEO work queue.' },
+      { href: '/search-console-report', reason: 'Internal Search Console reporting surface for CTR, ranking, and indexation review.' },
+      { href: '/search-console-report.json', reason: 'Machine-readable Search Console reporting snapshot.' },
     ],
   };
 }

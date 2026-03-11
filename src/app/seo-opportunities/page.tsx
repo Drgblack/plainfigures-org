@@ -61,6 +61,10 @@ export default function SeoOpportunitiesPage() {
           <Link href="/crawl-audit" style={{ color: 'var(--accent)' }}>
             Crawl Audit
           </Link>{' '}
+          and{' '}
+          <Link href="/search-console-report" style={{ color: 'var(--accent)' }}>
+            Search Console Report
+          </Link>{' '}
           when deciding whether to add links, expand a hub intro, or leave a niche article as-is.
         </p>
       </section>
