@@ -61,6 +61,8 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/mortgage-affordability', label: GUIDE_LABELS['/learn/mortgage-affordability'], description: 'See how income multiples, outgoings, and stress tests shape borrowing power.' },
       { href: '/learn/offset-mortgage', label: GUIDE_LABELS['/learn/offset-mortgage'], description: 'Compare offset savings against standard mortgage interest charges.' },
       { href: '/learn/mortgage-overpayment', label: GUIDE_LABELS['/learn/mortgage-overpayment'], description: 'Measure how extra payments reduce lifetime interest and term length.' },
+      { href: '/learn/rent-vs-buy', label: GUIDE_LABELS['/learn/rent-vs-buy'], description: 'Keep tenure and break-even reasoning inside the same housing cluster as repayment and affordability.' },
+      { href: '/learn/lisa-help-to-buy', label: 'LISA vs Help to Buy ISA: When the Government Bonus Actually Helps', description: 'Add deposit-bonus and first-time buyer saving rules to the main mortgage decision path.' },
     ],
     hubLinks: [
       { href: '/mortgage-calculators', label: 'Open the mortgage calculators hub', description: 'Move through repayment, affordability, and buy-versus-rent pages from one cluster page.' },
@@ -79,6 +81,7 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/emergency-fund-how-much', label: GUIDE_LABELS['/learn/emergency-fund-how-much'], description: 'Set a buffer size that matches expenses and income stability.' },
       { href: '/learn/subscription-drain', label: GUIDE_LABELS['/learn/subscription-drain'], description: 'Reframe recurring spending as cumulative cost and foregone growth.' },
       { href: '/learn/retirement-employer-contributions', label: 'Retirement Savings: Employer Contributions and Inflation Impact', description: 'Keep matched contributions and real-value retirement framing inside the main savings cluster.' },
+      { href: '/learn/financial-crisis', label: GUIDE_LABELS['/learn/financial-crisis'], description: 'Link emergency savings and burn-rate logic directly back to the broader savings plan.' },
     ],
     hubLinks: [
       { href: '/savings-and-compound-interest', label: 'Open the savings and compound hub', description: 'Group growth, goal, retirement, and emergency-fund pages under one savings path.' },
@@ -99,6 +102,7 @@ const CLUSTERS: Record<string, ClusterConfig> = {
     ],
     hubLinks: [
       { href: '/income-tax-and-borrowing', label: 'Open the income, tax, and borrowing hub', description: 'Keep salary, freelance, loan, and affordability pages grouped within one commercial cluster.' },
+      { href: '/property-tax-and-estate-planning', label: 'Open the property, tax, and estate hub', description: 'Use the adjacent planning hub when income questions turn into tax-aware property or wealth decisions.' },
     ],
   },
   risk: {
@@ -126,10 +130,13 @@ const CLUSTERS: Record<string, ClusterConfig> = {
     guideLinks: [
       { href: '/learn/tdee', label: GUIDE_LABELS['/learn/tdee'], description: 'Understand the BMR and activity formulas behind calorie estimates.' },
       { href: '/learn/subscription-drain', label: GUIDE_LABELS['/learn/subscription-drain'], description: 'Compare recurring lifestyle costs with longer-term opportunity cost.' },
+      { href: '/learn/lifestyle-inflation', label: 'Lifestyle Inflation: Real Cost Over Time', description: 'Keep small spending upgrades and their long-run savings drag inside the same support cluster.' },
+      { href: '/learn/financial-crisis', label: GUIDE_LABELS['/learn/financial-crisis'], description: 'Tie resilience, runway, and emergency planning back to recurring-cost decisions.' },
       { href: '/learn/financial-crisis-simulator', label: 'Financial Crisis Simulator: How Long Will Savings Last?', description: 'Keep the scenario-based runway explainer alongside the broader lifestyle and resilience support pages.' },
     ],
     hubLinks: [
       { href: '/lifestyle-and-runway', label: 'Open the lifestyle and runway hub', description: 'Group recurring-cost, runway, and lifestyle-pressure pages in one support cluster.' },
+      { href: '/savings-and-compound-interest', label: 'Open the savings and compound hub', description: 'Use the adjacent savings hub when a lifestyle question turns into buffer-building or contribution planning.' },
     ],
   },
   advisory: {
@@ -147,6 +154,7 @@ const CLUSTERS: Record<string, ClusterConfig> = {
     ],
     hubLinks: [
       { href: '/advisory-analytics-and-automation', label: 'Open the advisory analytics and automation hub', description: 'Group advisory workflow, analytics, and growth explainers in one organiser page.' },
+      { href: '/risk-management-and-coverage', label: 'Open the risk management and coverage hub', description: 'Use the adjacent risk hub when advisory workflow questions tie back to exposure, controls, or coverage design.' },
     ],
   },
   property: {
@@ -159,9 +167,11 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/capital-gains-tax', label: 'Capital Gains Tax: How the Calculation Works (2025/26)', description: 'Tie disposal and gain mechanics back to the main tax-aware calculator paths.' },
       { href: '/learn/inheritance-tax', label: 'Inheritance Tax: Nil-Rate Band, Taper Relief, and How It Is Calculated', description: 'Keep estate tax and gifting rules within reach of retirement and long-term wealth pages.' },
       { href: '/learn/lisa-help-to-buy', label: 'LISA vs Help to Buy ISA: When the Government Bonus Actually Helps', description: 'Support first-time buyer and deposit-planning journeys with a clear savings-rule explainer.' },
+      { href: '/learn/pension-drawdown', label: 'Pension Drawdown: Sustainable Withdrawal Rates Explained', description: 'Connect estate and transfer questions to the retirement-income decisions that often follow.' },
     ],
     hubLinks: [
       { href: '/property-tax-and-estate-planning', label: 'Open the property, tax, and estate hub', description: 'Group housing, tax, and wealth-transfer explainers under one supporting hub.' },
+      { href: '/mortgage-calculators', label: 'Open the mortgage calculators hub', description: 'Return to the core repayment and affordability hub once the planning context is clear.' },
     ],
   },
   markets: {
@@ -174,9 +184,12 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/dividend-vs-growth', label: 'Dividend Yield vs Growth Investing: Total Return Comparison', description: 'Connect income versus growth framing back to the main compounding cluster.' },
       { href: '/learn/market-forecasts-rate-cuts', label: 'Market Forecasts: Impact of Rate Cuts and Geopolitics', description: 'Provide market-context support for users comparing scenarios rather than looking for predictions.' },
       { href: '/learn/tax-loss-harvesting', label: 'Tax-Loss Harvesting Strategies for Volatile Markets', description: 'Keep after-tax portfolio mechanics attached to the broader tax and investing pathway.' },
+      { href: '/learn/private-credit-playbook', label: GUIDE_LABELS['/learn/private-credit-playbook'], description: 'Add one higher-yield professional investing explainer to the same long-term return cluster.' },
+      { href: '/learn/capital-gains-tax', label: 'Capital Gains Tax: How the Calculation Works (2025/26)', description: 'Keep disposal and after-tax proceeds close to the investing and return-comparison path.' },
     ],
     hubLinks: [
       { href: '/investing-markets-and-fx', label: 'Open the investing, markets, and FX hub', description: 'Group the investing and cross-border explainers that support long-term return questions.' },
+      { href: '/savings-and-compound-interest', label: 'Open the savings and compound hub', description: 'Return to the main long-term savings cluster once the specialist market context is clear.' },
     ],
   },
 };
@@ -196,7 +209,7 @@ const TOOL_TO_CLUSTER = new Map<string, string>([
   ['/take-home', 'income'],
   ['/freelance', 'income'],
   ['/loan', 'income'],
-  ['/lifestyle-inflation', 'income'],
+  ['/lifestyle-inflation', 'wellbeing'],
   ['/bi', 'risk'],
   ['/coverage-gap', 'risk'],
   ['/tcor', 'risk'],

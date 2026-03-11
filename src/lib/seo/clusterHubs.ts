@@ -25,7 +25,7 @@ const HUBS: Record<string, ClusterHubConfig> = {
     description:
       'A focused mortgage hub linking repayment, affordability, rent-vs-buy, and the supporting guides that explain how the core borrowing maths works.',
     intro:
-      'Use this hub when you need the main mortgage pages grouped by job: cost, borrowing power, and buy-versus-rent comparison. It keeps the core calculator pages and the supporting explainers within a shallow crawl path.',
+      'Use this hub when you need the main mortgage pages grouped by job: cost, borrowing power, and buy-versus-rent comparison. It keeps the core calculator pages, deposit-planning explainers, and repayment context within a shallow crawl path instead of spreading the housing journey across separate directories.',
     summary:
       'Start with repayment if you already know the loan size, move to affordability if you are setting a budget ceiling, then use rent vs buy when the question is tenure rather than monthly cost.',
     calculatorHrefs: ['/mortgage', '/affordability', '/rent-vs-buy', '/loan'],
@@ -76,7 +76,7 @@ const HUBS: Record<string, ClusterHubConfig> = {
     description:
       'A sub-hub for overpayment, offset, and linked savings decisions, with direct paths into the calculators and guides that explain each interest-saving method.',
     intro:
-      'This hub sits one layer below the main mortgage cluster. It is for borrowers comparing whether spare cash works harder as a permanent overpayment, a flexible offset balance, or a separate savings pot.',
+      'This hub sits one layer below the main mortgage cluster. It is for borrowers comparing whether spare cash works harder as a permanent overpayment, a flexible offset balance, or a separate savings pot, with the surrounding guides kept close enough to support the decision without creating a separate research detour.',
     summary:
       'Use overpayment when reducing term and interest is the priority. Use offset when liquidity matters. Keep a savings comparison nearby so the cash alternative stays visible.',
     calculatorHrefs: ['/overpayment', '/offset', '/savings', '/save-goal'],
@@ -122,7 +122,7 @@ const HUBS: Record<string, ClusterHubConfig> = {
     description:
       'A savings cluster hub linking growth, compounding, goal planning, retirement projections, and cash-buffer guides for high-intent saving journeys.',
     intro:
-      'This hub organises the main savings pages by question: how fast money grows, how much to contribute, how to size a target, and how to connect short-term buffers with long-term compounding.',
+      'This hub organises the main savings pages by question: how fast money grows, how much to contribute, how to size a target, and how to connect short-term buffers with long-term compounding. It is designed to keep both the evergreen savings formulas and the practical resilience guides inside the same crawlable cluster.',
     summary:
       'Start with savings growth for recurring contributions, move to compound interest for rate and frequency comparisons, then branch into goal timelines, retirement projections, or emergency-fund sizing.',
     calculatorHrefs: ['/savings', '/compound', '/save-goal', '/retirement', '/crisis', '/subscriptions'],
@@ -183,7 +183,7 @@ const HUBS: Record<string, ClusterHubConfig> = {
     description:
       'A focused hub for salary take-home, freelance rate, loan repayment, and affordability pages, plus the guides that explain how gross-to-net and borrowing maths connect.',
     intro:
-      'This hub is for users working backwards from income into decisions. It connects pay after tax, freelance pricing, debt cost, and borrowing capacity so the same commercial journey stays within a shallow internal-link path.',
+      'This hub is for users working backwards from income into decisions. It connects pay after tax, freelance pricing, debt cost, borrowing capacity, and the nearby property-planning explainers so the same commercial journey stays within a shallow internal-link path even when the question moves from wages into housing or tax-aware planning.',
     summary:
       'Start with take-home pay when gross income is the known input, move to freelance rate if you need to reverse-engineer pricing, then use loan and affordability pages when the question shifts into repayment or borrowing capacity.',
     calculatorHrefs: ['/take-home', '/freelance', '/loan', '/affordability', '/retirement'],
