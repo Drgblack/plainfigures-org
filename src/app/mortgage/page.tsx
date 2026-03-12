@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import MortgageCalc from '@/components/calculators/MortgageCalc';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Mortgage Repayment Calculator',
@@ -8,10 +9,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Mortgage Repayment Calculator — Plain Figures',
     description: 'Calculate monthly payment, total interest, and full cost over any term.',
-    url: 'https://plainfigures.org/mortgage',
+    url: `${SITE_ORIGIN}/mortgage`,
     type: 'website',
   },
-  alternates: { canonical: 'https://plainfigures.org/mortgage' },
+  alternates: { canonical: `${SITE_ORIGIN}/mortgage` },
 };
 
 const jsonLd = {
@@ -20,10 +21,10 @@ const jsonLd = {
   name: 'Mortgage Repayment Calculator',
   applicationCategory: 'FinanceApplication',
   operatingSystem: 'Web',
-  url: 'https://plainfigures.org/mortgage',
+  url: `${SITE_ORIGIN}/mortgage`,
   description: 'Calculate your monthly mortgage payment, total interest, and amortisation schedule over any term.',
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
-  provider: { '@type': 'Organization', name: 'Plain Figures', url: 'https://plainfigures.org' },
+  provider: { '@type': 'Organization', name: 'Plain Figures', url: SITE_ORIGIN },
 };
 
 export default function MortgagePage() {

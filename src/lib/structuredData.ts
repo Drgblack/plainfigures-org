@@ -1,4 +1,5 @@
 // JSON-LD structured data helpers for individual calculator pages
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 export interface CalcPageJsonLd {
   name: string;
@@ -14,7 +15,7 @@ export function calcPageJsonLd({ name, description, url, keywords, faqs }: CalcP
     '@type': 'WebApplication',
     'name': name,
     'description': description,
-    'url': `https://plainfigures.org${url}`,
+    'url': `${SITE_ORIGIN}${url}`,
     'applicationCategory': 'FinanceApplication',
     'operatingSystem': 'Web',
     'offers': {
@@ -25,7 +26,7 @@ export function calcPageJsonLd({ name, description, url, keywords, faqs }: CalcP
     'provider': {
       '@type': 'Organization',
       'name': 'Plain Figures',
-      'url': 'https://plainfigures.org',
+      'url': SITE_ORIGIN,
     },
   };
 

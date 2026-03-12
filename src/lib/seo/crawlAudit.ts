@@ -1,5 +1,6 @@
 import { ALL_TOOLS } from '@/lib/siteData';
 import { getAllClusterHubs } from '@/lib/seo/clusterHubs';
+import { UTILITY_NOINDEX_ROUTES } from '@/lib/seo/indexation';
 import { getClusterHubLinks, getLearnHubClusters } from '@/lib/seo/relatedLinks';
 import { LEARN_GUIDE_URLS } from '@/lib/sitemap-data';
 
@@ -122,16 +123,6 @@ export function getCrawlAuditSnapshot() {
     weakCalculators,
     weakGuides,
     hubCoverage,
-    utilityNoindex: [
-      { href: '/contact', reason: 'Utility contact page; useful to users but low-value as a search landing page.' },
-      { href: '/cookies', reason: 'Cookie-preferences utility page; accessible for compliance but not a high-value index target.' },
-      { href: '/saved', reason: 'Personal browser-storage page; not suitable for search indexing.' },
-      { href: '/programmatic-report', reason: 'Internal reporting surface for rollout and monitoring.' },
-      { href: '/programmatic-report.json', reason: 'Machine-readable reporting endpoint.' },
-      { href: '/crawl-audit', reason: 'Internal crawl-health report for site maintenance, not search acquisition.' },
-      { href: '/seo-opportunities', reason: 'Internal prioritisation report for the next SEO work queue.' },
-      { href: '/search-console-report', reason: 'Internal Search Console reporting surface for CTR, ranking, and indexation review.' },
-      { href: '/search-console-report.json', reason: 'Machine-readable Search Console reporting snapshot.' },
-    ],
+    utilityNoindex: UTILITY_NOINDEX_ROUTES,
   };
 }

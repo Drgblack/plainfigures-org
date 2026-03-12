@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -35,7 +36,8 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/_next/'],
       },
     ],
-    sitemap: 'https://plainfigures.org/sitemap.xml',
-    host: 'https://plainfigures.org',
+    // robots.txt should advertise the sitemap location, but robots.txt itself is not a sitemap.
+    sitemap: `${SITE_ORIGIN}/sitemap.xml`,
+    host: SITE_ORIGIN,
   };
 }

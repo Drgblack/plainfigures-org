@@ -1,3 +1,4 @@
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 import { calculators, CalculatorConfig, generateAllSlugs } from './config';
 
 type DynamicFaq = { q: string; a: string };
@@ -224,7 +225,7 @@ function createUniquePageContent(params: Record<string, any>, config: Calculator
   const faqs = buildFaqs(params, config);
   const title = renderTemplate(config.seoTemplate.title, params, config);
   const description = renderTemplate(config.seoTemplate.description, params, config);
-  const url = slug ? `https://plainfigures.org/calculators/${config.categorySlug}/${slug}` : undefined;
+  const url = slug ? `${SITE_ORIGIN}/calculators/${config.categorySlug}/${slug}` : undefined;
 
   const schema = [
     {
@@ -238,7 +239,7 @@ function createUniquePageContent(params: Record<string, any>, config: Calculator
       provider: {
         '@type': 'Organization',
         name: 'Plain Figures',
-        url: 'https://plainfigures.org',
+        url: SITE_ORIGIN,
       },
       keywords: config.params.map((param) => `${param.label}:${formatValue(params[param.key], param.prefix)}`).join(', '),
     },

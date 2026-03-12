@@ -16,6 +16,7 @@ import {
   buildProgrammaticRelatedGuideLinks,
   getProgrammaticHubHref,
 } from '@/lib/seo/relatedLinks';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 import styles from './page.module.css';
 
 export const revalidate = 86400;
@@ -135,7 +136,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { config, variant } = resolved;
   const title = renderTemplate(config.seoTemplate.title, variant.params, config);
   const description = renderTemplate(config.seoTemplate.description, variant.params, config);
-  const canonical = `https://www.plainfigures.org/calculators/${category}/${expression}`;
+  const canonical = `${SITE_ORIGIN}/calculators/${category}/${expression}`;
 
   return {
     title,

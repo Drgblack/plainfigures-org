@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import SavingsCalc from '@/components/calculators/SavingsCalc';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 import { calcPageJsonLd, CALC_FAQS } from '@/lib/structuredData';
 
@@ -15,7 +16,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Savings Growth Calculator — Plain Figures',
   description: 'See how compound interest grows your savings over time with regular contributions.',
-  alternates: { canonical: 'https://plainfigures.org/savings' },
+  alternates: { canonical: `${SITE_ORIGIN}/savings` },
 };
 
 export default function SavingsPage() {

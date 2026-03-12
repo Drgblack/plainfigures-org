@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
-const SITE_URL = 'https://plainfigures.org';
 const SITE_NAME = 'Plain Figures';
 const DEFAULT_OG_IMAGE = '/lockup-dark@2x.png';
 
@@ -19,7 +19,7 @@ function toAbsoluteUrl(path: string): string {
     return path;
   }
 
-  return `${SITE_URL}${path}`;
+  return `${SITE_ORIGIN}${path}`;
 }
 
 export function buildStaticMetadata({

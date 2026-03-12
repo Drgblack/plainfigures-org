@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { BreadcrumbItem } from '@/lib/seo/relatedLinks';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 type BreadcrumbsProps = {
   items: BreadcrumbItem[];
@@ -10,7 +11,7 @@ function toAbsoluteUrl(href: string): string {
     return href;
   }
 
-  return `https://plainfigures.org${href}`;
+  return `${SITE_ORIGIN}${href}`;
 }
 
 export default function Breadcrumbs({ items }: BreadcrumbsProps) {

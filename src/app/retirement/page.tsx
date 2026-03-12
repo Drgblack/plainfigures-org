@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import RetirementCalc from '@/components/calculators/RetirementCalc';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 import { calcPageJsonLd, CALC_FAQS } from '@/lib/structuredData';
 
@@ -15,7 +16,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Retirement Savings Calculator — Plain Figures',
   description: 'Project your pension pot at retirement, accounting for inflation, employer contributions, and investment growth.',
-  alternates: { canonical: 'https://plainfigures.org/retirement' },
+  alternates: { canonical: `${SITE_ORIGIN}/retirement` },
 };
 
 export default function RetirementPage() {

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import GuideLayout from '@/components/layout/GuideLayout';
 import { PROGRAMMATIC_LEARN_TOPICS, getProgrammaticLearnTopic } from '@/lib/programmatic-learn-extensions';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 import styles from './page.module.css';
 
 export const revalidate = 86400;
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return {};
   }
 
-  const canonical = `https://plainfigures.org/learn/${extension.slug}`;
+  const canonical = `${SITE_ORIGIN}/learn/${extension.slug}`;
 
   return {
     title: `${extension.title} | Plain Figures`,
@@ -61,9 +62,9 @@ export default async function ProgrammaticLearnTopicPage({ params }: PageProps) 
       publisher: {
         '@type': 'Organization',
         name: 'Plain Figures',
-        url: 'https://plainfigures.org',
+        url: SITE_ORIGIN,
       },
-      mainEntityOfPage: `https://plainfigures.org/learn/${extension.slug}`,
+      mainEntityOfPage: `${SITE_ORIGIN}/learn/${extension.slug}`,
       keywords: extension.keywords.join(', '),
     },
     {

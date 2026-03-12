@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import OverpaymentCalc from '@/components/calculators/OverpaymentCalc';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 import { calcPageJsonLd, CALC_FAQS } from '@/lib/structuredData';
 
@@ -15,7 +16,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Mortgage Overpayment Calculator — Plain Figures',
   description: 'Calculate how much interest and time you save by making extra monthly mortgage payments.',
-  alternates: { canonical: 'https://plainfigures.org/overpayment' },
+  alternates: { canonical: `${SITE_ORIGIN}/overpayment` },
 };
 
 export default function OverpaymentPage() {

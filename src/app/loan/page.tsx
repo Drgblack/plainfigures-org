@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import LoanCalc from '@/components/calculators/LoanCalc';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 import { calcPageJsonLd, CALC_FAQS } from '@/lib/structuredData';
 
@@ -15,7 +16,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Loan Repayment Calculator — Plain Figures',
   description: 'Calculate monthly repayments, total interest, and the true APR on any personal loan or credit agreement.',
-  alternates: { canonical: 'https://plainfigures.org/loan' },
+  alternates: { canonical: `${SITE_ORIGIN}/loan` },
 };
 
 export default function LoanPage() {

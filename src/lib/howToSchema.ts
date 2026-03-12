@@ -1,3 +1,5 @@
+import { SITE_ORIGIN } from '@/lib/siteConfig';
+
 /**
  * buildHowToSchema — Plain Figures
  *
@@ -15,7 +17,7 @@
  *       { name: 'Apply the formula', text: 'Monthly payment = P[r(1+r)^n]/[(1+r)^n-1]' },
  *       { name: 'Check with the calculator', text: 'Use our Mortgage Repayment Calculator to verify.' },
  *     ],
- *     tool: { name: 'Mortgage Repayment Calculator', url: 'https://plainfigures.org/mortgage' },
+ *     tool: { name: 'Mortgage Repayment Calculator', url: 'https://www.plainfigures.org/mortgage' },
  *   });
  */
 
@@ -63,7 +65,7 @@ export function buildHowToSchema(input: HowToSchemaInput) {
     provider: {
       '@type': 'Organization',
       name: 'Plain Figures',
-      url: 'https://plainfigures.org',
+      url: SITE_ORIGIN,
     },
   };
 }

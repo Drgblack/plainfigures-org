@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import CompoundCalc from '@/components/calculators/CompoundCalc';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 import { calcPageJsonLd, CALC_FAQS } from '@/lib/structuredData';
 
@@ -15,7 +16,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Compound Interest Calculator — Plain Figures',
   description: 'See exactly how compound interest works at different frequencies — monthly, quarterly, annually, daily.',
-  alternates: { canonical: 'https://plainfigures.org/compound' },
+  alternates: { canonical: `${SITE_ORIGIN}/compound` },
 };
 
 export default function CompoundPage() {

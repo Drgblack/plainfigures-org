@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ALL_TOOLS, PERSONAL_TOOLS, PROFESSIONAL_TOOLS, ToolMeta, ToolPreviewResult } from '@/lib/siteData';
 import { getRecentHrefs, getSavedCalcs, deleteSavedCalc, SavedCalc } from '@/lib/localStorage';
+import { getCalculatorDirectorySections } from '@/lib/seo/calculatorDirectory';
 import SeasonalBanner from '@/components/ui/SeasonalBanner';
 import { useLang } from '@/components/ui/LangSwitcher';
 import { useCurrency } from '@/lib/CurrencyContext';
@@ -17,6 +18,8 @@ const FEATURED_GUIDES = [
   { href: '/learn/loan-repayment', title: 'Loan Repayment & True APR', readTime: '5 min' },
   { href: '/learn/tdee', title: 'TDEE & Calorie Needs Explained', readTime: '5 min' },
 ];
+
+const HOME_DIRECTORY_SECTIONS = getCalculatorDirectorySections().slice(0, 4);
 
 function Sparkline({ path, color = 'var(--accent)' }: { path?: string; color?: string }) {
   if (!path) return null;
@@ -297,6 +300,30 @@ export default function HomePage() {
         <>
           <RecentlyUsed />
           <SavedCalcsPanel />
+
+          <div style={{ marginBottom: '3rem', padding: '1.25rem 1.5rem', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+              <div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--text-muted)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
+                  Browse by Category
+                </div>
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: 1.65 }}>
+                  Use the hub pages when you want the main calculators and related guides grouped by decision type rather than as one long directory.
+                </div>
+              </div>
+              <Link href="/calculators" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--accent)', textDecoration: 'none', letterSpacing: '0.06em' }}>
+                Open full calculator directory
+              </Link>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.6rem' }}>
+              {HOME_DIRECTORY_SECTIONS.map((section) => (
+                <Link key={section.href} href={section.href} style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', padding: '0.75rem 0.85rem', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '5px', textDecoration: 'none' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.74rem', color: 'var(--text-primary)' }}>{section.title}</span>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.76rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{section.description}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
 
           {/* Featured guides */}
           <div style={{ marginBottom: '3rem', padding: '1.25rem 1.5rem', background: 'rgba(46,200,138,0.04)', border: '1px solid rgba(46,200,138,0.15)', borderRadius: '8px' }}>

@@ -3936,17 +3936,70 @@ export function generateStaticProgrammaticPaths(limit: number): GeneratedSlugPat
   return entries;
 }
 
-export function generateAllSitemapEntries(): GeneratedSlugPath[] {
-  return calculators.flatMap((config) =>
-    buildGeneratedEntries(config, ({ categorySlug, slug }) => ({
+export const PRIORITY_SITEMAP_CONFIG_LIMITS = new Map<string, number>([
+  ['mortgage-repayment', 300],
+  ['mortgage-affordability', 300],
+  ['mortgage-overpayment', 250],
+  ['offset-mortgage', 250],
+  ['rent-vs-buy', 150],
+  ['savings-growth', 250],
+  ['compound-interest', 250],
+  ['save-for-goal', 250],
+  ['retirement-savings', 250],
+  ['salary-take-home', 400],
+  ['loan-repayment', 250],
+  ['uk-income-tax-ni-take-home', 250],
+  ['ca-income-tax-take-home', 200],
+  ['au-income-tax-take-home', 200],
+  ['sg-income-tax-take-home', 150],
+  ['in-income-tax-take-home', 150],
+  ['ie-income-tax-take-home', 150],
+  ['nz-income-tax-take-home', 150],
+  ['za-income-tax-take-home', 150],
+  ['uk-mortgage-affordability-stress-test', 180],
+  ['ca-mortgage-affordability-stress-test', 180],
+  ['ie-mortgage-affordability-stress-test', 150],
+  ['nz-mortgage-affordability-stress-test', 150],
+  ['za-home-loan-affordability', 150],
+  ['uk-pension-tax-relief-optimizer', 150],
+  ['ca-rrsp-vs-tfsa-optimizer', 150],
+  ['au-superannuation-retirement-projection', 150],
+  ['nz-kiwisaver-retirement-projection', 150],
+  ['ie-pension-tax-relief-optimizer', 150],
+]);
+
+let prioritySitemapEntriesCache: GeneratedSlugPath[] | null = null;
+
+function getPrioritySitemapEntries(): GeneratedSlugPath[] {
+  if (prioritySitemapEntriesCache) {
+    return prioritySitemapEntriesCache;
+  }
+
+  const entries = calculators.flatMap((config) => {
+    const limit = PRIORITY_SITEMAP_CONFIG_LIMITS.get(config.id);
+
+    if (!limit) {
+      return [];
+    }
+
+    return buildGeneratedEntries(config, ({ categorySlug, slug }) => ({
       categorySlug,
       slug,
-    }))
-  );
+    })).slice(0, limit);
+  });
+
+  prioritySitemapEntriesCache = entries;
+  return entries;
+}
+
+export function generateAllSitemapEntries(): GeneratedSlugPath[] {
+  // Keep the sitemap intentionally conservative. The long tail can remain accessible without
+  // telling Google to prioritise every generated variant before the strongest clusters are indexed.
+  return getPrioritySitemapEntries();
 }
 
 export function getSitemapEntryCount(): number {
-  return calculators.reduce((total, config) => total + getGeneratedEntryCount(config), 0);
+  return getPrioritySitemapEntries().length;
 }
 
 export function generateSitemapChunkEntries(chunkIndex: number, chunkSize: number): GeneratedSlugPath[] {
@@ -3954,34 +4007,10 @@ export function generateSitemapChunkEntries(chunkIndex: number, chunkSize: numbe
     return [];
   }
 
-  let offset = chunkIndex * chunkSize;
-  let remaining = chunkSize;
-  const entries: GeneratedSlugPath[] = [];
+  const entries = getPrioritySitemapEntries();
+  const start = chunkIndex * chunkSize;
 
-  for (const config of calculators) {
-    const configCount = getGeneratedEntryCount(config);
-
-    if (offset >= configCount) {
-      offset -= configCount;
-      continue;
-    }
-
-    const configEntries = buildGeneratedEntries(config, ({ categorySlug, slug }) => ({
-      categorySlug,
-      slug,
-    }));
-
-    const slice = configEntries.slice(offset, offset + remaining);
-    entries.push(...slice);
-    remaining -= slice.length;
-    offset = 0;
-
-    if (remaining <= 0) {
-      break;
-    }
-  }
-
-  return entries;
+  return entries.slice(start, start + chunkSize);
 }
 
 export function findGeneratedSlug(categorySlug: string, slug: string): GeneratedSlug | null {

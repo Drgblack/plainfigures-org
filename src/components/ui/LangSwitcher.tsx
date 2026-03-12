@@ -7,17 +7,17 @@
  * - 5 supported languages: English, German, French, Spanish, Mandarin
  * - Locale JSON files loaded from /public/locales/{lang}.json
  * - String lookup via t(key, dict) from @/lib/i18n
- * - Language persisted to localStorage + URL ?lang= param for crawlers
+ * - Language persisted to localStorage + URL ?lang= parameter for shared links
  * - Custom event 'pf-lang-change' broadcast so other components can re-render
  * - detectBrowserLang() auto-selects on first visit (no stored preference)
  *
  * SEO (current ”” UI-only i18n):
- * - hreflang tags in layout.tsx metadata.alternates (all pointing to same URL)
- * - ?lang=de URL parameter readable by crawlers
+ * - Keep alternate-language metadata disabled until real translated routes exist
+ * - ?lang=de can still be used for shared links, but it is not a canonical route
  *
  * SEO (future ”” full route-based i18n):
  * - Add [locale] dynamic segment: /app/[locale]/page.tsx
- * - hreflang: https://plainfigures.org/de/mortgage etc.
+ * - hreflang: https://www.plainfigures.org/de/mortgage etc.
  * - Use next-intl or i18next (see /src/lib/i18n.ts for migration guide)
  *
  * Usage:

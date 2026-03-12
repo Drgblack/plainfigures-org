@@ -1,4 +1,6 @@
 import { getSitemapEntryCount } from '@/lib/calculators/config';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
+import { getSitemapLastModified } from '@/lib/seo/sitemap';
 
 export const revalidate = 86400;
 export const dynamic = 'force-dynamic';
@@ -15,8 +17,8 @@ function xml(content: string): Response {
 }
 
 export async function GET() {
-  const baseUrl = 'https://www.plainfigures.org';
-  const lastModified = new Date().toISOString();
+  const baseUrl = SITE_ORIGIN;
+  const lastModified = getSitemapLastModified();
   const programmaticCount = getSitemapEntryCount();
   const chunkCount = Math.ceil(programmaticCount / PROGRAMMATIC_CHUNK_SIZE);
 

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import AffordabilityCalc from '@/components/calculators/AffordabilityCalc';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 import { calcPageJsonLd, CALC_FAQS } from '@/lib/structuredData';
 
@@ -14,7 +15,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Mortgage Affordability Calculator — What Can I Borrow? — Plain Figures',
   description: 'Find out the maximum mortgage you can borrow based on your income, commitments, deposit, and stress test rates.',
-  alternates: { canonical: 'https://plainfigures.org/affordability' },
+  alternates: { canonical: `${SITE_ORIGIN}/affordability` },
 };
 export default function Page() {
   return (

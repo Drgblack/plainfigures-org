@@ -6,6 +6,7 @@ import { CurrencyProvider } from '@/lib/CurrencyContext';
 import CookieConsent from '@/components/ui/CookieConsent';
 import Navbar from '@/components/layout/Navbar';
 import LangSwitcher, { LangProvider } from '@/components/ui/LangSwitcher';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: {
@@ -13,13 +14,13 @@ export const metadata: Metadata = {
     template: '%s — Plain Figures',
   },
   description: 'Accurate financial and insurance calculators plus formula-first guides. Mortgage, compound interest, salary, retirement, and more. No advice. No noise. Just the maths.',
-  metadataBase: new URL('https://plainfigures.org'),
+  metadataBase: new URL(SITE_ORIGIN),
   keywords: [
     'financial calculator', 'mortgage calculator', 'compound interest calculator',
     'salary take-home calculator', 'retirement calculator', 'rent vs buy calculator',
     'UK financial tools', 'no advice financial maths',
   ],
-  authors: [{ name: 'Plain Figures', url: 'https://plainfigures.org' }],
+  authors: [{ name: 'Plain Figures', url: SITE_ORIGIN }],
   creator: 'Plain Figures',
   robots: {
     index: true,
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     title: 'Plain Figures — Financial Calculators & Learning Centre',
     description: 'Neutral numbers you can trust. 26 calculators and 16 formula-first guides. No advice. No noise.',
     type: 'website',
-    url: 'https://plainfigures.org',
+    url: SITE_ORIGIN,
     siteName: 'Plain Figures',
     locale: 'en_GB',
     images: [{
@@ -53,7 +54,7 @@ export const metadata: Metadata = {
     images: ['/lockup-dark@2x.png'],
   },
   alternates: {
-    canonical: 'https://plainfigures.org',
+    canonical: SITE_ORIGIN,
   },
   icons: {
     icon: [
@@ -76,20 +77,20 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'WebSite',
-      '@id': 'https://plainfigures.org/#website',
-      'url': 'https://plainfigures.org',
+      '@id': `${SITE_ORIGIN}/#website`,
+      'url': SITE_ORIGIN,
       'name': 'Plain Figures',
       'description': 'Neutral financial calculators. No advice. No noise.',
       'inLanguage': 'en-GB',
     },
     {
       '@type': 'Organization',
-      '@id': 'https://plainfigures.org/#organization',
-      'url': 'https://plainfigures.org',
+      '@id': `${SITE_ORIGIN}/#organization`,
+      'url': SITE_ORIGIN,
       'name': 'Plain Figures',
       'logo': {
         '@type': 'ImageObject',
-        'url': 'https://plainfigures.org/lockup-dark@2x.png',
+        'url': `${SITE_ORIGIN}/lockup-dark@2x.png`,
         'width': 528,
         'height': 80,
       },

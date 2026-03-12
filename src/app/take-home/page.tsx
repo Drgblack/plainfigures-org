@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import TakeHomeCalc from '@/components/calculators/TakeHomeCalc';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 import { calcPageJsonLd, CALC_FAQS } from '@/lib/structuredData';
 
@@ -14,7 +15,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Salary Take-Home Calculator — UK, Germany, USA, France, Netherlands, Australia — Plain Figures',
   description: 'Calculate your net take-home pay after tax and national insurance in the UK, Germany, USA, France, Netherlands, and Australia.',
-  alternates: { canonical: 'https://plainfigures.org/take-home' },
+  alternates: { canonical: `${SITE_ORIGIN}/take-home` },
 };
 export default function Page() {
   return (

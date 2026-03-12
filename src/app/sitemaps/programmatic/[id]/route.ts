@@ -1,4 +1,5 @@
 import { generateSitemapChunkEntries } from '@/lib/calculators/config';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 import { getSitemapLastModified } from '@/lib/seo/sitemap';
 
 export const revalidate = 86400;
@@ -41,7 +42,7 @@ export async function GET(_request: Request, context: RouteContext) {
 ${entries
   .map(
     (entry) => `  <url>
-    <loc>https://www.plainfigures.org/calculators/${entry.categorySlug}/${entry.slug}</loc>
+    <loc>${SITE_ORIGIN}/calculators/${entry.categorySlug}/${entry.slug}</loc>
     <lastmod>${lastModified}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CalcPageWrapper from '@/components/layout/CalcPageWrapper';
 import OffsetCalc from '@/components/calculators/OffsetCalc';
+import { SITE_ORIGIN } from '@/lib/siteConfig';
 
 import { calcPageJsonLd, CALC_FAQS } from '@/lib/structuredData';
 
@@ -15,7 +16,7 @@ const jsonLdData = calcPageJsonLd({
 export const metadata: Metadata = {
   title: 'Offset Mortgage Calculator — Plain Figures',
   description: 'See how much interest your savings offset against your mortgage, and how much earlier you could pay it off.',
-  alternates: { canonical: 'https://plainfigures.org/offset' },
+  alternates: { canonical: `${SITE_ORIGIN}/offset` },
 };
 
 export default function OffsetPage() {

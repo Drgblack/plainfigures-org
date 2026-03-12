@@ -58,6 +58,11 @@ const HUBS: Record<string, ClusterHubConfig> = {
     ],
     relatedHubs: [
       {
+        href: '/calculators',
+        label: 'Open the full calculators directory',
+        description: 'Move back to the main calculator directory when the question shifts out of housing and borrowing.',
+      },
+      {
         href: '/overpayment-and-offset',
         label: 'Open the overpayment and offset hub',
         description: 'Move deeper into mortgage interest-reduction options once the core payment is clear.',
@@ -66,6 +71,62 @@ const HUBS: Record<string, ClusterHubConfig> = {
         href: '/savings-and-compound-interest',
         label: 'Open the savings and compound hub',
         description: 'Compare deposit-building and cash-buffer paths against borrowing decisions.',
+      },
+    ],
+  },
+  'savings-calculators': {
+    slug: 'savings-calculators',
+    title: 'Savings Calculators and Guides',
+    eyebrow: 'Savings Category Hub',
+    description:
+      'A category hub for savings growth, savings goals, emergency funds, and recurring-cost calculators, with direct HTML links into the supporting guides that explain the underlying maths.',
+    intro:
+      'Use this page as the main entry point for savings decisions where the user cares about contribution pace, target balances, short-term resilience, or whether current spending habits are crowding out future flexibility. It is deliberately stronger than a flat directory and keeps the highest-intent savings pages in one crawlable cluster.',
+    summary:
+      'Start with savings growth when the contribution pattern is already known, move to save-for-goal when the target date or amount is fixed, and use crisis or subscription pages when the savings problem is really about resilience or recurring cash leakage.',
+    calculatorHrefs: ['/savings', '/save-goal', '/crisis', '/subscriptions', '/lifestyle-inflation'],
+    guideLinks: [
+      {
+        href: '/learn/save-for-goal',
+        label: 'Read the save-for-goal guide',
+        description: 'Translate a deadline and target balance into a realistic contribution plan.',
+      },
+      {
+        href: '/learn/emergency-fund-how-much',
+        label: 'Read the emergency fund guide',
+        description: 'Work out the right cash buffer before choosing the growth path for the rest of your savings.',
+      },
+      {
+        href: '/learn/subscription-drain',
+        label: 'Read the subscription drain guide',
+        description: 'Measure how recurring spending erodes the same savings goals this hub is designed to support.',
+      },
+      {
+        href: '/learn/financial-crisis',
+        label: 'Read the financial runway guide',
+        description: 'Keep resilience planning close to the main savings calculators instead of treating it as a separate topic.',
+      },
+      {
+        href: '/learn/lifestyle-inflation',
+        label: 'Read the lifestyle inflation guide',
+        description: 'Connect small spending upgrades with long-run savings drag and opportunity cost.',
+      },
+    ],
+    relatedHubs: [
+      {
+        href: '/calculators',
+        label: 'Open the full calculators directory',
+        description: 'Return to the main calculator directory to move into mortgages, retirement, or income pages.',
+      },
+      {
+        href: '/savings-and-compound-interest',
+        label: 'Open the savings and compound hub',
+        description: 'Move into the deeper compounding and retirement support hub once the core savings path is clear.',
+      },
+      {
+        href: '/investing-calculators',
+        label: 'Open the investing calculators hub',
+        description: 'Use the adjacent investing hub when the savings question turns into return comparison or compounding analysis.',
       },
     ],
   },
@@ -165,6 +226,11 @@ const HUBS: Record<string, ClusterHubConfig> = {
     ],
     relatedHubs: [
       {
+        href: '/savings-calculators',
+        label: 'Open the savings calculators hub',
+        description: 'Return to the core savings category hub when the question is more practical than investment-oriented.',
+      },
+      {
         href: '/mortgage-calculators',
         label: 'Open the main mortgage hub',
         description: 'Compare cash-saving decisions with repayment and affordability trade-offs.',
@@ -173,6 +239,118 @@ const HUBS: Record<string, ClusterHubConfig> = {
         href: '/overpayment-and-offset',
         label: 'Open the overpayment and offset hub',
         description: 'Use it when the savings question is really about mortgage interest reduction.',
+      },
+    ],
+  },
+  'investing-calculators': {
+    slug: 'investing-calculators',
+    title: 'Investing and Compound Interest Calculators',
+    eyebrow: 'Investing Category Hub',
+    description:
+      'A category hub for compound growth, future value, and long-term return planning, with supporting market and after-tax guides kept close to the core investing calculators.',
+    intro:
+      'This hub exists for users who are beyond simple cash saving and want to compare long-term return paths, compounding assumptions, retirement accumulation, or after-tax investing trade-offs. It keeps the strongest investing calculators and the most relevant support guides within one HTML pathway rather than making the user jump between editorial and tool directories.',
+    summary:
+      'Start with compound interest for rate and frequency comparisons, use savings growth when contributions are recurring, then move to retirement when the problem is long-horizon income planning rather than standalone return maths.',
+    calculatorHrefs: ['/compound', '/savings', '/retirement', '/take-home'],
+    guideLinks: [
+      {
+        href: '/learn/compound-interest',
+        label: 'Read the compound interest guide',
+        description: 'Understand how compounding frequency and effective rate change long-run outcomes.',
+      },
+      {
+        href: '/learn/dividend-vs-growth',
+        label: 'Read the dividend vs growth guide',
+        description: 'Compare income-style and capital-growth investing inside the same long-term return cluster.',
+      },
+      {
+        href: '/learn/tax-loss-harvesting',
+        label: 'Read the tax-loss harvesting guide',
+        description: 'Keep after-tax portfolio mechanics close to the core investing calculators.',
+      },
+      {
+        href: '/learn/currency-exchange-fees',
+        label: 'Read the currency exchange fees guide',
+        description: 'Add cross-border transfer and FX friction to the investing decision path when needed.',
+      },
+      {
+        href: '/learn/market-forecasts-rate-cuts',
+        label: 'Read the market forecasts guide',
+        description: 'Use market-context support without turning the calculator site into a prediction surface.',
+      },
+    ],
+    relatedHubs: [
+      {
+        href: '/calculators',
+        label: 'Open the full calculators directory',
+        description: 'Return to the full calculator directory when the journey moves back into income, mortgages, or tax.',
+      },
+      {
+        href: '/savings-and-compound-interest',
+        label: 'Open the savings and compound hub',
+        description: 'Use the adjacent savings hub for buffers, emergency funds, and more practical contribution questions.',
+      },
+      {
+        href: '/investing-markets-and-fx',
+        label: 'Open the investing, markets, and FX hub',
+        description: 'Move into the specialist markets hub when the user needs more context around returns or FX costs.',
+      },
+    ],
+  },
+  'retirement-calculators': {
+    slug: 'retirement-calculators',
+    title: 'Retirement Calculators and Guides',
+    eyebrow: 'Retirement Category Hub',
+    description:
+      'A retirement hub linking pension growth, savings accumulation, take-home pay context, and the guides that explain employer contributions, drawdown, and retirement-income assumptions.',
+    intro:
+      'Use this page when the question is specifically retirement rather than general saving. It keeps pension growth, contribution planning, and drawdown support within one shallow crawl path, which is useful both for users and for signalling the importance of the site’s long-horizon money pages.',
+    summary:
+      'Start with retirement savings when the goal is pension-pot growth, keep savings and compound calculators nearby for contribution comparisons, and use take-home pay when net-income constraints shape what can realistically be invested.',
+    calculatorHrefs: ['/retirement', '/savings', '/compound', '/take-home'],
+    guideLinks: [
+      {
+        href: '/learn/retirement-savings',
+        label: 'Read the retirement savings guide',
+        description: 'Understand how contributions, return assumptions, and inflation shape the long-term outcome.',
+      },
+      {
+        href: '/learn/retirement-employer-contributions',
+        label: 'Read the employer contributions guide',
+        description: 'Measure how matched contributions alter the pension path before changing your own rate.',
+      },
+      {
+        href: '/learn/pension-drawdown',
+        label: 'Read the pension drawdown guide',
+        description: 'Keep sustainable withdrawal questions connected to the accumulation phase rather than splitting the journey.',
+      },
+      {
+        href: '/learn/salary-sacrifice',
+        label: 'Read the salary sacrifice guide',
+        description: 'Use the salary sacrifice explainer when gross-to-net tax treatment changes pension affordability.',
+      },
+      {
+        href: '/learn/inheritance-tax',
+        label: 'Read the inheritance tax guide',
+        description: 'Retain estate-planning context next to retirement decisions where later transfer questions often arise.',
+      },
+    ],
+    relatedHubs: [
+      {
+        href: '/calculators',
+        label: 'Open the full calculators directory',
+        description: 'Return to the main calculator directory when the user needs broader money pages beyond retirement.',
+      },
+      {
+        href: '/savings-calculators',
+        label: 'Open the savings calculators hub',
+        description: 'Move into general savings planning when the question is still pre-retirement accumulation.',
+      },
+      {
+        href: '/investing-calculators',
+        label: 'Open the investing calculators hub',
+        description: 'Use the investing hub for broader compounding and after-tax return comparisons.',
       },
     ],
   },
@@ -586,7 +764,7 @@ export function getCalculatorLinksForClusterHub(slug: string): SeoLink[] {
 export function buildClusterHubBreadcrumbs(title: string): BreadcrumbItem[] {
   return [
     { href: '/', label: 'Home' },
-    { href: '/learn', label: 'Learning Centre' },
+    { href: '/calculators', label: 'Calculators' },
     { label: title },
   ];
 }

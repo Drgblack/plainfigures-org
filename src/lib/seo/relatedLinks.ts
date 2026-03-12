@@ -4,6 +4,7 @@ export type SeoLink = {
   href: string;
   label: string;
   description?: string;
+  breadcrumbLabel?: string;
 };
 
 export type BreadcrumbItem = {
@@ -92,6 +93,7 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/financial-crisis', label: GUIDE_LABELS['/learn/financial-crisis'], description: 'Link emergency savings and burn-rate logic directly back to the broader savings plan.' },
     ],
     hubLinks: [
+      { href: '/savings-calculators', label: 'Open the savings calculators hub', description: 'Start with the main savings category hub for growth, goals, resilience, and recurring-cost trade-offs.' },
       { href: '/savings-and-compound-interest', label: 'Open the savings and compound hub', description: 'Group growth, goal, retirement, and emergency-fund pages under one savings path.' },
       { href: '/overpayment-and-offset', label: 'Open the overpayment and offset hub', description: 'Use the adjacent mortgage strategy hub when a cash question becomes a borrowing question.' },
     ],
@@ -109,6 +111,7 @@ const CLUSTERS: Record<string, ClusterConfig> = {
       { href: '/learn/student-loan-repayment', label: GUIDE_LABELS['/learn/student-loan-repayment'], description: 'Keep graduate repayment deductions in the same income-to-borrowing path as salary and loan pages.' },
     ],
     hubLinks: [
+      { href: '/calculators', label: 'Open the full calculators directory', description: 'Return to the main calculator directory when the question crosses salary, borrowing, and savings categories.' },
       { href: '/income-tax-and-borrowing', label: 'Open the income, tax, and borrowing hub', description: 'Keep salary, freelance, loan, and affordability pages grouped within one commercial cluster.' },
       { href: '/property-tax-and-estate-planning', label: 'Open the property, tax, and estate hub', description: 'Use the adjacent planning hub when income questions turn into tax-aware property or wealth decisions.' },
     ],
@@ -240,6 +243,93 @@ const TOOL_TO_CLUSTER = new Map<string, string>([
   ['/tdee', 'wellbeing'],
 ]);
 
+const PRIMARY_HUB_BY_TOOL: Record<string, SeoLink> = {
+  '/mortgage': {
+    href: '/mortgage-calculators',
+    label: 'Browse the mortgage calculators hub',
+    breadcrumbLabel: 'Mortgage Calculators',
+    description: 'Start with the main housing hub for repayment, affordability, rent-versus-buy, and related mortgage guides.',
+  },
+  '/affordability': {
+    href: '/mortgage-calculators',
+    label: 'Browse the mortgage calculators hub',
+    breadcrumbLabel: 'Mortgage Calculators',
+    description: 'Use the main mortgage hub to compare affordability with repayment, rent-versus-buy, and deposit-planning pages.',
+  },
+  '/offset': {
+    href: '/mortgage-calculators',
+    label: 'Browse the mortgage calculators hub',
+    breadcrumbLabel: 'Mortgage Calculators',
+    description: 'Keep offset decisions attached to the main mortgage hub rather than treating them as isolated strategy pages.',
+  },
+  '/overpayment': {
+    href: '/mortgage-calculators',
+    label: 'Browse the mortgage calculators hub',
+    breadcrumbLabel: 'Mortgage Calculators',
+    description: 'Return to the main mortgage hub when overpayment is just one part of a larger borrowing decision.',
+  },
+  '/rent-vs-buy': {
+    href: '/mortgage-calculators',
+    label: 'Browse the mortgage calculators hub',
+    breadcrumbLabel: 'Mortgage Calculators',
+    description: 'Keep tenure comparisons inside the main mortgage and housing cluster.',
+  },
+  '/savings': {
+    href: '/savings-calculators',
+    label: 'Browse the savings calculators hub',
+    breadcrumbLabel: 'Savings Calculators',
+    description: 'Move through growth, goals, buffers, and long-term saving paths from one savings hub.',
+  },
+  '/save-goal': {
+    href: '/savings-calculators',
+    label: 'Browse the savings calculators hub',
+    breadcrumbLabel: 'Savings Calculators',
+    description: 'Keep target-based saving decisions tied to the wider savings and resilience cluster.',
+  },
+  '/subscriptions': {
+    href: '/savings-calculators',
+    label: 'Browse the savings calculators hub',
+    breadcrumbLabel: 'Savings Calculators',
+    description: 'Return to the savings hub when recurring-cost questions turn into buffer-building or contribution decisions.',
+  },
+  '/crisis': {
+    href: '/savings-calculators',
+    label: 'Browse the savings calculators hub',
+    breadcrumbLabel: 'Savings Calculators',
+    description: 'Use the savings hub to compare runway planning with emergency-fund and long-term saving decisions.',
+  },
+  '/compound': {
+    href: '/investing-calculators',
+    label: 'Browse the investing calculators hub',
+    breadcrumbLabel: 'Investing Calculators',
+    description: 'Use the investing hub for compound-growth, market-context, and long-term return comparisons.',
+  },
+  '/retirement': {
+    href: '/retirement-calculators',
+    label: 'Browse the retirement calculators hub',
+    breadcrumbLabel: 'Retirement Calculators',
+    description: 'Keep retirement-pot, drawdown, and contribution questions grouped under the retirement hub.',
+  },
+  '/take-home': {
+    href: '/calculators',
+    label: 'Browse all calculators',
+    breadcrumbLabel: 'Calculators',
+    description: 'Use the main calculator directory when salary and borrowing questions move across categories.',
+  },
+  '/freelance': {
+    href: '/calculators',
+    label: 'Browse all calculators',
+    breadcrumbLabel: 'Calculators',
+    description: 'Return to the main calculator directory for adjacent salary, borrowing, and savings pages.',
+  },
+  '/loan': {
+    href: '/calculators',
+    label: 'Browse all calculators',
+    breadcrumbLabel: 'Calculators',
+    description: 'Use the main calculator directory to move from loans into mortgages, savings, and take-home pay tools.',
+  },
+};
+
 const PROGRAMMATIC_CATEGORY_SUPPORT: Record<string, ProgrammaticCategorySupport> = {
   'mortgage-repayment': { hubHref: '/mortgage', guideSlugs: ['mortgage-repayment', 'mortgage-affordability'], relatedCategories: ['offset-mortgage', 'mortgage-overpayment', 'mortgage-affordability'] },
   'savings-growth': { hubHref: '/savings', guideSlugs: ['compound-interest', 'save-for-goal'], relatedCategories: ['compound-interest', 'save-for-goal', 'retirement-savings'] },
@@ -283,8 +373,8 @@ function titleCaseSlug(slug: string): string {
     .join(' ');
 }
 
-function isSeoLink(link: SeoLink | null): link is SeoLink {
-  return link !== null;
+function isSeoLink(link: SeoLink | null | undefined): link is SeoLink {
+  return link !== null && link !== undefined;
 }
 
 export function getGuideLabel(href: string): string {
@@ -357,8 +447,12 @@ export function getClusterSummary(toolHref: string): { title: string; intro: str
 export function getClusterHubLinks(toolHref: string, limit = 3): SeoLink[] {
   const clusterKey = TOOL_TO_CLUSTER.get(toolHref);
   const cluster = clusterKey ? CLUSTERS[clusterKey] : null;
+  const primaryHub = PRIMARY_HUB_BY_TOOL[toolHref];
 
-  return (cluster?.hubLinks ?? []).slice(0, limit);
+  return [primaryHub, ...(cluster?.hubLinks ?? [])]
+    .filter(isSeoLink)
+    .filter((link, index, allLinks) => allLinks.findIndex((candidate) => candidate.href === link.href) === index)
+    .slice(0, limit);
 }
 
 export function buildProgrammaticRelatedCalculatorLinks(categorySlug: string, limit = 4): SeoLink[] {
@@ -411,8 +505,9 @@ export function getProgrammaticHubHref(categorySlug: string): string {
 
 export function buildCalculatorBreadcrumbs(title: string, toolHref?: string): BreadcrumbItem[] {
   const tool = toolHref ? getToolByHref(toolHref) : null;
+  const primaryHub = toolHref ? PRIMARY_HUB_BY_TOOL[toolHref] : null;
 
-  if (!tool || tool.href === toolHref) {
+  if (!tool) {
     return [
       { href: '/', label: 'Home' },
       { label: title },
@@ -421,7 +516,7 @@ export function buildCalculatorBreadcrumbs(title: string, toolHref?: string): Br
 
   return [
     { href: '/', label: 'Home' },
-    { href: tool.href, label: tool.title },
+    ...(primaryHub ? [{ href: primaryHub.href, label: primaryHub.breadcrumbLabel ?? primaryHub.label }] : []),
     { label: title },
   ];
 }
